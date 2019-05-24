@@ -1,0 +1,48 @@
+---
+--- #NAME# Module业务逻辑
+---
+
+local ModuleBase = require("Core.module.ModuleBase")
+local #NAME# = Class(#NAME#,ModuleBase)
+
+-- override 声明并初始化各种数据
+function #NAME#:initialize()
+	ModuleBase.initialize(self)
+end
+
+-- 模块初始化
+function #NAME#:Init()
+	ModuleBase.Init(self)
+end
+
+-- 模块销毁与退出
+function #NAME#:Exit()
+	ModuleBase.Exit(self)
+end
+
+-- 模块重置
+function #NAME#:OnReset()
+	ModuleBase.OnReset(self)
+end
+
+-- 监听网络消息
+function #NAME#:RegisterNetListener()
+	ModuleBase.RegisterNetListener(self)
+end
+
+-- 监听事件
+function #NAME#:RegisterEventListener()
+	ModuleBase.RegisterEventListener(self)
+end
+
+-- 取消监听网络消息
+function #NAME#:UnRegisterNetListener()
+	ModuleBase.UnRegisterNetListener(self)
+end
+
+-- 取消监听事件
+function #NAME#:UnRegisterEventListener()
+	ModuleBase.UnRegisterEventListener(self)
+end
+
+return #NAME#

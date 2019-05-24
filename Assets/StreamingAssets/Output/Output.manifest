@@ -1,0 +1,59 @@
+ManifestFileVersion: 0
+CRC: 1468304749
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: arts/gui/material/material_defaultgray.mat.u3d
+      Dependencies: {}
+    Info_1:
+      Name: arts/gui/prefabs/uguiroot.prefab.u3d
+      Dependencies: {}
+    Info_2:
+      Name: arts/gui/prefabs/uicopying.prefab.u3d
+      Dependencies:
+        Dependency_0: arts/gui/textures/texture/loading/loadingbackground0.jpg.u3d
+    Info_3:
+      Name: arts/gui/prefabs/uiloading.prefab.u3d
+      Dependencies:
+        Dependency_0: arts/gui/textures/texture/loading/loadingbackground0.jpg.u3d
+    Info_4:
+      Name: arts/gui/prefabs/uiloginpanel.prefab.u3d
+      Dependencies: {}
+    Info_5:
+      Name: arts/gui/prefabs/uitexthint.prefab.u3d
+      Dependencies: {}
+    Info_6:
+      Name: arts/gui/textures/atlas/airfightsheet.png.u3d
+      Dependencies: {}
+    Info_7:
+      Name: arts/gui/textures/atlas/airfightsheet.prefab.u3d
+      Dependencies:
+        Dependency_0: arts/gui/textures/atlas/airfightsheet.png.u3d
+    Info_8:
+      Name: arts/gui/textures/atlas/item_normal_atlas01_alpha.png.u3d
+      Dependencies: {}
+    Info_9:
+      Name: arts/gui/textures/head_icon/guchensha.png.u3d
+      Dependencies: {}
+    Info_10:
+      Name: arts/gui/textures/texture/loading/loadingbackground0.jpg.u3d
+      Dependencies: {}
+    Info_11:
+      Name: assets/scenes/gamelauncher.unity.u3d
+      Dependencies: {}
+    Info_12:
+      Name: assets/scenes/gamelauncherandroid.unity.u3d
+      Dependencies: {}
+    Info_13:
+      Name: assets/scenes/skilleditorscene.unity.u3d
+      Dependencies: {}
+    Info_14:
+      Name: assets/scenes/testscene/loomtestscene.unity.u3d
+      Dependencies: {}
+    Info_15:
+      Name: assets/scenes/testscene/spriteanimationtest.unity.u3d
+      Dependencies:
+        Dependency_0: arts/gui/textures/atlas/item_normal_atlas01_alpha.png.u3d
+    Info_16:
+      Name: assets/scenes/testscene/uicopyassettestscene.unity.u3d
+      Dependencies: {}

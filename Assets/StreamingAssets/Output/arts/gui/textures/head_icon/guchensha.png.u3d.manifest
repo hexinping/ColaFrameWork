@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1323869212
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8d3fa32269a8ba6afcf5dd871f5e0f24
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c73412a662fd4e4f36af34cbdf078b85
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Arts/Gui/Textures/head_icon/GuChenSha.png
+Dependencies: []

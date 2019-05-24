@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 3366014899
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b29585eec32667f0a6fccb0d2f5a3d38
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Arts/Gui/Textures/atlas/airfightSheet.png
+Dependencies: []

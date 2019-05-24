@@ -1,0 +1,10 @@
+ID索引,资源路径,是否bundle,资源的生存时间(资源管理刷新)
+int,string,int,int
+id,path,resType,resLiveTime
+备用,Resources下路径或者bundle路径,0：Resources;1:bundle,资源的生存时间 -2 永久存在 -1 当前系统 大于0则按时间删除
+100,Arts/Gui/Prefabs/uiLoginPanel.prefab,0,20
+101,Arts/Gui/Prefabs/uiloading.prefab,0,-2
+2001,Arts/Gui/Textures/atlas/airfightSheet.prefab,0,-2
+300001,Arts/Gui/Material/material_defaultgray.mat,0,-2
+400001,Arts/Gui/Textures/head_icon/GuChenSha.png,0,-2
+400002,Arts/Gui/Textures/texture/loading/LoadingBackground0.png,0,-2

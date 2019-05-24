@@ -1,0 +1,14 @@
+ManifestFileVersion: 0
+CRC: 513530681
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c4045408bdb59e442b60b015116caaa5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/Scenes/GameLauncherAndroid.unity
+Dependencies: []

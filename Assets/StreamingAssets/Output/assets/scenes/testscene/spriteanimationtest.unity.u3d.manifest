@@ -1,0 +1,15 @@
+ManifestFileVersion: 0
+CRC: 4010027372
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4dd68180fc3362fddccb3db2e2c848ef
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 31d6cfe0d16ae931b73c59d7e0c089c0
+HashAppended: 0
+ClassTypes: []
+Assets:
+- Assets/Scenes/TestScene/SpriteAnimationTest.unity
+Dependencies:
+- E:/GitProject/ColaFrameWork/Assets/StreamingAssets/Output/arts/gui/textures/atlas/item_normal_atlas01_alpha.png.u3d
