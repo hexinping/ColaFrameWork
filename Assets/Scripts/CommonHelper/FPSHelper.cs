@@ -47,6 +47,12 @@ public class FPSHelper : MonoBehaviour
                                                              + "  MonoHeapSize:" + GetMemoryMB(UnityEngine.Profiling.Profiler.GetMonoHeapSizeLong())
                                                              + "  MonoUsedSize:" + GetMemoryMB(UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong())
         );
+        if(GUI.Button(new Rect(Screen.width / 2 - 30, 0, 100, 50),"GC")){
+            CommonHelper.ResourcesClearAndGC();
+        }
+        {
+
+        }
         if (fps > 50)
         {
             GUI.color = new Color(0, 1, 0);

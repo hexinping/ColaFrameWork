@@ -505,7 +505,7 @@ public static class CommonHelper
     {
         if (string.IsNullOrEmpty(assetPath))
         {
-#if UNITY_IPHONE
+#if !UNITY_EDITOR && UNITY_IOS 
             assetPath = string.Format("{0}/{1}", Application.temporaryCachePath, osDir);
 #else
             assetPath = string.Format("{0}/{1}", Application.persistentDataPath, osDir); 
