@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 /// <summary>
 /// 显示游戏帧率/占用内存等信息的助手类
@@ -27,6 +28,17 @@ public class FPSHelper : MonoBehaviour
     /// </summary>
     private float fps;
 
+    #region 属性信息
+    private Color ColorGreen = new Color(0, 1, 0);
+    private Color ColorBlack = new Color(1, 1, 0);
+    private Color ColorRed = new Color(1.0f, 0, 0);
+    private Rect MemoryPosition = new Rect(Screen.width - 330, 0, 330, 300);
+    private Rect GCBtnPosition = new Rect(Screen.width / 2 - 30, 0, 100, 50);
+    private Rect FpsPosition = new Rect(0, 50, 300, 300);
+    private StringBuilder stringBuilder;
+    private float MBSize = 1024f * 1024f;
+    #endregion
+
     void Start()
     {
         //Application.targetFrameRate=60;
@@ -34,45 +46,46 @@ public class FPSHelper : MonoBehaviour
         lastInterval = Time.realtimeSinceStartup;
 
         frames = 0;
+        stringBuilder = new StringBuilder();
     }
 
     void OnGUI()
     {
-        GUI.color = new Color(0, 1, 0);
+        GUI.color = ColorGreen;
         GUI.skin.label.fontSize = 20;
-        GUI.Label(new Rect(Screen.width - 330, 0, 330, 300), "MemoryAllocated:" + GetMemoryMB(UnityEngine.Profiling.Profiler.GetTotalAllocatedMemoryLong())
-                                                             + "  MemoryReserved:" + GetMemoryMB(UnityEngine.Profiling.Profiler.GetTotalReservedMemoryLong())
-                                                             + " MemoryUnusedReserved:" + GetMemoryMB(UnityEngine.Profiling.Profiler.GetTotalUnusedReservedMemoryLong())
-                                                             + "  usedHeapSize:" + GetMemoryMB(UnityEngine.Profiling.Profiler.usedHeapSizeLong)
-                                                             + "  MonoHeapSize:" + GetMemoryMB(UnityEngine.Profiling.Profiler.GetMonoHeapSizeLong())
-                                                             + "  MonoUsedSize:" + GetMemoryMB(UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong())
-        );
-        if(GUI.Button(new Rect(Screen.width / 2 - 30, 0, 100, 50),"GC")){
-            CommonHelper.ResourcesClearAndGC();
-        }
-        {
 
+        stringBuilder.Length = 0;
+        stringBuilder.AppendFormat("MemoryAllocated:{0}\r\n", GetMemoryMB(UnityEngine.Profiling.Profiler.GetTotalAllocatedMemoryLong()));
+        stringBuilder.AppendFormat("MemoryReserved:{0}\r\n", GetMemoryMB(UnityEngine.Profiling.Profiler.GetTotalReservedMemoryLong()));
+        stringBuilder.AppendFormat("MemoryUnusedReserved:{0}\r\n", GetMemoryMB(UnityEngine.Profiling.Profiler.GetTotalUnusedReservedMemoryLong()));
+        stringBuilder.AppendFormat("usedHeapSize:{0}\r\n", GetMemoryMB(UnityEngine.Profiling.Profiler.usedHeapSizeLong));
+        stringBuilder.AppendFormat("MonoHeapSize:{0}\r\n", GetMemoryMB(UnityEngine.Profiling.Profiler.GetMonoHeapSizeLong()));
+        stringBuilder.AppendFormat("MonoUsedSize:{0}", GetMemoryMB(UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong()));
+        GUI.Label(MemoryPosition, stringBuilder.ToString());
+
+        if(GUI.Button(GCBtnPosition,"GC")){
+            CommonHelper.ResourcesClearAndGC();
         }
         if (fps > 50)
         {
-            GUI.color = new Color(0, 1, 0);
+            GUI.color = ColorGreen;
         }
         else if (fps > 25)
         {
-            GUI.color = new Color(1, 1, 0);
+            GUI.color = ColorBlack;
         }
         else
         {
-            GUI.color = new Color(1.0f, 0, 0);
+            GUI.color = ColorRed;
         }
 
-        GUI.Label(new Rect(0, 50, 300, 300), "FPS:" + fps.ToString("f2"));
+        GUI.Label(FpsPosition, "FPS:" + fps.ToString("f2"));
 
     }
 
     private string GetMemoryMB(long curSize)
     {
-        float mbSize = curSize / (1024f * 1024f);
+        float mbSize = curSize / MBSize;
         return mbSize.ToString("f2") + "MB";
     }
 
