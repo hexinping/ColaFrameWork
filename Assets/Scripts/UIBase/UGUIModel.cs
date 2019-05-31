@@ -91,4 +91,22 @@ public class UGUIModel : UIBehaviour, IDragHandler
             trans.gameObject.layer = LayerMask.NameToLayer(UIModelLayerName);
         }
     }
+
+    private void Update()
+    {
+
+    }
+
+    protected override void OnDisable()
+    {
+
+    }
+
+
+    protected override void OnDestroy()
+    {
+
+    }
+
+
 }
