@@ -38,11 +38,44 @@ public class UGUIModel : UIBehaviour, IDragHandler
     [SerializeField]
     [Tooltip("相机相对模型高度")]
     private float cameraHeightOffset = 0.0f;
+
+    [SerializeField]
+    [Tooltip("相机视野范围")]
+    private int fieldOfView = 60;
+
+    [SerializeField]
+    [Tooltip("相机裁剪距离")]
+    private int farClipPlane = 20;
+
     [SerializeField]
     [Tooltip("模型是否可以旋转")]
     private bool enableRotate = true;
 
+    private GameObject root;
+    private Camera uiCamera;
+    private Camera modelCamera;
+    private RectTransform rectTransform;
+    private Transform modelRoot;
+    private static Vector3 curPos = Vector3.zero;
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    protected override void OnEnable()
+    {
+       
+    }
+
+
+
     public void OnDrag(PointerEventData eventData)
+    {
+
+    }
+
+    public void OnClickModel()
     {
 
     }
