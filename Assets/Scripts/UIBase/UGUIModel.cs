@@ -79,4 +79,16 @@ public class UGUIModel : UIBehaviour, IDragHandler
     {
 
     }
+
+    /// <summary>
+    /// 设置模型的整体的Layer(包括子节点)
+    /// </summary>
+    /// <param name="modelTrans"></param>
+    private void SetModelLayer(Transform modelTrans)
+    {
+        foreach (var trans in modelTrans.GetComponentsInChildren<Transform>())
+        {
+            trans.gameObject.layer = LayerMask.NameToLayer(UIModelLayerName);
+        }
+    }
 }
