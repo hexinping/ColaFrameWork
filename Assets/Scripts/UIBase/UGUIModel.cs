@@ -51,6 +51,9 @@ public class UGUIModel : UIBehaviour, IDragHandler
     [Tooltip("模型是否可以旋转")]
     private bool enableRotate = true;
 
+    [SerializeField]
+    private float camYaw = 90;
+
     private GameObject root;
     private Camera uiCamera;
     private Camera modelCamera;
@@ -72,7 +75,10 @@ public class UGUIModel : UIBehaviour, IDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-
+        if (enableRotate)
+        {
+            camYaw -= eventData.delta.x;
+        }
     }
 
     public void OnClickModel()
