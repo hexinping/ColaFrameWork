@@ -11,6 +11,8 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform),typeof(EmptyRaycast))]
 public class UGUIModel : UIBehaviour, IDragHandler
 {
+
+    #region 属性字段
     /// <summary>
     /// 模型的LayerName
     /// </summary>
@@ -35,9 +37,10 @@ public class UGUIModel : UIBehaviour, IDragHandler
     [SerializeField]
     [Tooltip("相机距离模型的距离")]
     private float cameraDistance = 3.0f;
+
     [SerializeField]
     [Tooltip("相机相对模型高度")]
-    private float cameraHeightOffset = 0.0f;
+    public float cameraHeightOffset = 0.0f;
 
     [SerializeField]
     [Tooltip("相机视野范围")]
@@ -46,6 +49,10 @@ public class UGUIModel : UIBehaviour, IDragHandler
     [SerializeField]
     [Tooltip("相机裁剪距离")]
     private int farClipPlane = 20;
+
+    [SerializeField]
+    [Tooltip("相机深度")]
+    private float modelCameraDepth = 1;
 
     [SerializeField]
     [Tooltip("模型是否可以旋转")]
@@ -64,9 +71,40 @@ public class UGUIModel : UIBehaviour, IDragHandler
     private int frameCount = 1;
     private bool isInEditor = false;
 
+    public Transform Model
+    {
+        get { return model; }
+        set
+        {
+            model = value;
+            model.SetParent(camModelRoot);
+            frameCount = 1;
+        }
+    }
+
+    public float ModelCameraDepth
+    {
+        get { return ModelCameraDepth; }
+        set
+        {
+            modelCameraDepth = value;
+            modelCamera.depth = modelCameraDepth;
+        }
+    }
+
+    #endregion
+
     protected override void Awake()
     {
         base.Awake();
+        uiCamera = GUIHelper.GetUICamera();
+        rectTransform = transform as RectTransform;
+        root = new GameObject("uguiModel");
+        root.transform.position = curPos;
+        curPos += new Vector3(200, 0, 0);
+
+        modelCamera = new GameObject("modelCamera", typeof(Camera)).GetComponent<Camera>();
+        modelCameraDepth = modelCamera.depth + 1.0f;
     }
 
     protected override void OnEnable()
