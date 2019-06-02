@@ -58,8 +58,11 @@ public class UGUIModel : UIBehaviour, IDragHandler
     private Camera uiCamera;
     private Camera modelCamera;
     private RectTransform rectTransform;
-    private Transform modelRoot;
+    private Transform camModelRoot;
     private static Vector3 curPos = Vector3.zero;
+    private Transform model;
+    private int frameCount = 1;
+    private bool isInEditor = false;
 
     protected override void Awake()
     {
