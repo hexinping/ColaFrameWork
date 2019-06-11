@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// UGUIMODEL组件，用来展示3D人物形象
 /// </summary>
-[RequireComponent(typeof(RectTransform),typeof(EmptyRaycast))]
+[RequireComponent(typeof(RectTransform), typeof(EmptyRaycast))]
 public class UGUIModel : UIBehaviour, IDragHandler
 {
 
@@ -71,6 +71,9 @@ public class UGUIModel : UIBehaviour, IDragHandler
     private int frameCount = 1;
     private bool isInEditor = false;
 
+    //提前申请RaycatHit数组，避免频繁申请产生GC
+    private RaycastHit[] hitInfos = new RaycastHit[20];
+
     public Transform Model
     {
         get { return model; }
@@ -109,7 +112,7 @@ public class UGUIModel : UIBehaviour, IDragHandler
 
     protected override void OnEnable()
     {
-       
+
     }
 
 
@@ -124,7 +127,23 @@ public class UGUIModel : UIBehaviour, IDragHandler
 
     public void OnClickModel()
     {
-
+        //每次使用前清空结构体数组
+        System.Array.Clear(hitInfos, 0, hitInfos.Length);
+        Ray ray = modelCamera.ScreenPointToRay(Input.mousePosition);
+        Physics.RaycastNonAlloc(ray, hitInfos, 100.0f, LayerMask.GetMask(UIModelLayerName));
+        for(int i = 0; i < hitInfos.Length; i++)
+        {
+            var hit = hitInfos[i];
+            var collider = hit.collider;
+            if (null != collider)
+            {
+                var name = collider.name;
+                if ("model_head" == name || "model_body" == "name" || "model_foot" == name)
+                {
+                    //Call Lua Function
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -155,5 +174,13 @@ public class UGUIModel : UIBehaviour, IDragHandler
 
     }
 
+    public void SetCameraEffect(bool isEnable)
+    {
+        UpdateCameraEffect();
+    }
 
+    private void UpdateCameraEffect()
+    {
+
+    }
 }
