@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 /// UGUIMODEL组件，用来展示3D人物形象
 /// </summary>
 [RequireComponent(typeof(RectTransform), typeof(EmptyRaycast))]
-public class UGUIModel : UIBehaviour, IDragHandler
+public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointerDownHandler,IPointerUpHandler
 {
 
     #region 属性字段
@@ -131,7 +131,7 @@ public class UGUIModel : UIBehaviour, IDragHandler
         }
     }
 
-    public void OnClickModel()
+    private void OnClickModel()
     {
         //每次使用前清空结构体数组
         System.Array.Clear(hitInfos, 0, hitInfos.Length);
@@ -191,5 +191,18 @@ public class UGUIModel : UIBehaviour, IDragHandler
     private void UpdateCameraEffect()
     {
 
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        OnClickModel();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
     }
 }
