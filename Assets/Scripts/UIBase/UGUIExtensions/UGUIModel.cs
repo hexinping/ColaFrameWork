@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -95,6 +96,11 @@ public class UGUIModel : UIBehaviour, IDragHandler
         }
     }
 
+    /// <summary>
+    /// 模型点击以后的回调函数
+    /// </summary>
+    public Action<string> onModelClick;
+
     #endregion
 
     protected override void Awake()
@@ -140,7 +146,10 @@ public class UGUIModel : UIBehaviour, IDragHandler
                 var name = collider.name;
                 if ("model_head" == name || "model_body" == "name" || "model_foot" == name)
                 {
-                    //Call Lua Function
+                    if(null != onModelClick)
+                    {
+                        onModelClick(name);
+                    }
                 }
             }
         }
