@@ -17,7 +17,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
     /// <summary>
     /// 模型的LayerName
     /// </summary>
-    private const string UIModelLayerName = "UI_Model";
+    private const string UIModelLayerTag = "UI_Model";
 
     [SerializeField]
     [Tooltip("模型的缩放")]
@@ -107,18 +107,33 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
     {
         base.Awake();
         uiCamera = GUIHelper.GetUICamera();
-        rectTransform = transform as RectTransform;
+        rectTransform = this.GetComponent<RectTransform>();
         root = new GameObject("uguiModel");
         root.transform.position = curPos;
         curPos += new Vector3(200, 0, 0);
 
         modelCamera = new GameObject("modelCamera", typeof(Camera)).GetComponent<Camera>();
         modelCameraDepth = modelCamera.depth + 1.0f;
+        modelCamera.cullingMask = LayerMask.GetMask(UIModelLayerTag);
+        modelCamera.clearFlags = CameraClearFlags.Nothing;
+        modelCamera.fieldOfView = fieldOfView;
+        modelCamera.farClipPlane = farClipPlane;
+        modelCamera.transform.SetParent(root.transform);
+
+        camModelRoot = new GameObject("model_root").transform;
+        camModelRoot.transform.SetParent(root.transform);
+        camModelRoot.localPosition = Vector3.zero;
+        camModelRoot.localRotation = Quaternion.identity;
     }
 
     protected override void OnEnable()
     {
-
+        base.OnEnable();
+        if(null != modelCamera)
+        {
+            modelCamera.enabled = true;
+        }
+        UpdateCameraEffect();
     }
 
 
@@ -136,7 +151,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
         //每次使用前清空结构体数组
         System.Array.Clear(hitInfos, 0, hitInfos.Length);
         Ray ray = modelCamera.ScreenPointToRay(Input.mousePosition);
-        Physics.RaycastNonAlloc(ray, hitInfos, 100.0f, LayerMask.GetMask(UIModelLayerName));
+        Physics.RaycastNonAlloc(ray, hitInfos, 100.0f, LayerMask.GetMask(UIModelLayerTag));
         for(int i = 0; i < hitInfos.Length; i++)
         {
             var hit = hitInfos[i];
@@ -163,7 +178,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
     {
         foreach (var trans in modelTrans.GetComponentsInChildren<Transform>())
         {
-            trans.gameObject.layer = LayerMask.NameToLayer(UIModelLayerName);
+            trans.gameObject.layer = LayerMask.NameToLayer(UIModelLayerTag);
         }
     }
 
@@ -174,13 +189,22 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
 
     protected override void OnDisable()
     {
-
+        base.OnDisable();
+        if(null != modelCamera)
+        {
+            modelCamera.enabled = false;
+        }
     }
 
 
     protected override void OnDestroy()
     {
-
+        base.OnDestroy();
+        if(null != root)
+        {
+            Destroy(root);
+            root = null;
+        }
     }
 
     public void SetCameraEffect(bool isEnable)

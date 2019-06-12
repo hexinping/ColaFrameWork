@@ -8,8 +8,10 @@ public class UGUIModelWrap
 	{
 		L.BeginClass(typeof(UGUIModel), typeof(UnityEngine.EventSystems.UIBehaviour));
 		L.RegFunction("OnDrag", OnDrag);
-		L.RegFunction("OnClickModel", OnClickModel);
 		L.RegFunction("SetCameraEffect", SetCameraEffect);
+		L.RegFunction("OnPointerClick", OnPointerClick);
+		L.RegFunction("OnPointerDown", OnPointerDown);
+		L.RegFunction("OnPointerUp", OnPointerUp);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("cameraHeightOffset", get_cameraHeightOffset, set_cameraHeightOffset);
@@ -37,13 +39,14 @@ public class UGUIModelWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int OnClickModel(IntPtr L)
+	static int SetCameraEffect(IntPtr L)
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 1);
+			ToLua.CheckArgsCount(L, 2);
 			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
-			obj.OnClickModel();
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			obj.SetCameraEffect(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -53,14 +56,48 @@ public class UGUIModelWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetCameraEffect(IntPtr L)
+	static int OnPointerClick(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
 			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
-			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
-			obj.SetCameraEffect(arg0);
+			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
+			obj.OnPointerClick(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int OnPointerDown(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
+			obj.OnPointerDown(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int OnPointerUp(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
+			obj.OnPointerUp(arg0);
 			return 0;
 		}
 		catch (Exception e)
