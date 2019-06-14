@@ -28,6 +28,11 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     [SerializeField]
     [Tooltip("模型的Y坐标")]
     private float positionY = 0.0f;
+
+    [SerializeField]
+    [Tooltip("模型的Y坐标")]
+    private float positionZ = 0.0f;
+
     [SerializeField]
     [Tooltip("模型的X轴偏移量")]
     private float modelOffsetX = 0.0f;
@@ -269,6 +274,22 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     private void UpdateCameraEffect()
     {
 
+    }
+
+    public void ImportSetting(string settingName)
+    {
+        //TODO:读取序列化的配置文件，如果没有找到配置就使用默认配置
+    }
+
+    private void DefaultSetting()
+    {
+        cameraPitch = 0;
+        cameraYaw = 90;
+        cameraDistance = 7;
+        cameraHeightOffset = 0.47f;
+        modelCameraDepth = 6;
+        positionX = 0;
+        positionZ = 0;
     }
 
     public void OnPointerClick(PointerEventData eventData)
