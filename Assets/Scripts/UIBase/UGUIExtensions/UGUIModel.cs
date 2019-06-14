@@ -304,4 +304,25 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     public void OnPointerUp(PointerEventData eventData)
     {
     }
+
+
+    #region RunInEditor
+#if UNITY_EDITOR
+    [ExecuteInEditMode]
+    public void UpdateInEditor()
+    {
+    }
+
+
+    [ExecuteInEditMode]
+    public void ImportModelInEditor()
+    {
+    }
+
+    [ExecuteInEditMode]
+    public void InitInEditor()
+    {
+    }
+#endif
+    #endregion
 }
