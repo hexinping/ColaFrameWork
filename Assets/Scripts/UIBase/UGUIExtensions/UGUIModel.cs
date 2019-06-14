@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 /// UGUIMODEL组件，用来展示3D人物形象
 /// </summary>
 [RequireComponent(typeof(RectTransform), typeof(EmptyRaycast))]
-public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointerDownHandler,IPointerUpHandler
+public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
 
     #region 属性字段
@@ -55,22 +55,31 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
     [Tooltip("相机深度")]
     private float modelCameraDepth = 1;
 
+    [Tooltip("相机X轴旋转参数")]
+    [SerializeField]
+    private float cameraPitch = 0.0f;
+
+    [Tooltip("相机Y轴旋转参数")]
+    [SerializeField]
+    private float cameraYaw = 90;
+
     [SerializeField]
     [Tooltip("模型是否可以旋转")]
     private bool enableRotate = true;
-
-    [SerializeField]
-    private float camYaw = 90;
 
     private GameObject root;
     private Camera uiCamera;
     private Camera modelCamera;
     private RectTransform rectTransform;
-    private Transform camModelRoot;
+    private Transform cameraModelRoot;
     private static Vector3 curPos = Vector3.zero;
     private Transform model;
     private int frameCount = 1;
     private bool isInEditor = false;
+
+    private Vector3 tempRelaPosition = Vector3.zero;
+    private Vector3 tempOffset = Vector3.zero;
+    private Vector3[] screenCorners = new Vector3[4];
 
     //提前申请RaycatHit数组，避免频繁申请产生GC
     private RaycastHit[] hitInfos = new RaycastHit[20];
@@ -81,7 +90,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
         set
         {
             model = value;
-            model.SetParent(camModelRoot);
+            model.SetParent(cameraModelRoot);
             frameCount = 1;
         }
     }
@@ -120,16 +129,16 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
         modelCamera.farClipPlane = farClipPlane;
         modelCamera.transform.SetParent(root.transform);
 
-        camModelRoot = new GameObject("model_root").transform;
-        camModelRoot.transform.SetParent(root.transform);
-        camModelRoot.localPosition = Vector3.zero;
-        camModelRoot.localRotation = Quaternion.identity;
+        cameraModelRoot = new GameObject("model_root").transform;
+        cameraModelRoot.transform.SetParent(root.transform);
+        cameraModelRoot.localPosition = Vector3.zero;
+        cameraModelRoot.localRotation = Quaternion.identity;
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        if(null != modelCamera)
+        if (null != modelCamera)
         {
             modelCamera.enabled = true;
         }
@@ -142,7 +151,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
     {
         if (enableRotate)
         {
-            camYaw -= eventData.delta.x;
+            cameraYaw -= eventData.delta.x;
         }
     }
 
@@ -152,7 +161,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
         System.Array.Clear(hitInfos, 0, hitInfos.Length);
         Ray ray = modelCamera.ScreenPointToRay(Input.mousePosition);
         Physics.RaycastNonAlloc(ray, hitInfos, 100.0f, LayerMask.GetMask(UIModelLayerTag));
-        for(int i = 0; i < hitInfos.Length; i++)
+        for (int i = 0; i < hitInfos.Length; i++)
         {
             var hit = hitInfos[i];
             var collider = hit.collider;
@@ -161,7 +170,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
                 var name = collider.name;
                 if ("model_head" == name || "model_body" == "name" || "model_foot" == name)
                 {
-                    if(null != onModelClick)
+                    if (null != onModelClick)
                     {
                         onModelClick(name);
                     }
@@ -184,13 +193,58 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
 
     private void Update()
     {
+        if (null == modelCamera)
+        {
+            Debug.LogError("Error No ModelCamera!");
+            return;
+        }
+        if (model)
+        {
+            model.localPosition = Vector3.zero;
+            if (frameCount > 0)
+            {
+                SetModelLayer(model);
+                frameCount--;
+            }
+        }
+        //计算x,y,z的单位向量
+        float y = Mathf.Sin(cameraPitch * Mathf.Deg2Rad);
+        float x = Mathf.Cos(cameraYaw * Mathf.Deg2Rad);
+        float z = Mathf.Sin(cameraYaw * Mathf.Deg2Rad);
+        //对单位向量进行放大，拿到真实的世界坐标
+        float radius = Mathf.Cos(cameraPitch * Mathf.Deg2Rad) * cameraDistance;
+        tempRelaPosition.Set(x * radius, y * cameraDistance, z * radius);
+        tempOffset.Set(0, cameraHeightOffset, 0);
+        modelCamera.transform.position = cameraModelRoot.position + tempRelaPosition + tempOffset;
+        Vector3 tempForward = cameraModelRoot.position + tempOffset - modelCamera.transform.position;
+        if (tempForward.sqrMagnitude >= 0)
+        {
+            modelCamera.transform.forward = tempForward;
+        }
+
+        cameraModelRoot.localPosition = Vector3.zero;
+        cameraModelRoot.localRotation = Quaternion.identity;
+        cameraModelRoot.localScale = Vector3.one;
+        rectTransform.GetWorldCorners(screenCorners);
+
+        //适配UI
+        //left botton corner of screen
+        var screen_lb = uiCamera.WorldToScreenPoint(screenCorners[0]);
+        //right top corner of screen
+        var screen_rt = uiCamera.WorldToScreenPoint(screenCorners[2]);
+        int screenWidth = Screen.width;
+        int screenHeight = Screen.height;
+
+        float w = (screen_rt - screen_lb).x / screenWidth;
+        float h = (screen_rt - screen_lb).y / screenHeight;
+        modelCamera.rect = new Rect(screen_lb.x / screenWidth, screen_lb.y / screenHeight, w, h);
 
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        if(null != modelCamera)
+        if (null != modelCamera)
         {
             modelCamera.enabled = false;
         }
@@ -200,7 +254,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler,IDragHandler,IPointer
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        if(null != root)
+        if (null != root)
         {
             Destroy(root);
             root = null;
