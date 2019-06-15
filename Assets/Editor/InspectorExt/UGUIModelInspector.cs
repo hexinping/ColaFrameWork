@@ -40,5 +40,18 @@ public class UGUIModelInspector : InspectorBase
         {
             Debug.Log("----->恢复默认设置");
         }
+
+        UpdateModel();
+    }
+
+    /// <summary>
+    /// 更新编辑器中的模型信息
+    /// </summary>
+    private void UpdateModel()
+    {
+        if(model && model.gameObject && model.gameObject.activeSelf)
+        {
+            model.UpdateInEditor();
+        }
     }
 }
