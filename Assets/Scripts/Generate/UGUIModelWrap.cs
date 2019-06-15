@@ -9,6 +9,7 @@ public class UGUIModelWrap
 		L.BeginClass(typeof(UGUIModel), typeof(UnityEngine.EventSystems.UIBehaviour));
 		L.RegFunction("OnDrag", OnDrag);
 		L.RegFunction("SetCameraEffect", SetCameraEffect);
+		L.RegFunction("ImportSetting", ImportSetting);
 		L.RegFunction("OnPointerClick", OnPointerClick);
 		L.RegFunction("OnPointerDown", OnPointerDown);
 		L.RegFunction("OnPointerUp", OnPointerUp);
@@ -48,6 +49,37 @@ public class UGUIModelWrap
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 			obj.SetCameraEffect(arg0);
 			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ImportSetting(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1)
+			{
+				UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+				obj.ImportSetting();
+				return 0;
+			}
+			else if (count == 2)
+			{
+				UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+				string arg0 = ToLua.CheckString(L, 2);
+				obj.ImportSetting(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UGUIModel.ImportSetting");
+			}
 		}
 		catch (Exception e)
 		{

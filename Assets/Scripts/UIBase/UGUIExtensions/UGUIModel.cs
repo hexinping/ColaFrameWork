@@ -26,19 +26,15 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     [Tooltip("模型的X坐标")]
     private float positionX = 0.0f;
     [SerializeField]
-    [Tooltip("模型的Y坐标")]
-    private float positionY = 0.0f;
-
-    [SerializeField]
-    [Tooltip("模型的Y坐标")]
+    [Tooltip("模型的Z坐标")]
     private float positionZ = 0.0f;
 
     [SerializeField]
     [Tooltip("模型的X轴偏移量")]
     private float modelOffsetX = 0.0f;
     [SerializeField]
-    [Tooltip("模型的Y轴偏移量")]
-    private float modelOffsetY = 0.0f;
+    [Tooltip("模型的Z轴偏移量")]
+    private float modelOffsetZ = 0.0f;
 
     [SerializeField]
     [Tooltip("相机距离模型的距离")]
@@ -76,7 +72,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     private Camera uiCamera;
     private Camera modelCamera;
     private RectTransform rectTransform;
-    private Transform cameraModelRoot;
+    private Transform modelRoot;
     private static Vector3 curPos = Vector3.zero;
     private Transform model;
     private int frameCount = 1;
@@ -95,7 +91,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         set
         {
             model = value;
-            model.SetParent(cameraModelRoot);
+            model.SetParent(modelRoot);
             frameCount = 1;
         }
     }
@@ -134,10 +130,10 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         modelCamera.farClipPlane = farClipPlane;
         modelCamera.transform.SetParent(root.transform);
 
-        cameraModelRoot = new GameObject("model_root").transform;
-        cameraModelRoot.transform.SetParent(root.transform);
-        cameraModelRoot.localPosition = Vector3.zero;
-        cameraModelRoot.localRotation = Quaternion.identity;
+        modelRoot = new GameObject("model_root").transform;
+        modelRoot.transform.SetParent(root.transform);
+        modelRoot.localPosition = Vector3.zero;
+        modelRoot.localRotation = Quaternion.identity;
     }
 
     protected override void OnEnable()
@@ -220,16 +216,16 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         float radius = Mathf.Cos(cameraPitch * Mathf.Deg2Rad) * cameraDistance;
         tempRelaPosition.Set(x * radius, y * cameraDistance, z * radius);
         tempOffset.Set(0, cameraHeightOffset, 0);
-        modelCamera.transform.position = cameraModelRoot.position + tempRelaPosition + tempOffset;
-        Vector3 tempForward = cameraModelRoot.position + tempOffset - modelCamera.transform.position;
+        modelCamera.transform.position = modelRoot.position + tempRelaPosition + tempOffset;
+        Vector3 tempForward = modelRoot.position + tempOffset - modelCamera.transform.position;
         if (tempForward.sqrMagnitude >= 0)
         {
             modelCamera.transform.forward = tempForward;
         }
 
-        cameraModelRoot.localPosition = Vector3.zero;
-        cameraModelRoot.localRotation = Quaternion.identity;
-        cameraModelRoot.localScale = Vector3.one;
+        modelRoot.localPosition = Vector3.zero;
+        modelRoot.localRotation = Quaternion.identity;
+        modelRoot.localScale = Vector3.one;
         rectTransform.GetWorldCorners(screenCorners);
 
         //适配UI
@@ -276,9 +272,13 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
 
     }
 
-    public void ImportSetting(string settingName)
+    public void ImportSetting(string settingName = "")
     {
         //TODO:读取序列化的配置文件，如果没有找到配置就使用默认配置
+        if (string.IsNullOrEmpty(settingName))
+        {
+            DefaultSetting();
+        }
     }
 
     private void DefaultSetting()
@@ -308,20 +308,126 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
 
     #region RunInEditor
 #if UNITY_EDITOR
+    [LuaInterface.NoToLua]
     [ExecuteInEditMode]
     public void UpdateInEditor()
     {
+        if (null == modelCamera)
+        {
+            Debug.LogError("Error No ModelCamera!");
+            return;
+        }
+        if (model)
+        {
+            //编辑器模式下直接设置模型的偏移量
+            model.localPosition = new Vector3(positionX + modelOffsetX, 0, positionZ + modelOffsetZ);
+            if (frameCount > 0)
+            {
+                SetModelLayer(model);
+                frameCount--;
+            }
+        }
+        //计算x,y,z的单位向量
+        float y = Mathf.Sin(cameraPitch * Mathf.Deg2Rad);
+        float x = Mathf.Cos(cameraYaw * Mathf.Deg2Rad);
+        float z = Mathf.Sin(cameraYaw * Mathf.Deg2Rad);
+        //对单位向量进行放大，拿到真实的世界坐标
+        float radius = Mathf.Cos(cameraPitch * Mathf.Deg2Rad) * cameraDistance;
+        tempRelaPosition.Set(x * radius, y * cameraDistance, z * radius);
+        tempOffset.Set(0, cameraHeightOffset, 0);
+        modelCamera.transform.position = modelRoot.position + tempRelaPosition + tempOffset;
+        Vector3 tempForward = modelRoot.position + tempOffset - modelCamera.transform.position;
+        if (tempForward.sqrMagnitude >= 0)
+        {
+            modelCamera.transform.forward = tempForward;
+        }
+
+        modelRoot.localPosition = Vector3.zero;
+        modelRoot.localRotation = Quaternion.identity;
+        modelRoot.localScale = Vector3.one;
+        rectTransform.GetWorldCorners(screenCorners);
+
+        //适配UI
+        //left botton corner of screen
+        var screen_lb = uiCamera.WorldToScreenPoint(screenCorners[0]);
+        //right top corner of screen
+        var screen_rt = uiCamera.WorldToScreenPoint(screenCorners[2]);
+        int screenWidth = Screen.width;
+        int screenHeight = Screen.height;
+
+        float w = (screen_rt - screen_lb).x / screenWidth;
+        float h = (screen_rt - screen_lb).y / screenHeight;
+        modelCamera.rect = new Rect(screen_lb.x / screenWidth, screen_lb.y / screenHeight, w, h);
     }
 
-
+    [LuaInterface.NoToLua]
     [ExecuteInEditMode]
     public void ImportModelInEditor()
     {
+        if (null != modelRoot)
+        {
+            if (modelRoot.childCount > 0)
+            {
+                model = modelRoot.GetChild(0);
+            }
+            else
+            {
+                model = null;
+            }
+            ImportSetting();
+        }
     }
 
+
+    [LuaInterface.NoToLua]
     [ExecuteInEditMode]
-    public void InitInEditor()
+    public void InitInEditor(Camera camera)
     {
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
+        uiCamera = camera;
+        rectTransform = transform as RectTransform;
+        root = GameObject.Find("uguimodel_in_editor");
+        if (null == root)
+        {
+            root = new GameObject("uguimodel_in_editor");
+            root.transform.localRotation = Quaternion.identity;
+        }
+        root.transform.position = curPos;
+        curPos += new Vector3(200, 0, 0);
+
+        var modelCameraObj = GameObject.Find("model_camera_in_editor");
+        if (null == modelCameraObj)
+        {
+            modelCamera = new GameObject("model_camera_in_editor", typeof(Camera)).GetComponent<Camera>();
+        }
+        modelCameraDepth = modelCamera.depth + 1.0f;
+        modelCamera.cullingMask = LayerMask.GetMask(UIModelLayerTag);
+        modelCamera.clearFlags = CameraClearFlags.Nothing;
+        modelCamera.fieldOfView = fieldOfView;
+        modelCamera.farClipPlane = farClipPlane;
+        modelCamera.transform.SetParent(root.transform);
+
+        var cameraModelRootObj = GameObject.Find("model_root_in_editor");
+        if (null == cameraModelRootObj)
+        {
+            modelRoot = new GameObject("model_root_in_editor").transform;
+        }
+        modelRoot.transform.SetParent(root.transform);
+        modelRoot.localPosition = Vector3.zero;
+        modelRoot.localRotation = Quaternion.identity;
+
+        if (modelRoot.childCount > 0)
+        {
+            model = modelRoot.GetChild(0);
+        }
+        else
+        {
+            model = null;
+        }
+        isInEditor = true;
     }
 #endif
     #endregion
