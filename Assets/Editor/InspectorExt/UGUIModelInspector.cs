@@ -25,6 +25,14 @@ public class UGUIModelInspector : InspectorBase
 
     protected override void DrawCustomGUI()
     {
+        if (model)
+        {
+            SerializedProperty modelOffsetX =  serializedObject.FindProperty("modelOffsetX");
+            modelOffsetX.floatValue = EditorGUILayout.Slider(modelOffsetX.floatValue, -0.5f, 0.5f);
+            ProgressBar(modelOffsetX.floatValue, "偏移量X:");
+            SerializedProperty modelOffsetZ =  serializedObject.FindProperty("modelOffsetZ");
+        }
+
         if (GUILayout.Button("导入设置"))
         {
             this.OnEnable();
@@ -53,5 +61,12 @@ public class UGUIModelInspector : InspectorBase
         {
             model.UpdateInEditor();
         }
+    }
+
+    private void ProgressBar(float value, string label)
+    {
+        Rect rect = GUILayoutUtility.GetRect(18, 18, "TextField");
+        EditorGUI.ProgressBar(rect, value, label);
+        EditorGUILayout.Space();
     }
 }
