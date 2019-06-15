@@ -11,9 +11,16 @@ using ColaFrame;
 [CustomEditor(typeof(UGUIModel), true)]
 public class UGUIModelInspector : InspectorBase
 {
+    private UGUIModel model;
+
     protected override void OnEnable()
     {
         ShowCustomProperties = true;
+        model = target as UGUIModel;
+        if (model.gameObject.activeSelf)
+        {
+            model.InitInEditor(ColaGUIEditor.GetOrCreateUICamera());
+        }
     }
 
     protected override void DrawCustomGUI()

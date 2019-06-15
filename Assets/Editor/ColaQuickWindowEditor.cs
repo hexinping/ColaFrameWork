@@ -35,7 +35,7 @@ public class ColaQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("创建NewUIView", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            CreateColaUIEditor.CreateColaUIView();
+            ColaGUIEditor.CreateColaUIView();
         }
         GUILayout.EndHorizontal();
 

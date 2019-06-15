@@ -4,11 +4,10 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// ColaFramework框架中负责UI创建与编辑的编辑器
+/// ColaFramework框架中编辑器模式下的UI创建、获取UIRoot等
 /// </summary>
-public class CreateColaUIEditor
+public class ColaGUIEditor
 {
-
     /// <summary>
     /// 快速创建UI模版
     /// </summary>
@@ -59,5 +58,11 @@ public class CreateColaUIEditor
         GameObject uguiRoot = CommonHelper.InstantiateGoByPrefab(uguiRootPrefab, null);
         GameObject canvasRoot = uguiRoot.GetComponentInChildren<Canvas>().gameObject;
         return canvasRoot;
+    }
+
+    public static Camera GetOrCreateUICamera()
+    {
+        var uiRoot = GetOrCreateUGUIRoot();
+        return uiRoot.GetComponentByPath<Camera>("UICamera");
     }
 }
