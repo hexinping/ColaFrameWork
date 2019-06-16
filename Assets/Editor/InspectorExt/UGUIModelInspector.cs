@@ -27,10 +27,16 @@ public class UGUIModelInspector : InspectorBase
     {
         if (model)
         {
+            var cameraYaw = serializedObject.FindProperty("cameraYaw");
+            cameraYaw.floatValue = EditorGUILayout.Slider("相机Y轴旋转参数:", cameraYaw.floatValue, 0, 180);
+
             SerializedProperty modelOffsetX = serializedObject.FindProperty("modelOffsetX");
             modelOffsetX.floatValue = EditorGUILayout.Slider("偏移量X:", modelOffsetX.floatValue, -0.5f, 0.5f);
-            ProgressBar(modelOffsetX.floatValue + 0.5f, "偏移量X");
+            DrawProgressBar("偏移量X", modelOffsetX.floatValue + 0.5f);
+
             SerializedProperty modelOffsetZ = serializedObject.FindProperty("modelOffsetZ");
+            modelOffsetZ.floatValue = EditorGUILayout.Slider("偏移量Z:", modelOffsetZ.floatValue, -0.5f, 0.5f);
+            DrawProgressBar("偏移量Z", modelOffsetZ.floatValue + 0.5f);
         }
 
         if (GUILayout.Button("导入设置"))
@@ -63,7 +69,7 @@ public class UGUIModelInspector : InspectorBase
         }
     }
 
-    private void ProgressBar(float value, string label)
+    private void DrawProgressBar(string label, float value)
     {
         Rect rect = GUILayoutUtility.GetRect(18, 18, "TextField");
         EditorGUI.ProgressBar(rect, value, label);
