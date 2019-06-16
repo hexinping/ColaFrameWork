@@ -27,10 +27,10 @@ public class UGUIModelInspector : InspectorBase
     {
         if (model)
         {
-            SerializedProperty modelOffsetX =  serializedObject.FindProperty("modelOffsetX");
-            modelOffsetX.floatValue = EditorGUILayout.Slider(modelOffsetX.floatValue, -0.5f, 0.5f);
-            ProgressBar(modelOffsetX.floatValue, "偏移量X:");
-            SerializedProperty modelOffsetZ =  serializedObject.FindProperty("modelOffsetZ");
+            SerializedProperty modelOffsetX = serializedObject.FindProperty("modelOffsetX");
+            modelOffsetX.floatValue = EditorGUILayout.Slider("偏移量X:", modelOffsetX.floatValue, -0.5f, 0.5f);
+            ProgressBar(modelOffsetX.floatValue + 0.5f, "偏移量X");
+            SerializedProperty modelOffsetZ = serializedObject.FindProperty("modelOffsetZ");
         }
 
         if (GUILayout.Button("导入设置"))
@@ -57,7 +57,7 @@ public class UGUIModelInspector : InspectorBase
     /// </summary>
     private void UpdateModel()
     {
-        if(model && model.gameObject && model.gameObject.activeSelf)
+        if (model && model.gameObject && model.gameObject.activeSelf)
         {
             model.UpdateInEditor();
         }
