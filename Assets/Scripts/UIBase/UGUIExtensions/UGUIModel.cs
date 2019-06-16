@@ -429,6 +429,13 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         }
         isInEditor = true;
     }
+
+    [LuaInterface.NoToLua]
+    [ExecuteInEditMode]
+    public void SaveSetting()
+    {
+
+    }
 #endif
     #endregion
 }
