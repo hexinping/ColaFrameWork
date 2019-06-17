@@ -28,7 +28,7 @@ public class ResourceInfo
 
 
 /// <summary>
-/// 资源管理器Lua版
+/// 资源管理器
 /// </summary>
 public class ResourcesMgr
 {

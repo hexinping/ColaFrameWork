@@ -43,7 +43,7 @@ public static class Common_Utils
     /// <returns></returns>
     public static GameObject InstantiateGoByPath(string path, GameObject parent)
     {
-        GameObject prefab = ResourcesMgr.GetInstance().GetResourceByPath(path, typeof(GameObject), 0) as GameObject;
+        GameObject prefab = AssetLoader.Load<GameObject>(path);
         return CommonHelper.InstantiateGoByPrefab(prefab, parent);
     }
 
@@ -223,7 +223,7 @@ public static class Common_Utils
     }
 
 
-    public static void SetSelectableTransition(Selectable selectable,int type)
+    public static void SetSelectableTransition(Selectable selectable, int type)
     {
         selectable.transition = (Selectable.Transition)type;
     }
@@ -438,7 +438,7 @@ public static class Common_Utils
     /// <param name="vPos"></param>
     /// <param name="fRadius"></param>
     /// <returns></returns>
-    public static float GetTerrainHeight(float x,float y, float z, float fRadius = 0)
+    public static float GetTerrainHeight(float x, float y, float z, float fRadius = 0)
     {
         vec3Tmp.Set(x, y, z);
         return CommonHelper.GetTerrainHeight(vec3Tmp, fRadius);
@@ -448,7 +448,7 @@ public static class Common_Utils
     /// 显示UI背景模糊
     /// </summary>
     /// <param name="ui"></param>
-    public static void ShowUIBlur(GameObject uiPanel,string panelName)
+    public static void ShowUIBlur(GameObject uiPanel, string panelName)
     {
         string uiBlurName = string.Format("blur_{0}", panelName);
         GameObject uiBlurObj = uiPanel.FindChildByPath(uiBlurName);
