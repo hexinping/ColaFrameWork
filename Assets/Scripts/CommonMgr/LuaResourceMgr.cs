@@ -33,7 +33,6 @@ public class LuaResourceInfo
 public class LuaResourceMgr
 {
     private static LuaResourceMgr instance;
-    private ResourceLoader resourceLoader;
 
     /// <summary>
     /// 资源路径与实际资源的映射表
@@ -66,7 +65,6 @@ public class LuaResourceMgr
 
         timeCount = 0f;
         resClearList = new List<string>();
-        resourceLoader = resourceLoaderObj.AddComponent<ResourceLoader>();
         path2ResourceDic = new Dictionary<string, LuaResourceInfo>();
     }
 
@@ -78,7 +76,7 @@ public class LuaResourceMgr
     /// <param name="callback"></param>
     public void LoadText(string path, string fileName, Action<string, string> callback)
     {
-        TextAsset textAsset = resourceLoader.Load<TextAsset>(path);
+        TextAsset textAsset = Resources.Load<TextAsset>(path);
         if (null != callback)
             callback(fileName, textAsset.text);
     }
@@ -126,7 +124,7 @@ public class LuaResourceMgr
     /// <param name="callback"></param>
     public void LoadTextAsync(string path, string fileName, Action<string, string> callback)
     {
-        resourceLoader.LoadAsync<TextAsset>(path, (obj, name) =>
+        Resources.LoadAsync<TextAsset>(path, (obj, name) =>
         {
             TextAsset textAsset = obj as TextAsset;
             if (null != callback)
@@ -237,7 +235,7 @@ public class LuaResourceMgr
     /// <typeparam name="T"></typeparam>
     /// <param name="resID"></param>
     /// <returns></returns>
-    private Object GetCacheResByPath(string resPath,Type type)
+    private Object GetCacheResByPath(string resPath, Type type)
     {
         Object resObj = null;
         if (null != path2ResourceDic && path2ResourceDic.ContainsKey(resPath))
@@ -272,11 +270,11 @@ public class LuaResourceMgr
     /// <param name="type"></param>
     /// <param name="resLoadMode"></param>
     /// <returns></returns>
-    public Object GetResourceByPath(string resPath, Type type,int resLoadMode)
+    public Object GetResourceByPath(string resPath, Type type, int resLoadMode)
     {
         Object resObj = null;
         //先去缓存池中找，如果没有再懒加载
-        resObj = GetCacheResByPath(resPath,type);
+        resObj = GetCacheResByPath(resPath, type);
 
         if (null == resObj)
         {
@@ -313,7 +311,7 @@ public class LuaResourceMgr
     /// <param name="type"></param>
     /// <param name="resLoadMode"></param>
     /// <returns></returns>
-    public void GetResourceByPathAsync(string resPath, Type type, int resLoadMode,Action<Object> callback)
+    public void GetResourceByPathAsync(string resPath, Type type, int resLoadMode, Action<Object> callback)
     {
         Object resObj = null;
         //先去缓存池中找，如果没有再懒加载
@@ -330,7 +328,8 @@ public class LuaResourceMgr
             {
                 if (0 == resLoadMode)
                 {
-                    resourceLoader.LoadAsync(resPath, type, (obj,path)=> {
+                    resourceLoader.LoadAsync(resPath, type, (obj, path) =>
+                    {
                         if (null != callback)
                         {
                             callback(obj);
@@ -346,7 +345,7 @@ public class LuaResourceMgr
         }
         else
         {
-            if(null != callback)
+            if (null != callback)
             {
                 callback(resObj);
             }
@@ -355,6 +354,98 @@ public class LuaResourceMgr
         if (null == resObj)
         {
             Debug.LogWarning(string.Format("加载资源失败！路径:{0}", resPath));
+        }
+    }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(同步方法)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static T Load<T>(string path) where T : Object
+    {
+    }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(同步方法)
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static Object Load(string path, Type type)
+    {
+        return Resources.Load(path, type);
+    }
+
+    /// <summary>
+    /// 延迟一帧以后加载资源
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="callback"></param>
+    public static void LoadWaitOneFrame(string path, Action<Object, string> callback)
+    {
+#if UNITY_EDITOR
+        Debug.LogError("This Function is not implement in UnityEditor!");
+#else
+        CommonHelper.StartCoroutine(WaitOneFrameCall(path, callback));
+#endif
+    }
+
+    private static IEnumerator WaitOneFrameCall(string path, Action<Object, string> callback)
+    {
+        yield return 1;
+        Object result = Resources.Load<Object>(path);
+        if (null != callback) callback(result, path);
+    }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(异步方法)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="path"></param>
+    /// <param name="callback"></param>
+    public static void LoadAsync<T>(string path, Action<Object, string> callback) where T : Object
+    {
+#if UNITY_EDITOR
+        Debug.LogError("This Function is not implement in UnityEditor!");
+#else
+        CommonHelper.StartCoroutine(LoadAsyncCall<T>(path, callback));
+#endif
+
+    }
+
+    private IEnumerator LoadAsyncCall<T>(string path, Action<Object, string> callback) where T : Object
+    {
+        ResourceRequest request = Resources.LoadAsync<T>(path);
+        yield return request;
+        if (null != callback)
+        {
+            callback(request.asset, path);
+        }
+    }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(异步方法)
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="t"></param>
+    public void LoadAsync(string path, Type type, Action<Object, string> callback)
+    {
+#if UNITY_EDITOR
+        Debug.LogError("This Function is not implement in UnityEditor!");
+#else
+        CommonHelper.StartCoroutine(LoadAsyncCall(path, type, callback));
+#endif
+    }
+
+    private IEnumerator LoadAsyncCall(string path, Type type, Action<Object, string> callback)
+    {
+        ResourceRequest request = Resources.LoadAsync(path, type);
+        yield return request;
+        if (null != callback)
+        {
+            callback(request.asset, path);
         }
     }
 }

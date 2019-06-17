@@ -1,26 +1,27 @@
-﻿using System;
+﻿#define SIMULATE_MODE
+using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine;
-using Object =UnityEngine.Object;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// 资源加载助手类
 /// </summary>
-public class ResourceLoader : MonoBehaviour {
-
+public class AssetLoader
+{
     /// <summary>
     /// 根据类型和路径返回相应的资源(同步方法)
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="path"></param>
     /// <returns></returns>
-    public T Load<T>(string path) where T : Object
+    public static T Load<T>(string path) where T : Object
     {
-        return Resources.Load<T>(path);
+        return Load(path, typeof(T)) as T;
     }
 
     /// <summary>
@@ -29,9 +30,22 @@ public class ResourceLoader : MonoBehaviour {
     /// <param name="path"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public Object Load(string path, Type type)
+    public static Object Load(string path, Type type)
     {
-        return Resources.Load(path, type);
+#if UNITY_EDITOR && ! SIMULATE_MODE
+        if (path.StartsWith("Assets/") && Path.HasExtension(path))
+        {
+            return AssetDatabase.LoadAssetAtPath(path, type);
+        }
+        else
+        {
+            Debug.LogWarning("资源加载的路径不合法!");
+            return null;
+        }
+#else
+        //TODO:非编辑器下加载
+        return null;
+#endif
     }
 
     /// <summary>
@@ -39,12 +53,16 @@ public class ResourceLoader : MonoBehaviour {
     /// </summary>
     /// <param name="path"></param>
     /// <param name="callback"></param>
-    public void LoadWaitOneFrame(string path, Action<Object, string> callback)
+    public static void LoadWaitOneFrame(string path, Action<Object, string> callback)
     {
-        StartCoroutine(WaitOneFrameCall(path, callback));
+#if UNITY_EDITOR && ! SIMULATE_MODE
+        Debug.LogError("This Function is not implement in UnityEditor!");
+#else
+        CommonHelper.StartCoroutine(WaitOneFrameCall(path, callback));
+#endif
     }
 
-    private IEnumerator WaitOneFrameCall(string path, Action<Object, string> callback)
+    private static IEnumerator WaitOneFrameCall(string path, Action<Object, string> callback)
     {
         yield return 1;
         Object result = Resources.Load<Object>(path);
@@ -57,9 +75,14 @@ public class ResourceLoader : MonoBehaviour {
     /// <typeparam name="T"></typeparam>
     /// <param name="path"></param>
     /// <param name="callback"></param>
-    public void LoadAsync<T>(string path, Action<Object, string> callback) where T : Object
+    public static void LoadAsync<T>(string path, Action<Object, string> callback) where T : Object
     {
-        StartCoroutine(LoadAsyncCall<T>(path, callback));
+#if UNITY_EDITOR && ! SIMULATE_MODE
+        Debug.LogError("This Function is not implement in UnityEditor!");
+#else
+        CommonHelper.StartCoroutine(LoadAsyncCall<T>(path, callback));
+#endif
+
     }
 
     private IEnumerator LoadAsyncCall<T>(string path, Action<Object, string> callback) where T : Object
@@ -79,7 +102,11 @@ public class ResourceLoader : MonoBehaviour {
     /// <param name="t"></param>
     public void LoadAsync(string path, Type type, Action<Object, string> callback)
     {
-        StartCoroutine(LoadAsyncCall(path, type, callback));
+#if UNITY_EDITOR && ! SIMULATE_MODE
+        Debug.LogError("This Function is not implement in UnityEditor!");
+#else
+        CommonHelper.StartCoroutine(LoadAsyncCall(path, type, callback));
+#endif
     }
 
     private IEnumerator LoadAsyncCall(string path, Type type, Action<Object, string> callback)
@@ -91,4 +118,11 @@ public class ResourceLoader : MonoBehaviour {
             callback(request.asset, path);
         }
     }
+
+#if UNITY_EDITOR
+    public static void LoadAllAssetsAtPath(string path, out Object[] objects)
+    {
+        objects = AssetDatabase.LoadAllAssetsAtPath(path);
+    }
+#endif
 }

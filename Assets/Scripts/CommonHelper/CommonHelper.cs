@@ -508,7 +508,7 @@ public static class CommonHelper
 #if !UNITY_EDITOR && UNITY_IOS 
             assetPath = string.Format("{0}/{1}", Application.temporaryCachePath, osDir);
 #else
-            assetPath = string.Format("{0}/{1}", Application.persistentDataPath, osDir); 
+            assetPath = string.Format("{0}/{1}", Application.persistentDataPath, osDir);
 #endif
         }
         return assetPath;
@@ -600,9 +600,9 @@ public static class CommonHelper
     /// 启动一个协程
     /// </summary>
     /// <param name="methodName"></param>
-    public static void StartCoroutine(string methodName)
+    public static void StartCoroutine(string methodName, [UnityEngine.Internal.DefaultValue("null")] object value)
     {
-        GameLauncher.Instance.StartCoroutine(methodName);
+        GameLauncher.Instance.StartCoroutine(methodName, value);
     }
 
     /// <summary>
@@ -721,7 +721,7 @@ public static class CommonHelper
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <returns></returns>
-    public static Sprite SliceTextureToSprite(Texture2D texture2D,float x,float y,float width,float height)
+    public static Sprite SliceTextureToSprite(Texture2D texture2D, float x, float y, float width, float height)
     {
         if (null != texture2D)
         {
@@ -736,7 +736,7 @@ public static class CommonHelper
                 Debug.LogWarning("the height is larger then texture2D height!");
             }
 
-            Sprite sprite = Sprite.Create(texture2D,new Rect(x,y,width,height),new Vector2(0.5f,0.5f));
+            Sprite sprite = Sprite.Create(texture2D, new Rect(x, y, width, height), new Vector2(0.5f, 0.5f));
             return sprite;
         }
         Debug.LogWarning("Texture2D 不能为空！");
