@@ -56,13 +56,6 @@ public class UILogin : UIBase
         Image titleImage = Panel.GetComponentByPath<Image>("logo");
         CommonHelper.AddBtnMsg(okBtn, (obj) =>
         {
-            if (obj.name == "okBtn")
-            {
-                // CommonHelper.SetImageSpriteFromAtlas(2001, titleImage, "airfightSheet_3", false);
-                Texture2D texture2D = ResourceMgr.GetInstance().GetResourceById<Texture2D>(400002);
-                Sprite sprite = CommonHelper.SliceTextureToSprite(texture2D, 200, 300, 600, 100);
-                titleImage.sprite = sprite;
-            }
         });
     }
 

@@ -28,12 +28,12 @@ public class GameManager
     /// <summary>
     /// 资源管理器
     /// </summary>
-    private ResourceMgr resourceMgr;
+    private ResourcesMgr resourceMgr;
 
     /// <summary>
     /// Lua的资源管理器
     /// </summary>
-    private LuaResourceMgr luaResourceMgr;
+    private ResourcesMgr luaResourceMgr;
 
     /// <summary>
     /// UI管理器
@@ -62,16 +62,17 @@ public class GameManager
     public void InitGameCore(GameObject gameObject)
     {
         //初始化各种管理器
-        resourceMgr = ResourceMgr.GetInstance();
+        resourceMgr = ResourcesMgr.GetInstance();
 
         //Lua的资源管理器接口
-        luaResourceMgr = LuaResourceMgr.GetInstance();
+        luaResourceMgr = ResourcesMgr.GetInstance();
 
         gameLauncherObj = gameObject;
-        LocalDataMgr.GetInstance().LoadStartConfig(() =>
-        {
-            resourceMgr.Init();
-        });
+        //旧版的C#初始化方式,Lua不需要了
+        //LocalDataMgr.GetInstance().LoadStartConfig(() =>
+        //{
+        //    resourceMgr.Init();
+        //});
 
         uiMgr = new UIMgr();
         moduleMgr = new ModuleMgr();

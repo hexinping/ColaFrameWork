@@ -2,11 +2,11 @@
 using System;
 using LuaInterface;
 
-public class LuaResourceMgrWrap
+public class ResourcesMgrWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(LuaResourceMgr), typeof(System.Object));
+		L.BeginClass(typeof(ResourcesMgr), typeof(System.Object));
 		L.RegFunction("GetInstance", GetInstance);
 		L.RegFunction("LoadText", LoadText);
 		L.RegFunction("LoadTextAsync", LoadTextAsync);
@@ -16,6 +16,9 @@ public class LuaResourceMgrWrap
 		L.RegFunction("GetResPathWithExtension", GetResPathWithExtension);
 		L.RegFunction("GetResourceByPath", GetResourceByPath);
 		L.RegFunction("GetResourceByPathAsync", GetResourceByPathAsync);
+		L.RegFunction("Load", Load);
+		L.RegFunction("LoadWaitOneFrame", LoadWaitOneFrame);
+		L.RegFunction("LoadAsync", LoadAsync);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
 	}
@@ -26,7 +29,7 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			LuaResourceMgr o = LuaResourceMgr.GetInstance();
+			ResourcesMgr o = ResourcesMgr.GetInstance();
 			ToLua.PushObject(L, o);
 			return 1;
 		}
@@ -45,7 +48,7 @@ public class LuaResourceMgrWrap
 
 			if (count == 4 && TypeChecker.CheckTypes<System.Action<string,byte[]>>(L, 4))
 			{
-				LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+				ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 				string arg0 = ToLua.CheckString(L, 2);
 				string arg1 = ToLua.CheckString(L, 3);
 				System.Action<string,byte[]> arg2 = (System.Action<string,byte[]>)ToLua.ToObject(L, 4);
@@ -54,7 +57,7 @@ public class LuaResourceMgrWrap
 			}
 			else if (count == 4 && TypeChecker.CheckTypes<System.Action<string,string>>(L, 4))
 			{
-				LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+				ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 				string arg0 = ToLua.CheckString(L, 2);
 				string arg1 = ToLua.CheckString(L, 3);
 				System.Action<string,string> arg2 = (System.Action<string,string>)ToLua.ToObject(L, 4);
@@ -63,7 +66,7 @@ public class LuaResourceMgrWrap
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: LuaResourceMgr.LoadText");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ResourcesMgr.LoadText");
 			}
 		}
 		catch (Exception e)
@@ -78,7 +81,7 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 4);
-			LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
 			string arg1 = ToLua.CheckString(L, 3);
 			System.Action<string,string> arg2 = (System.Action<string,string>)ToLua.CheckDelegate<System.Action<string,string>>(L, 4);
@@ -97,7 +100,7 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
 			string o = obj.ReadTextFile(arg0);
 			LuaDLL.lua_pushstring(L, o);
@@ -115,7 +118,7 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
 			obj.Update(arg0);
 			return 0;
@@ -132,7 +135,7 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 			obj.ClearAllResourcesForce();
 			return 0;
 		}
@@ -148,7 +151,7 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
 			string o = obj.GetResPathWithExtension(arg0);
 			LuaDLL.lua_pushstring(L, o);
@@ -166,7 +169,7 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 4);
-			LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
 			System.Type arg1 = ToLua.CheckMonoType(L, 3);
 			int arg2 = (int)LuaDLL.luaL_checknumber(L, 4);
@@ -186,12 +189,68 @@ public class LuaResourceMgrWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 5);
-			LuaResourceMgr obj = (LuaResourceMgr)ToLua.CheckObject<LuaResourceMgr>(L, 1);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
 			System.Type arg1 = ToLua.CheckMonoType(L, 3);
 			int arg2 = (int)LuaDLL.luaL_checknumber(L, 4);
 			System.Action<UnityEngine.Object> arg3 = (System.Action<UnityEngine.Object>)ToLua.CheckDelegate<System.Action<UnityEngine.Object>>(L, 5);
 			obj.GetResourceByPathAsync(arg0, arg1, arg2, arg3);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Load(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
+			string arg0 = ToLua.CheckString(L, 2);
+			System.Type arg1 = ToLua.CheckMonoType(L, 3);
+			UnityEngine.Object o = obj.Load(arg0, arg1);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadWaitOneFrame(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
+			string arg0 = ToLua.CheckString(L, 2);
+			System.Action<UnityEngine.Object,string> arg1 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 3);
+			obj.LoadWaitOneFrame(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadAsync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 4);
+			ResourcesMgr obj = (ResourcesMgr)ToLua.CheckObject<ResourcesMgr>(L, 1);
+			string arg0 = ToLua.CheckString(L, 2);
+			System.Type arg1 = ToLua.CheckMonoType(L, 3);
+			System.Action<UnityEngine.Object,string> arg2 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 4);
+			obj.LoadAsync(arg0, arg1, arg2);
 			return 0;
 		}
 		catch (Exception e)

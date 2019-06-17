@@ -6,8 +6,9 @@ using UnityEngine.UI;
 using EventType = ColaFrame.EventType;
 
 /// <summary>
-/// UI基类
+/// UI基类(废弃，使用Lua的UIBase基类)
 /// </summary>
+[Obsolete("UI基类(废弃，使用Lua的UIBase基类)")]
 public class UIBase : IEventHandler,IUGUIEventHandler
 {
     /// <summary>
@@ -87,7 +88,8 @@ public class UIBase : IEventHandler,IUGUIEventHandler
         ResId = resId;
         this.uiCreateType = UICreateType.Res;
         this.uiDepthLayer = depth;
-        this.Name = CommonHelper.GetResourceMgr().GetResNameById(resId);
+        //this.Name = CommonHelper.GetResourceMgr().GetResNameById(resId);
+        this.Name = "";
     }
 
     protected UIBase(UIDepth depth = UIDepth.Normal)
@@ -143,7 +145,7 @@ public class UIBase : IEventHandler,IUGUIEventHandler
             {
                 GameObject.Destroy(Panel);
             }
-            this.Panel = CommonHelper.InstantiateGoByID(ResId, GUIHelper.GetUIRootObj());
+            this.Panel = null;/*CommonHelper.InstantiateGoByID(ResId, GUIHelper.GetUIRootObj());*/
         }
         else if (UICreateType.Go == uiCreateType)
         {

@@ -1,4 +1,4 @@
-﻿#define SIMULATE_MODE
+﻿//#define SIMULATE_MODE
 using System;
 using System.Collections;
 using System.IO;
@@ -9,9 +9,9 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 /// <summary>
-/// 资源加载助手类
+/// 资源加载的对外接口，封装平台和细节，可对Lua导出
 /// </summary>
-public class AssetLoader
+public static class AssetLoader
 {
     /// <summary>
     /// 根据类型和路径返回相应的资源(同步方法)
@@ -43,8 +43,7 @@ public class AssetLoader
             return null;
         }
 #else
-        //TODO:非编辑器下加载
-        return null;
+        return ResourcesMgr.GetInstance().Load(path, type);
 #endif
     }
 
@@ -58,15 +57,8 @@ public class AssetLoader
 #if UNITY_EDITOR && ! SIMULATE_MODE
         Debug.LogError("This Function is not implement in UnityEditor!");
 #else
-        CommonHelper.StartCoroutine(WaitOneFrameCall(path, callback));
+        ResourcesMgr.GetInstance().LoadWaitOneFrame(path, callback);
 #endif
-    }
-
-    private static IEnumerator WaitOneFrameCall(string path, Action<Object, string> callback)
-    {
-        yield return 1;
-        Object result = Resources.Load<Object>(path);
-        if (null != callback) callback(result, path);
     }
 
     /// <summary>
@@ -80,19 +72,9 @@ public class AssetLoader
 #if UNITY_EDITOR && ! SIMULATE_MODE
         Debug.LogError("This Function is not implement in UnityEditor!");
 #else
-        CommonHelper.StartCoroutine(LoadAsyncCall<T>(path, callback));
+        LoadAsync(path, typeof(T), callback);
 #endif
 
-    }
-
-    private IEnumerator LoadAsyncCall<T>(string path, Action<Object, string> callback) where T : Object
-    {
-        ResourceRequest request = Resources.LoadAsync<T>(path);
-        yield return request;
-        if (null != callback)
-        {
-            callback(request.asset, path);
-        }
     }
 
     /// <summary>
@@ -100,23 +82,13 @@ public class AssetLoader
     /// </summary>
     /// <param name="path"></param>
     /// <param name="t"></param>
-    public void LoadAsync(string path, Type type, Action<Object, string> callback)
+    public static void LoadAsync(string path, Type type, Action<Object, string> callback)
     {
 #if UNITY_EDITOR && ! SIMULATE_MODE
         Debug.LogError("This Function is not implement in UnityEditor!");
 #else
-        CommonHelper.StartCoroutine(LoadAsyncCall(path, type, callback));
+        ResourcesMgr.GetInstance().LoadAsync(path, type, callback);
 #endif
-    }
-
-    private IEnumerator LoadAsyncCall(string path, Type type, Action<Object, string> callback)
-    {
-        ResourceRequest request = Resources.LoadAsync(path, type);
-        yield return request;
-        if (null != callback)
-        {
-            callback(request.asset, path);
-        }
     }
 
 #if UNITY_EDITOR

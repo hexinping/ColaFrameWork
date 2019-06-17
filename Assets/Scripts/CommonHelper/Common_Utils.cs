@@ -43,7 +43,7 @@ public static class Common_Utils
     /// <returns></returns>
     public static GameObject InstantiateGoByPath(string path, GameObject parent)
     {
-        GameObject prefab = LuaResourceMgr.GetInstance().GetResourceByPath(path, typeof(GameObject), 0) as GameObject;
+        GameObject prefab = ResourcesMgr.GetInstance().GetResourceByPath(path, typeof(GameObject), 0) as GameObject;
         return CommonHelper.InstantiateGoByPrefab(prefab, parent);
     }
 

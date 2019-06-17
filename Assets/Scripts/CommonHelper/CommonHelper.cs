@@ -100,40 +100,6 @@ public static class CommonHelper
     }
 
     /// <summary>
-    /// 根据id实例化一个Prefab
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public static GameObject InstantiateGoByID(int id, GameObject parent)
-    {
-        ResourceMgr resourceMgr = ResourceMgr.GetInstance();
-        GameObject prefab = null;
-
-        if (null != resourceMgr)
-        {
-            prefab = resourceMgr.GetResourceById<GameObject>(id);
-            if (null == prefab) return null;
-            GameObject go = GameObject.Instantiate(prefab);
-            if (null == go) return null;
-            go.name = prefab.name;
-            if (null != parent)
-            {
-                go.transform.SetParent(parent.transform, false);
-            }
-            go.transform.localScale = prefab.transform.localScale;
-            go.transform.localPosition = prefab.transform.localPosition;
-            go.transform.localRotation = prefab.transform.localRotation;
-            return go;
-        }
-        else
-        {
-            Debug.LogWarning("检查资源管理器！");
-            return null;
-        }
-    }
-
-    /// <summary>
     /// 根据一个预制实例化一个Prefab
     /// </summary>
     /// <param name="prefab"></param>
@@ -259,9 +225,9 @@ public static class CommonHelper
     /// 获取资源管理器
     /// </summary>
     /// <returns></returns>
-    public static ResourceMgr GetResourceMgr()
+    public static ResourcesMgr GetResourceMgr()
     {
-        return ResourceMgr.GetInstance();
+        return ResourcesMgr.GetInstance();
     }
 
     /// <summary>
@@ -280,114 +246,6 @@ public static class CommonHelper
     public static UIMgr GetUIMgr()
     {
         return GameManager.GetInstance().GetUIMgr();
-    }
-
-    /// <summary>
-    /// 设置一个Image组件的Sprite为某个图集中的图片
-    /// </summary>
-    /// <param name="atlasID"></param>图集的资源ID
-    /// <param name="image"></param>要设置的Image组件
-    /// <param name="spriteName"></param>图集中对应的Sprite的名称
-    /// <param name="keepNativeSize"></param>是否保持原始尺寸
-    public static void SetImageSpriteFromAtlas(int atlasID, Image image, string spriteName, bool keepNativeSize)
-    {
-        if (null == image)
-        {
-            Debug.LogWarning("需要指定一个image");
-            return;
-        }
-        if (string.IsNullOrEmpty(spriteName))
-        {
-            Debug.LogWarning("需要指定一个SpriteName");
-            return;
-        }
-
-        if (image.overrideSprite && image.overrideSprite.name == spriteName)
-        {
-            return;
-        }
-        GameObject atlasObj = ResourceMgr.GetInstance().GetResourceById<GameObject>(atlasID);
-        if (null != atlasObj)
-        {
-            SpriteAsset spriteAsset = atlasObj.GetComponent<SpriteAsset>();
-            if (null != spriteAsset)
-            {
-                Sprite sprite = spriteAsset.GetSpriteByName(spriteName);
-                if (null != sprite)
-                {
-                    image.overrideSprite = sprite;
-                    if (keepNativeSize)
-                    {
-                        image.SetNativeSize();
-                    }
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// 设置一个RawImage的Texture
-    /// </summary>
-    /// <param name="rawImage"></param>
-    /// <param name="resID"></param>
-    /// <param name="keepNativeSize"></param>
-    public static void SetRawImage(RawImage rawImage, int resID, bool keepNativeSize)
-    {
-        if (null == rawImage)
-        {
-            Debug.LogWarning("需要指定RawImage");
-            return;
-        }
-
-        Texture2D texture2D = ResourceMgr.GetInstance().GetResourceById<Texture2D>(resID);
-        if (null != texture2D)
-        {
-            rawImage.texture = texture2D;
-            if (keepNativeSize)
-            {
-                rawImage.SetNativeSize();
-            }
-        }
-    }
-
-    /// <summary>
-    /// 设置一个Image是否变灰
-    /// </summary>
-    /// <param name="image"></param>
-    /// <param name="isGray"></param>
-    public static void SetImageGray(Image image, bool isGray)
-    {
-        if (null == image)
-        {
-            Debug.LogWarning("需要指定一个Image");
-            return;
-        }
-        image.color = isGray ? Def.ColorGray : Def.ColorWhite;
-    }
-
-    /// <summary>
-    /// RawImage置灰
-    /// </summary>
-    /// <param name="rawImage"></param>
-    /// <param name="isGray"></param>
-    public static void SetRawImageGray(RawImage rawImage, bool isGray)
-    {
-        if (null == rawImage)
-        {
-            Debug.LogWarning("需要指定一个RawImage");
-            return;
-        }
-        if (isGray)
-        {
-            Material grayMat = ResourceMgr.GetInstance().GetResourceById<Material>(300001);
-            rawImage.material = grayMat;
-            rawImage.color = Def.ColorBlack;
-        }
-        else
-        {
-            rawImage.material = null;
-            rawImage.color = Def.ColorWhite;
-        }
     }
 
     /// <summary>

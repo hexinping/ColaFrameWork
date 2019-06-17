@@ -27,6 +27,7 @@ public class DelegateFactory
 		dict.Add(typeof(System.Action<string,string>), factory.System_Action_string_string);
 		dict.Add(typeof(System.Action<string,byte[]>), factory.System_Action_string_bytes);
 		dict.Add(typeof(System.Action<UnityEngine.Object>), factory.System_Action_UnityEngine_Object);
+		dict.Add(typeof(System.Action<UnityEngine.Object,string>), factory.System_Action_UnityEngine_Object_string);
 		dict.Add(typeof(System.Action<float>), factory.System_Action_float);
 		dict.Add(typeof(System.Action<bool>), factory.System_Action_bool);
 		dict.Add(typeof(UIEventHandler), factory.UIEventHandler);
@@ -60,6 +61,7 @@ public class DelegateFactory
 		DelegateTraits<System.Action<string,string>>.Init(factory.System_Action_string_string);
 		DelegateTraits<System.Action<string,byte[]>>.Init(factory.System_Action_string_bytes);
 		DelegateTraits<System.Action<UnityEngine.Object>>.Init(factory.System_Action_UnityEngine_Object);
+		DelegateTraits<System.Action<UnityEngine.Object,string>>.Init(factory.System_Action_UnityEngine_Object_string);
 		DelegateTraits<System.Action<float>>.Init(factory.System_Action_float);
 		DelegateTraits<System.Action<bool>>.Init(factory.System_Action_bool);
 		DelegateTraits<UIEventHandler>.Init(factory.UIEventHandler);
@@ -93,6 +95,7 @@ public class DelegateFactory
 		TypeTraits<System.Action<string,string>>.Init(factory.Check_System_Action_string_string);
 		TypeTraits<System.Action<string,byte[]>>.Init(factory.Check_System_Action_string_bytes);
 		TypeTraits<System.Action<UnityEngine.Object>>.Init(factory.Check_System_Action_UnityEngine_Object);
+		TypeTraits<System.Action<UnityEngine.Object,string>>.Init(factory.Check_System_Action_UnityEngine_Object_string);
 		TypeTraits<System.Action<float>>.Init(factory.Check_System_Action_float);
 		TypeTraits<System.Action<bool>>.Init(factory.Check_System_Action_bool);
 		TypeTraits<UIEventHandler>.Init(factory.Check_UIEventHandler);
@@ -126,6 +129,7 @@ public class DelegateFactory
 		StackTraits<System.Action<string,string>>.Push = factory.Push_System_Action_string_string;
 		StackTraits<System.Action<string,byte[]>>.Push = factory.Push_System_Action_string_bytes;
 		StackTraits<System.Action<UnityEngine.Object>>.Push = factory.Push_System_Action_UnityEngine_Object;
+		StackTraits<System.Action<UnityEngine.Object,string>>.Push = factory.Push_System_Action_UnityEngine_Object_string;
 		StackTraits<System.Action<float>>.Push = factory.Push_System_Action_float;
 		StackTraits<System.Action<bool>>.Push = factory.Push_System_Action_bool;
 		StackTraits<UIEventHandler>.Push = factory.Push_UIEventHandler;
@@ -835,6 +839,65 @@ public class DelegateFactory
 	}
 
 	void Push_System_Action_UnityEngine_Object(IntPtr L, System.Action<UnityEngine.Object> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UnityEngine_Object_string_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_Object_string_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_Object_string_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.Object param0, string param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.Object param0, string param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UnityEngine.Object,string> System_Action_UnityEngine_Object_string(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.Object,string> fn = delegate(UnityEngine.Object param0, string param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UnityEngine_Object_string_Event target = new System_Action_UnityEngine_Object_string_Event(func);
+			System.Action<UnityEngine.Object,string> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UnityEngine_Object_string_Event target = new System_Action_UnityEngine_Object_string_Event(func, self);
+			System.Action<UnityEngine.Object,string> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UnityEngine_Object_string(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.Object,string>), L, pos);
+	}
+
+	void Push_System_Action_UnityEngine_Object_string(IntPtr L, System.Action<UnityEngine.Object,string> o)
 	{
 		ToLua.Push(L, o);
 	}

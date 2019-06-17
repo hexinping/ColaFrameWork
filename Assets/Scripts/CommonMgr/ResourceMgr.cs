@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 /// <summary>
 /// 资源信息
 /// </summary>
-public class LuaResourceInfo
+public class ResourceInfo
 {
     /// <summary>
     /// 实际的资源
@@ -30,14 +30,14 @@ public class LuaResourceInfo
 /// <summary>
 /// 资源管理器Lua版
 /// </summary>
-public class LuaResourceMgr
+public class ResourcesMgr
 {
-    private static LuaResourceMgr instance;
+    private static ResourcesMgr instance;
 
     /// <summary>
     /// 资源路径与实际资源的映射表
     /// </summary>
-    private Dictionary<string, LuaResourceInfo> path2ResourceDic;
+    private Dictionary<string, ResourceInfo> path2ResourceDic;
 
     /// <summary>
     /// 需要清理的资源列表
@@ -49,23 +49,23 @@ public class LuaResourceMgr
     /// </summary>
     private float timeCount = 0f;
 
-    public static LuaResourceMgr GetInstance()
+    public static ResourcesMgr GetInstance()
     {
         if (null == instance)
         {
-            instance = new LuaResourceMgr();
+            instance = new ResourcesMgr();
         }
         return instance;
     }
 
-    private LuaResourceMgr()
+    private ResourcesMgr()
     {
-        GameObject resourceLoaderObj = new GameObject("LuaResourceLoaderObj");
+        GameObject resourceLoaderObj = new GameObject("ResourceLoaderObj");
         GameObject.DontDestroyOnLoad(resourceLoaderObj);
 
         timeCount = 0f;
         resClearList = new List<string>();
-        path2ResourceDic = new Dictionary<string, LuaResourceInfo>();
+        path2ResourceDic = new Dictionary<string, ResourceInfo>();
     }
 
     /// <summary>
@@ -76,10 +76,11 @@ public class LuaResourceMgr
     /// <param name="callback"></param>
     public void LoadText(string path, string fileName, Action<string, string> callback)
     {
-        TextAsset textAsset = Resources.Load<TextAsset>(path);
+        TextAsset textAsset = Load(path, typeof(TextAsset)) as TextAsset;
         if (null != callback)
             callback(fileName, textAsset.text);
     }
+
 
     /// <summary>
     /// 支持从Resources以外目录读取
@@ -91,15 +92,6 @@ public class LuaResourceMgr
     {
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        WWW www = new WWW(path);
-        while (!www.isDone)
-        {
-        }
-        if (null != callback)
-        {
-            callback(fileName,www.bytes);
-        }
-#elif UNITY_IOS && !UNITY_EDITOR
         WWW www = new WWW(path);
         while (!www.isDone)
         {
@@ -124,12 +116,12 @@ public class LuaResourceMgr
     /// <param name="callback"></param>
     public void LoadTextAsync(string path, string fileName, Action<string, string> callback)
     {
-        Resources.LoadAsync<TextAsset>(path, (obj, name) =>
-        {
-            TextAsset textAsset = obj as TextAsset;
-            if (null != callback)
-                callback(fileName, textAsset.text);
-        });
+        LoadAsync(path, typeof(TextAsset), (obj, name) =>
+         {
+             TextAsset textAsset = obj as TextAsset;
+             if (null != callback)
+                 callback(fileName, textAsset.text);
+         });
     }
 
     /// <summary>
@@ -139,7 +131,7 @@ public class LuaResourceMgr
     /// <returns></returns>
     public string ReadTextFile(string path)
     {
-        TextAsset textAsset = resourceLoader.Load<TextAsset>(path);
+        TextAsset textAsset = Load(path, typeof(TextAsset)) as TextAsset;
         if (null != textAsset)
         {
             return textAsset.text;
@@ -147,6 +139,7 @@ public class LuaResourceMgr
         Debug.LogWarning(string.Format("加载路径为{0}的文件失败！", path));
         return string.Empty;
     }
+
 
     /// <summary>
     /// 模拟 Update
@@ -215,7 +208,7 @@ public class LuaResourceMgr
     {
         if (null != obj)
         {
-            LuaResourceInfo resourceInfo = new LuaResourceInfo();
+            ResourceInfo resourceInfo = new ResourceInfo();
             resourceInfo.Res = obj;
             resourceInfo.ResourceType = type;
 
@@ -287,7 +280,7 @@ public class LuaResourceMgr
             {
                 if (0 == resLoadMode)
                 {
-                    resObj = resourceLoader.Load(relativePath, type);
+                    resObj = Load(relativePath, type);
                 }
                 else if (1 == resLoadMode)
                 {
@@ -328,7 +321,7 @@ public class LuaResourceMgr
             {
                 if (0 == resLoadMode)
                 {
-                    resourceLoader.LoadAsync(resPath, type, (obj, path) =>
+                    LoadAsync(resPath, type, (obj, path) =>
                     {
                         if (null != callback)
                         {
@@ -360,20 +353,10 @@ public class LuaResourceMgr
     /// <summary>
     /// 根据类型和路径返回相应的资源(同步方法)
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    public static T Load<T>(string path) where T : Object
-    {
-    }
-
-    /// <summary>
-    /// 根据类型和路径返回相应的资源(同步方法)
-    /// </summary>
     /// <param name="path"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static Object Load(string path, Type type)
+    public Object Load(string path, Type type)
     {
         return Resources.Load(path, type);
     }
@@ -383,13 +366,9 @@ public class LuaResourceMgr
     /// </summary>
     /// <param name="path"></param>
     /// <param name="callback"></param>
-    public static void LoadWaitOneFrame(string path, Action<Object, string> callback)
+    public void LoadWaitOneFrame(string path, Action<Object, string> callback)
     {
-#if UNITY_EDITOR
-        Debug.LogError("This Function is not implement in UnityEditor!");
-#else
         CommonHelper.StartCoroutine(WaitOneFrameCall(path, callback));
-#endif
     }
 
     private static IEnumerator WaitOneFrameCall(string path, Action<Object, string> callback)
@@ -402,41 +381,11 @@ public class LuaResourceMgr
     /// <summary>
     /// 根据类型和路径返回相应的资源(异步方法)
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="path"></param>
-    /// <param name="callback"></param>
-    public static void LoadAsync<T>(string path, Action<Object, string> callback) where T : Object
-    {
-#if UNITY_EDITOR
-        Debug.LogError("This Function is not implement in UnityEditor!");
-#else
-        CommonHelper.StartCoroutine(LoadAsyncCall<T>(path, callback));
-#endif
-
-    }
-
-    private IEnumerator LoadAsyncCall<T>(string path, Action<Object, string> callback) where T : Object
-    {
-        ResourceRequest request = Resources.LoadAsync<T>(path);
-        yield return request;
-        if (null != callback)
-        {
-            callback(request.asset, path);
-        }
-    }
-
-    /// <summary>
-    /// 根据类型和路径返回相应的资源(异步方法)
-    /// </summary>
     /// <param name="path"></param>
     /// <param name="t"></param>
     public void LoadAsync(string path, Type type, Action<Object, string> callback)
     {
-#if UNITY_EDITOR
-        Debug.LogError("This Function is not implement in UnityEditor!");
-#else
         CommonHelper.StartCoroutine(LoadAsyncCall(path, type, callback));
-#endif
     }
 
     private IEnumerator LoadAsyncCall(string path, Type type, Action<Object, string> callback)

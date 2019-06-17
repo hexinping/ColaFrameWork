@@ -93,7 +93,7 @@ public class LocalDataMgr
             {
                 while (enumerator.MoveNext())
                 {
-                    ResourceMgr.GetInstance().LoadText(GetFilePath(enumerator.Current.Key), enumerator.Current.Key, TextLoadCallBack);
+                    ResourcesMgr.GetInstance().LoadText(GetFilePath(enumerator.Current.Key), enumerator.Current.Key, TextLoadCallBack);
                 }
             }
 
@@ -263,6 +263,6 @@ public class LocalDataMgr
     /// <param name="callback"></param>
     private void LoadConfigByName(string fileName)
     {
-        ResourceMgr.GetInstance().LoadText(GetFilePath(fileName), fileName, TextLoadCallBack);
+        ResourcesMgr.GetInstance().LoadText(GetFilePath(fileName), fileName, TextLoadCallBack);
     }
 }
