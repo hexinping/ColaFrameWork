@@ -279,9 +279,13 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         {
             DefaultSetting();
         }
+        else
+        {
+        }
     }
 
-    private void DefaultSetting()
+    [LuaInterface.NoToLua]
+    public void DefaultSetting()
     {
         cameraPitch = 0;
         cameraYaw = 90;
@@ -366,15 +370,17 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     {
         if (null != modelRoot)
         {
+            var settingName = "";
             if (modelRoot.childCount > 0)
             {
                 model = modelRoot.GetChild(0);
+                settingName = model.name;
             }
             else
             {
                 model = null;
             }
-            ImportSetting();
+            ImportSetting(settingName);
         }
     }
 

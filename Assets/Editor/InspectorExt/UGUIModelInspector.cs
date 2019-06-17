@@ -29,6 +29,7 @@ public class UGUIModelInspector : InspectorBase
         {
             var cameraYaw = serializedObject.FindProperty("cameraYaw");
             cameraYaw.floatValue = EditorGUILayout.Slider("相机Y轴旋转参数:", cameraYaw.floatValue, 0, 180);
+            EditorGUILayout.Space();
 
             SerializedProperty modelOffsetX = serializedObject.FindProperty("modelOffsetX");
             modelOffsetX.floatValue = EditorGUILayout.Slider("偏移量X:", modelOffsetX.floatValue, -0.5f, 0.5f);
@@ -42,17 +43,26 @@ public class UGUIModelInspector : InspectorBase
         if (GUILayout.Button("导入设置"))
         {
             this.OnEnable();
-            Debug.Log("----->导入设置");
+            if (model)
+            {
+                model.ImportModelInEditor();
+            }
         }
 
         if (GUILayout.Button("导出设置"))
         {
-            Debug.Log("----->导出设置");
+            if (model)
+            {
+                model.SaveSetting();
+            }
         }
 
         if (GUILayout.Button("恢复默认设置"))
         {
-            Debug.Log("----->恢复默认设置");
+            if (model)
+            {
+                model.DefaultSetting();
+            }
         }
 
         UpdateModel();
