@@ -36,7 +36,7 @@ public static class Common_Utils
     }
 
     /// <summary>
-    /// 根据路径实例化一个Prefab
+    /// 根据路径实例化一个Prefab(同步方法)
     /// </summary>
     /// <param name="path"></param>
     /// <param name="parent"></param>
@@ -45,6 +45,24 @@ public static class Common_Utils
     {
         GameObject prefab = AssetLoader.Load<GameObject>(path);
         return CommonHelper.InstantiateGoByPrefab(prefab, parent);
+    }
+
+    /// <summary>
+    /// 根据路径实例化一个Prefab(异步方法)
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public static void InstantiateGoByPathAsync(string path, GameObject parent, Action<GameObject> callback)
+    {
+        AssetLoader.LoadAsync<GameObject>(path, (obj, name) =>
+        {
+            var go = InstantiateGoByPrefab(obj as GameObject, parent);
+            if (null != callback)
+            {
+                callback(go);
+            }
+        });
     }
 
     /// <summary>

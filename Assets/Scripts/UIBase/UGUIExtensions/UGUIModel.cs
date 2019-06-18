@@ -284,6 +284,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         }
     }
 
+
     [LuaInterface.NoToLua]
     public void DefaultSetting()
     {

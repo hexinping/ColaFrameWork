@@ -10,6 +10,7 @@ public class Common_UtilsWrap
 		L.RegFunction("AddBtnMsg", AddBtnMsg);
 		L.RegFunction("RemoveBtnMsg", RemoveBtnMsg);
 		L.RegFunction("InstantiateGoByPath", InstantiateGoByPath);
+		L.RegFunction("InstantiateGoByPathAsync", InstantiateGoByPathAsync);
 		L.RegFunction("InstantiateGoByPrefab", InstantiateGoByPrefab);
 		L.RegFunction("AddSingleComponent", AddSingleComponent);
 		L.RegFunction("AddCustomComponent", AddCustomComponent);
@@ -92,6 +93,24 @@ public class Common_UtilsWrap
 			UnityEngine.GameObject o = Common_Utils.InstantiateGoByPath(arg0, arg1);
 			ToLua.PushSealed(L, o);
 			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int InstantiateGoByPathAsync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			string arg0 = ToLua.CheckString(L, 1);
+			UnityEngine.GameObject arg1 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
+			System.Action<UnityEngine.GameObject> arg2 = (System.Action<UnityEngine.GameObject>)ToLua.CheckDelegate<System.Action<UnityEngine.GameObject>>(L, 3);
+			Common_Utils.InstantiateGoByPathAsync(arg0, arg1, arg2);
+			return 0;
 		}
 		catch (Exception e)
 		{

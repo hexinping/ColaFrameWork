@@ -25,6 +25,16 @@ function LuaCommon_Utils.InstantiateGoById(id, parent)
     end
 end
 
+function LuaCommon_Utils.InstantiateGoByPathAsync(id, parent, callback)
+    local resConfig = ConfigMgr.Instance():GetItem("ResPathConfig", id)
+    if resConfig and resConfig.path then
+        Common_Utils.InstantiateGoByPathAsync(resConfig.path, parent, callback)
+    else
+        error("ResPathConfig表中未配置" .. id)
+        return
+    end
+end
+
 function LuaCommon_Utils.GetResourceByPath(path, type)
     return AssetLoader.Load(path, type)
 end
