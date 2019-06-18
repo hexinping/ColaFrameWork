@@ -33,7 +33,8 @@ public static class AssetLoader
     public static Object Load(string path, Type type)
     {
 #if UNITY_EDITOR && ! SIMULATE_MODE
-        if (path.StartsWith("Assets/") && Path.HasExtension(path))
+        path = GloablDefine.GameAssetBasePath + path;
+        if (Path.HasExtension(path))
         {
             return AssetDatabase.LoadAssetAtPath(path, type);
         }
