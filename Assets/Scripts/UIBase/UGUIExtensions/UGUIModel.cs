@@ -281,6 +281,9 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         }
         else
         {
+            string path = GloablDefine.UIModelSettingPath + settingName + ".asset";
+            var config = AssetLoader.Load<UIModelSettingData>(path);
+            Debug.Log("------>加载测试"+ config.modelResPath);
         }
     }
 

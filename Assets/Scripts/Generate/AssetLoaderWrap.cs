@@ -10,7 +10,6 @@ public class AssetLoaderWrap
 		L.RegFunction("Load", Load);
 		L.RegFunction("LoadWaitOneFrame", LoadWaitOneFrame);
 		L.RegFunction("LoadAsync", LoadAsync);
-		L.RegFunction("LoadAllAssetsAtPath", LoadAllAssetsAtPath);
 		L.EndStaticLibs();
 	}
 
@@ -60,24 +59,6 @@ public class AssetLoaderWrap
 			System.Action<UnityEngine.Object,string> arg2 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 3);
 			AssetLoader.LoadAsync(arg0, arg1, arg2);
 			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadAllAssetsAtPath(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			UnityEngine.Object[] arg1 = null;
-			AssetLoader.LoadAllAssetsAtPath(arg0, out arg1);
-			ToLua.Push(L, arg1);
-			return 1;
 		}
 		catch (Exception e)
 		{

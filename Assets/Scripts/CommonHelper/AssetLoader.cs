@@ -93,6 +93,7 @@ public static class AssetLoader
     }
 
 #if UNITY_EDITOR
+    [LuaInterface.NoToLua]
     public static void LoadAllAssetsAtPath(string path, out Object[] objects)
     {
         objects = AssetDatabase.LoadAllAssetsAtPath(path);
