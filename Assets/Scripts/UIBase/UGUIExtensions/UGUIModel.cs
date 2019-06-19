@@ -274,7 +274,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
 
     public void ImportSetting(string settingName = "")
     {
-        //TODO:读取序列化的配置文件，如果没有找到配置就使用默认配置
+        //读取序列化的配置文件，如果没有找到配置就使用默认配置
         if (string.IsNullOrEmpty(settingName))
         {
             DefaultSetting();
@@ -282,8 +282,14 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         else
         {
             string path = GloablDefine.UIModelSettingPath + settingName + ".asset";
-            var config = AssetLoader.Load<UIModelSettingData>(path);
-            Debug.Log("------>加载测试"+ config.modelResPath);
+            var modelData = AssetLoader.Load<UIModelSettingData>(path);
+            cameraPitch = modelData.cameraPitch;
+            cameraYaw = modelData.cameraYaw;
+            cameraDistance = modelData.cameraDistance;
+            cameraHeightOffset =modelData.cameraHeightOffset;
+            modelCameraDepth = modelData.modelCameraDepth;
+            positionX = modelData.positionX;
+            positionZ = modelData.positionZ;
         }
     }
 
