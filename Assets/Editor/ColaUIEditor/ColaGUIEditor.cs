@@ -54,7 +54,7 @@ public class ColaGUIEditor
         }
 
         //如果以上步骤都没有找到，那就从Resource里面加载并实例化一个
-        var uguiRootPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Arts/Gui/Prefabs/UGUIRoot.prefab");
+        var uguiRootPrefab = AssetLoader.Load<GameObject>("Arts/Gui/Prefabs/UGUIRoot.prefab");
         GameObject uguiRoot = CommonHelper.InstantiateGoByPrefab(uguiRootPrefab, null);
         GameObject canvasRoot = uguiRoot.GetComponentInChildren<Canvas>().gameObject;
         return canvasRoot;
