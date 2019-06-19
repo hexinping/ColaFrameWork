@@ -411,8 +411,9 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         var modelCameraObj = GameObject.Find("model_camera_in_editor");
         if (null == modelCameraObj)
         {
-            modelCamera = new GameObject("model_camera_in_editor", typeof(Camera)).GetComponent<Camera>();
+            modelCameraObj = new GameObject("model_camera_in_editor", typeof(Camera));
         }
+        modelCamera = modelCameraObj.GetComponent<Camera>();
         modelCameraDepth = modelCamera.depth + 1.0f;
         modelCamera.cullingMask = LayerMask.GetMask(UIModelLayerTag);
         modelCamera.clearFlags = CameraClearFlags.Nothing;
@@ -420,11 +421,12 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         modelCamera.farClipPlane = farClipPlane;
         modelCamera.transform.SetParent(root.transform);
 
-        var cameraModelRootObj = GameObject.Find("model_root_in_editor");
-        if (null == cameraModelRootObj)
+        var modelRootObj = GameObject.Find("model_root_in_editor");
+        if (null == modelRootObj)
         {
-            modelRoot = new GameObject("model_root_in_editor").transform;
+            modelRootObj = new GameObject("model_root_in_editor");
         }
+        modelRoot = modelRootObj.transform;
         modelRoot.transform.SetParent(root.transform);
         modelRoot.localPosition = Vector3.zero;
         modelRoot.localRotation = Quaternion.identity;
