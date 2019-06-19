@@ -286,7 +286,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
             cameraPitch = modelData.cameraPitch;
             cameraYaw = modelData.cameraYaw;
             cameraDistance = modelData.cameraDistance;
-            cameraHeightOffset =modelData.cameraHeightOffset;
+            cameraHeightOffset = modelData.cameraHeightOffset;
             modelCameraDepth = modelData.modelCameraDepth;
             positionX = modelData.positionX;
             positionZ = modelData.positionZ;
@@ -361,6 +361,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         modelRoot.localScale = Vector3.one;
         rectTransform.GetWorldCorners(screenCorners);
 
+        //TOOD:这段代码在编辑器下适配UI有问题，需要修改
         //适配UI
         //left botton corner of screen
         var screen_lb = uiCamera.WorldToScreenPoint(screenCorners[0]);
