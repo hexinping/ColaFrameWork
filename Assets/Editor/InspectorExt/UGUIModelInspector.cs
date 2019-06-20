@@ -19,7 +19,7 @@ public class UGUIModelInspector : InspectorBase
         model = target as UGUIModel;
         if (model.gameObject.activeSelf)
         {
-            model.InitInEditor(ColaGUIEditor.GetOrCreateUICamera());
+            model.InitInEditor(ColaGUIEditor.UICamera);
         }
     }
 
