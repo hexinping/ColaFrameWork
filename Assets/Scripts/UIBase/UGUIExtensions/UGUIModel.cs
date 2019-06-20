@@ -324,7 +324,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
 #if UNITY_EDITOR
     [LuaInterface.NoToLua]
     [ExecuteInEditMode]
-    public void UpdateInEditor()
+    public void UpdateInEditor(Vector2 screenSize)
     {
         if (null == modelCamera)
         {
@@ -361,18 +361,15 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         modelRoot.localScale = Vector3.one;
         rectTransform.GetWorldCorners(screenCorners);
 
-        //TOOD:这段代码在编辑器下适配UI有问题，需要修改
         //适配UI
         //left botton corner of screen
         var screen_lb = uiCamera.WorldToScreenPoint(screenCorners[0]);
         //right top corner of screen
         var screen_rt = uiCamera.WorldToScreenPoint(screenCorners[2]);
-        int screenWidth = Screen.width;
-        int screenHeight = Screen.height;
 
-        float w = (screen_rt - screen_lb).x / screenWidth;
-        float h = (screen_rt - screen_lb).y / screenHeight;
-        modelCamera.rect = new Rect(screen_lb.x / screenWidth, screen_lb.y / screenHeight, w, h);
+        float w = (screen_rt - screen_lb).x / screenSize.x;
+        float h = (screen_rt - screen_lb).y / screenSize.y;
+        modelCamera.rect = new Rect(screen_lb.x / screenSize.x, screen_lb.y / screenSize.y, w, h);
     }
 
     [LuaInterface.NoToLua]

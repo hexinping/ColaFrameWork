@@ -75,7 +75,7 @@ public class UGUIModelInspector : InspectorBase
     {
         if (model && model.gameObject && model.gameObject.activeSelf)
         {
-            model.UpdateInEditor();
+            model.UpdateInEditor(ColaGUIEditor.GetScreenPixelDimensions());
         }
     }
 
