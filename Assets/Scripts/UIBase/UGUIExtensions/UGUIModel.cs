@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+#if UNITY_EDITOR 
+using UnityEditor;
+using System.IO;
+#endif
 
 /// <summary>
 /// UGUIMODEL组件，用来展示3D人物形象
@@ -275,21 +276,28 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     public void ImportSetting(string settingName = "")
     {
         //读取序列化的配置文件，如果没有找到配置就使用默认配置
+        string path = GloablDefine.UIModelSettingPath + settingName + ".asset";
         if (string.IsNullOrEmpty(settingName))
         {
             DefaultSetting();
         }
         else
         {
-            string path = GloablDefine.UIModelSettingPath + settingName + ".asset";
             var modelData = AssetLoader.Load<UIModelSettingData>(path);
-            cameraPitch = modelData.cameraPitch;
-            cameraYaw = modelData.cameraYaw;
-            cameraDistance = modelData.cameraDistance;
-            cameraHeightOffset = modelData.cameraHeightOffset;
-            modelCameraDepth = modelData.modelCameraDepth;
-            positionX = modelData.positionX;
-            positionZ = modelData.positionZ;
+            if (null == modelData)
+            {
+                DefaultSetting();
+            }
+            else
+            {
+                cameraPitch = modelData.cameraPitch;
+                cameraYaw = modelData.cameraYaw;
+                cameraDistance = modelData.cameraDistance;
+                cameraHeightOffset = modelData.cameraHeightOffset;
+                modelCameraDepth = modelData.modelCameraDepth;
+                positionX = modelData.positionX;
+                positionZ = modelData.positionZ;
+            }
         }
     }
 
@@ -300,7 +308,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         cameraPitch = 0;
         cameraYaw = 90;
         cameraDistance = 7;
-        cameraHeightOffset = 0.47f;
+        cameraHeightOffset = 0.0f;
         modelCameraDepth = 6;
         positionX = 0;
         positionZ = 0;
@@ -450,7 +458,37 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     [ExecuteInEditMode]
     public void SaveSetting()
     {
-
+        if (null != modelRoot && null != model)
+        {
+            var settingName = model.name;
+            if (!string.IsNullOrEmpty(settingName))
+            {
+                string fullPath = GloablDefine.GameAssetBasePath + GloablDefine.UIModelSettingPath + settingName + ".asset";
+                if (!File.Exists(fullPath))
+                {
+                    AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<UIModelSettingData>(), fullPath);
+                }
+                var setting = AssetDatabase.LoadAssetAtPath<UIModelSettingData>(fullPath);
+                setting.cameraPitch = cameraPitch;
+                setting.cameraYaw = cameraYaw;
+                setting.cameraDistance = cameraDistance;
+                setting.cameraHeightOffset = cameraHeightOffset;
+                setting.modelCameraDepth = modelCameraDepth;
+                setting.positionX = positionX;
+                setting.positionZ = positionZ;
+                EditorUtility.SetDirty(setting);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("错误提示", "模型节点名称不能为空字符！", "确定");
+            }
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("错误提示", "模型节点不能为空！", "确定");
+        }
     }
 #endif
     #endregion
