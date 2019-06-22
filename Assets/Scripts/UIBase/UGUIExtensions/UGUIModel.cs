@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-#if UNITY_EDITOR 
+using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
 using System.IO;
 #endif
@@ -86,6 +87,11 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     //提前申请RaycatHit数组，避免频繁申请产生GC
     private RaycastHit[] hitInfos = new RaycastHit[20];
 
+    /// <summary>
+    /// UGUIModel内部维护模型数组,不在Lua中进行维护
+    /// </summary>
+    private IList<ISceneCharacter> modelList;
+
     public Transform Model
     {
         get { return model; }
@@ -135,6 +141,8 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         modelRoot.transform.SetParent(root.transform);
         modelRoot.localPosition = Vector3.zero;
         modelRoot.localRotation = Quaternion.identity;
+
+        modelList = new List<ISceneCharacter>();
     }
 
     protected override void OnEnable()
@@ -160,7 +168,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     private void OnClickModel()
     {
         //每次使用前清空结构体数组
-        System.Array.Clear(hitInfos, 0, hitInfos.Length);
+        Array.Clear(hitInfos, 0, hitInfos.Length);
         Ray ray = modelCamera.ScreenPointToRay(Input.mousePosition);
         Physics.RaycastNonAlloc(ray, hitInfos, 100.0f, LayerMask.GetMask(UIModelLayerTag));
         for (int i = 0; i < hitInfos.Length; i++)
@@ -260,6 +268,19 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         {
             Destroy(root);
             root = null;
+            modelCamera = null;
+            modelRoot = null;
+            model = null;
+            rectTransform = null;
+            uiCamera = null;
+            Array.Clear(hitInfos, 0, hitInfos.Length);
+            hitInfos = null;
+            for (int i = 0; i < modelList.Count; i++)
+            {
+                modelList[i].Release();
+            }
+            modelList.Clear();
+            modelList = null;
         }
     }
 
