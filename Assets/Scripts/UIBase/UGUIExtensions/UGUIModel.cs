@@ -390,6 +390,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
             if (modelRoot.childCount > 0)
             {
                 model = modelRoot.GetChild(0);
+                frameCount = 1;
                 settingName = model.name;
             }
             else
