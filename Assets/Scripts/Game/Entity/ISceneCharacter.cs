@@ -21,12 +21,17 @@ public interface ISceneCharacter
     /// <summary>
     /// 角色的位置信息
     /// </summary>
-    Vector3 Position { get; }
+    Vector3 Position { get; set; }
 
     /// <summary>
     /// 角色的旋转方向
     /// </summary>
-    Vector3 Rotation { get; }
+    Vector3 Rotation { get; set; }
+
+    /// <summary>
+    /// 角色的forward方向
+    /// </summary>
+    Vector3 Direction { get; set; }
 
     /// <summary>
     /// 设置角色的位置信息
