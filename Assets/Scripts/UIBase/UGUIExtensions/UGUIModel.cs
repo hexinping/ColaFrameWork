@@ -289,6 +289,40 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         UpdateCameraEffect();
     }
 
+    public void AddModel(ISceneCharacter sceneCharacter)
+    {
+        modelList.Add(sceneCharacter);
+    }
+
+    public bool isModelExist(int index)
+    {
+        if(index < modelList.Count)
+        {
+            return null != modelList[index];
+        }
+        return false;
+    }
+
+    public ISceneCharacter GetModelAtIndex(int index)
+    {
+        if (index < modelList.Count)
+        {
+            return modelList[index];
+        }
+        return null;
+    }
+
+    public void UpdateModelShownIndex(int index)
+    {
+        if (index < modelList.Count)
+        {
+            if (null != modelList[index])
+            {
+                Model = modelList[index].transform;
+            }
+        }
+    }
+
     private void UpdateCameraEffect()
     {
 
