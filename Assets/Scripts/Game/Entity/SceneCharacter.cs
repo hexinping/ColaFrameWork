@@ -33,6 +33,37 @@ public class SceneCharacter : ISceneCharacter
         set { transform.forward = value; }
     }
 
+    /// <summary>
+    /// 构造函数私有化，外部只能使用工厂方法接口创建
+    /// </summary>
+    private SceneCharacter(GameObject entity)
+    {
+        gameObject = entity;
+        transform = entity.transform;
+    }
+
+    /// <summary>
+    /// 工厂方法，创建ISceneCharacter
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static ISceneCharacter CreateSceneCharacterInf(string path)
+    {
+        return CreateSceneCharacter(path);
+    }
+
+    /// <summary>
+    /// 工厂方法，创建SceneCharacter
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static SceneCharacter CreateSceneCharacter(string path)
+    {
+        GameObject prefab = AssetLoader.Load<GameObject>(path);
+        GameObject Entity = CommonHelper.InstantiateGoByPrefab(prefab, null);
+        return new SceneCharacter(Entity);
+    }
+
     void ISceneCharacter.SetPosition2D(float x, float z)
     {
         Position.Set(x, Position.y, z);
