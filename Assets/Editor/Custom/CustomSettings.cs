@@ -68,6 +68,7 @@ public static class CustomSettings
         _GT(typeof(PlayerPrefs)),
         _GT(typeof(SpriteAsset)),
         _GT(typeof(SceneMgr)),
+        _GT(typeof(ISceneCharacter)),
         _GT(typeof(UGUIModel)),
 
 #if USING_DOTWEENING

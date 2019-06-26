@@ -9,6 +9,10 @@ public class UGUIModelWrap
 		L.BeginClass(typeof(UGUIModel), typeof(UnityEngine.EventSystems.UIBehaviour));
 		L.RegFunction("OnDrag", OnDrag);
 		L.RegFunction("SetCameraEffect", SetCameraEffect);
+		L.RegFunction("AddModel", AddModel);
+		L.RegFunction("isModelExist", isModelExist);
+		L.RegFunction("GetModelAtIndex", GetModelAtIndex);
+		L.RegFunction("UpdateModelShownIndex", UpdateModelShownIndex);
 		L.RegFunction("ImportSetting", ImportSetting);
 		L.RegFunction("OnPointerClick", OnPointerClick);
 		L.RegFunction("OnPointerDown", OnPointerDown);
@@ -48,6 +52,76 @@ public class UGUIModelWrap
 			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 			obj.SetCameraEffect(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int AddModel(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			ISceneCharacter arg0 = (ISceneCharacter)ToLua.CheckObject<ISceneCharacter>(L, 2);
+			obj.AddModel(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int isModelExist(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			bool o = obj.isModelExist(arg0);
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetModelAtIndex(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			ISceneCharacter o = obj.GetModelAtIndex(arg0);
+			ToLua.PushObject(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UpdateModelShownIndex(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			obj.UpdateModelShownIndex(arg0);
 			return 0;
 		}
 		catch (Exception e)
