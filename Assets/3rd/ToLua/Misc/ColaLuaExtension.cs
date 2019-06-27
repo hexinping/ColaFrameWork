@@ -171,7 +171,6 @@ public static class ColaLuaExtension
                 stringBuilder.AppendLine(LuaDLL.lua_tostring(L, -1));
             }
 
-            /* 移除 'value' ；保留 'key' 做下一次迭代 */
             LuaDLL.lua_pop(L, 1);
         }
         stringBuilder.Append(indent).AppendLine("}");
