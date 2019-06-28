@@ -8,7 +8,6 @@ public class SpriteAssetWrap
 	{
 		L.BeginClass(typeof(SpriteAsset), typeof(UnityEngine.MonoBehaviour));
 		L.RegFunction("GetSpriteByName", GetSpriteByName);
-		L.RegFunction("SplitTextureToPng", SplitTextureToPng);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("SpriteAssetInfos", get_SpriteAssetInfos, set_SpriteAssetInfos);
@@ -26,22 +25,6 @@ public class SpriteAssetWrap
 			UnityEngine.Sprite o = obj.GetSpriteByName(arg0);
 			ToLua.PushSealed(L, o);
 			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SplitTextureToPng(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			SpriteAsset obj = (SpriteAsset)ToLua.CheckObject<SpriteAsset>(L, 1);
-			obj.SplitTextureToPng();
-			return 0;
 		}
 		catch (Exception e)
 		{

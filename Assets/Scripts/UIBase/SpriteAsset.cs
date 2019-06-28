@@ -37,6 +37,7 @@ public class SpriteAsset : MonoBehaviour
 
 #if UNITY_EDITOR
     [ContextMenu("拆分图集为散图")]
+    [LuaInterface.NoToLua]
     public void SplitTextureToPng()
     {
         if (SpriteAssetInfos.Count <= 0) return;
