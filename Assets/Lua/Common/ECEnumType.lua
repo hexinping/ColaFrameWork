@@ -11,6 +11,7 @@ ECEnumType.UIEnum = {
     Loading = 2, --Loading界面
     DebugPanel = 3, -- Debug信息界面
     Setting = 4, --设置界面
+    UIModel = 5, --UGUIModel测试界面
 }
 
 -- UI Level逻辑层级

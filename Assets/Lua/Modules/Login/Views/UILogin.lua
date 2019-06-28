@@ -31,6 +31,7 @@ function UILogin:onClick(name)
         UIManager.Instance():Open(ECEnumType.UIEnum.DebugPanel)
     elseif name == "cancelBtn" then
         self:DestroySelf()
+        UIManager.Instance():Open(ECEnumType.UIEnum.UIModel)
     end
 end
 

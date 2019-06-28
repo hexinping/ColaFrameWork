@@ -6,7 +6,7 @@ public class UICopyingAssetHelper : UIBase
     /// <summary>
     /// 拷贝资源进度框比较特殊，路径是固定的，并且不参与uiMgr的管理，不走资源管理器
     /// </summary>
-    private static string resPath = "Arts/Gui/Prefabs/uicopying";
+    private static string resPath = "Arts/UI/Prefabs/uicopying";
     private static UICopyingAssetHelper instance = null;
     private static RawImage background;
     private static Text progressText;

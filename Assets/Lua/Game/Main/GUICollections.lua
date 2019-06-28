@@ -7,6 +7,7 @@ local GUICollections = {
     [ECEnumType.UIEnum.Loading] = require("Modules.Common.Views.UILoading"),
     [ECEnumType.UIEnum.DebugPanel] = require("Modules.Common.Views.UIDebugPanel"),
     [ECEnumType.UIEnum.Setting] = require("Modules.Setting.Views.UISettingPanel"),
+    [ECEnumType.UIEnum.UIModel] = require("Modules.Test.Views.UIModelPanel"),
 }
 
 return GUICollections

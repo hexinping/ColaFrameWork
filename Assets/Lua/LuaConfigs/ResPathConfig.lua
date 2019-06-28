@@ -2,17 +2,16 @@
 local fieldIdx = {}
 fieldIdx.id = 1
 fieldIdx.path = 2
-fieldIdx.resType = 3
-fieldIdx.resLiveTime = 4
 local data = {
-{100,[[Arts/Gui/Prefabs/uiLoginPanel.prefab]],0,20},
-{101,[[Arts/Gui/Prefabs/uiloading.prefab]],0,-2},
-{102,[[Arts/Gui/Prefabs/UIDebugPanel.prefab]],0,-2},
-{103,[[Arts/Gui/Prefabs/UISettingPanel.prefab]],0,-2},
-{2001,[[Arts/Gui/Textures/atlas/airfightSheet.prefab]],0,-2},
-{300001,[[Arts/Gui/Material/material_defaultgray.mat]],0,-2},
-{400001,[[Arts/Gui/Textures/head_icon/GuChenSha.png]],0,-2},
-{400002,[[Arts/Gui/Textures/texture/loading/LoadingBackground0.png]],0,-2},}
+{100,[[Arts/UI/Prefabs/uiLoginPanel.prefab]]},
+{101,[[Arts/UI/Prefabs/uiloading.prefab]]},
+{102,[[Arts/UI/Prefabs/UIDebugPanel.prefab]]},
+{103,[[Arts/UI/Prefabs/UISettingPanel.prefab]]},
+{104,[[Arts/UI/Prefabs/UIModelPanel.prefab]]},
+{2001,[[Arts/UI/Textures/atlas/airfightSheet.prefab]]},
+{300001,[[Arts/UI/Material/material_defaultgray.mat]]},
+{400001,[[Arts/UI/Textures/head_icon/GuChenSha.png]]},
+{400002,[[Arts/UI/Textures/texture/loading/LoadingBackground0.png]]},}
 local mt = {}
 mt.__index = function(a,b)
 	if fieldIdx[b] then

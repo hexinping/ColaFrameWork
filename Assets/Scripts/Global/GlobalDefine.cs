@@ -61,7 +61,7 @@ public static class GloablDefine
     public static readonly string UIIngeroTag = "UIIngero";
     public static readonly string UIPropertyTag = "UIProperty";
 
-    public static readonly string UIExportPrefabPath = "Assets/Resources/Arts/Gui/Prefabs";
+    public static readonly string UIExportPrefabPath = "Assets/Resources/Arts/UI/Prefabs";
     public static readonly string UIExportCSScriptPath = "Assets/Scripts/_UIViews";
 
     public static readonly string GameAssetBasePath = "Assets/GameAssets/";

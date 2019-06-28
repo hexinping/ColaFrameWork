@@ -75,6 +75,8 @@ function UIManager:Open(UIEnum)
     if GUICollections and GUICollections[UIEnum] and GUICollections[UIEnum].Instance():IsExist() == false then
         GUICollections[UIEnum].Instance():Create()
         table.insert(self.uiList, GUICollections[UIEnum].Instance())
+    else
+        error("要打开的界面不存在",UIEnum)
     end
 end
 
