@@ -3,7 +3,7 @@
 ---
 
 local UIBase = require("Core.ui.UIBase")
-local UIModelPanel = Class("UIModelPanel",UIBase)
+local UIModelPanel = Class("UIModelPanel", UIBase)
 
 local _instance = nil
 
@@ -22,7 +22,10 @@ end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
 function UIModelPanel:OnCreate()
-
+    self.uiModel = self.Panel:GetComponentByPath("UIModel", "UGUIModel")
+    self.uiModel.onModelClick = function(name)
+        self:OnModelClick(name)
+    end
 end
 
 -- 界面可见性变化的时候触发
@@ -32,7 +35,7 @@ end
 
 -- 界面销毁的过程中触发
 function UIModelPanel:OnDestroy()
-	UIBase.OnDestroy(self)
+    UIBase.OnDestroy(self)
 end
 
 -- 注册UI事件监听
@@ -47,7 +50,9 @@ end
 
 ------------------- UI事件回调 --------------------------
 function UIModelPanel:onClick(obj)
-
+    if obj == "Btn_One" then
+        self:UpdateModel(0)
+    end
 end
 
 function UIModelPanel:onBoolValueChange(obj, isSelect)
@@ -55,5 +60,18 @@ function UIModelPanel:onBoolValueChange(obj, isSelect)
 end
 
 ---------------------- UI事件回调 --------------------------
+
+function UIModelPanel:OnModelClick(name)
+    print("----------->点击了",name)
+end
+
+function UIModelPanel:UpdateModel(index)
+    local isModelExist = self.uiModel:isModelExist(index)
+    if not isModelExist then
+        local character = SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Merchant_female.prefab")
+        self.uiModel:AddModel(character)
+    end
+    self.uiModel:UpdateModelShownIndex(index)
+end
 
 return UIModelPanel
