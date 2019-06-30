@@ -11,7 +11,7 @@ public class UIModelSettingData : ScriptableObject
     public float cameraPitch = 0;
     public float cameraYaw = 90;
     public float cameraDistance = 7;
-    public float cameraHeightOffset = 0.47f;
+    public float cameraHeightOffset = 0.0f;
     public float modelCameraDepth = 6;
     public float positionX = 0;
     public float positionZ = 0;

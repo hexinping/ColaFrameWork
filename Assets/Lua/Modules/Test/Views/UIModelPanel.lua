@@ -7,6 +7,18 @@ local UIModelPanel = Class("UIModelPanel", UIBase)
 
 local _instance = nil
 
+local SettingNames = {
+    "Merchant_female",
+    "Boy",
+    "Girl",
+}
+
+local ResPath = {
+    "Arts/Avatar/Merchant_female.prefab",
+    "Arts/Avatar/Boy.prefab",
+    "Arts/Avatar/Girl.prefab",
+}
+
 -- 获取UI实例的接口
 function UIModelPanel.Instance()
     if nil == _instance then
@@ -52,6 +64,10 @@ end
 function UIModelPanel:onClick(obj)
     if obj == "Btn_One" then
         self:UpdateModel(0)
+    elseif obj == "Btn_Two" then
+        self:UpdateModel(1)
+    elseif obj == "Btn_Three" then
+        self:UpdateModel(2)
     end
 end
 
@@ -62,16 +78,17 @@ end
 ---------------------- UI事件回调 --------------------------
 
 function UIModelPanel:OnModelClick(name)
-    print("----------->点击了",name)
+    print("----------->点击了", name)
 end
 
 function UIModelPanel:UpdateModel(index)
     local isModelExist = self.uiModel:isModelExist(index)
     if not isModelExist then
-        local character = SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Merchant_female.prefab")
+        local character = SceneCharacter.CreateSceneCharacterInf(ResPath[index + 1] or "")
         self.uiModel:AddModel(character)
     end
     self.uiModel:UpdateModelShownIndex(index)
+    self.uiModel:ImportSetting(SettingNames[index + 1] or "")
 end
 
 return UIModelPanel

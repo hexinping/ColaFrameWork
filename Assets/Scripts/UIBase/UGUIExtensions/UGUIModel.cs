@@ -178,12 +178,12 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
             if (null != collider)
             {
                 var name = collider.name;
-                if ("model_head" == name || "model_body" == "name" || "model_foot" == name)
+                //if ("model_head" == name || "model_body" == "name" || "model_foot" == name)
+                //{
+                //}
+                if (null != onModelClick)
                 {
-                    if (null != onModelClick)
-                    {
-                        onModelClick(name);
-                    }
+                    onModelClick(name);
                 }
             }
         }
