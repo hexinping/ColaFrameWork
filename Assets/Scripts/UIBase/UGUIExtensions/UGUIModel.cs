@@ -32,13 +32,6 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     private float positionZ = 0.0f;
 
     [SerializeField]
-    [Tooltip("模型的X轴偏移量")]
-    private float modelOffsetX = 0.0f;
-    [SerializeField]
-    [Tooltip("模型的Z轴偏移量")]
-    private float modelOffsetZ = 0.0f;
-
-    [SerializeField]
     [Tooltip("相机距离模型的距离")]
     private float cameraDistance = 3.0f;
 
@@ -397,7 +390,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     {
         cameraPitch = 0;
         cameraYaw = 90;
-        cameraDistance = 5;
+        cameraDistance = 3;
         cameraHeightOffset = 0.0f;
         ModelCameraDepth = 7;
         positionX = 0;
@@ -432,7 +425,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         if (model)
         {
             //编辑器模式下直接设置模型的偏移量
-            model.localPosition = new Vector3(positionX + modelOffsetX, 0, positionZ + modelOffsetZ);
+            model.localPosition = new Vector3(positionX, 0, positionZ);
             if (frameCount > 0)
             {
                 SetModelLayer(model);
