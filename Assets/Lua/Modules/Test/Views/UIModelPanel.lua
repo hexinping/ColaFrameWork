@@ -61,17 +61,21 @@ function UIModelPanel:UnRegisterEvent()
 end
 
 ------------------- UI事件回调 --------------------------
-function UIModelPanel:onClick(obj)
-    if obj == "Btn_One" then
+function UIModelPanel:onClick(name)
+    if name == "Btn_One" then
         self:UpdateModel(1)
-    elseif obj == "Btn_Two" then
+    elseif name == "Btn_Two" then
         self:UpdateModel(2)
-    elseif obj == "Btn_Three" then
+    elseif name == "Btn_Three" then
         self:UpdateModel(3)
+    elseif name == "Btn_Close" then
+        self:DestroySelf()
+    elseif name == "Btn_Switch" then
+        Common_Utils.GetSceneMgr():UnLoadLevelAsync("xinshoucun",nil)
     end
 end
 
-function UIModelPanel:onBoolValueChange(obj, isSelect)
+function UIModelPanel:onBoolValueChange(name, isSelect)
 
 end
 

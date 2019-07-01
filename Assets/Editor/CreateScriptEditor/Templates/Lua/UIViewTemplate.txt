@@ -46,11 +46,11 @@ function #NAME#:UnRegisterEvent()
 end
 
 ------------------- UI事件回调 --------------------------
-function #NAME#:onClick(obj)
+function #NAME#:onClick(name)
 
 end
 
-function #NAME#:onBoolValueChange(obj, isSelect)
+function #NAME#:onBoolValueChange(name, isSelect)
 
 end
 
