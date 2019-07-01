@@ -138,4 +138,35 @@ public class SceneMgr : MonoBehaviour
             onLevelLoaded(levelName);
         }
     }
+
+    /// <summary>
+    /// 以异步方式卸载场景
+    /// </summary>
+    /// <param name="sceneName"></param>
+    /// <param name="onLevelUnLoaded"></param>
+    public void UnLoadLevelAsync(string sceneName, OnAdditiveLevelLoaded onLevelUnLoaded)
+    {
+        StartCoroutine(UnLoadTargetLevelAsync(sceneName, onLevelUnLoaded));
+    }
+
+    /// <summary>
+    /// 以异步方式卸载场景(携程调用)
+    /// </summary>
+    /// <param name="levelName"></param>
+    /// <param name="onLevelUnLoaded"></param>
+    /// <returns></returns>
+    private IEnumerator UnLoadTargetLevelAsync(string levelName, OnAdditiveLevelLoaded onLevelUnLoaded)
+    {
+        AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(levelName);
+        while (!asyncOperation.isDone)
+        {
+            yield return asyncOperation;
+        }
+        currentScene = SceneManager.GetActiveScene();
+        yield return null;
+        if (null != onLevelUnLoaded)
+        {
+            onLevelUnLoaded(levelName);
+        }
+    }
 }

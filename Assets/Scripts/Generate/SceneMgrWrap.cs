@@ -10,6 +10,7 @@ public class SceneMgrWrap
 		L.RegFunction("LoadAdditiveLevelAsync", LoadAdditiveLevelAsync);
 		L.RegFunction("LoadLevel", LoadLevel);
 		L.RegFunction("LoadLevelAsync", LoadLevelAsync);
+		L.RegFunction("UnLoadLevelAsync", UnLoadLevelAsync);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("currentScene", get_currentScene, set_currentScene);
@@ -78,6 +79,24 @@ public class SceneMgrWrap
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: SceneMgr.LoadLevelAsync");
 			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnLoadLevelAsync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
+			string arg0 = ToLua.CheckString(L, 2);
+			OnAdditiveLevelLoaded arg1 = (OnAdditiveLevelLoaded)ToLua.CheckDelegate<OnAdditiveLevelLoaded>(L, 3);
+			obj.UnLoadLevelAsync(arg0, arg1);
+			return 0;
 		}
 		catch (Exception e)
 		{
