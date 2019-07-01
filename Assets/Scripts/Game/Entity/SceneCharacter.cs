@@ -33,6 +33,12 @@ public class SceneCharacter : ISceneCharacter
         set { transform.forward = value; }
     }
 
+    public bool Visible
+    {
+        get { return gameObject.activeSelf; }
+        set { gameObject.SetActive(value); }
+    }
+
     /// <summary>
     /// 构造函数私有化，外部只能使用工厂方法接口创建
     /// </summary>

@@ -34,6 +34,11 @@ public interface ISceneCharacter
     Vector3 Direction { get; set; }
 
     /// <summary>
+    /// 可见性
+    /// </summary>
+    bool Visible { get; set; }
+
+    /// <summary>
     /// 设置角色的位置信息
     /// </summary>
     /// <param name="x"></param>
