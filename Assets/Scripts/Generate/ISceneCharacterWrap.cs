@@ -15,6 +15,7 @@ public class ISceneCharacterWrap
 		L.RegVar("Position", get_Position, set_Position);
 		L.RegVar("Rotation", get_Rotation, set_Rotation);
 		L.RegVar("Direction", get_Direction, set_Direction);
+		L.RegVar("Visible", get_Visible, set_Visible);
 		L.EndClass();
 	}
 
@@ -166,6 +167,25 @@ public class ISceneCharacterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_Visible(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ISceneCharacter obj = (ISceneCharacter)o;
+			bool ret = obj.Visible;
+			LuaDLL.lua_pushboolean(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Visible on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_gameObject(IntPtr L)
 	{
 		object o = null;
@@ -257,6 +277,25 @@ public class ISceneCharacterWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Direction on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_Visible(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ISceneCharacter obj = (ISceneCharacter)o;
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			obj.Visible = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Visible on a nil value");
 		}
 	}
 }

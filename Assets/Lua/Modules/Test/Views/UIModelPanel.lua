@@ -63,11 +63,11 @@ end
 ------------------- UI事件回调 --------------------------
 function UIModelPanel:onClick(obj)
     if obj == "Btn_One" then
-        self:UpdateModel(0)
-    elseif obj == "Btn_Two" then
         self:UpdateModel(1)
-    elseif obj == "Btn_Three" then
+    elseif obj == "Btn_Two" then
         self:UpdateModel(2)
+    elseif obj == "Btn_Three" then
+        self:UpdateModel(3)
     end
 end
 
@@ -82,13 +82,13 @@ function UIModelPanel:OnModelClick(name)
 end
 
 function UIModelPanel:UpdateModel(index)
-    local isModelExist = self.uiModel:isModelExist(index)
+    local isModelExist = self.uiModel:IsModelExist(index)
     if not isModelExist then
-        local character = SceneCharacter.CreateSceneCharacterInf(ResPath[index + 1] or "")
-        self.uiModel:AddModel(character)
+        local character = SceneCharacter.CreateSceneCharacterInf(ResPath[index] or "")
+        self.uiModel:SetModelAt(index,character)
     end
     self.uiModel:UpdateModelShownIndex(index)
-    self.uiModel:ImportSetting(SettingNames[index + 1] or "")
+    self.uiModel:ImportSetting(SettingNames[index] or "")
 end
 
 return UIModelPanel

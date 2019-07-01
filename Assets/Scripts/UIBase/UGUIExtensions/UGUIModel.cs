@@ -91,6 +91,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     /// UGUIModel内部维护模型数组,不在Lua中进行维护
     /// </summary>
     private IList<ISceneCharacter> modelList;
+    private IDictionary<int, int> indexMap;
 
     public Transform Model
     {
@@ -143,6 +144,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         modelRoot.localRotation = Quaternion.identity;
 
         modelList = new List<ISceneCharacter>();
+        indexMap = new Dictionary<int, int>();
     }
 
     protected override void OnEnable()
@@ -266,8 +268,6 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         base.OnDestroy();
         if (null != root)
         {
-            Destroy(root);
-            root = null;
             modelCamera = null;
             modelRoot = null;
             model = null;
@@ -277,10 +277,18 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
             hitInfos = null;
             for (int i = 0; i < modelList.Count; i++)
             {
-                modelList[i].Release();
+                if (null != modelList[i])
+                {
+                    modelList[i].Release();
+                }
             }
             modelList.Clear();
             modelList = null;
+            indexMap.Clear();
+            indexMap = null;
+
+            Destroy(root);
+            root = null;
         }
     }
 
@@ -289,37 +297,61 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         UpdateCameraEffect();
     }
 
-    public void AddModel(ISceneCharacter sceneCharacter)
+    public bool IsModelExist(int index)
     {
-        modelList.Add(sceneCharacter);
-    }
-
-    public bool isModelExist(int index)
-    {
-        if(index < modelList.Count)
+        int realIndex;
+        if (indexMap.TryGetValue(index, out realIndex))
         {
-            return null != modelList[index];
+            if (realIndex < modelList.Count)
+            {
+                return null != modelList[realIndex];
+            }
         }
         return false;
     }
 
-    public ISceneCharacter GetModelAtIndex(int index)
+    public void SetModelAt(int index, ISceneCharacter sceneCharacter)
     {
-        if (index < modelList.Count)
+        int realIndex;
+        if (indexMap.TryGetValue(index, out realIndex))
         {
-            return modelList[index];
+            modelList[realIndex] = sceneCharacter;
+        }
+        else
+        {
+            modelList.Add(sceneCharacter);
+            indexMap[index] = modelList.Count - 1;
+        }
+    }
+
+    public ISceneCharacter GetModelAt(int index)
+    {
+        int realIndex;
+        if (indexMap.TryGetValue(index, out realIndex))
+        {
+            if (realIndex < modelList.Count)
+            {
+                return modelList[realIndex];
+            }
         }
         return null;
     }
 
     public void UpdateModelShownIndex(int index)
     {
-        if (index < modelList.Count)
+        //先全部隐藏，然后再显示指定index的
+        for (int i = 0; i < modelList.Count; i++)
         {
-            if (null != modelList[index])
+            if (null != modelList[i])
             {
-                Model = modelList[index].transform;
+                modelList[i].Visible = false;
             }
+        }
+        var selectModel = GetModelAt(index);
+        if (null != selectModel)
+        {
+            selectModel.Visible = true;
+            Model = selectModel.transform;
         }
     }
 
