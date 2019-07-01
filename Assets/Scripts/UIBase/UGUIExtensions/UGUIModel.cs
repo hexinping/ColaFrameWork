@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -78,7 +78,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     private static Vector3 curPos = Vector3.zero;
     private Transform model;
     private int frameCount = 1;
-    private bool isInEditor = false;
+    private bool isInitInEditor = false;
 
     private Vector3 tempRelaPosition = Vector3.zero;
     private Vector3 tempOffset = Vector3.zero;
@@ -104,9 +104,9 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         }
     }
 
-    public float ModelCameraDepth
+    private float ModelCameraDepth
     {
-        get { return ModelCameraDepth; }
+        get { return modelCameraDepth; }
         set
         {
             modelCameraDepth = value;
@@ -124,6 +124,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     protected override void Awake()
     {
         base.Awake();
+        isInitInEditor = false;
         uiCamera = GUIHelper.GetUICamera();
         rectTransform = this.GetComponent<RectTransform>();
         root = new GameObject("uguiModel");
@@ -131,7 +132,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         curPos += new Vector3(200, 0, 0);
 
         modelCamera = new GameObject("modelCamera", typeof(Camera)).GetComponent<Camera>();
-        modelCameraDepth = modelCamera.depth + 1.0f;
+        ModelCameraDepth = uiCamera.depth + 1.0f;
         modelCamera.cullingMask = LayerMask.GetMask(UIModelLayerTag);
         modelCamera.clearFlags = CameraClearFlags.Nothing;
         modelCamera.fieldOfView = fieldOfView;
@@ -381,7 +382,9 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
                 cameraYaw = modelData.cameraYaw;
                 cameraDistance = modelData.cameraDistance;
                 cameraHeightOffset = modelData.cameraHeightOffset;
-                modelCameraDepth = modelData.modelCameraDepth;
+                //暂时取消ModelCameraDepth读取配置，统一为UICameraDepth + 1
+                //ModelCameraDepth = modelData.modelCameraDepth;
+                ModelCameraDepth = uiCamera.depth + 1.0f;
                 positionX = modelData.positionX;
                 positionZ = modelData.positionZ;
             }
@@ -394,9 +397,9 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     {
         cameraPitch = 0;
         cameraYaw = 90;
-        cameraDistance = 7;
+        cameraDistance = 5;
         cameraHeightOffset = 0.0f;
-        modelCameraDepth = 6;
+        ModelCameraDepth = 7;
         positionX = 0;
         positionZ = 0;
     }
@@ -484,6 +487,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
             {
                 model = null;
             }
+
             ImportSetting(settingName);
         }
     }
@@ -493,7 +497,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
     [ExecuteInEditMode]
     public void InitInEditor(Camera camera)
     {
-        if (!gameObject.activeSelf)
+        if (!gameObject.activeSelf || isInitInEditor)
         {
             return;
         }
@@ -514,7 +518,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
             modelCameraObj = new GameObject("model_camera_in_editor", typeof(Camera));
         }
         modelCamera = modelCameraObj.GetComponent<Camera>();
-        modelCameraDepth = modelCamera.depth + 1.0f;
+        ModelCameraDepth = uiCamera.depth + 1.0f;
         modelCamera.cullingMask = LayerMask.GetMask(UIModelLayerTag);
         modelCamera.clearFlags = CameraClearFlags.Nothing;
         modelCamera.fieldOfView = fieldOfView;
@@ -539,7 +543,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         {
             model = null;
         }
-        isInEditor = true;
+        isInitInEditor = true;
     }
 
     [LuaInterface.NoToLua]

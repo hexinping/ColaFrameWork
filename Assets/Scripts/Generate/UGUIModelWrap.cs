@@ -22,7 +22,6 @@ public class UGUIModelWrap
 		L.RegVar("cameraHeightOffset", get_cameraHeightOffset, set_cameraHeightOffset);
 		L.RegVar("onModelClick", get_onModelClick, set_onModelClick);
 		L.RegVar("Model", get_Model, set_Model);
-		L.RegVar("ModelCameraDepth", get_ModelCameraDepth, set_ModelCameraDepth);
 		L.EndClass();
 	}
 
@@ -289,25 +288,6 @@ public class UGUIModelWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_ModelCameraDepth(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
-			float ret = obj.ModelCameraDepth;
-			LuaDLL.lua_pushnumber(L, ret);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index ModelCameraDepth on a nil value");
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_cameraHeightOffset(IntPtr L)
 	{
 		object o = null;
@@ -361,25 +341,6 @@ public class UGUIModelWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Model on a nil value");
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int set_ModelCameraDepth(IntPtr L)
-	{
-		object o = null;
-
-		try
-		{
-			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
-			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
-			obj.ModelCameraDepth = arg0;
-			return 0;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e, o, "attempt to index ModelCameraDepth on a nil value");
 		}
 	}
 }
