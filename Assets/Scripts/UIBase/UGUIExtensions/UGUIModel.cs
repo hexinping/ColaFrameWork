@@ -121,6 +121,7 @@ public class UGUIModel : UIBehaviour, IPointerClickHandler, IDragHandler, IPoint
         uiCamera = GUIHelper.GetUICamera();
         rectTransform = this.GetComponent<RectTransform>();
         root = new GameObject("uguiModel");
+        GameObject.DontDestroyOnLoad(root);
         root.transform.position = curPos;
         curPos += new Vector3(200, 0, 0);
 
