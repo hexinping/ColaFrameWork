@@ -57,6 +57,7 @@ public static class GUIHelper
             //创建画布根节点，相机节点，3D物体根节点
             int uiLayer = LayerMask.NameToLayer("UI");
             GameObject rootObj = new GameObject("UGUIRoot");
+            GameObject.DontDestroyOnLoad(rootObj);
             rootObj.layer = uiLayer;
 
             uiRootObj = new GameObject("Canvas");
@@ -91,12 +92,14 @@ public static class GUIHelper
 
             uiRootObj.AddComponent<GraphicRaycaster>();
             GameObject eventSystem = new GameObject("EventSystem");
+            GameObject.DontDestroyOnLoad(eventSystem);
             eventSystem.AddComponent<EventSystem>();
             eventSystem.AddComponent<StandaloneInputModule>();
 
             uiRoot = uguiRoot;
 
             GameObject bgCameraObj = new GameObject("BackgroundCamera");
+            GameObject.DontDestroyOnLoad(bgCameraObj);
             Camera bgCamera = bgCameraObj.AddComponent<Camera>();
             bgCamera.depth = 0;
             bgCamera.backgroundColor = Color.black;
@@ -113,6 +116,7 @@ public static class GUIHelper
         {
             //主相机的根节点
             GameObject mainCameraRootObj = new GameObject("Main Camera Root");
+            GameObject.DontDestroyOnLoad(mainCameraRootObj);
 
             //创建主相机并设置参数
             mainCameraObj = new GameObject("Main Camera");
@@ -143,6 +147,7 @@ public static class GUIHelper
         if (null == modelOutlineCameraObj)
         {
             modelOutlineCameraObj = new GameObject("ModelOutlineCamera");
+            GameObject.DontDestroyOnLoad(modelOutlineCameraObj);
             Camera camera = modelOutlineCameraObj.AddComponent<Camera>();
             camera.cullingMask = DefaultSceneCullMask;
             modelOutlineCameraObj.AddComponent<ImageEffectUIBlur>();
