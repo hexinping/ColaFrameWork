@@ -24,7 +24,8 @@ public class Common_UtilsWrap
 		L.RegFunction("GetUICamera", GetUICamera);
 		L.RegFunction("GetMainCamera", GetMainCamera);
 		L.RegFunction("GetMainGameObj", GetMainGameObj);
-		L.RegFunction("GetModelOutlineCameraObj", GetModelOutlineCameraObj);
+		L.RegFunction("GetEffectCameraObj", GetEffectCameraObj);
+		L.RegFunction("GetEffectCamera", GetEffectCamera);
 		L.RegFunction("GetBatteryLevel", GetBatteryLevel);
 		L.RegFunction("GetBatteryStatus", GetBatteryStatus);
 		L.RegFunction("GetNetworkStatus", GetNetworkStatus);
@@ -356,12 +357,28 @@ public class Common_UtilsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int GetModelOutlineCameraObj(IntPtr L)
+	static int GetEffectCameraObj(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.GameObject o = Common_Utils.GetModelOutlineCameraObj();
+			UnityEngine.GameObject o = Common_Utils.GetEffectCameraObj();
+			ToLua.PushSealed(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetEffectCamera(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			UnityEngine.Camera o = Common_Utils.GetEffectCamera();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}

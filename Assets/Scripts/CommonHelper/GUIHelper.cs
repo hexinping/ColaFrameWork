@@ -40,9 +40,14 @@ public static class GUIHelper
     private static GameObject mainCameraObj;
 
     /// <summary>
-    /// 模型描边相机节点
+    /// Effect相机节点
     /// </summary>
-    private static GameObject modelOutlineCameraObj;
+    private static GameObject effectCameraObj;
+
+    /// <summary>
+    /// Effect相机
+    /// </summary>
+    private static Camera effectCamera;
 
     /// <summary>
     /// 场景相机的culling mask
@@ -142,17 +147,16 @@ public static class GUIHelper
         }
     }
 
-    private static void CreateModelOutlineCamera()
+    private static void CreateEffectCamera()
     {
-        if (null == modelOutlineCameraObj)
+        if (null == effectCameraObj)
         {
-            modelOutlineCameraObj = new GameObject("ModelOutlineCamera");
-            GameObject.DontDestroyOnLoad(modelOutlineCameraObj);
-            Camera camera = modelOutlineCameraObj.AddComponent<Camera>();
-            camera.cullingMask = DefaultSceneCullMask;
-            modelOutlineCameraObj.AddComponent<ImageEffectUIBlur>();
-            camera.Render();
-            camera.enabled = false;
+            effectCameraObj = new GameObject("EffectCamera");
+            GameObject.DontDestroyOnLoad(effectCameraObj);
+            effectCamera = effectCameraObj.AddComponent<Camera>();
+            effectCamera.cullingMask = DefaultSceneCullMask;
+            effectCameraObj.AddComponent<ImageEffectUIBlur>();
+            effectCamera.enabled = false;
         }
     }
 
@@ -218,12 +222,18 @@ public static class GUIHelper
     }
 
     /// <summary>
-    /// 获取模型描边相机节点
+    /// 获取Effect相机节点
     /// </summary>
     /// <returns></returns>
-    public static GameObject GetModelOutlineCameraObj()
+    public static GameObject GetEffectCameraObj()
     {
-        CreateModelOutlineCamera();
-        return modelOutlineCameraObj;
+        CreateEffectCamera();
+        return effectCameraObj;
+    }
+
+    public static Camera GetEffectCamera()
+    {
+        CreateEffectCamera();
+        return effectCamera;
     }
 }

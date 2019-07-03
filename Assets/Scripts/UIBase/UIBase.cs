@@ -190,7 +190,7 @@ public class UIBase : IEventHandler,IUGUIEventHandler
         UnAttachListener(Panel);
         if (UILevel == UILevel.Level1)
         {
-            GUIHelper.GetModelOutlineCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture = null;
+            GUIHelper.GetEffectCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture = null;
         }
         if (null != Panel)
         {

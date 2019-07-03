@@ -373,7 +373,7 @@ public class UIMgr : IViewManager, IEventHandler
         if (null != rawImage)
         {
             rawImage.gameObject.SetActive(false);
-            RenderTexture texture = GUIHelper.GetModelOutlineCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture;
+            RenderTexture texture = GUIHelper.GetEffectCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture;
             if (texture)
             {
                 rawImage.texture = texture;

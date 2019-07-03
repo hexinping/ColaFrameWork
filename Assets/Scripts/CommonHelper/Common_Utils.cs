@@ -295,12 +295,17 @@ public static class Common_Utils
     }
 
     /// <summary>
-    /// 获取模型描边相机节点
+    /// 获取Effect相机节点
     /// </summary>
     /// <returns></returns>
-    public static GameObject GetModelOutlineCameraObj()
+    public static GameObject GetEffectCameraObj()
     {
-        return GUIHelper.GetModelOutlineCameraObj();
+        return GUIHelper.GetEffectCameraObj();
+    }
+
+    public static Camera GetEffectCamera()
+    {
+        return GUIHelper.GetEffectCamera();
     }
 
     /// <summary>
@@ -512,7 +517,7 @@ public static class Common_Utils
         if (null != rawImage)
         {
             rawImage.gameObject.SetActive(false);
-            RenderTexture texture = GUIHelper.GetModelOutlineCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture;
+            RenderTexture texture = GUIHelper.GetEffectCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture;
             if (texture)
             {
                 rawImage.texture = texture;
@@ -526,7 +531,7 @@ public static class Common_Utils
     /// </summary>
     public static void DestroyUIBlur()
     {
-        GUIHelper.GetModelOutlineCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture = null;
+        GUIHelper.GetEffectCameraObj().GetComponent<ImageEffectUIBlur>().FinalTexture = null;
     }
 
 
@@ -549,8 +554,8 @@ public static class Common_Utils
         Transform.position = new Vector3(84, 17, 20);
         Transform.localRotation = Quaternion.Euler(44.16f, -152, 4.6f);
 
-        var modelOutlineCamera = GUIHelper.GetModelOutlineCameraObj().transform;
-        modelOutlineCamera.position = Transform.position;
-        modelOutlineCamera.localRotation = Transform.localRotation;
+        var effectCamera = GUIHelper.GetEffectCameraObj().transform;
+        effectCamera.position = Transform.position;
+        effectCamera.localRotation = Transform.localRotation;
     }
 }
