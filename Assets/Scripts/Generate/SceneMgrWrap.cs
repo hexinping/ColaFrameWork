@@ -7,10 +7,10 @@ public class SceneMgrWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(SceneMgr), typeof(UnityEngine.MonoBehaviour));
-		L.RegFunction("LoadAdditiveLevelAsync", LoadAdditiveLevelAsync);
-		L.RegFunction("LoadLevel", LoadLevel);
-		L.RegFunction("LoadLevelAsync", LoadLevelAsync);
-		L.RegFunction("UnLoadLevelAsync", UnLoadLevelAsync);
+		L.RegFunction("LoadSceneAdditiveAsync", LoadSceneAdditiveAsync);
+		L.RegFunction("LoadScene", LoadScene);
+		L.RegFunction("LoadSceneAsync", LoadSceneAsync);
+		L.RegFunction("UnloadSceneAsync", UnloadSceneAsync);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("currentScene", get_currentScene, set_currentScene);
@@ -18,15 +18,15 @@ public class SceneMgrWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadAdditiveLevelAsync(IntPtr L)
+	static int LoadSceneAdditiveAsync(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
 			SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
-			OnAdditiveLevelLoaded arg1 = (OnAdditiveLevelLoaded)ToLua.CheckDelegate<OnAdditiveLevelLoaded>(L, 3);
-			obj.LoadAdditiveLevelAsync(arg0, arg1);
+			OnSceneNameChanged arg1 = (OnSceneNameChanged)ToLua.CheckDelegate<OnSceneNameChanged>(L, 3);
+			obj.LoadSceneAdditiveAsync(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)
@@ -36,14 +36,14 @@ public class SceneMgrWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadLevel(IntPtr L)
+	static int LoadScene(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
 			SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
-			obj.LoadLevel(arg0);
+			obj.LoadScene(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -53,31 +53,31 @@ public class SceneMgrWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadLevelAsync(IntPtr L)
+	static int LoadSceneAsync(IntPtr L)
 	{
 		try
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 3 && TypeChecker.CheckTypes<string, OnAdditiveLevelLoaded>(L, 2))
+			if (count == 3 && TypeChecker.CheckTypes<string, OnSceneNameChanged>(L, 2))
 			{
 				SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
 				string arg0 = ToLua.ToString(L, 2);
-				OnAdditiveLevelLoaded arg1 = (OnAdditiveLevelLoaded)ToLua.ToObject(L, 3);
-				obj.LoadLevelAsync(arg0, arg1);
+				OnSceneNameChanged arg1 = (OnSceneNameChanged)ToLua.ToObject(L, 3);
+				obj.LoadSceneAsync(arg0, arg1);
 				return 0;
 			}
-			else if (count == 3 && TypeChecker.CheckTypes<int, OnLevelLoaded>(L, 2))
+			else if (count == 3 && TypeChecker.CheckTypes<int, OnSceneIndexChanged>(L, 2))
 			{
 				SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
 				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
-				OnLevelLoaded arg1 = (OnLevelLoaded)ToLua.ToObject(L, 3);
-				obj.LoadLevelAsync(arg0, arg1);
+				OnSceneIndexChanged arg1 = (OnSceneIndexChanged)ToLua.ToObject(L, 3);
+				obj.LoadSceneAsync(arg0, arg1);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: SceneMgr.LoadLevelAsync");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: SceneMgr.LoadSceneAsync");
 			}
 		}
 		catch (Exception e)
@@ -87,15 +87,15 @@ public class SceneMgrWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int UnLoadLevelAsync(IntPtr L)
+	static int UnloadSceneAsync(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
 			SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
-			OnAdditiveLevelLoaded arg1 = (OnAdditiveLevelLoaded)ToLua.CheckDelegate<OnAdditiveLevelLoaded>(L, 3);
-			obj.UnLoadLevelAsync(arg0, arg1);
+			OnSceneNameChanged arg1 = (OnSceneNameChanged)ToLua.CheckDelegate<OnSceneNameChanged>(L, 3);
+			obj.UnloadSceneAsync(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)

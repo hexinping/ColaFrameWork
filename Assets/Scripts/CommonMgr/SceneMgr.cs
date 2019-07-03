@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
-public delegate void OnLevelLoaded(int levelIndex);
-
-public delegate void OnAdditiveLevelLoaded(string levelName);
-
+public delegate void OnSceneIndexChanged(int sceneIndex);
+public delegate void OnSceneNameChanged(string sceneName);
 
 /// <summary>
 /// 场景管理器
@@ -26,147 +23,151 @@ public class SceneMgr : MonoBehaviour
     /// <summary>
     /// 以异步-叠加方式加载场景
     /// </summary>
-    /// <param name="levelName"></param>
-    /// <param name="onAdditiveLevelLoaded"></param>
-    public void LoadAdditiveLevelAsync(string levelName, OnAdditiveLevelLoaded onAdditiveLevelLoaded)
+    /// <param name="sceneName"></param>
+    /// <param name="onsceneChanged"></param>
+    public void LoadSceneAdditiveAsync(string sceneName, OnSceneNameChanged onsceneChanged)
     {
-        StartCoroutine(LoadTargetLevelAdditiveAsync(levelName, onAdditiveLevelLoaded));
+        StartCoroutine(LoadTargetSceneAdditiveAsync(sceneName, onsceneChanged));
     }
 
     /// <summary>
     /// 以异步-叠加方式加载场景(携程调用)
     /// </summary>
-    /// <param name="levelName"></param>
-    /// <param name="onAdditiveLevelLoaded"></param>
+    /// <param name="sceneName"></param>
+    /// <param name="onsceneChanged"></param>
     /// <returns></returns>
-    private IEnumerator LoadTargetLevelAdditiveAsync(string levelName, OnAdditiveLevelLoaded onAdditiveLevelLoaded)
+    private IEnumerator LoadTargetSceneAdditiveAsync(string sceneName, OnSceneNameChanged onsceneChanged)
     {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         while (!asyncOperation.isDone)
         {
             yield return asyncOperation;
         }
         currentScene = SceneManager.GetActiveScene();
-        if (null != onAdditiveLevelLoaded)
+        if (null != onsceneChanged)
         {
-            onAdditiveLevelLoaded(levelName);
+            onsceneChanged(sceneName);
         }
-        Scene scene = SceneManager.GetSceneByName(levelName);
+        Scene scene = SceneManager.GetSceneByName(sceneName);
         SceneManager.SetActiveScene(scene);
     }
 
     /// <summary>
     /// 以同步的方式加载场景
     /// </summary>
-    /// <param name="levelName"></param>
-    public void LoadLevel(string levelName)
+    /// <param name="sceneName"></param>
+    public void LoadScene(string sceneName)
     {
-        if (SceneManager.GetActiveScene().name == levelName)
+        if (SceneManager.GetActiveScene().name == sceneName)
         {
-            Debug.LogWarning(string.Format("名为{0}的场景已经加载过了！", levelName));
+            Debug.LogWarning(string.Format("名为{0}的场景已经加载过了！", sceneName));
         }
-        SceneManager.LoadScene(levelName);
+        SceneManager.LoadScene(sceneName);
         currentScene = SceneManager.GetActiveScene();
     }
 
     /// <summary>
     /// 以异步-单独的方式加载场景
     /// </summary>
-    /// <param name="levelIndex"></param>
-    /// <param name="onLevelLoaded"></param>
-    public void LoadLevelAsync(int levelIndex, OnLevelLoaded onLevelLoaded)
+    /// <param name="sceneIndex"></param>
+    /// <param name="onSceneChanged"></param>
+    public void LoadSceneAsync(int sceneIndex, OnSceneIndexChanged onSceneChanged)
     {
-        StartCoroutine(LoadTargetLevelAsync(levelIndex, onLevelLoaded));
+        StartCoroutine(LoadTargetSceneAsync(sceneIndex, onSceneChanged));
     }
 
     /// <summary>
     /// 以异步-单独的方式加载场景(携程调用)
     /// </summary>
-    /// <param name="levelIndex"></param>
-    /// <param name="onLevelLoaded"></param>
+    /// <param name="sceneIndex"></param>
+    /// <param name="onSceneChanged"></param>
     /// <returns></returns>
-    private IEnumerator LoadTargetLevelAsync(int levelIndex, OnLevelLoaded onLevelLoaded)
+    private IEnumerator LoadTargetSceneAsync(int sceneIndex, OnSceneIndexChanged onSceneChanged)
     {
-        if (SceneManager.GetActiveScene().buildIndex == levelIndex)
+        if (SceneManager.GetActiveScene().buildIndex == sceneIndex)
         {
-            Debug.LogWarning(string.Format("索引为{0}的场景已经加载过了！", levelIndex));
+            Debug.LogWarning(string.Format("索引为{0}的场景已经加载过了！", sceneIndex));
         }
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelIndex, LoadSceneMode.Single);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
         while (!asyncOperation.isDone)
         {
             yield return asyncOperation;
         }
         currentScene = SceneManager.GetActiveScene();
-        if (null != onLevelLoaded)
+        if (null != onSceneChanged)
         {
-            onLevelLoaded(levelIndex);
+            onSceneChanged(sceneIndex);
         }
+        Scene scene = SceneManager.GetSceneAt(sceneIndex);
+        SceneManager.SetActiveScene(scene);
     }
 
     /// <summary>
     /// 以异步-单独的方式加载场景
     /// </summary>
-    /// <param name="levelName"></param>
-    /// <param name="onLevelLoaded"></param>
-    public void LoadLevelAsync(string levelName, OnAdditiveLevelLoaded onLevelLoaded)
+    /// <param name="sceneName"></param>
+    /// <param name="onSceneChanged"></param>
+    public void LoadSceneAsync(string sceneName, OnSceneNameChanged onSceneChanged)
     {
-        StartCoroutine(LoadTargetLevelAsync(levelName, onLevelLoaded));
+        StartCoroutine(LoadTargetSceneAsync(sceneName, onSceneChanged));
     }
 
     /// <summary>
     /// 以异步-单独的方式加载场景(携程调用)
     /// </summary>
-    /// <param name="levelName"></param>
-    /// <param name="onLevelLoaded"></param>
+    /// <param name="sceneName"></param>
+    /// <param name="onSceneChanged"></param>
     /// <returns></returns>
-    private IEnumerator LoadTargetLevelAsync(string levelName, OnAdditiveLevelLoaded onLevelLoaded)
+    private IEnumerator LoadTargetSceneAsync(string sceneName, OnSceneNameChanged onSceneChanged)
     {
-        if (SceneManager.GetActiveScene().name == levelName)
+        if (SceneManager.GetActiveScene().name == sceneName)
         {
-            Debug.LogWarning(string.Format("名为{0}的场景已经加载过了！", levelName));
+            Debug.LogWarning(string.Format("名为{0}的场景已经加载过了！", sceneName));
         }
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Single);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         while (!asyncOperation.isDone)
         {
             yield return asyncOperation;
         }
         currentScene = SceneManager.GetActiveScene();
         yield return null;
-        if (null != onLevelLoaded)
+        if (null != onSceneChanged)
         {
-            onLevelLoaded(levelName);
+            onSceneChanged(sceneName);
         }
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        SceneManager.SetActiveScene(scene);
     }
 
     /// <summary>
     /// 以异步方式卸载场景
     /// </summary>
     /// <param name="sceneName"></param>
-    /// <param name="onLevelUnLoaded"></param>
-    public void UnLoadLevelAsync(string sceneName, OnAdditiveLevelLoaded onLevelUnLoaded)
+    /// <param name="onSceneChanged"></param>
+    public void UnloadSceneAsync(string sceneName, OnSceneNameChanged onSceneChanged)
     {
-        StartCoroutine(UnLoadTargetLevelAsync(sceneName, onLevelUnLoaded));
+        StartCoroutine(UnloadTargeSceneAsync(sceneName, onSceneChanged));
     }
 
     /// <summary>
     /// 以异步方式卸载场景(携程调用)
     /// </summary>
-    /// <param name="levelName"></param>
-    /// <param name="onLevelUnLoaded"></param>
+    /// <param name="sceneName"></param>
+    /// <param name="onSceneChanged"></param>
     /// <returns></returns>
-    private IEnumerator UnLoadTargetLevelAsync(string levelName, OnAdditiveLevelLoaded onLevelUnLoaded)
+    private IEnumerator UnloadTargeSceneAsync(string sceneName, OnSceneNameChanged onSceneChanged)
     {
-        AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(levelName);
+        AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
         while (!asyncOperation.isDone)
         {
             yield return asyncOperation;
         }
         currentScene = SceneManager.GetActiveScene();
         yield return null;
-        if (null != onLevelUnLoaded)
+        if (null != onSceneChanged)
         {
-            onLevelUnLoaded(levelName);
+            onSceneChanged(sceneName);
         }
     }
 }

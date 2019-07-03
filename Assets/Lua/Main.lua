@@ -78,7 +78,7 @@ function Main()
 	initialize()
 
     UIManager.Instance():Open(ECEnumType.UIEnum.Loading)
-    Common_Utils.GetSceneMgr():LoadAdditiveLevelAsync("xinshoucun",function(sceneName)
+    Common_Utils.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun",function(sceneName)
         print("-------------->成功加载场景")
 		Common_Utils.ResetMainCameraPostion()
         UIManager.Instance():Close(ECEnumType.UIEnum.Loading)

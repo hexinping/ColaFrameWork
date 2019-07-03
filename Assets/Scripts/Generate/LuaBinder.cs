@@ -30,8 +30,8 @@ public static class LuaBinder
 		L.RegFunction("RectValueChangeAction", RectValueChangeAction);
 		L.RegFunction("FloatValueChangeAction", FloatValueChangeAction);
 		L.RegFunction("BoolValueChangeAction", BoolValueChangeAction);
-		L.RegFunction("OnAdditiveLevelLoaded", OnAdditiveLevelLoaded);
-		L.RegFunction("OnLevelLoaded", OnLevelLoaded);
+		L.RegFunction("OnSceneNameChanged", OnSceneNameChanged);
+		L.RegFunction("OnSceneIndexChanged", OnSceneIndexChanged);
 		L.BeginModule("UnityEngine");
 		UnityEngine_PlayerPrefsWrap.Register(L);
 		UnityEngine_ComponentWrap.Register(L);
@@ -335,7 +335,7 @@ public static class LuaBinder
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int OnAdditiveLevelLoaded(IntPtr L)
+	static int OnSceneNameChanged(IntPtr L)
 	{
 		try
 		{
@@ -344,13 +344,13 @@ public static class LuaBinder
 
 			if (count == 1)
 			{
-				Delegate arg1 = DelegateTraits<OnAdditiveLevelLoaded>.Create(func);
+				Delegate arg1 = DelegateTraits<OnSceneNameChanged>.Create(func);
 				ToLua.Push(L, arg1);
 			}
 			else
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
-				Delegate arg1 = DelegateTraits<OnAdditiveLevelLoaded>.Create(func, self);
+				Delegate arg1 = DelegateTraits<OnSceneNameChanged>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;
@@ -362,7 +362,7 @@ public static class LuaBinder
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int OnLevelLoaded(IntPtr L)
+	static int OnSceneIndexChanged(IntPtr L)
 	{
 		try
 		{
@@ -371,13 +371,13 @@ public static class LuaBinder
 
 			if (count == 1)
 			{
-				Delegate arg1 = DelegateTraits<OnLevelLoaded>.Create(func);
+				Delegate arg1 = DelegateTraits<OnSceneIndexChanged>.Create(func);
 				ToLua.Push(L, arg1);
 			}
 			else
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
-				Delegate arg1 = DelegateTraits<OnLevelLoaded>.Create(func, self);
+				Delegate arg1 = DelegateTraits<OnSceneIndexChanged>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

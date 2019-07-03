@@ -35,8 +35,8 @@ public class DelegateFactory
 		dict.Add(typeof(FloatValueChangeAction), factory.FloatValueChangeAction);
 		dict.Add(typeof(BoolValueChangeAction), factory.BoolValueChangeAction);
 		dict.Add(typeof(System.Action<string>), factory.System_Action_string);
-		dict.Add(typeof(OnAdditiveLevelLoaded), factory.OnAdditiveLevelLoaded);
-		dict.Add(typeof(OnLevelLoaded), factory.OnLevelLoaded);
+		dict.Add(typeof(OnSceneNameChanged), factory.OnSceneNameChanged);
+		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
@@ -66,8 +66,8 @@ public class DelegateFactory
 		DelegateTraits<FloatValueChangeAction>.Init(factory.FloatValueChangeAction);
 		DelegateTraits<BoolValueChangeAction>.Init(factory.BoolValueChangeAction);
 		DelegateTraits<System.Action<string>>.Init(factory.System_Action_string);
-		DelegateTraits<OnAdditiveLevelLoaded>.Init(factory.OnAdditiveLevelLoaded);
-		DelegateTraits<OnLevelLoaded>.Init(factory.OnLevelLoaded);
+		DelegateTraits<OnSceneNameChanged>.Init(factory.OnSceneNameChanged);
+		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
@@ -97,8 +97,8 @@ public class DelegateFactory
 		TypeTraits<FloatValueChangeAction>.Init(factory.Check_FloatValueChangeAction);
 		TypeTraits<BoolValueChangeAction>.Init(factory.Check_BoolValueChangeAction);
 		TypeTraits<System.Action<string>>.Init(factory.Check_System_Action_string);
-		TypeTraits<OnAdditiveLevelLoaded>.Init(factory.Check_OnAdditiveLevelLoaded);
-		TypeTraits<OnLevelLoaded>.Init(factory.Check_OnLevelLoaded);
+		TypeTraits<OnSceneNameChanged>.Init(factory.Check_OnSceneNameChanged);
+		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
@@ -128,8 +128,8 @@ public class DelegateFactory
 		StackTraits<FloatValueChangeAction>.Push = factory.Push_FloatValueChangeAction;
 		StackTraits<BoolValueChangeAction>.Push = factory.Push_BoolValueChangeAction;
 		StackTraits<System.Action<string>>.Push = factory.Push_System_Action_string;
-		StackTraits<OnAdditiveLevelLoaded>.Push = factory.Push_OnAdditiveLevelLoaded;
-		StackTraits<OnLevelLoaded>.Push = factory.Push_OnLevelLoaded;
+		StackTraits<OnSceneNameChanged>.Push = factory.Push_OnSceneNameChanged;
+		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
@@ -1299,10 +1299,10 @@ public class DelegateFactory
 		ToLua.Push(L, o);
 	}
 
-	class OnAdditiveLevelLoaded_Event : LuaDelegate
+	class OnSceneNameChanged_Event : LuaDelegate
 	{
-		public OnAdditiveLevelLoaded_Event(LuaFunction func) : base(func) { }
-		public OnAdditiveLevelLoaded_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+		public OnSceneNameChanged_Event(LuaFunction func) : base(func) { }
+		public OnSceneNameChanged_Event(LuaFunction func, LuaTable self) : base(func, self) { }
 
 		public void Call(string param0)
 		{
@@ -1322,44 +1322,44 @@ public class DelegateFactory
 		}
 	}
 
-	public OnAdditiveLevelLoaded OnAdditiveLevelLoaded(LuaFunction func, LuaTable self, bool flag)
+	public OnSceneNameChanged OnSceneNameChanged(LuaFunction func, LuaTable self, bool flag)
 	{
 		if (func == null)
 		{
-			OnAdditiveLevelLoaded fn = delegate(string param0) { };
+			OnSceneNameChanged fn = delegate(string param0) { };
 			return fn;
 		}
 
 		if(!flag)
 		{
-			OnAdditiveLevelLoaded_Event target = new OnAdditiveLevelLoaded_Event(func);
-			OnAdditiveLevelLoaded d = target.Call;
+			OnSceneNameChanged_Event target = new OnSceneNameChanged_Event(func);
+			OnSceneNameChanged d = target.Call;
 			target.method = d.Method;
 			return d;
 		}
 		else
 		{
-			OnAdditiveLevelLoaded_Event target = new OnAdditiveLevelLoaded_Event(func, self);
-			OnAdditiveLevelLoaded d = target.CallWithSelf;
+			OnSceneNameChanged_Event target = new OnSceneNameChanged_Event(func, self);
+			OnSceneNameChanged d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}
 	}
 
-	bool Check_OnAdditiveLevelLoaded(IntPtr L, int pos)
+	bool Check_OnSceneNameChanged(IntPtr L, int pos)
 	{
-		return TypeChecker.CheckDelegateType(typeof(OnAdditiveLevelLoaded), L, pos);
+		return TypeChecker.CheckDelegateType(typeof(OnSceneNameChanged), L, pos);
 	}
 
-	void Push_OnAdditiveLevelLoaded(IntPtr L, OnAdditiveLevelLoaded o)
+	void Push_OnSceneNameChanged(IntPtr L, OnSceneNameChanged o)
 	{
 		ToLua.Push(L, o);
 	}
 
-	class OnLevelLoaded_Event : LuaDelegate
+	class OnSceneIndexChanged_Event : LuaDelegate
 	{
-		public OnLevelLoaded_Event(LuaFunction func) : base(func) { }
-		public OnLevelLoaded_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+		public OnSceneIndexChanged_Event(LuaFunction func) : base(func) { }
+		public OnSceneIndexChanged_Event(LuaFunction func, LuaTable self) : base(func, self) { }
 
 		public void Call(int param0)
 		{
@@ -1379,36 +1379,36 @@ public class DelegateFactory
 		}
 	}
 
-	public OnLevelLoaded OnLevelLoaded(LuaFunction func, LuaTable self, bool flag)
+	public OnSceneIndexChanged OnSceneIndexChanged(LuaFunction func, LuaTable self, bool flag)
 	{
 		if (func == null)
 		{
-			OnLevelLoaded fn = delegate(int param0) { };
+			OnSceneIndexChanged fn = delegate(int param0) { };
 			return fn;
 		}
 
 		if(!flag)
 		{
-			OnLevelLoaded_Event target = new OnLevelLoaded_Event(func);
-			OnLevelLoaded d = target.Call;
+			OnSceneIndexChanged_Event target = new OnSceneIndexChanged_Event(func);
+			OnSceneIndexChanged d = target.Call;
 			target.method = d.Method;
 			return d;
 		}
 		else
 		{
-			OnLevelLoaded_Event target = new OnLevelLoaded_Event(func, self);
-			OnLevelLoaded d = target.CallWithSelf;
+			OnSceneIndexChanged_Event target = new OnSceneIndexChanged_Event(func, self);
+			OnSceneIndexChanged d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}
 	}
 
-	bool Check_OnLevelLoaded(IntPtr L, int pos)
+	bool Check_OnSceneIndexChanged(IntPtr L, int pos)
 	{
-		return TypeChecker.CheckDelegateType(typeof(OnLevelLoaded), L, pos);
+		return TypeChecker.CheckDelegateType(typeof(OnSceneIndexChanged), L, pos);
 	}
 
-	void Push_OnLevelLoaded(IntPtr L, OnLevelLoaded o)
+	void Push_OnSceneIndexChanged(IntPtr L, OnSceneIndexChanged o)
 	{
 		ToLua.Push(L, o);
 	}
