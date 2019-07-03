@@ -240,12 +240,6 @@ public static class Common_Utils
         return CommonHelper.GetDeviceInfo();
     }
 
-
-    public static void SetSelectableTransition(Selectable selectable, int type)
-    {
-        selectable.transition = (Selectable.Transition)type;
-    }
-
     /// <summary>
     /// 返回UI画布的根节点
     /// </summary>
@@ -539,6 +533,11 @@ public static class Common_Utils
     public static SceneMgr GetSceneMgr()
     {
         return GameManager.GetInstance().GetSceneMgr();
+    }
+
+    public static void DelayInvokeNextFrame(Action action)
+    {
+        GameLauncher.Instance.DelayInvokeNextFrame(action);
     }
 
     public static void ResetMainCameraPostion()

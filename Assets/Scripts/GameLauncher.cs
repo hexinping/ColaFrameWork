@@ -231,4 +231,19 @@ public class GameLauncher : MonoBehaviour
     {
         assetPath = CommonHelper.GetAssetPath();
     }
+
+
+    public void DelayInvokeNextFrame(System.Action action)
+    {
+        StartCoroutine(InvokeNextFrame(action));
+    }
+
+    private IEnumerator InvokeNextFrame(System.Action action)
+    {
+        yield return 1;
+        if (null != action)
+        {
+            action();
+        }
+    }
 }

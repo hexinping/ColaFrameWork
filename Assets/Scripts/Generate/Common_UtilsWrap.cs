@@ -18,7 +18,6 @@ public class Common_UtilsWrap
 		L.RegFunction("FindChildByPath", FindChildByPath);
 		L.RegFunction("GetComponentByPath", GetComponentByPath);
 		L.RegFunction("GetDeviceInfo", GetDeviceInfo);
-		L.RegFunction("SetSelectableTransition", SetSelectableTransition);
 		L.RegFunction("GetUIRootObj", GetUIRootObj);
 		L.RegFunction("GetUICameraObj", GetUICameraObj);
 		L.RegFunction("GetUIRoot", GetUIRoot);
@@ -44,6 +43,7 @@ public class Common_UtilsWrap
 		L.RegFunction("ShowUIBlur", ShowUIBlur);
 		L.RegFunction("DestroyUIBlur", DestroyUIBlur);
 		L.RegFunction("GetSceneMgr", GetSceneMgr);
+		L.RegFunction("DelayInvokeNextFrame", DelayInvokeNextFrame);
 		L.RegFunction("ResetMainCameraPostion", ResetMainCameraPostion);
 		L.EndStaticLibs();
 	}
@@ -252,23 +252,6 @@ public class Common_UtilsWrap
 			string o = Common_Utils.GetDeviceInfo();
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetSelectableTransition(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.Selectable arg0 = (UnityEngine.UI.Selectable)ToLua.CheckObject<UnityEngine.UI.Selectable>(L, 1);
-			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
-			Common_Utils.SetSelectableTransition(arg0, arg1);
-			return 0;
 		}
 		catch (Exception e)
 		{
@@ -715,6 +698,22 @@ public class Common_UtilsWrap
 			SceneMgr o = Common_Utils.GetSceneMgr();
 			ToLua.Push(L, o);
 			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int DelayInvokeNextFrame(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
+			Common_Utils.DelayInvokeNextFrame(arg0);
+			return 0;
 		}
 		catch (Exception e)
 		{
