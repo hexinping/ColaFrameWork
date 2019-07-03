@@ -219,7 +219,7 @@ function UIBase:AttachListener(gameObject)
     -- BindFunction
     self.uguiMsgHandler.onClick = function(name)
         -- 添加对点击Blur的判断
-        if self.isShowUIBlur and name == "" then
+        if self.isShowUIBlur and name == "blur_".. self.PanelName then
             self:Destroy()
         end
         self:onClick(name)
