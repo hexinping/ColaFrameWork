@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,11 @@ using UnityEngine;
 /// </summary>
 public class SceneCharacter : ISceneCharacter
 {
+    /// <summary>
+    /// 角色动画控制器
+    /// </summary>
+    private IAnimCtrl animCtrl;
+
     public GameObject gameObject { get; set; }
 
     public Transform transform { get; set; }
@@ -46,6 +52,7 @@ public class SceneCharacter : ISceneCharacter
     {
         gameObject = entity;
         transform = entity.transform;
+        animCtrl = new CharAnimCtrl(entity);
     }
 
     /// <summary>
@@ -87,8 +94,24 @@ public class SceneCharacter : ISceneCharacter
         Rotation = Vector3.zero;
         Direction = Vector3.zero;
         transform = null;
+        animCtrl.Release();
 
         GameObject.Destroy(gameObject);
         gameObject = null;
+    }
+
+    public void PlayAnimation(string animName)
+    {
+        animCtrl.PlayAnimation(animName);
+    }
+
+    public void PlayAnimation(string animName, Action<bool> callback)
+    {
+        animCtrl.PlayAnimation(animName, callback);
+    }
+
+    public void StopPlay(string animName)
+    {
+        animCtrl.StopPlay(animName);
     }
 }

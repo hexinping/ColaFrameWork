@@ -9,6 +9,8 @@ public class SceneCharacterWrap
 		L.BeginClass(typeof(SceneCharacter), typeof(System.Object));
 		L.RegFunction("CreateSceneCharacterInf", CreateSceneCharacterInf);
 		L.RegFunction("CreateSceneCharacter", CreateSceneCharacter);
+		L.RegFunction("PlayAnimation", PlayAnimation);
+		L.RegFunction("StopPlay", StopPlay);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("gameObject", get_gameObject, set_gameObject);
 		L.RegVar("transform", get_transform, set_transform);
@@ -46,6 +48,56 @@ public class SceneCharacterWrap
 			SceneCharacter o = SceneCharacter.CreateSceneCharacter(arg0);
 			ToLua.PushObject(L, o);
 			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PlayAnimation(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2)
+			{
+				SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
+				string arg0 = ToLua.CheckString(L, 2);
+				obj.PlayAnimation(arg0);
+				return 0;
+			}
+			else if (count == 3)
+			{
+				SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
+				string arg0 = ToLua.CheckString(L, 2);
+				System.Action<bool> arg1 = (System.Action<bool>)ToLua.CheckDelegate<System.Action<bool>>(L, 3);
+				obj.PlayAnimation(arg0, arg1);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: SceneCharacter.PlayAnimation");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int StopPlay(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.StopPlay(arg0);
+			return 0;
 		}
 		catch (Exception e)
 		{

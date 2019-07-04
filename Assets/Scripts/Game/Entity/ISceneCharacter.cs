@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 场景角色的接口
 /// </summary>
-public interface ISceneCharacter
+public interface ISceneCharacter : IAnimBehavior
 {
     /// <summary>
     /// 角色实际的承载的GameObject
