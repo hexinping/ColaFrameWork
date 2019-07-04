@@ -19,6 +19,15 @@ local ResPath = {
     "Arts/Avatar/Girl.prefab",
 }
 
+local AnimNames = {
+    "Idle",
+    "Walk",
+    "Talk",
+    "Attack01",
+    "Damage",
+    "Dead",
+}
+
 -- 获取UI实例的接口
 function UIModelPanel.Instance()
     if nil == _instance then
@@ -30,6 +39,8 @@ end
 -- virtual 子类可以初始化一些变量,ResId要在这里赋值
 function UIModelPanel:InitParam()
     self.ResId = 104
+    self.animIndex = 1
+    self.curChar = nil
 end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
@@ -48,6 +59,9 @@ end
 -- 界面销毁的过程中触发
 function UIModelPanel:OnDestroy()
     UIBase.OnDestroy(self)
+    self.ResId = 0
+    self.animIndex = -1;
+    self.curChar = nil
 end
 
 -- 注册UI事件监听
@@ -72,6 +86,22 @@ function UIModelPanel:onClick(name)
         self:DestroySelf()
     elseif name == "Btn_Switch" then
         Common_Utils.GetSceneMgr():UnLoadLevelAsync("xinshoucun",nil)
+    elseif name == "Btn_AnimBefore" then
+        if nil ~= self.curChar then
+            self.animIndex = self.animIndex -1
+            if self.animIndex < 1 then
+                self.animIndex = #AnimNames
+            end
+            self.curChar:PlayAnimation(AnimNames[self.animIndex])
+        end
+    elseif name == "Btn_AnimBack" then
+        if nil ~= self.curChar then
+            self.animIndex = self.animIndex + 1
+            if self.animIndex > #AnimNames then
+                self.animIndex = 1
+            end
+            self.curChar:PlayAnimation(AnimNames[self.animIndex])
+        end
     end
 end
 
@@ -93,6 +123,7 @@ function UIModelPanel:UpdateModel(index)
     end
     self.uiModel:UpdateModelShownIndex(index)
     self.uiModel:ImportSetting(SettingNames[index] or "")
+    self.curChar = self.uiModel:GetModelAt(index)
 end
 
 return UIModelPanel
