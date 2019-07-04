@@ -99,7 +99,7 @@ public class GameLauncher : MonoBehaviour
 
     void Update()
     {
-        if(null != ColaHelper.Update)
+        if (null != ColaHelper.Update)
         {
             ColaHelper.Update(Time.deltaTime);
         }
@@ -108,7 +108,7 @@ public class GameLauncher : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(null != ColaHelper.LateUpdate)
+        if (null != ColaHelper.LateUpdate)
         {
             ColaHelper.LateUpdate(Time.deltaTime);
         }
@@ -117,7 +117,7 @@ public class GameLauncher : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(null != ColaHelper.FixedUpdate)
+        if (null != ColaHelper.FixedUpdate)
         {
             ColaHelper.FixedUpdate(Time.fixedDeltaTime);
         }
@@ -127,7 +127,7 @@ public class GameLauncher : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if(null != ColaHelper.OnApplicationQuit)
+        if (null != ColaHelper.OnApplicationQuit)
         {
             ColaHelper.OnApplicationQuit();
         }
@@ -136,7 +136,7 @@ public class GameLauncher : MonoBehaviour
 
     private void OnApplicationPause(bool pause)
     {
-        if(null != ColaHelper.OnApplicationPause)
+        if (null != ColaHelper.OnApplicationPause)
         {
             ColaHelper.OnApplicationPause(pause);
         }
@@ -241,6 +241,20 @@ public class GameLauncher : MonoBehaviour
     private IEnumerator InvokeNextFrame(System.Action action)
     {
         yield return 1;
+        if (null != action)
+        {
+            action();
+        }
+    }
+
+    public void DelayInvokeSeconds(float seconds, System.Action action)
+    {
+        StartCoroutine(InvokeSeconds(seconds, action));
+    }
+
+    private IEnumerator InvokeSeconds(float seconds, System.Action action)
+    {
+        yield return new WaitForSeconds(seconds);
         if (null != action)
         {
             action();
