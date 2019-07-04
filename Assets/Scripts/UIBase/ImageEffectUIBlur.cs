@@ -6,6 +6,9 @@ using UnityEngine;
 /// <summary>
 /// 根据相机照射的内容实时生成快速模糊的UI背景
 /// </summary>
+[ExecuteInEditMode]
+[RequireComponent(typeof(Camera))]
+[ImageEffectAllowedInSceneView]
 public class ImageEffectUIBlur : MonoBehaviour
 {
     /// <summary>
@@ -32,6 +35,8 @@ public class ImageEffectUIBlur : MonoBehaviour
     /// </summary>
     private Material material;
 
+    private Camera renderCamera;
+
     /// <summary>
     /// 最终渲染出来的临时Texture效果图
     /// </summary>
@@ -42,7 +47,7 @@ public class ImageEffectUIBlur : MonoBehaviour
             bool state = false;
             if (false == EnableUIBlur)
             {
-                StartCoroutine(ImageEffectUIBlur.DelayInvoke(() =>
+                StartCoroutine(DelayInvoke(() =>
                 {
                     if (state)
                     {
@@ -56,6 +61,8 @@ public class ImageEffectUIBlur : MonoBehaviour
             EnableUIBlur = true;
             isOpen = true;
             state = true;
+            renderCamera.Render();
+            renderCamera.enabled = false;
             return finalTexture;
         }
         set
@@ -105,6 +112,7 @@ public class ImageEffectUIBlur : MonoBehaviour
     void Awake()
     {
         mainCamera = GUIHelper.GetMainCamera();
+        renderCamera = gameObject.GetComponent<Camera>();
     }
 
 
@@ -117,12 +125,13 @@ public class ImageEffectUIBlur : MonoBehaviour
             Debug.LogWarning("该设备上不支持ImageEffects！");
             return;
         }
-        //if (!effectShader || !effectShader.isSupported)
-        //{
-        //    enabled = false;
-        //}
+        if (!effectShader || !effectShader.isSupported)
+        {
+            enabled = false;
+            return;
+        }
         enabled = true;
-        EnableUIBlur = true;
+        EnableUIBlur = false;
     }
 
     void OnApplicationQuit()
@@ -156,7 +165,7 @@ public class ImageEffectUIBlur : MonoBehaviour
             }
             RenderTexture tempRenderTexture = RenderTexture.GetTemporary(source.width / 2, source.height / 2, 0, RenderTextureFormat.Default);
             Graphics.Blit(source, tempRenderTexture, EffectMaterial, 0);
-            Graphics.Blit(tempRenderTexture, FinalTexture, EffectMaterial, 1);
+            Graphics.Blit(tempRenderTexture, finalTexture, EffectMaterial, 1);
             RenderTexture.ReleaseTemporary(tempRenderTexture);
             EnableUIBlur = false;
         }
