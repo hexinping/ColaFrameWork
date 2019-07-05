@@ -137,26 +137,13 @@ public class LutifyBrowser : EditorWindow
 		// Find the lut location
 		string baseRelativePath = null;
 		string baseAbsolutePath = null;
-		string[] results = AssetDatabase.FindAssets("LutifyBrowser t:Script", null);
 
-		if (results.Length > 0)
-		{
-			string p = AssetDatabase.GUIDToAssetPath(results[0]);
-			p = Path.GetDirectoryName(p);
-			p = p.Substring(0, p.LastIndexOf('/'));
-			m_BasePath = Path.Combine(p, "Luts");
-			baseRelativePath = Path.Combine(m_BasePath, "Standard");
-			baseAbsolutePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, baseRelativePath);
-		}
-		else
-		{
-			// Should never happen but just in case
-			Debug.LogError("Couldn't find the LutifyBrowser script");
-			Close();
-		}
+        m_BasePath = GloablDefine.LutifyTexturePath;
+        baseRelativePath = Path.Combine(m_BasePath, "Standard");
+        baseAbsolutePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, baseRelativePath);
 
-		// Collection listing
-		if (m_Collections != null)
+        // Collection listing
+        if (m_Collections != null)
 			m_Collections.Clear();
 
 		m_Collections = new Dictionary<string, List<Texture2D>>();
