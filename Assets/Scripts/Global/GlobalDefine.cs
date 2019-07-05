@@ -68,5 +68,6 @@ public static class GloablDefine
     public static readonly string RawAssetBasePath = "Assets/RawAssets/";
     public static readonly string AppearanceDataPath = "AppearanceData/";
     public static readonly string UIModelSettingPath = AppearanceDataPath + "UIModelSettingData/";
-    public static readonly string ModelAnimPath = RawAssetBasePath + "Avatar/Anim";
+    public static readonly string ModelAnimPath = "Avatar/Anim/";
+    public static readonly string LutifyTexturePath = "Arts/Luts/";
 }

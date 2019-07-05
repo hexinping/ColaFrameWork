@@ -49,6 +49,8 @@ public static class GUIHelper
     /// </summary>
     private static Camera effectCamera;
 
+    private static Lutify lutify;
+
     /// <summary>
     /// 场景相机的culling mask
     /// </summary>
@@ -144,6 +146,11 @@ public static class GUIHelper
             mainCamera.layerCullSpherical = true;
             mainCameraObj.AddComponent<AudioListener>();
             mainCameraObj.transform.SetParent(mainCameraRootObj.transform, false);
+
+            //添加ImageEffect特效插件Lutify
+            lutify = mainCameraObj.AddComponent<Lutify>();
+            lutify.LookupTexture = AssetLoader.Load<Texture2D>(GloablDefine.LutifyTexturePath + "AmplifyColor/Cine Pack 1/1800.png");
+            lutify.enabled = true;
         }
     }
 
