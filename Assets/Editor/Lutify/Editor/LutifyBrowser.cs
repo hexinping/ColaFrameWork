@@ -135,12 +135,8 @@ public class LutifyBrowser : EditorWindow
 	void FetchLuts()
 	{
 		// Find the lut location
-		string baseRelativePath = null;
-		string baseAbsolutePath = null;
-
-        m_BasePath = GloablDefine.LutifyTexturePath;
-        baseRelativePath = Path.Combine(m_BasePath, "Standard");
-        baseAbsolutePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, baseRelativePath);
+        string baseRelativePath = Path.Combine(GloablDefine.GameAssetBasePath + GloablDefine.LutifyTexturePath, "Standard");
+        string baseAbsolutePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, baseRelativePath);
 
         // Collection listing
         if (m_Collections != null)
