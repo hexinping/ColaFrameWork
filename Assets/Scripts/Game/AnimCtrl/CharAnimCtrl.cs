@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 角色的动画播放控制器
+/// 角色的动画播放控制器(Animation版)
 /// </summary>
 public class CharAnimCtrl : IAnimCtrl
 {

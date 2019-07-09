@@ -22,6 +22,7 @@ public static class LuaBinder
 		ISceneCharacterWrap.Register(L);
 		SceneCharacterWrap.Register(L);
 		UGUIModelWrap.Register(L);
+		AnimCtrlEnumWrap.Register(L);
 		LuaProfilerWrap.Register(L);
 		L.RegFunction("UIEventHandler", UIEventHandler);
 		L.RegFunction("UIDragEventHandlerDetail", UIDragEventHandlerDetail);

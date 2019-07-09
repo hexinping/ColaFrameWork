@@ -19,3 +19,9 @@ public interface IAnimCtrl : IAnimBehavior
 {
     void Release();
 }
+
+public enum AnimCtrlEnum : byte
+{
+    CharAnimator = 1,
+    CharAnimation = 2,
+}

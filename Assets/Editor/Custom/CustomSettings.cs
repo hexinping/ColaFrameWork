@@ -71,6 +71,7 @@ public static class CustomSettings
         _GT(typeof(ISceneCharacter)),
         _GT(typeof(SceneCharacter)),
         _GT(typeof(UGUIModel)),
+        _GT(typeof(AnimCtrlEnum)),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

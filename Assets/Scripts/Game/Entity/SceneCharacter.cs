@@ -13,6 +13,8 @@ public class SceneCharacter : ISceneCharacter
     /// </summary>
     private IAnimCtrl animCtrl;
 
+    private AnimCtrlEnum animCtrlEnum;
+
     public GameObject gameObject { get; set; }
 
     public Transform transform { get; set; }
@@ -48,11 +50,32 @@ public class SceneCharacter : ISceneCharacter
     /// <summary>
     /// 构造函数私有化，外部只能使用工厂方法接口创建
     /// </summary>
-    private SceneCharacter(GameObject entity)
+    private SceneCharacter(GameObject entity, AnimCtrlEnum animCtrlEnum)
     {
         gameObject = entity;
         transform = entity.transform;
-        animCtrl = new CharAnimCtrl(entity);
+        this.animCtrlEnum = animCtrlEnum;
+        AssembleAnimCtrl();
+    }
+
+    private void AssembleAnimCtrl()
+    {
+        if (AnimCtrlEnum.CharAnimation == this.animCtrlEnum)
+        {
+            animCtrl = new CharAnimatorCtrl(gameObject);
+        }
+        switch (this.animCtrlEnum)
+        {
+            case AnimCtrlEnum.CharAnimation:
+                animCtrl = new CharAnimCtrl(gameObject);
+                break;
+            case AnimCtrlEnum.CharAnimator:
+                animCtrl = new CharAnimatorCtrl(gameObject);
+                break;
+            default:
+                animCtrl = new CharAnimatorCtrl(gameObject);
+                break;
+        }
     }
 
     /// <summary>
@@ -60,9 +83,9 @@ public class SceneCharacter : ISceneCharacter
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public static ISceneCharacter CreateSceneCharacterInf(string path)
+    public static ISceneCharacter CreateSceneCharacterInf(string path, AnimCtrlEnum animCtrlEnum)
     {
-        return CreateSceneCharacter(path);
+        return CreateSceneCharacter(path, animCtrlEnum);
     }
 
     /// <summary>
@@ -70,11 +93,11 @@ public class SceneCharacter : ISceneCharacter
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public static SceneCharacter CreateSceneCharacter(string path)
+    public static SceneCharacter CreateSceneCharacter(string path, AnimCtrlEnum animCtrlEnum)
     {
         GameObject prefab = AssetLoader.Load<GameObject>(path);
         GameObject Entity = CommonHelper.InstantiateGoByPrefab(prefab, null);
-        return new SceneCharacter(Entity);
+        return new SceneCharacter(Entity, animCtrlEnum);
     }
 
     void ISceneCharacter.SetPosition2D(float x, float z)
