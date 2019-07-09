@@ -44,13 +44,14 @@ public class SceneMgr : MonoBehaviour
         {
             yield return asyncOperation;
         }
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        SceneManager.SetActiveScene(scene);
+        yield return null;
         currentScene = SceneManager.GetActiveScene();
         if (null != onsceneChanged)
         {
             onsceneChanged(sceneName);
         }
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-        SceneManager.SetActiveScene(scene);
     }
 
     /// <summary>
@@ -64,6 +65,8 @@ public class SceneMgr : MonoBehaviour
             Debug.LogWarning(string.Format("名为{0}的场景已经加载过了！", sceneName));
         }
         SceneManager.LoadScene(sceneName);
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        SceneManager.SetActiveScene(scene);
         currentScene = SceneManager.GetActiveScene();
     }
 
@@ -94,13 +97,14 @@ public class SceneMgr : MonoBehaviour
         {
             yield return asyncOperation;
         }
+        Scene scene = SceneManager.GetSceneAt(sceneIndex);
+        SceneManager.SetActiveScene(scene);
+        yield return null;
         currentScene = SceneManager.GetActiveScene();
         if (null != onSceneChanged)
         {
             onSceneChanged(sceneIndex);
         }
-        Scene scene = SceneManager.GetSceneAt(sceneIndex);
-        SceneManager.SetActiveScene(scene);
     }
 
     /// <summary>
@@ -130,14 +134,14 @@ public class SceneMgr : MonoBehaviour
         {
             yield return asyncOperation;
         }
-        currentScene = SceneManager.GetActiveScene();
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        SceneManager.SetActiveScene(scene);
         yield return null;
+        currentScene = SceneManager.GetActiveScene();
         if (null != onSceneChanged)
         {
             onSceneChanged(sceneName);
         }
-        Scene scene = SceneManager.GetSceneByName(sceneName);
-        SceneManager.SetActiveScene(scene);
     }
 
     /// <summary>
