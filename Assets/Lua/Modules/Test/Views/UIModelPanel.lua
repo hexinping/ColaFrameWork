@@ -118,7 +118,7 @@ end
 function UIModelPanel:UpdateModel(index)
     local isModelExist = self.uiModel:IsModelExist(index)
     if not isModelExist then
-        local character = SceneCharacter.CreateSceneCharacterInf(ResPath[index] or "")
+        local character = SceneCharacter.CreateSceneCharacterInf(ResPath[index] or "",AnimCtrlEnum.CharAnimation,false)
         self.uiModel:SetModelAt(index,character)
     end
     self.uiModel:UpdateModelShownIndex(index)
