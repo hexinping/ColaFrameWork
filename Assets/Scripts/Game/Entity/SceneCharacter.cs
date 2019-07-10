@@ -13,7 +13,11 @@ public class SceneCharacter : ISceneCharacter
     /// </summary>
     private IAnimCtrl animCtrl;
 
+    private SimpleMoveController moveController;
+
     private AnimCtrlEnum animCtrlEnum;
+
+    private bool isMainPlayer = false;
 
     public GameObject gameObject { get; set; }
 
@@ -50,12 +54,20 @@ public class SceneCharacter : ISceneCharacter
     /// <summary>
     /// 构造函数私有化，外部只能使用工厂方法接口创建
     /// </summary>
-    private SceneCharacter(GameObject entity, AnimCtrlEnum animCtrlEnum)
+    private SceneCharacter(GameObject entity, AnimCtrlEnum animCtrlEnum, bool isMainPlayer)
     {
         gameObject = entity;
         transform = entity.transform;
         this.animCtrlEnum = animCtrlEnum;
+        this.isMainPlayer = isMainPlayer;
         AssembleAnimCtrl();
+        if (isMainPlayer)
+        {
+            AssembleMoveCtrl();
+            //测试代码
+            var camCtrl = GUIHelper.GetMainCamCtrl();
+            camCtrl.target = this.transform;
+        }
     }
 
     private void AssembleAnimCtrl()
@@ -78,14 +90,20 @@ public class SceneCharacter : ISceneCharacter
         }
     }
 
+    private void AssembleMoveCtrl()
+    {
+        moveController = gameObject.AddSingleComponent<SimpleMoveController>();
+        moveController.Init(animCtrl);
+    }
+
     /// <summary>
     /// 工厂方法，创建ISceneCharacter
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public static ISceneCharacter CreateSceneCharacterInf(string path, AnimCtrlEnum animCtrlEnum)
+    public static ISceneCharacter CreateSceneCharacterInf(string path, AnimCtrlEnum animCtrlEnum, bool isMainPlayer)
     {
-        return CreateSceneCharacter(path, animCtrlEnum);
+        return CreateSceneCharacter(path, animCtrlEnum, isMainPlayer);
     }
 
     /// <summary>
@@ -93,11 +111,11 @@ public class SceneCharacter : ISceneCharacter
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public static SceneCharacter CreateSceneCharacter(string path, AnimCtrlEnum animCtrlEnum)
+    public static SceneCharacter CreateSceneCharacter(string path, AnimCtrlEnum animCtrlEnum, bool isMainPlayer)
     {
         GameObject prefab = AssetLoader.Load<GameObject>(path);
         GameObject Entity = CommonHelper.InstantiateGoByPrefab(prefab, null);
-        return new SceneCharacter(Entity, animCtrlEnum);
+        return new SceneCharacter(Entity, animCtrlEnum, isMainPlayer);
     }
 
     void ISceneCharacter.SetPosition2D(float x, float z)

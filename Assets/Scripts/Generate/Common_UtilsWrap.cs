@@ -45,7 +45,6 @@ public class Common_UtilsWrap
 		L.RegFunction("DestroyUIBlur", DestroyUIBlur);
 		L.RegFunction("GetSceneMgr", GetSceneMgr);
 		L.RegFunction("DelayInvokeNextFrame", DelayInvokeNextFrame);
-		L.RegFunction("ResetMainCameraPostion", ResetMainCameraPostion);
 		L.EndStaticLibs();
 	}
 
@@ -730,21 +729,6 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 1);
 			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
 			Common_Utils.DelayInvokeNextFrame(arg0);
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int ResetMainCameraPostion(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.ResetMainCameraPostion();
 			return 0;
 		}
 		catch (Exception e)

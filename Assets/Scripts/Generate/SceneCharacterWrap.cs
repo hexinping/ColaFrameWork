@@ -26,10 +26,11 @@ public class SceneCharacterWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
+			ToLua.CheckArgsCount(L, 3);
 			string arg0 = ToLua.CheckString(L, 1);
 			AnimCtrlEnum arg1 = (AnimCtrlEnum)ToLua.CheckObject(L, 2, typeof(AnimCtrlEnum));
-			ISceneCharacter o = SceneCharacter.CreateSceneCharacterInf(arg0, arg1);
+			bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
+			ISceneCharacter o = SceneCharacter.CreateSceneCharacterInf(arg0, arg1, arg2);
 			ToLua.PushObject(L, o);
 			return 1;
 		}
@@ -44,10 +45,11 @@ public class SceneCharacterWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
+			ToLua.CheckArgsCount(L, 3);
 			string arg0 = ToLua.CheckString(L, 1);
 			AnimCtrlEnum arg1 = (AnimCtrlEnum)ToLua.CheckObject(L, 2, typeof(AnimCtrlEnum));
-			SceneCharacter o = SceneCharacter.CreateSceneCharacter(arg0, arg1);
+			bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
+			SceneCharacter o = SceneCharacter.CreateSceneCharacter(arg0, arg1, arg2);
 			ToLua.PushObject(L, o);
 			return 1;
 		}

@@ -545,17 +545,4 @@ public static class Common_Utils
         GameLauncher.Instance.DelayInvokeNextFrame(action);
     }
 
-    public static void ResetMainCameraPostion()
-    {
-
-        //测试函数，用来验证动态模糊背景图的生成是否正常
-        var Transform = GUIHelper.GetMainGameObj().transform;
-        //测试函数
-        Transform.position = new Vector3(84, 17, 20);
-        Transform.localRotation = Quaternion.Euler(44.16f, -152, 4.6f);
-
-        var effectCamera = GUIHelper.GetEffectCameraObj().transform;
-        effectCamera.position = Transform.position;
-        effectCamera.localRotation = Transform.localRotation;
-    }
 }

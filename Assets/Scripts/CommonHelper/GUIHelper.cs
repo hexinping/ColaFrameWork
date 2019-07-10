@@ -52,6 +52,11 @@ public static class GUIHelper
     private static Lutify lutify;
 
     /// <summary>
+    /// 主相机绑定的相机控制脚本
+    /// </summary>
+    private static ThirdCamera mainCamCtrl;
+
+    /// <summary>
     /// 场景相机的culling mask
     /// </summary>
     public static int DefaultSceneCullMask = LayerMask.GetMask("Default") + LayerMask.GetMask("Water") + LayerMask.GetMask("Terrain") +
@@ -149,8 +154,11 @@ public static class GUIHelper
 
             //添加ImageEffect特效插件Lutify
             lutify = mainCameraObj.AddComponent<Lutify>();
-            lutify.LookupTexture = AssetLoader.Load<Texture2D>(GloablDefine.LutifyTexturePath + "AmplifyColor/Cine Pack 1/1800.png");
+            lutify.LookupTexture = AssetLoader.Load<Texture2D>(GloablDefine.LutifyTexturePath + "Standard/Cine Pack 1/Deep Dream.png");
             lutify.enabled = true;
+
+            //测试方法
+            mainCamCtrl = mainCameraObj.AddSingleComponent<ThirdCamera>();
         }
     }
 
@@ -242,5 +250,11 @@ public static class GUIHelper
     {
         CreateEffectCamera();
         return effectCamera;
+    }
+
+    public static ThirdCamera GetMainCamCtrl()
+    {
+        CreateMainCamera();
+        return mainCamCtrl;
     }
 }
