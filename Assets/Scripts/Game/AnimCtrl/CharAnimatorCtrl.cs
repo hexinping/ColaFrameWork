@@ -20,21 +20,23 @@ public class CharAnimatorCtrl : IAnimCtrl
 
     public void PlayAnimation(string animName)
     {
-        throw new NotImplementedException();
+        animator.SetBool(animName, true);
     }
 
     public void PlayAnimation(string animName, Action<bool> callback)
     {
-        throw new NotImplementedException();
+        animator.SetBool(animName, true);
+        //TODO:增加播放动画的回调
     }
 
     public void Release()
     {
-        throw new NotImplementedException();
+        StopPlay("");
+        animator = null;
     }
 
     public void StopPlay(string animName)
     {
-        throw new NotImplementedException();
+        animator.SetBool("Idle", true);
     }
 }
