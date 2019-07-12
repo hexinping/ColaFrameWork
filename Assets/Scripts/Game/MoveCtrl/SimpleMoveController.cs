@@ -34,7 +34,7 @@ public class SimpleMoveController : MonoBehaviour {
             animCtrl.PlayAnimation("Run");
             // 根据摄像机方向 进行移动
             moveVec = Quaternion.Euler(0, mainCamTransform.eulerAngles.y, 0) * moveVec;
-            charCtrl.SimpleMove(moveVec * 5);
+            charCtrl.Move(moveVec * speed * Time.deltaTime);
             RotatePlayer();
         }
         else
