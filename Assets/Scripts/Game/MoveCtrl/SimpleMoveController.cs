@@ -31,7 +31,7 @@ public class SimpleMoveController : MonoBehaviour {
 
         if (h != 0 || v != 0)
         {
-            animCtrl.PlayAnimation("Run");
+            animCtrl.PlayAnimation(AnimCurveEnum.Run);
             // 根据摄像机方向 进行移动
             moveVec = Quaternion.Euler(0, mainCamTransform.eulerAngles.y, 0) * moveVec;
             charCtrl.Move(moveVec * speed * Time.deltaTime);
@@ -39,7 +39,7 @@ public class SimpleMoveController : MonoBehaviour {
         }
         else
         {
-            animCtrl.PlayAnimation("Idle");
+            animCtrl.PlayAnimation(AnimCurveEnum.Idle);
         }
 	}
 

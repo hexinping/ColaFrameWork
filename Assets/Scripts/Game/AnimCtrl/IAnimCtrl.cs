@@ -30,15 +30,16 @@ public enum AnimCtrlEnum : byte
     CharAnimation = 2,
 }
 
-public enum AnimCurveEnum : byte
-{
-    Idle = 0,
-    Run = 1,
-}
-
 public static class AnimCurveNames
 {
     public static readonly string IAnimName = "AnimEnum";
-    public static readonly string Idle = AnimCurveEnum.Idle.ToString();
-    public static readonly string Run = AnimCurveEnum.Run.ToString();
+
+    public static readonly string Idle = "Idle";
+    public static readonly string Run = "Run";
+}
+
+public static class AnimCurveEnum
+{
+    public static readonly int Idle = 0;
+    public static readonly int Run = 1;
 }
