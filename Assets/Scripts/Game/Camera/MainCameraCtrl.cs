@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ThirdCamera : MonoBehaviour
+public class MainCameraCtrl : MonoBehaviour
 {
     public Transform target = null;     // 目标玩家
     [SerializeField]
