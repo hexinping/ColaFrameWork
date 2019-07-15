@@ -66,18 +66,33 @@ public class SceneCharacterWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 2)
+			if (count == 2 && TypeChecker.CheckTypes<int>(L, 2))
 			{
 				SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
-				string arg0 = ToLua.CheckString(L, 2);
+				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
 				obj.PlayAnimation(arg0);
 				return 0;
 			}
-			else if (count == 3)
+			else if (count == 2 && TypeChecker.CheckTypes<string>(L, 2))
 			{
 				SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
-				string arg0 = ToLua.CheckString(L, 2);
-				System.Action<bool> arg1 = (System.Action<bool>)ToLua.CheckDelegate<System.Action<bool>>(L, 3);
+				string arg0 = ToLua.ToString(L, 2);
+				obj.PlayAnimation(arg0);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<int, System.Action<bool>>(L, 2))
+			{
+				SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
+				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
+				System.Action<bool> arg1 = (System.Action<bool>)ToLua.ToObject(L, 3);
+				obj.PlayAnimation(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<string, System.Action<bool>>(L, 2))
+			{
+				SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				System.Action<bool> arg1 = (System.Action<bool>)ToLua.ToObject(L, 3);
 				obj.PlayAnimation(arg0, arg1);
 				return 0;
 			}

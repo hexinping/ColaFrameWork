@@ -42,4 +42,12 @@ public class CharAnimCtrl : IAnimCtrl
         }
         animation = null;
     }
+
+    public void PlayAnimation(int animState)
+    {
+    }
+
+    public void PlayAnimation(int animState, Action<bool> callback)
+    {
+    }
 }

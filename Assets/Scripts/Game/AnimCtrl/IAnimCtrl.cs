@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -8,6 +8,10 @@ public interface IAnimBehavior
     void PlayAnimation(string animName);
 
     void PlayAnimation(string animName, Action<bool> callback);
+
+    void PlayAnimation(int animState);
+
+    void PlayAnimation(int animState, Action<bool> callback);
 
     void StopPlay();
 }

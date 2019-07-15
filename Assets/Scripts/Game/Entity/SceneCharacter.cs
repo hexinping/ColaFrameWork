@@ -159,4 +159,14 @@ public class SceneCharacter : ISceneCharacter
     {
         animCtrl.StopPlay();
     }
+
+    public void PlayAnimation(int animState)
+    {
+        animCtrl.PlayAnimation(animState);
+    }
+
+    public void PlayAnimation(int animState, Action<bool> callback)
+    {
+        animCtrl.PlayAnimation(animState, callback);
+    }
 }

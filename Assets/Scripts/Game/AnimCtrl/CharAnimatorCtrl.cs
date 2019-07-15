@@ -20,13 +20,21 @@ public class CharAnimatorCtrl : IAnimCtrl
 
     public void PlayAnimation(string animName)
     {
-        animator.SetInteger(AnimCurveNames.IAnimName, 1);
     }
 
     public void PlayAnimation(string animName, Action<bool> callback)
     {
-        animator.SetBool(animName, true);
-        //TODO:增加播放动画的回调
+    }
+
+    public void PlayAnimation(int animState)
+    {
+        animator.SetInteger(AnimCurveNames.IAnimName, animState);
+    }
+
+    public void PlayAnimation(int animState, Action<bool> callback)
+    {
+        //用一种合适的方式触发回调
+        animator.SetInteger(AnimCurveNames.IAnimName, animState);
     }
 
     public void Release()
