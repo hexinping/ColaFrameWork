@@ -49,6 +49,12 @@ function UIModelPanel:OnCreate()
     self.uiModel.onModelClick = function(name)
         self:OnModelClick(name)
     end
+
+    --测试多个UIModel是否可以正确工作
+    self.uiModel2 = self.Panel:GetComponentByPath("UIModel2", "UGUIModel")
+    self.uiModel2.onModelClick = function(name)
+        self:OnModelClick(name)
+    end
 end
 
 -- 界面可见性变化的时候触发
@@ -102,6 +108,13 @@ function UIModelPanel:onClick(name)
             end
             self.curChar:PlayAnimation(AnimNames[self.animIndex])
         end
+        if nil ~= self.curChar2 then
+            self.animIndex = self.animIndex + 1
+            if self.animIndex > #AnimNames then
+                self.animIndex = 1
+            end
+            self.curChar2:PlayAnimation(AnimNames[self.animIndex])
+        end
     end
 end
 
@@ -124,6 +137,16 @@ function UIModelPanel:UpdateModel(index)
     self.uiModel:UpdateModelShownIndex(index)
     self.uiModel:ImportSetting(SettingNames[index] or "")
     self.curChar = self.uiModel:GetModelAt(index)
+
+    --测试多个UIModel是否可以正确工作
+    isModelExist = self.uiModel2:IsModelExist(index)
+    if not isModelExist then
+        local character = SceneCharacter.CreateSceneCharacterInf(ResPath[index] or "",AnimCtrlEnum.CharAnimation,false)
+        self.uiModel2:SetModelAt(index,character)
+    end
+    self.uiModel2:UpdateModelShownIndex(index)
+    self.uiModel2:ImportSetting(SettingNames[index] or "")
+    self.curChar2 = self.uiModel2:GetModelAt(index)
 end
 
 return UIModelPanel
