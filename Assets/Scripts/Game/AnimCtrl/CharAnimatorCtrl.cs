@@ -20,7 +20,7 @@ public class CharAnimatorCtrl : IAnimCtrl
 
     public void PlayAnimation(string animName)
     {
-        animator.SetBool(animName, true);
+        animator.SetInteger(AnimCurveNames.IAnimName, 1);
     }
 
     public void PlayAnimation(string animName, Action<bool> callback)
@@ -31,11 +31,11 @@ public class CharAnimatorCtrl : IAnimCtrl
 
     public void Release()
     {
-        StopPlay("");
+        StopPlay();
         animator = null;
     }
 
-    public void StopPlay(string animName)
+    public void StopPlay()
     {
         animator.SetBool("Idle", true);
     }

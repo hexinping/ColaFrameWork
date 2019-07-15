@@ -39,7 +39,7 @@ public class SimpleMoveController : MonoBehaviour {
         }
         else
         {
-            //animCtrl.PlayAnimation("Idle");
+            animCtrl.PlayAnimation("Idle");
         }
 	}
 

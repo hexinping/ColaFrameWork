@@ -97,10 +97,9 @@ public class SceneCharacterWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
+			ToLua.CheckArgsCount(L, 1);
 			SceneCharacter obj = (SceneCharacter)ToLua.CheckObject<SceneCharacter>(L, 1);
-			string arg0 = ToLua.CheckString(L, 2);
-			obj.StopPlay(arg0);
+			obj.StopPlay();
 			return 0;
 		}
 		catch (Exception e)

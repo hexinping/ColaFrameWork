@@ -54,7 +54,7 @@ public static class GUIHelper
     /// <summary>
     /// 主相机绑定的相机控制脚本
     /// </summary>
-    private static ThirdCamera mainCamCtrl;
+    private static MainCameraCtrl mainCamCtrl;
 
     /// <summary>
     /// 场景相机的culling mask
@@ -157,8 +157,7 @@ public static class GUIHelper
             lutify.LookupTexture = AssetLoader.Load<Texture2D>(GloablDefine.LutifyTexturePath + "Standard/Cine Pack 1/Deep Dream.png");
             lutify.enabled = true;
 
-            //测试方法
-            mainCamCtrl = mainCameraObj.AddSingleComponent<ThirdCamera>();
+            mainCamCtrl = mainCameraObj.AddSingleComponent<MainCameraCtrl>();
         }
     }
 
@@ -252,7 +251,7 @@ public static class GUIHelper
         return effectCamera;
     }
 
-    public static ThirdCamera GetMainCamCtrl()
+    public static MainCameraCtrl GetMainCamCtrl()
     {
         CreateMainCamera();
         return mainCamCtrl;

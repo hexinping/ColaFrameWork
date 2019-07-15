@@ -64,9 +64,7 @@ public class SceneCharacter : ISceneCharacter
         if (isMainPlayer)
         {
             AssembleMoveCtrl();
-            //测试代码
-            var camCtrl = GUIHelper.GetMainCamCtrl();
-            camCtrl.target = this.transform;
+            PrepareMainCamera();
         }
     }
 
@@ -94,6 +92,12 @@ public class SceneCharacter : ISceneCharacter
     {
         moveController = gameObject.AddSingleComponent<SimpleMoveController>();
         moveController.Init(animCtrl);
+    }
+
+    private void PrepareMainCamera()
+    {
+        var camCtrl = GUIHelper.GetMainCamCtrl();
+        camCtrl.target = this.transform;
     }
 
     /// <summary>
@@ -151,8 +155,8 @@ public class SceneCharacter : ISceneCharacter
         animCtrl.PlayAnimation(animName, callback);
     }
 
-    public void StopPlay(string animName)
+    public void StopPlay()
     {
-        animCtrl.StopPlay(animName);
+        animCtrl.StopPlay();
     }
 }

@@ -29,7 +29,7 @@ public class CharAnimCtrl : IAnimCtrl
         animation.Play(animName);
     }
 
-    public void StopPlay(string animName)
+    public void StopPlay()
     {
         animation.Stop();
     }
