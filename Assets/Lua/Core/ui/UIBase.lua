@@ -19,6 +19,7 @@ function UIBase:initialize()
     self.PanelName = ""
     self.isExist = false
     self.isShowUIBlur = false
+    self.isShowUIMask = false
     self:InitParam()
 end
 
@@ -45,8 +46,11 @@ function UIBase:Create()
         UIManager.Instance():GetUISorterMgr():AddPanel(self)
     end
     self.isExist = true
+    -- ShowUIBlur 与 ShowUIMask 互斥
     if self.isShowUIBlur then
         UIManager.Instance():ShowUIBlur(self)
+    elseif self.isShowUIMask then
+        UIManager.Instance():ShowUIMask(self)
     end
     self:AttachListener(self.Panel)
     self:OnCreate()
@@ -68,8 +72,11 @@ function UIBase:CreateWithGo(gameObejct)
         UIManager.Instance():GetUISorterMgr():AddPanel(self)
     end
     self.isExist = true
+    -- ShowUIBlur 与 ShowUIMask 互斥
     if self.isShowUIBlur then
         UIManager.Instance():ShowUIBlur(self)
+    elseif self.isShowUIMask then
+        UIManager.Instance():ShowUIMask(self)
     end
     self:AttachListener(self.Panel)
     self:OnCreate()
@@ -136,6 +143,7 @@ function UIBase:OnDestroy()
     self.PanelName = ""
     self.isExist = false
     self.isShowUIBlur = false
+    self.isShowUIMask = false
 end
 
 -- 销毁自身，可以在自身的方法中调用，同时会去UIManager中清理
@@ -200,6 +208,11 @@ function UIBase:ShowUIBlur(isShow)
     self.isShowUIBlur = isShow
 end
 
+-- 显示UI背景遮罩
+function UIBase:ShowUIMask(isShow)
+    self.isShowUIMask = isShow
+end
+
 -- 设置点击外部关闭(执行该方法以后，当点击其他UI的时候，会自动关闭本UI)
 function UIBase:SetOutTouchDisappear()
     UIManager.Instance():SetOutTouchDisappear(self)
@@ -220,6 +233,8 @@ function UIBase:AttachListener(gameObject)
     self.uguiMsgHandler.onClick = function(name)
         -- 添加对点击Blur的判断
         if self.isShowUIBlur and name == "blur_".. self.PanelName then
+            self:Destroy()
+        elseif self.isShowUIMask and name == "mask_" .. self.PanelName then
             self:Destroy()
         end
         self:onClick(name)

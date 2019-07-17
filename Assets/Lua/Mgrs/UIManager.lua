@@ -188,6 +188,11 @@ function UIManager:ShowUIBlur(ui)
     Common_Utils.ShowUIBlur(ui.Panel,ui.PanelName)
 end
 
+-- 显示UI背景遮罩
+function UIManager:ShowUIMask(ui)
+    Common_Utils.ShowUIMask(ui.Panel,ui.PanelName)
+end
+
 --  获取UI排序管理器
 function UIManager:GetUISorterMgr()
     return self.uiSorter

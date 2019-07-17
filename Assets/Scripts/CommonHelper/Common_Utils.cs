@@ -527,6 +527,45 @@ public static class Common_Utils
     }
 
     /// <summary>
+    ///  显示UI背景遮罩
+    /// </summary>
+    /// <param name="uiPanel"></param>
+    /// <param name="panelName"></param>
+    public static void ShowUIMask(GameObject uiPanel, string panelName)
+    {
+        string uiMaskName = string.Format("mask_{0}", panelName);
+        GameObject uiMaskObj = uiPanel.FindChildByPath(uiMaskName);
+        if (null == uiMaskObj)
+        {
+            CreateUIMask(uiPanel, panelName);
+        }
+        else
+        {
+            uiMaskObj.SetActive(true);
+        }
+    }
+
+    private static void CreateUIMask(GameObject uiPanel, string maskName)
+    {
+        GameObject uiMaskObj = new GameObject(maskName);
+        uiMaskObj.transform.SetParent(uiPanel.transform, false);
+        uiMaskObj.layer = uiPanel.layer;
+        Image image = uiMaskObj.AddComponent<Image>();
+        Button button = uiMaskObj.AddComponent<Button>();
+        button.transition = Selectable.Transition.None;
+        RectTransform rectTransform = uiMaskObj.GetComponent<RectTransform>();
+        if (null == rectTransform)
+        {
+            rectTransform = uiMaskObj.AddComponent<RectTransform>();
+        }
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        rectTransform.sizeDelta = Vector2.zero;
+        rectTransform.SetAsFirstSibling();
+        image.color = GloablDefine.ColorUIMask;
+    }
+    /// <summary>
     /// 销毁渲染出来的临时UIBlur RenderTexture
     /// </summary>
     public static void DestroyUIBlur()
