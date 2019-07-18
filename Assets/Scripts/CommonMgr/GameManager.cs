@@ -30,12 +30,17 @@ public class GameManager
     /// </summary>
     private ResourcesMgr resourceMgr;
 
+    /// <summary>
+    /// 音频管理器
+    /// </summary>
     private AudioManager audioManager;
 
     /// <summary>
     /// UI管理器
     /// </summary>
     private UIMgr uiMgr;
+
+    private InputMgr inputMgr;
 
     private LuaEngine luaClient;
 
@@ -64,6 +69,7 @@ public class GameManager
         gameLauncherObj = gameObject;
         sceneMgr = gameObject.AddComponent<SceneMgr>();
         audioManager = AudioManager.GetInstance();
+        inputMgr = gameLauncherObj.AddComponent<InputMgr>();
 
         GameStart();
     }
@@ -77,6 +83,10 @@ public class GameManager
 
         //将lua初始化移动到这里，所有的必要条件都准备好以后再初始化lua虚拟机
         luaClient = gameLauncherObj.AddComponent<LuaEngine>();
+
+        //Test 测试音频
+        var audioClip = AssetLoader.Load<AudioClip>("Audio/MainTheme.mp3");
+        audioManager.PlayBackgroundMusic(audioClip);
     }
 
     /// <summary>
