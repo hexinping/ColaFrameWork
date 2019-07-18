@@ -30,6 +30,8 @@ public class GameManager
     /// </summary>
     private ResourcesMgr resourceMgr;
 
+    private AudioManager audioManager;
+
     /// <summary>
     /// UI管理器
     /// </summary>
@@ -60,17 +62,8 @@ public class GameManager
         resourceMgr = ResourcesMgr.GetInstance();
 
         gameLauncherObj = gameObject;
-        //旧版的C#初始化方式,Lua不需要了
-        //LocalDataMgr.GetInstance().LoadStartConfig(() =>
-        //{
-        //    resourceMgr.Init();
-        //});
-
-        uiMgr = new UIMgr();
-        moduleMgr = new ModuleMgr();
         sceneMgr = gameObject.AddComponent<SceneMgr>();
-
-        luaClient = gameObject.AddComponent<LuaEngine>();
+        audioManager = AudioManager.GetInstance();
 
         GameStart();
     }
@@ -80,9 +73,10 @@ public class GameManager
     /// </summary>
     public void GameStart()
     {
+        audioManager.Init();
+
         //将lua初始化移动到这里，所有的必要条件都准备好以后再初始化lua虚拟机
-        //LoginModule loginModule = moduleMgr.GetModule<LoginModule>();
-        //loginModule.Login();
+        luaClient = gameLauncherObj.AddComponent<LuaEngine>();
     }
 
     /// <summary>

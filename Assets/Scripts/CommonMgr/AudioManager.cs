@@ -6,8 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 音频管理器
 /// </summary>
-[DisallowMultipleComponent]
-public sealed class AudioManager : MonoBehaviour
+public sealed class AudioManager : IManager
 {
     /// <summary>
     /// 背景音乐优先级
@@ -47,28 +46,39 @@ public sealed class AudioManager : MonoBehaviour
     /// </summary>
     public event Action SingleSoundEndOfPlayEvent;
 
+    public float TimeSinceUpdate { get; set; }
+
     private AudioSource _backgroundAudio;
     private AudioSource _singleAudio;
     private List<AudioSource> _multipleAudio = new List<AudioSource>();
     private Dictionary<GameObject, AudioSource> _worldAudio = new Dictionary<GameObject, AudioSource>();
     private bool _isMute = false;
     private bool _singleSoundPlayDetector = false;
+    private static AudioManager _instance = null;
+    private GameObject gameObject;
 
-    public override void Initialization()
+    public static AudioManager GetInstance()
+    {
+        if (null == _instance)
+        {
+            _instance = new AudioManager();
+        }
+        return _instance;
+    }
+
+    private AudioManager()
+    {
+        gameObject = new GameObject("AudioManager");
+        GameObject.DontDestroyOnLoad(gameObject);
+    }
+
+    public void Init()
     {
         _backgroundAudio = CreateAudioSource("BackgroundAudio", BackgroundPriority, BackgroundVolume);
         _singleAudio = CreateAudioSource("SingleAudio", SinglePriority, SingleVolume);
     }
 
-    public override void Termination()
-    {
-        StopBackgroundMusic();
-        StopSingleSound();
-        StopAllMultipleSound();
-        StopAllWorldSound();
-    }
-
-    public override void Refresh()
+    public void Update(float deltaTime)
     {
 
         if (_singleSoundPlayDetector)
@@ -76,7 +86,7 @@ public sealed class AudioManager : MonoBehaviour
             if (!_singleAudio.isPlaying)
             {
                 _singleSoundPlayDetector = false;
-                if(null != SingleSoundEndOfPlayEvent)
+                if (null != SingleSoundEndOfPlayEvent)
                 {
                     SingleSoundEndOfPlayEvent.Invoke();
                 }
@@ -285,7 +295,7 @@ public sealed class AudioManager : MonoBehaviour
                 AudioSource audio = _multipleAudio[i];
                 _multipleAudio.RemoveAt(i);
                 i -= 1;
-                Main.Kill(audio.gameObject);
+                GameObject.Destroy(audio.gameObject);
             }
         }
     }
@@ -385,7 +395,7 @@ public sealed class AudioManager : MonoBehaviour
             if (!audio.Value.isPlaying)
             {
                 removeSet.Add(audio.Key);
-                Main.Kill(audio.Value);
+                GameObject.Destroy(audio.Value);
             }
         }
         foreach (GameObject item in removeSet)
@@ -400,7 +410,7 @@ public sealed class AudioManager : MonoBehaviour
     private AudioSource CreateAudioSource(string name, int priority, float volume)
     {
         GameObject audioObj = new GameObject(name);
-        audioObj.transform.SetParent(transform);
+        audioObj.transform.SetParent(gameObject.transform);
         audioObj.transform.localPosition = Vector3.zero;
         audioObj.transform.localRotation = Quaternion.identity;
         audioObj.transform.localScale = Vector3.one;
@@ -439,5 +449,13 @@ public sealed class AudioManager : MonoBehaviour
         AudioSource audio = CreateAudioSource("MultipleAudio", MultiplePriority, MultipleVolume);
         _multipleAudio.Add(audio);
         return audio;
+    }
+
+    public void Dispose()
+    {
+        StopBackgroundMusic();
+        StopSingleSound();
+        StopAllMultipleSound();
+        StopAllWorldSound();
     }
 }
