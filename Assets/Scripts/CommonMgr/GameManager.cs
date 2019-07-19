@@ -68,7 +68,7 @@ public class GameManager
 
         gameLauncherObj = gameObject;
         sceneMgr = gameObject.AddComponent<SceneMgr>();
-        audioManager = AudioManager.GetInstance();
+        audioManager = AudioManager.Instance;
         inputMgr = gameLauncherObj.AddComponent<InputMgr>();
 
         GameStart();

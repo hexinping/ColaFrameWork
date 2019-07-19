@@ -71,13 +71,16 @@ public sealed class AudioManager : IManager
     private GameObject gameObject;
     #endregion
 
-    public static AudioManager GetInstance()
+    public static AudioManager Instance
     {
-        if (null == _instance)
+        get
         {
-            _instance = new AudioManager();
+            if (null == _instance)
+            {
+                _instance = new AudioManager();
+            }
+            return _instance;
         }
-        return _instance;
     }
 
     private AudioManager()

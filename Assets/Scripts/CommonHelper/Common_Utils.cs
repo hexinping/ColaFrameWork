@@ -584,4 +584,46 @@ public static class Common_Utils
         GameLauncher.Instance.DelayInvokeNextFrame(action);
     }
 
+    #region 音频相关接口
+    /// <summary>
+    /// 静音接口
+    /// </summary>
+    public static void SetMute(bool isMute)
+    {
+        AudioManager.Instance.Mute = isMute;
+    }
+
+    /// <summary>
+    /// 播放背景音乐
+    /// </summary>
+    public static void PlayBackgroundMusic(string audioName, bool isLoop = true, float speed = 1)
+    {
+        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        AudioManager.Instance.PlayBackgroundMusic(audioClip, isLoop, speed);
+    }
+
+    /// <summary>
+    /// 暂停播放背景音乐
+    /// </summary>
+    public static void PauseBackgroundMusic(bool isGradual = true)
+    {
+        AudioManager.Instance.PauseBackgroundMusic(isGradual);
+    }
+
+    /// <summary>
+    /// 恢复播放背景音乐
+    /// </summary>
+    public static void UnPauseBackgroundMusic(bool isGradual = true)
+    {
+        AudioManager.Instance.UnPauseBackgroundMusic(isGradual);
+    }
+
+    /// <summary>
+    /// 停止播放背景音乐
+    /// </summary>
+    public static void StopBackgroundMusic()
+    {
+        AudioManager.Instance.StopBackgroundMusic();
+    }
+    #endregion
 }
