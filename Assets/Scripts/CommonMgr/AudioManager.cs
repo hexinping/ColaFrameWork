@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public sealed class AudioManager : IManager
 {
+    #region 公开属性
     /// <summary>
     /// 背景音乐优先级
     /// </summary>
@@ -48,6 +49,17 @@ public sealed class AudioManager : IManager
 
     public float TimeSinceUpdate { get; set; }
 
+    #endregion
+
+    #region 私有属性
+    private int _backgroundPriorityCache;
+    private int _singlePriorityCache;
+    private int _multiplePriorityCache;
+    private int _worldPriorityCache;
+    private float _backgroundVolumeCache;
+    private float _singleVolumeCache;
+    private float _multipleVolumeCache;
+    private float _worldVolumeCache;
     private AudioSource _backgroundAudio;
     private AudioSource _singleAudio;
     private List<AudioSource> _multipleAudio = new List<AudioSource>();
@@ -56,6 +68,7 @@ public sealed class AudioManager : IManager
     private bool _singleSoundPlayDetector = false;
     private static AudioManager _instance = null;
     private GameObject gameObject;
+    #endregion
 
     public static AudioManager GetInstance()
     {
@@ -90,6 +103,59 @@ public sealed class AudioManager : IManager
                 {
                     SingleSoundEndOfPlayEvent.Invoke();
                 }
+            }
+        }
+        if (_backgroundPriorityCache != BackgroundPriority)
+        {
+            _backgroundPriorityCache = BackgroundPriority;
+            _backgroundAudio.priority = _backgroundPriorityCache;
+        }
+        if (_singlePriorityCache != SinglePriority)
+        {
+            _singlePriorityCache = SinglePriority;
+            _singleAudio.priority = _singlePriorityCache;
+        }
+        if (_multiplePriorityCache != MultiplePriority)
+        {
+            _multiplePriorityCache = MultiplePriority;
+            for (int i = 0; i < _multipleAudio.Count; i++)
+            {
+                _multipleAudio[i].priority = _multiplePriorityCache;
+            }
+        }
+        if (_worldPriorityCache != WorldPriority)
+        {
+            _worldPriorityCache = WorldPriority;
+            foreach (KeyValuePair<GameObject, AudioSource> audio in _worldAudio)
+            {
+                audio.Value.priority = _worldPriorityCache;
+            }
+        }
+
+        if (!Mathf.Approximately(_backgroundVolumeCache, BackgroundVolume))
+        {
+            _backgroundVolumeCache = BackgroundVolume;
+            _backgroundAudio.volume = _backgroundVolumeCache;
+        }
+        if (!Mathf.Approximately(_singleVolumeCache, SingleVolume))
+        {
+            _singleVolumeCache = SingleVolume;
+            _singleAudio.volume = _singleVolumeCache;
+        }
+        if (!Mathf.Approximately(_multipleVolumeCache, MultipleVolume))
+        {
+            _multipleVolumeCache = MultipleVolume;
+            for (int i = 0; i < _multipleAudio.Count; i++)
+            {
+                _multipleAudio[i].volume = _multipleVolumeCache;
+            }
+        }
+        if (!Mathf.Approximately(_worldVolumeCache, WorldVolume))
+        {
+            _worldVolumeCache = WorldVolume;
+            foreach (KeyValuePair<GameObject, AudioSource> audio in _worldAudio)
+            {
+                audio.Value.volume = _worldVolumeCache;
             }
         }
     }

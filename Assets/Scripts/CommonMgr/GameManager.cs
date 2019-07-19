@@ -84,9 +84,6 @@ public class GameManager
         //将lua初始化移动到这里，所有的必要条件都准备好以后再初始化lua虚拟机
         luaClient = gameLauncherObj.AddComponent<LuaEngine>();
 
-        //Test 测试音频
-        var audioClip = AssetLoader.Load<AudioClip>("Audio/MainTheme.mp3");
-        audioManager.PlayBackgroundMusic(audioClip);
     }
 
     /// <summary>
