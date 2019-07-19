@@ -5,6 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// 音频管理器
+/// 基于:https://github.com/SaiTingHu/HTFramework/blob/master/RunTime/Audio/AudioManager.cs 改造
 /// </summary>
 public sealed class AudioManager : IManager
 {
