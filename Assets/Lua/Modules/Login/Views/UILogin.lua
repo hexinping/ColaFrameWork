@@ -14,7 +14,7 @@ end
 function UILogin:InitParam()
     self.ResId = 100
     self.uiDepthLayer = ECEnumType.UIDepth.NORMAL
-    self:ShowUIBlur(true)
+    self:ShowUIMask(true)
 end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
@@ -27,11 +27,9 @@ function UILogin:OnShow(isShow)
 end
 
 function UILogin:onClick(name)
-    if name == "showLogBtn" then
-        UIManager.Instance():Open(ECEnumType.UIEnum.DebugPanel)
-    elseif name == "cancelBtn" then
+    if name == "cancelBtn" then
         self:DestroySelf()
-        UIManager.Instance():Open(ECEnumType.UIEnum.UIModel)
+        UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
     end
 end
 
