@@ -7,6 +7,7 @@ local data = {
 {101,[[Arts/UI/Prefabs/uiloading.prefab]]},
 {102,[[Arts/UI/Prefabs/UIDebugPanel.prefab]]},
 {103,[[Arts/UI/Prefabs/UISettingPanel.prefab]]},
+{105,[[Arts/UI/Prefabs/UIWorldDialog.prefab]]},
 {104,[[Arts/UI/Prefabs/UIModelPanel.prefab]]},
 {2001,[[Arts/UI/Textures/atlas/airfightSheet.prefab]]},
 {300001,[[Arts/UI/Material/material_defaultgray.mat]]},
