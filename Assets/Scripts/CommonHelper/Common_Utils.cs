@@ -625,5 +625,113 @@ public static class Common_Utils
     {
         AudioManager.Instance.StopBackgroundMusic();
     }
+
+    /// <summary>
+    /// 播放单通道音效
+    /// </summary>
+    public static void PlaySingleSound(string audioName, bool isLoop = false, float speed = 1)
+    {
+        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        AudioManager.Instance.PlaySingleSound(audioClip, isLoop, speed);
+    }
+
+    /// <summary>
+    /// 暂停播放单通道音效
+    /// </summary>
+    public static void PauseSingleSound(bool isGradual = true)
+    {
+        AudioManager.Instance.PauseSingleSound(isGradual);
+    }
+
+    /// <summary>
+    /// 恢复播放单通道音效
+    /// </summary>
+    public static void UnPauseSingleSound(bool isGradual = true)
+    {
+        AudioManager.Instance.UnPauseSingleSound(isGradual);
+    }
+
+    /// <summary>
+    /// 停止播放单通道音效
+    /// </summary>
+    public static void StopSingleSound()
+    {
+        AudioManager.Instance.StopSingleSound();
+    }
+
+    /// <summary>
+    /// 播放多通道音效
+    /// </summary>
+    public static void PlayMultipleSound(string audioName, bool isLoop = false, float speed = 1)
+    {
+        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        AudioManager.Instance.PlayMultipleSound(audioClip, isLoop, speed);
+    }
+
+    /// <summary>
+    /// 停止播放指定的多通道音效
+    /// </summary>
+    public static void StopMultipleSound(string audioName)
+    {
+        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        AudioManager.Instance.StopMultipleSound(audioClip);
+    }
+
+    /// <summary>
+    /// 停止播放所有多通道音效
+    /// </summary>
+    public static void StopAllMultipleSound()
+    {
+        AudioManager.Instance.StopAllMultipleSound();
+    }
+
+    /// <summary>
+    /// 销毁所有闲置中的多通道音效的音源
+    /// </summary>
+    public static void ClearIdleMultipleAudioSource()
+    {
+        AudioManager.Instance.ClearIdleMultipleAudioSource();
+    }
+
+    /// <summary>
+    /// 播放世界音效
+    /// </summary>
+    public static void PlayWorldSound(GameObject attachTarget, string audioName, bool isLoop = false, float speed = 1)
+    {
+        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        AudioManager.Instance.PlayWorldSound(attachTarget, audioClip, isLoop, speed);
+    }
+
+    /// <summary>
+    /// 暂停播放指定的世界音效
+    /// </summary>
+    public static void PauseWorldSound(GameObject attachTarget, bool isGradual = true)
+    {
+        AudioManager.Instance.PauseWorldSound(attachTarget, isGradual);
+    }
+
+    /// <summary>
+    /// 恢复播放指定的世界音效
+    /// </summary>
+    public static void UnPauseWorldSound(GameObject attachTarget, bool isGradual = true)
+    {
+        AudioManager.Instance.UnPauseWorldSound(attachTarget, isGradual);
+    }
+
+    /// <summary>
+    /// 停止播放所有的世界音效
+    /// </summary>
+    public static void StopAllWorldSound()
+    {
+        AudioManager.Instance.StopAllWorldSound();
+    }
+
+    /// <summary>
+    /// 销毁所有闲置中的世界音效的音源
+    /// </summary>
+    public static void ClearIdleWorldAudioSource()
+    {
+        AudioManager.Instance.ClearIdleWorldAudioSource();
+    }
     #endregion
 }

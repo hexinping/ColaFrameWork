@@ -42,9 +42,28 @@ public class Common_UtilsWrap
 		L.RegFunction("ClearSreenLog", ClearSreenLog);
 		L.RegFunction("GetTerrainHeight", GetTerrainHeight);
 		L.RegFunction("ShowUIBlur", ShowUIBlur);
+		L.RegFunction("ShowUIMask", ShowUIMask);
 		L.RegFunction("DestroyUIBlur", DestroyUIBlur);
 		L.RegFunction("GetSceneMgr", GetSceneMgr);
 		L.RegFunction("DelayInvokeNextFrame", DelayInvokeNextFrame);
+		L.RegFunction("SetMute", SetMute);
+		L.RegFunction("PlayBackgroundMusic", PlayBackgroundMusic);
+		L.RegFunction("PauseBackgroundMusic", PauseBackgroundMusic);
+		L.RegFunction("UnPauseBackgroundMusic", UnPauseBackgroundMusic);
+		L.RegFunction("StopBackgroundMusic", StopBackgroundMusic);
+		L.RegFunction("PlaySingleSound", PlaySingleSound);
+		L.RegFunction("PauseSingleSound", PauseSingleSound);
+		L.RegFunction("UnPauseSingleSound", UnPauseSingleSound);
+		L.RegFunction("StopSingleSound", StopSingleSound);
+		L.RegFunction("PlayMultipleSound", PlayMultipleSound);
+		L.RegFunction("StopMultipleSound", StopMultipleSound);
+		L.RegFunction("StopAllMultipleSound", StopAllMultipleSound);
+		L.RegFunction("ClearIdleMultipleAudioSource", ClearIdleMultipleAudioSource);
+		L.RegFunction("PlayWorldSound", PlayWorldSound);
+		L.RegFunction("PauseWorldSound", PauseWorldSound);
+		L.RegFunction("UnPauseWorldSound", UnPauseWorldSound);
+		L.RegFunction("StopAllWorldSound", StopAllWorldSound);
+		L.RegFunction("ClearIdleWorldAudioSource", ClearIdleWorldAudioSource);
 		L.EndStaticLibs();
 	}
 
@@ -691,6 +710,23 @@ public class Common_UtilsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ShowUIMask(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+			string arg1 = ToLua.CheckString(L, 2);
+			Common_Utils.ShowUIMask(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int DestroyUIBlur(IntPtr L)
 	{
 		try
@@ -729,6 +765,465 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 1);
 			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
 			Common_Utils.DelayInvokeNextFrame(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetMute(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
+			Common_Utils.SetMute(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PlayBackgroundMusic(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				Common_Utils.PlayBackgroundMusic(arg0);
+				return 0;
+			}
+			else if (count == 2)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				Common_Utils.PlayBackgroundMusic(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
+				Common_Utils.PlayBackgroundMusic(arg0, arg1, arg2);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlayBackgroundMusic");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PauseBackgroundMusic(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 0)
+			{
+				Common_Utils.PauseBackgroundMusic();
+				return 0;
+			}
+			else if (count == 1)
+			{
+				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
+				Common_Utils.PauseBackgroundMusic(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PauseBackgroundMusic");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnPauseBackgroundMusic(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 0)
+			{
+				Common_Utils.UnPauseBackgroundMusic();
+				return 0;
+			}
+			else if (count == 1)
+			{
+				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
+				Common_Utils.UnPauseBackgroundMusic(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.UnPauseBackgroundMusic");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int StopBackgroundMusic(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			Common_Utils.StopBackgroundMusic();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PlaySingleSound(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				Common_Utils.PlaySingleSound(arg0);
+				return 0;
+			}
+			else if (count == 2)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				Common_Utils.PlaySingleSound(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
+				Common_Utils.PlaySingleSound(arg0, arg1, arg2);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlaySingleSound");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PauseSingleSound(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 0)
+			{
+				Common_Utils.PauseSingleSound();
+				return 0;
+			}
+			else if (count == 1)
+			{
+				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
+				Common_Utils.PauseSingleSound(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PauseSingleSound");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnPauseSingleSound(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 0)
+			{
+				Common_Utils.UnPauseSingleSound();
+				return 0;
+			}
+			else if (count == 1)
+			{
+				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
+				Common_Utils.UnPauseSingleSound(arg0);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.UnPauseSingleSound");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int StopSingleSound(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			Common_Utils.StopSingleSound();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PlayMultipleSound(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				Common_Utils.PlayMultipleSound(arg0);
+				return 0;
+			}
+			else if (count == 2)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				Common_Utils.PlayMultipleSound(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3)
+			{
+				string arg0 = ToLua.CheckString(L, 1);
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
+				Common_Utils.PlayMultipleSound(arg0, arg1, arg2);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlayMultipleSound");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int StopMultipleSound(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			Common_Utils.StopMultipleSound(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int StopAllMultipleSound(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			Common_Utils.StopAllMultipleSound();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ClearIdleMultipleAudioSource(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			Common_Utils.ClearIdleMultipleAudioSource();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PlayWorldSound(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				string arg1 = ToLua.CheckString(L, 2);
+				Common_Utils.PlayWorldSound(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				string arg1 = ToLua.CheckString(L, 2);
+				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
+				Common_Utils.PlayWorldSound(arg0, arg1, arg2);
+				return 0;
+			}
+			else if (count == 4)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				string arg1 = ToLua.CheckString(L, 2);
+				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
+				float arg3 = (float)LuaDLL.luaL_checknumber(L, 4);
+				Common_Utils.PlayWorldSound(arg0, arg1, arg2, arg3);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlayWorldSound");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int PauseWorldSound(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				Common_Utils.PauseWorldSound(arg0);
+				return 0;
+			}
+			else if (count == 2)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				Common_Utils.PauseWorldSound(arg0, arg1);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PauseWorldSound");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnPauseWorldSound(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 1)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				Common_Utils.UnPauseWorldSound(arg0);
+				return 0;
+			}
+			else if (count == 2)
+			{
+				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+				Common_Utils.UnPauseWorldSound(arg0, arg1);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.UnPauseWorldSound");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int StopAllWorldSound(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			Common_Utils.StopAllWorldSound();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ClearIdleWorldAudioSource(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			Common_Utils.ClearIdleWorldAudioSource();
 			return 0;
 		}
 		catch (Exception e)
