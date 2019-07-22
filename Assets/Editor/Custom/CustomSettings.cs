@@ -73,6 +73,7 @@ public static class CustomSettings
         _GT(typeof(UGUIModel)),
         _GT(typeof(AnimCtrlEnum)),
         _GT(typeof(AnimCurveNames)),
+        _GT(typeof(TouchHelper)),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

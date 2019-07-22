@@ -30,6 +30,9 @@ function UILogin:onClick(name)
     if name == "cancelBtn" then
         self:DestroySelf()
         UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
+    elseif name == "okBtn" then
+        self:DestroySelf()
+        UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
     end
 end
 
