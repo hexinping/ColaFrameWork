@@ -41,7 +41,7 @@ public static class GloablDefine
     public static Color ColorBlack = Color.black;
     public static Color ColorYellow = Color.yellow;
     public static Color ColorGray = Color.gray;
-    public static Color ColorUIMask = new Color(58 / 255.0f, 58 / 255.0f, 58 / 255.0f, 1.0f);
+    public static Color ColorUIMask = new Color(0 / 255.0f, 0 / 255.0f, 0 / 255.0f, 125 / 255.0f);
 
     /// <summary>
     /// Bundle的资源后缀名

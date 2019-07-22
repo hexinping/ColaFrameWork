@@ -537,7 +537,7 @@ public static class Common_Utils
         GameObject uiMaskObj = uiPanel.FindChildByPath(uiMaskName);
         if (null == uiMaskObj)
         {
-            CreateUIMask(uiPanel, panelName);
+            CreateUIMask(uiPanel, uiMaskName);
         }
         else
         {
