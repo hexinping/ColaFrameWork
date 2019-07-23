@@ -33,6 +33,11 @@ public class UGUIEventListener : MonoBehaviour,
     }
 
     /// <summary>
+    /// 是否需要检测屏蔽一些不要接受事件的行为
+    /// </summary>
+    public bool isNeedCheckHideEvent = true;
+
+    /// <summary>
     /// EventListener有一个统一的uihandler来接收处理回调
     /// </summary>
     public IUGUIEventHandler uiHandler;
@@ -64,6 +69,10 @@ public class UGUIEventListener : MonoBehaviour,
     //统一检查是否需要屏蔽点击事件
     protected bool CheckNeedHideEvent()
     {
+        if (!isNeedCheckHideEvent)
+        {
+            return false;
+        }
         if (this.mCurSelectableComponent == null || !this.mCurSelectableComponent.interactable
             || !this.mCurSelectableComponent.enabled)
         {
