@@ -16,7 +16,7 @@ public class TouchHelper
     /// <param name="onClick"></param>
     public static void AddClickListener(GameObject go, UIEventHandler onClick)
     {
-        if(null != go)
+        if (null != go)
         {
             UGUIEventListener uGUIEventListener = go.AddSingleComponent<UGUIEventListener>();
             uGUIEventListener.onClick = onClick;
@@ -34,6 +34,38 @@ public class TouchHelper
         {
             UGUIEventListener uGUIEventListener = go.AddSingleComponent<UGUIEventListener>();
             uGUIEventListener.onDrag = onDrag;
+        }
+    }
+
+    /// <summary>
+    /// 单独为某一个物体添加移除事件
+    /// </summary>
+    /// <param name="go"></param>
+    public static void RemoveClickListener(GameObject go)
+    {
+        if (null != go)
+        {
+            UGUIEventListener uGUIEventListener = go.GetComponent<UGUIEventListener>();
+            if (null != uGUIEventListener)
+            {
+                uGUIEventListener.onClick = null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 单独为某一个物体添加移除事件
+    /// </summary>
+    /// <param name="go"></param>
+    public static void RemoveDragListener(GameObject go)
+    {
+        if (null != go)
+        {
+            UGUIEventListener uGUIEventListener = go.GetComponent<UGUIEventListener>();
+            if (null != uGUIEventListener)
+            {
+                uGUIEventListener.onDrag = null;
+            }
         }
     }
 }
