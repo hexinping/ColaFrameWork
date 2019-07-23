@@ -16,7 +16,11 @@ public class TouchHelper
     /// <param name="onClick"></param>
     public static void AddClickListener(GameObject go, UIEventHandler onClick)
     {
-
+        if(null != go)
+        {
+            UGUIEventListener uGUIEventListener = go.AddSingleComponent<UGUIEventListener>();
+            uGUIEventListener.onClick = onClick;
+        }
     }
 
     /// <summary>
@@ -26,6 +30,10 @@ public class TouchHelper
     /// <param name="onDrag"></param>
     public static void AddDragListener(GameObject go, UIDragEventHandlerDetail onDrag)
     {
-
+        if (null != go)
+        {
+            UGUIEventListener uGUIEventListener = go.AddSingleComponent<UGUIEventListener>();
+            uGUIEventListener.onDrag = onDrag;
+        }
     }
 }
