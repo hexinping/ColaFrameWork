@@ -24,6 +24,7 @@ public static class LuaBinder
 		UGUIModelWrap.Register(L);
 		AnimCtrlEnumWrap.Register(L);
 		AnimCurveNamesWrap.Register(L);
+		TouchHelperWrap.Register(L);
 		LuaProfilerWrap.Register(L);
 		L.RegFunction("UIEventHandler", UIEventHandler);
 		L.RegFunction("UIDragEventHandlerDetail", UIDragEventHandlerDetail);
