@@ -35,6 +35,7 @@ public class UGUIEventListener : MonoBehaviour,
     /// <summary>
     /// 是否需要检测屏蔽一些不要接受事件的行为
     /// </summary>
+    [HideInInspector]
     public bool isNeedCheckHideEvent = true;
 
     /// <summary>
