@@ -62,6 +62,7 @@ public static class GUIHelper
     public static int DefaultSceneCullMask = LayerMask.GetMask("Default") + LayerMask.GetMask("Water") + LayerMask.GetMask("Terrain") +
                                              LayerMask.GetMask("Building") + LayerMask.GetMask("SmallBuilding") + LayerMask.GetMask("Sky") +
                                              LayerMask.GetMask("Grass") + LayerMask.GetMask("Ground");
+
     private static void UGUICreate()
     {
         if (null == uiRootObj)
@@ -255,5 +256,10 @@ public static class GUIHelper
     {
         CreateMainCamera();
         return mainCamCtrl;
+    }
+
+    public static void HandleMainCameraEvent(Vector2 deltaPos)
+    {
+        mainCamCtrl.HandleCameraEvent(deltaPos);
     }
 }

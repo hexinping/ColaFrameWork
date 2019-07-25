@@ -149,10 +149,6 @@ public class MainCameraCtrl : MonoBehaviour
         {
             isMousePress = false;
         }
-        if (!isMousePress)
-        {
-            return;
-        }
         mousePosOffset = deltaPos;
     }
 

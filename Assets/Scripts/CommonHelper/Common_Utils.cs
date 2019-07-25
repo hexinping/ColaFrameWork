@@ -737,7 +737,7 @@ public static class Common_Utils
     public static void HandleMainCameraEvent(float x,float y)
     {
         vec2Tmp.Set(x, y);
-        GUIHelper.GetMainCamCtrl().HandleCameraEvent(vec2Tmp);
+        GUIHelper.HandleMainCameraEvent(vec2Tmp);
     }
     #endregion
 }

@@ -24,7 +24,8 @@ end
 function UIWorldDialog:OnCreate()
     local fullMask = self.Panel:FindChildByPath("FullScreenMask")
     TouchHelper.AddDragListener(fullMask,function(name,deltaPos,curTouchPos)
-        print("-------------->拖拽事件",name,deltaPos,curTouchPos)
+        print("------------>Touch",deltaPos)
+        Common_Utils.HandleMainCameraEvent(deltaPos.x,deltaPos.y)
     end)
 end
 
