@@ -47,13 +47,22 @@ public class MainCameraCtrl : MonoBehaviour
 
     void Update()
     {
-        ZoomCamera();
-        SwipeScreen();
-    }    
+        //ZoomCamera();
+        //SwipeScreen();
+    }
+
+    /// <summary>
+    /// 处理相机的缩放和旋转等行为
+    /// </summary>
+    public void HandleCameraEvent(Vector2 deltaPos)
+    {
+        ZoomCamera(deltaPos);
+        SwipeScreen(deltaPos);
+    }
 
     void LateUpdate()
     {
-        if(null != target)
+        if (null != target)
         {
             FollowPlayer();
             RotateCamera();
@@ -97,9 +106,9 @@ public class MainCameraCtrl : MonoBehaviour
     /// <summary>
     /// 缩放相机与玩家距离
     /// </summary>
-    void ZoomCamera()
+    void ZoomCamera(Vector2 deltaPos)
     {
-        scrollWheel = GetZoomValue();
+        scrollWheel = GetZoomValue(deltaPos);
         if (scrollWheel != 0)
         {
             tempAngle = initialAngle - scrollWheel * 2 * (maxAngle - minAngle);
@@ -125,40 +134,33 @@ public class MainCameraCtrl : MonoBehaviour
     }
 
     bool isMousePress = false;
-    Vector2 oldMousePos;
-    Vector2 newMousePos;
     Vector2 mousePosOffset;
+
     /// <summary>
     /// 滑动屏幕 旋转相机和缩放视野
     /// </summary>
-    public void SwipeScreen()
+    public void SwipeScreen(Vector2 deltaPos)
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Vector2.zero != deltaPos)
         {
-            oldMousePos = Vector2.zero;
             isMousePress = true;
         }
-        else if(Input.GetMouseButtonUp(0))
+        else
         {
-            mousePosOffset = Vector2.zero;
             isMousePress = false;
         }
         if (!isMousePress)
-            return;
-
-        newMousePos = Input.mousePosition;
-        if(oldMousePos != Vector2.zero)
         {
-            mousePosOffset = newMousePos - oldMousePos;
+            return;
         }
-        oldMousePos = newMousePos;
+        mousePosOffset = deltaPos;
     }
 
     /// <summary>
     /// 获取缩放视野数值  1.鼠标滚轮 2.屏幕上下滑动
     /// </summary>
     /// <returns></returns>
-    float GetZoomValue()
+    float GetZoomValue(Vector2 deltaPos)
     {
         float zoomValue = 0;
         // 使用鼠标滚轮
@@ -166,9 +168,9 @@ public class MainCameraCtrl : MonoBehaviour
         {
             zoomValue = Input.GetAxis("Mouse ScrollWheel");
         }
-        else if (mousePosOffset != Vector2.zero)
+        else if (deltaPos != Vector2.zero)
         {
-            zoomValue = mousePosOffset.y * Time.deltaTime * zoomSpeed * 0.01f;
+            zoomValue = deltaPos.y * Time.deltaTime * zoomSpeed * 0.01f;
         }
 
         return zoomValue;
