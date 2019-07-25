@@ -19,6 +19,7 @@ public class TouchHelper
         if (null != go)
         {
             UGUIEventListener uGUIEventListener = go.AddSingleComponent<UGUIEventListener>();
+            uGUIEventListener.isNeedCheckHideEvent = false;
             uGUIEventListener.onClick = onClick;
         }
     }
@@ -33,6 +34,7 @@ public class TouchHelper
         if (null != go)
         {
             UGUIDragEventListenner uGUIDragEventListenner = go.AddSingleComponent<UGUIDragEventListenner>();
+            uGUIDragEventListenner.isNeedCheckHideEvent = false;
             uGUIDragEventListenner.onDrag = onDrag;
         }
     }
