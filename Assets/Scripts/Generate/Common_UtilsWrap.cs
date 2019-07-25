@@ -64,6 +64,7 @@ public class Common_UtilsWrap
 		L.RegFunction("UnPauseWorldSound", UnPauseWorldSound);
 		L.RegFunction("StopAllWorldSound", StopAllWorldSound);
 		L.RegFunction("ClearIdleWorldAudioSource", ClearIdleWorldAudioSource);
+		L.RegFunction("HandleMainCameraEvent", HandleMainCameraEvent);
 		L.EndStaticLibs();
 	}
 
@@ -1224,6 +1225,23 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 0);
 			Common_Utils.ClearIdleWorldAudioSource();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int HandleMainCameraEvent(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			float arg0 = (float)LuaDLL.luaL_checknumber(L, 1);
+			float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
+			Common_Utils.HandleMainCameraEvent(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)

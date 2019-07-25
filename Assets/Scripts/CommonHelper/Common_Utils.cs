@@ -733,5 +733,11 @@ public static class Common_Utils
     {
         AudioManager.Instance.ClearIdleWorldAudioSource();
     }
+
+    public static void HandleMainCameraEvent(float x,float y)
+    {
+        vec2Tmp.Set(x, y);
+        GUIHelper.GetMainCamCtrl().HandleCameraEvent(vec2Tmp);
+    }
     #endregion
 }
