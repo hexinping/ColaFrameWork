@@ -29,11 +29,15 @@ end
 function UILogin:onClick(name)
     if name == "cancelBtn" then
         self:DestroySelf()
-        UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
     elseif name == "okBtn" then
         self:DestroySelf()
-        UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
     end
+end
+
+-- 界面销毁的过程中触发
+function UILogin:OnDestroy()
+    UIBase.OnDestroy(self)
+    UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
 end
 
 return UILogin
