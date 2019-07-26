@@ -178,6 +178,6 @@ public class MainCameraCtrl : MonoBehaviour
     /// </summary>
     void RotateCamera()
     {
-        horizontalAngle = Mathf.SmoothDamp(horizontalAngle, horizontalAngle + mousePosOffset.x * Time.deltaTime * swipeSpeed, ref xVelocity, 0.1f);
+        horizontalAngle = Mathf.SmoothDamp(horizontalAngle, horizontalAngle - mousePosOffset.x * Time.deltaTime * swipeSpeed, ref xVelocity, 0.1f);
     }
 }
