@@ -40,7 +40,7 @@ public class TouchHelper
     }
 
     /// <summary>
-    /// 单独为某一个物体添加移除事件
+    /// 单独为某一个物体移除点击事件
     /// </summary>
     /// <param name="go"></param>
     public static void RemoveClickListener(GameObject go)
@@ -56,7 +56,7 @@ public class TouchHelper
     }
 
     /// <summary>
-    /// 单独为某一个物体添加移除事件
+    /// 单独为某一个物体移除拖拽事件
     /// </summary>
     /// <param name="go"></param>
     public static void RemoveDragListener(GameObject go)
@@ -67,6 +67,39 @@ public class TouchHelper
             if (null != uGUIDragEventListenner)
             {
                 uGUIDragEventListenner.onDrag = null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 单独为某一个物体添加拖拽结束事件
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="onEndDrag"></param>
+    public static void AddEndDragListener(GameObject go, UIDragEventHandlerDetail onEndDrag)
+    {
+        if (null != go)
+        {
+            UGUIDragEventListenner uGUIDragEventListenner = go.AddSingleComponent<UGUIDragEventListenner>();
+            if (null != uGUIDragEventListenner)
+            {
+                uGUIDragEventListenner.onEndDrag = onEndDrag;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 单独为某一个物体移除拖拽结束事件
+    /// </summary>
+    /// <param name="go"></param>
+    public static void RemoveEndDragListener(GameObject go)
+    {
+        if (null != go)
+        {
+            UGUIDragEventListenner uGUIDragEventListenner = go.AddSingleComponent<UGUIDragEventListenner>();
+            if (null != uGUIDragEventListenner)
+            {
+                uGUIDragEventListenner.onEndDrag = null;
             }
         }
     }
