@@ -734,10 +734,10 @@ public static class Common_Utils
         AudioManager.Instance.ClearIdleWorldAudioSource();
     }
 
-    public static void HandleMainCameraEvent(float x,float y)
+    public static void HandleMainCameraEvent(GameObject fullMask)
     {
-        vec2Tmp.Set(x, y);
-        GUIHelper.HandleMainCameraEvent(vec2Tmp);
+        TouchHelper.AddDragListener(fullMask, GUIHelper.MainCameraOnDrag);
+        TouchHelper.AddEndDragListener(fullMask, GUIHelper.MainCameraOnEndDrag);
     }
     #endregion
 }

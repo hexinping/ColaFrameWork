@@ -11,6 +11,8 @@ public class TouchHelperWrap
 		L.RegFunction("AddDragListener", AddDragListener);
 		L.RegFunction("RemoveClickListener", RemoveClickListener);
 		L.RegFunction("RemoveDragListener", RemoveDragListener);
+		L.RegFunction("AddEndDragListener", AddEndDragListener);
+		L.RegFunction("RemoveEndDragListener", RemoveEndDragListener);
 		L.RegFunction("New", _CreateTouchHelper);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
@@ -98,6 +100,39 @@ public class TouchHelperWrap
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			TouchHelper.RemoveDragListener(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int AddEndDragListener(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+			UIDragEventHandlerDetail arg1 = (UIDragEventHandlerDetail)ToLua.CheckDelegate<UIDragEventHandlerDetail>(L, 2);
+			TouchHelper.AddEndDragListener(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int RemoveEndDragListener(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+			TouchHelper.RemoveEndDragListener(arg0);
 			return 0;
 		}
 		catch (Exception e)

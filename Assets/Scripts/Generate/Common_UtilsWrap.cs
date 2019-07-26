@@ -1238,10 +1238,9 @@ public class Common_UtilsWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
-			float arg0 = (float)LuaDLL.luaL_checknumber(L, 1);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-			Common_Utils.HandleMainCameraEvent(arg0, arg1);
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+			Common_Utils.HandleMainCameraEvent(arg0);
 			return 0;
 		}
 		catch (Exception e)

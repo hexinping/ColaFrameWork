@@ -258,8 +258,13 @@ public static class GUIHelper
         return mainCamCtrl;
     }
 
-    public static void HandleMainCameraEvent(Vector2 deltaPos)
+    public static void MainCameraOnDrag(string name,Vector2 deltaPos,Vector2 curPos)
     {
         mainCamCtrl.HandleCameraEvent(deltaPos);
+    }
+
+    public static void MainCameraOnEndDrag(string name, Vector2 deltaPos, Vector2 curPos)
+    {
+        mainCamCtrl.HandleCameraEvent(Vector2.zero);
     }
 }
