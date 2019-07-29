@@ -23,12 +23,10 @@ ColaFramework 一款简洁的MVC架构的测试性Unity客户端框架。目前�
 
 #### 游戏启动运行流程与机制  
 
-目前框架根据平台的不同，设计了不同的启动场景，分别命名为：  
->* GameLauncher(Windows平台)  
->* GameLauncherAndroid(Android平台)  
-
-无论启动场景是哪一个，游戏都由GameLauncher启动器脚本启动。GameLauncher为一个单例类，在游戏初始化的过程中，启动器类负责初始化GameManager、InputMgr、FpsHelper、DebuglogHelper、U3DAutomation、StreamingAssetHelper、多线程工具类等一些基础的操作。  
-在一些必要的资源准备妥当以后，会执行InitGameCore()方法，该方法会调用GameManager的InitGameCore()方法，进一步地进行初始化一些次要的管理器与资源。
+目前框架的启动场景为：  
+>* GameLauncher  
+游戏由GameLauncher启动器脚本启动。GameLauncher为一个单例类，在游戏初始化的过程中，启动器类负责初始化GameManager、InputMgr、FpsHelper、DebuglogHelper、U3DAutomation、StreamingAssetHelper、多线程工具类等一些基础的操作。  
+在一些必要的资源准备妥当以后，会执行InitGameCore()方法，该方法会调用GameManager的InitGameCore()方法，进一步地进行初始化一些次要的管理器与资源，并且启动Lua虚拟机，加载Lua的入口函数。
 在GameLauncher类中，会主动调用GameManager的Update、LateUpdate、FixedUpdate、ApplicationQuit等类似于MonoBehaivor中的方法，这让您依然可以自由地在这些方法中进行处理自己的相应逻辑。  
 
 ![](./Doc/image/ColaFramework框架启动流程与机制.png)  
