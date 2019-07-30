@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ColaFrame
+namespace ColaFramework
 {
     /// <summary>
     /// 对象池类(单独存储某一类物件的对象池)

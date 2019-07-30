@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EventType = ColaFrame.EventType;
+using EventType = ColaFramework.EventType;
 
 public class LoginModule : ModuleBase {
     public LoginModule() : base(ModuleType.Login)

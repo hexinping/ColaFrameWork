@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System;
 
-namespace ColaFrame
+namespace ColaFramework
 {
     /// <summary>
     /// ColaFramework框架的 Inspector 拓展编辑器的基类

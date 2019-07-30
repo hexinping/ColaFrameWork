@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-using EventType = ColaFrame.EventType;
+using ColaFramework;
 
 public class UILogin : UIBase
 {

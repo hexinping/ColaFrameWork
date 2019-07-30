@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using EventType = ColaFrame.EventType;
+using EventType = ColaFramework.EventType;
 
 /// <summary>
 /// 接收消息后触发的回调
@@ -43,7 +43,7 @@ public class GameEvent
 }
 
 
-namespace ColaFrame
+namespace ColaFramework
 {
     /// <summary>
     /// 事件的类型

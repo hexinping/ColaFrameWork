@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace ColaFrame
+namespace ColaFramework
 {
     /// <summary>
     /// 编辑器中的弹出提示框

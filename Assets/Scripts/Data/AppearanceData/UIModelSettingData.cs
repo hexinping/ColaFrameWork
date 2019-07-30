@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New UIModelSetting", menuName = "ColaFrame/UIModelSettingData", order = 1)]
+[CreateAssetMenu(fileName = "New UIModelSetting", menuName = "ColaFramework/UIModelSettingData", order = 1)]
 public class UIModelSettingData : ScriptableObject
 {
     [Tooltip("模型文件资源的相对路径")]

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EventType = ColaFrame.EventType;
+using EventType = ColaFramework.EventType;
 
 /// <summary>
 /// 事件消息管理中心

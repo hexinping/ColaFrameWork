@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EventType = ColaFrame.EventType;
+using EventType = ColaFramework.EventType;
 
 /// <summary>
 /// Module系统管理控制类
