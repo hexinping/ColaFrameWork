@@ -8,8 +8,6 @@ using ColaFramework;
 
 public class UILogin : UIBase
 {
-    private UIHintTest uiHintTest;
-
     [AutoInject("cancelBtn")]
     private Button cancelBtn;
 
@@ -42,7 +40,6 @@ public class UILogin : UIBase
     public override void Destroy()
     {
         base.Destroy();
-        uiHintTest = null;
     }
 
     public override void OnCreate()
@@ -50,8 +47,6 @@ public class UILogin : UIBase
         base.OnCreate();
         AutoInject.Inject(Panel, this);
         var text = this.okBtn.name;
-        uiHintTest = new UIHintTest();
-        AttachSubPanel("center/uiTextHint", uiHintTest, UILevel.Level2);
         GameObject okBtn = Panel.FindChildByPath("bottom/okBtn");
         Image titleImage = Panel.GetComponentByPath<Image>("logo");
         CommonHelper.AddBtnMsg(okBtn, (obj) =>
@@ -62,7 +57,6 @@ public class UILogin : UIBase
     public override void OnDestroy()
     {
         base.OnDestroy();
-        uiHintTest = null;
     }
 
     public override void OnShow(bool isShow)
@@ -90,7 +84,6 @@ public class UILogin : UIBase
         if (name == "okBtn")
         {
             Debug.LogWarning("点击了OK按钮！");
-            uiHintTest.Open();
             //TODO: 测试视频下载
             var path = Path.Combine(CommonHelper.GetAssetPath(), "Videos.mp4");
             //var testUrl = @"http://vjs.zencdn.net/v/oceans.mp4";

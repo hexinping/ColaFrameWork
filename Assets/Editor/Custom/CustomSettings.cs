@@ -7,6 +7,7 @@ using UnityEditor;
 using BindType = ToLuaMenu.BindType;
 using System.Reflection;
 using UnityEngine.UI;
+using ColaFramework;
 
 public static class CustomSettings
 {

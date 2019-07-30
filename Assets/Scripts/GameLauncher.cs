@@ -3,69 +3,68 @@ using System.Collections.Generic;
 using System.IO;
 using DG.Tweening;
 using UnityEngine;
+using ColaFramework;
 
-namespace ColaFramework
+/// <summary>
+/// 游戏入口:游戏启动器类
+/// </summary>
+public class GameLauncher : MonoBehaviour
 {
     /// <summary>
-    /// 游戏入口:游戏启动器类
+    /// 存放资源的可读写路径
     /// </summary>
-    public class GameLauncher : MonoBehaviour
+    private string assetPath;
+    /// <summary>
+    /// 指示复制资源的游标
+    /// </summary>
+    private static int resbaseIndex = 0;
+
+    private static GameLauncher instance;
+    private GameManager gameManager;
+    private GameObject fpsHelperObj;
+    private FPSHelper fpsHelper;
+    private LogHelper logHelper;
+    private InputMgr inputMgr;
+
+    public static GameLauncher Instance
     {
-        /// <summary>
-        /// 存放资源的可读写路径
-        /// </summary>
-        private string assetPath;
-        /// <summary>
-        /// 指示复制资源的游标
-        /// </summary>
-        private static int resbaseIndex = 0;
+        get { return instance; }
+    }
 
-        private static GameLauncher instance;
-        private GameManager gameManager;
-        private GameObject fpsHelperObj;
-        private FPSHelper fpsHelper;
-        private LogHelper logHelper;
-        private InputMgr inputMgr;
+    /// <summary>
+    /// LogHelper实例
+    /// </summary>
+    public LogHelper LogHelper
+    {
+        get { return this.logHelper; }
+    }
 
-        public static GameLauncher Instance
-        {
-            get { return instance; }
-        }
-
-        /// <summary>
-        /// LogHelper实例
-        /// </summary>
-        public LogHelper LogHelper
-        {
-            get { return this.logHelper; }
-        }
-
-        void Awake()
-        {
-            instance = this;
-            InitPath();
-            gameManager = GameManager.GetInstance();
-            DOTween.Init();
-            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+    void Awake()
+    {
+        instance = this;
+        InitPath();
+        gameManager = GameManager.GetInstance();
+        DOTween.Init();
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
 #if UNITY_STANDALONE_WIN
             Screen.SetResolution(1280, 720, false);
 #endif
-            Application.targetFrameRate = 100;
+        Application.targetFrameRate = 100;
 
-            DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
 
-            //加入输入输出管理器
-            inputMgr = gameObject.AddComponent<InputMgr>();
+        //加入输入输出管理器
+        inputMgr = gameObject.AddComponent<InputMgr>();
 
 #if SHOW_FPS
-            fpsHelperObj = new GameObject("FpsHelperObj");
-            fpsHelper = fpsHelperObj.AddComponent<FPSHelper>();
-            GameObject.DontDestroyOnLoad(fpsHelperObj);
+        fpsHelperObj = new GameObject("FpsHelperObj");
+        fpsHelper = fpsHelperObj.AddComponent<FPSHelper>();
+        GameObject.DontDestroyOnLoad(fpsHelperObj);
 #endif
 
 #if BUILD_DEBUG_LOG || UNITY_EDITOR
 #if UNITY_2017_1_OR_NEWER
-            Debug.unityLogger.logEnabled = true;
+        Debug.unityLogger.logEnabled = true;
 #else
         Debug.unityLogger.logEnabled = true;
 #endif
@@ -82,92 +81,92 @@ namespace ColaFramework
 #endif
 
 #if OUTPUT_LOG
-            GameObject logHelperObj = new GameObject("LogHelperObj");
-            logHelper = logHelperObj.AddComponent<LogHelper>();
-            GameObject.DontDestroyOnLoad(logHelperObj);
+        GameObject logHelperObj = new GameObject("LogHelperObj");
+        logHelper = logHelperObj.AddComponent<LogHelper>();
+        GameObject.DontDestroyOnLoad(logHelperObj);
 
-            Application.logMessageReceived += logHelper.LogCallback;
+        Application.logMessageReceived += logHelper.LogCallback;
 #endif
-            //初始化多线程工具
-            ColaLoom.Initialize();
-            StreamingAssetHelper.SetAssetPathDir(assetPath);
-        }
+        //初始化多线程工具
+        ColaLoom.Initialize();
+        StreamingAssetHelper.SetAssetPathDir(assetPath);
+    }
 
-        // Use this for initialization
-        void Start()
+    // Use this for initialization
+    void Start()
+    {
+        StartCoroutine(InitGameCore());
+    }
+
+    void Update()
+    {
+        if (null != ColaHelper.Update)
         {
-            StartCoroutine(InitGameCore());
+            ColaHelper.Update(Time.deltaTime);
         }
+        gameManager.Update(Time.deltaTime);
+    }
 
-        void Update()
+    private void LateUpdate()
+    {
+        if (null != ColaHelper.LateUpdate)
         {
-            if (null != ColaHelper.Update)
-            {
-                ColaHelper.Update(Time.deltaTime);
-            }
-            gameManager.Update(Time.deltaTime);
+            ColaHelper.LateUpdate(Time.deltaTime);
         }
+        gameManager.LateUpdate(Time.deltaTime);
+    }
 
-        private void LateUpdate()
+    private void FixedUpdate()
+    {
+        if (null != ColaHelper.FixedUpdate)
         {
-            if (null != ColaHelper.LateUpdate)
-            {
-                ColaHelper.LateUpdate(Time.deltaTime);
-            }
-            gameManager.LateUpdate(Time.deltaTime);
+            ColaHelper.FixedUpdate(Time.fixedDeltaTime);
         }
+        gameManager.FixedUpdate(Time.fixedDeltaTime);
+    }
 
-        private void FixedUpdate()
+
+    private void OnApplicationQuit()
+    {
+        if (null != ColaHelper.OnApplicationQuit)
         {
-            if (null != ColaHelper.FixedUpdate)
-            {
-                ColaHelper.FixedUpdate(Time.fixedDeltaTime);
-            }
-            gameManager.FixedUpdate(Time.fixedDeltaTime);
+            ColaHelper.OnApplicationQuit();
         }
+        gameManager.OnApplicationQuit();
+    }
 
-
-        private void OnApplicationQuit()
+    private void OnApplicationPause(bool pause)
+    {
+        if (null != ColaHelper.OnApplicationPause)
         {
-            if (null != ColaHelper.OnApplicationQuit)
-            {
-                ColaHelper.OnApplicationQuit();
-            }
-            gameManager.OnApplicationQuit();
+            ColaHelper.OnApplicationPause(pause);
         }
+        gameManager.OnApplicationPause(pause);
+    }
 
-        private void OnApplicationPause(bool pause)
-        {
-            if (null != ColaHelper.OnApplicationPause)
-            {
-                ColaHelper.OnApplicationPause(pause);
-            }
-            gameManager.OnApplicationPause(pause);
-        }
+    private void OnApplicationFocus(bool focus)
+    {
+        gameManager.OnApplicationFocus(focus);
+    }
 
-        private void OnApplicationFocus(bool focus)
-        {
-            gameManager.OnApplicationFocus(focus);
-        }
+    public void ApplicationQuit(string exitCode = "0")
+    {
+        gameManager.ApplicationQuit();
+    }
 
-        public void ApplicationQuit(string exitCode = "0")
-        {
-            gameManager.ApplicationQuit();
-        }
-
-        IEnumerator InitGameCore()
-        {
-            yield return null;
-            // 
+    IEnumerator InitGameCore()
+    {
+        yield return null;
+        // 
 #if UNITY_ANDROID && (!UNITY_EDITOR)
         //从APK拷贝资源到本地
         CopyAssetDirectory();
 #else
-            gameManager.InitGameCore(gameObject);
+        gameManager.InitGameCore(gameObject);
 #endif
-        }
+    }
 
-        //
+    //
 #if UNITY_ANDROID && (!UNITY_EDITOR)
     /// <summary>
     /// 复制StreamingAsset资源
@@ -226,42 +225,42 @@ namespace ColaFramework
     }
 #endif
 
-        /// <summary>
-        /// 初始化一些路径
-        /// </summary>
-        private void InitPath()
+    /// <summary>
+    /// 初始化一些路径
+    /// </summary>
+    private void InitPath()
+    {
+        assetPath = CommonHelper.GetAssetPath();
+    }
+
+
+    public void DelayInvokeNextFrame(System.Action action)
+    {
+        StartCoroutine(InvokeNextFrame(action));
+    }
+
+    private IEnumerator InvokeNextFrame(System.Action action)
+    {
+        yield return 1;
+        if (null != action)
         {
-            assetPath = CommonHelper.GetAssetPath();
+            action();
         }
+    }
 
+    public void DelayInvokeSeconds(float seconds, System.Action action)
+    {
+        StartCoroutine(InvokeSeconds(seconds, action));
+    }
 
-        public void DelayInvokeNextFrame(System.Action action)
+    private IEnumerator InvokeSeconds(float seconds, System.Action action)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (null != action)
         {
-            StartCoroutine(InvokeNextFrame(action));
-        }
-
-        private IEnumerator InvokeNextFrame(System.Action action)
-        {
-            yield return 1;
-            if (null != action)
-            {
-                action();
-            }
-        }
-
-        public void DelayInvokeSeconds(float seconds, System.Action action)
-        {
-            StartCoroutine(InvokeSeconds(seconds, action));
-        }
-
-        private IEnumerator InvokeSeconds(float seconds, System.Action action)
-        {
-            yield return new WaitForSeconds(seconds);
-            if (null != action)
-            {
-                action();
-            }
+            action();
         }
     }
 }
+
 

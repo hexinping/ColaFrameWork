@@ -11,6 +11,7 @@
 /// - replaced pagination with delegate function
 using System;
 using UnityEngine.EventSystems;
+using ColaFramework;
 
 namespace UnityEngine.UI.Extensions
 {

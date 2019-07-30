@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using Def = GloablDefine;
+using ColaFramework;
 
 /// <summary>
 /// 通用工具类（C#端，lua端专门有Common_Util.cs供导出使用）
@@ -363,7 +363,7 @@ public static class CommonHelper
     {
         if (string.IsNullOrEmpty(assetPath))
         {
-#if !UNITY_EDITOR && UNITY_IOS 
+#if !UNITY_EDITOR && UNITY_IOS
             assetPath = string.Format("{0}/{1}", Application.temporaryCachePath, osDir);
 #else
             assetPath = string.Format("{0}/{1}", Application.persistentDataPath, osDir);
@@ -602,3 +602,4 @@ public static class CommonHelper
     }
 
 }
+
