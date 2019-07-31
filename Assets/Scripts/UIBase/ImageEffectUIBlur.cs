@@ -1,179 +1,182 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using ColaFramework;
 using UnityEngine;
 
-/// <summary>
-/// 根据相机照射的内容实时生成快速模糊的UI背景
-/// </summary>
-[ExecuteInEditMode]
-[RequireComponent(typeof(Camera))]
-[ImageEffectAllowedInSceneView]
-public class ImageEffectUIBlur : MonoBehaviour
+namespace UnityEngine.UI.Extensions
 {
     /// <summary>
-    /// 渲染效果所用到的Shader
+    /// 根据相机照射的内容实时生成快速模糊的UI背景
     /// </summary>
-    private Shader effectShader;
-
-    public bool EnableUIBlur = false;
-
-    private bool isOpen = false;
-
-    /// <summary>
-    /// 最终渲染出来的临时Texture效果图
-    /// </summary>
-    private RenderTexture finalTexture = null;
-
-    /// <summary>
-    /// 主相机
-    /// </summary>
-    private Camera mainCamera;
-
-    /// <summary>
-    /// 渲染效果所用到的材质
-    /// </summary>
-    private Material material;
-
-    private Camera renderCamera;
-
-    /// <summary>
-    /// 最终渲染出来的临时Texture效果图
-    /// </summary>
-    public RenderTexture FinalTexture
+    [ExecuteInEditMode]
+    [RequireComponent(typeof(Camera))]
+    [ImageEffectAllowedInSceneView]
+    public class ImageEffectUIBlur : MonoBehaviour
     {
-        get
+        /// <summary>
+        /// 渲染效果所用到的Shader
+        /// </summary>
+        private Shader effectShader;
+
+        public bool EnableUIBlur = false;
+
+        private bool isOpen = false;
+
+        /// <summary>
+        /// 最终渲染出来的临时Texture效果图
+        /// </summary>
+        private RenderTexture finalTexture = null;
+
+        /// <summary>
+        /// 主相机
+        /// </summary>
+        private Camera mainCamera;
+
+        /// <summary>
+        /// 渲染效果所用到的材质
+        /// </summary>
+        private Material material;
+
+        private Camera renderCamera;
+
+        /// <summary>
+        /// 最终渲染出来的临时Texture效果图
+        /// </summary>
+        public RenderTexture FinalTexture
         {
-            bool state = false;
-            if (false == EnableUIBlur)
+            get
             {
-                StartCoroutine(DelayInvoke(() =>
+                bool state = false;
+                if (false == EnableUIBlur)
                 {
-                    if (state)
+                    StartCoroutine(DelayInvoke(() =>
                     {
-                        if (isOpen)
+                        if (state)
                         {
-                            mainCamera.enabled = false;
+                            if (isOpen)
+                            {
+                                mainCamera.enabled = false;
+                            }
                         }
-                    }
-                }, 0.1f));
+                    }, 0.1f));
+                }
+                EnableUIBlur = true;
+                isOpen = true;
+                state = true;
+                renderCamera.Render();
+                renderCamera.enabled = false;
+                return finalTexture;
             }
-            EnableUIBlur = true;
-            isOpen = true;
-            state = true;
-            renderCamera.Render();
-            renderCamera.enabled = false;
-            return finalTexture;
-        }
-        set
-        {
-            if (null == value)
+            set
             {
-                mainCamera.enabled = true;
-                EnableUIBlur = false;
-                isOpen = false;
-                //RenderTexture.ReleaseTemporary(finalTexture);
-                //finalTexture = null;
+                if (null == value)
+                {
+                    mainCamera.enabled = true;
+                    EnableUIBlur = false;
+                    isOpen = false;
+                    //RenderTexture.ReleaseTemporary(finalTexture);
+                    //finalTexture = null;
+                }
             }
         }
-    }
 
-    /// <summary>
-    /// 渲染效果所用到的Shader
-    /// </summary>
-    public Shader EffecShader
-    {
-        get
+        /// <summary>
+        /// 渲染效果所用到的Shader
+        /// </summary>
+        public Shader EffecShader
         {
-            if (null == effectShader)
+            get
             {
-                effectShader = Shader.Find("ColaFrameWork/MobileUIBlur");
+                if (null == effectShader)
+                {
+                    effectShader = Shader.Find("ColaFrameWork/MobileUIBlur");
+                }
+                return effectShader;
             }
-            return effectShader;
         }
-    }
 
-    /// <summary>
-    /// 渲染效果所用到的材质
-    /// </summary>
-    public Material EffectMaterial
-    {
-        get
+        /// <summary>
+        /// 渲染效果所用到的材质
+        /// </summary>
+        public Material EffectMaterial
         {
-            if (null == material)
+            get
             {
-                material = new Material(EffecShader);
-                material.hideFlags = HideFlags.HideAndDontSave;
+                if (null == material)
+                {
+                    material = new Material(EffecShader);
+                    material.hideFlags = HideFlags.HideAndDontSave;
+                }
+                return material;
             }
-            return material;
         }
-    }
 
-    void Awake()
-    {
-        mainCamera = GUIHelper.GetMainCamera();
-        renderCamera = gameObject.GetComponent<Camera>();
-    }
-
-
-    // Use this for initialization
-    void Start()
-    {
-        if (!SystemInfo.supportsImageEffects)
+        void Awake()
         {
-            enabled = false;
-            Debug.LogWarning("该设备上不支持ImageEffects！");
-            return;
+            mainCamera = GUIHelper.GetMainCamera();
+            renderCamera = gameObject.GetComponent<Camera>();
         }
-        if (!effectShader || !effectShader.isSupported)
-        {
-            enabled = false;
-            return;
-        }
-        enabled = true;
-        EnableUIBlur = false;
-    }
 
-    void OnApplicationQuit()
-    {
-        if (material)
-        {
-            DestroyImmediate(material);
-            RenderTexture.ReleaseTemporary(finalTexture);
-            finalTexture = null;
-        }
-    }
 
-    void OnDisable()
-    {
-        //if (material)
-        //{
-        //    DestroyImmediate(material);
-        //    RenderTexture.ReleaseTemporary(finalTexture);
-        //    finalTexture = null;
-        //}
-    }
-
-    void OnRenderImage(RenderTexture source, RenderTexture destination)
-    {
-        if (EnableUIBlur)
+        // Use this for initialization
+        void Start()
         {
-            if (null == finalTexture)
+            if (!SystemInfo.supportsImageEffects)
             {
-                finalTexture = RenderTexture.GetTemporary(source.width / 2, source.height / 2, 0,
-                    RenderTextureFormat.Default);
+                enabled = false;
+                Debug.LogWarning("该设备上不支持ImageEffects！");
+                return;
             }
-            RenderTexture tempRenderTexture = RenderTexture.GetTemporary(source.width / 2, source.height / 2, 0, RenderTextureFormat.Default);
-            Graphics.Blit(source, tempRenderTexture, EffectMaterial, 0);
-            Graphics.Blit(tempRenderTexture, finalTexture, EffectMaterial, 1);
-            RenderTexture.ReleaseTemporary(tempRenderTexture);
+            if (!effectShader || !effectShader.isSupported)
+            {
+                enabled = false;
+                return;
+            }
+            enabled = true;
             EnableUIBlur = false;
         }
-    }
 
-    public static IEnumerator DelayInvoke(Action action, float interval)
-    {
-        yield return new WaitForSeconds(interval);
-        action();
+        void OnApplicationQuit()
+        {
+            if (material)
+            {
+                DestroyImmediate(material);
+                RenderTexture.ReleaseTemporary(finalTexture);
+                finalTexture = null;
+            }
+        }
+
+        void OnDisable()
+        {
+            //if (material)
+            //{
+            //    DestroyImmediate(material);
+            //    RenderTexture.ReleaseTemporary(finalTexture);
+            //    finalTexture = null;
+            //}
+        }
+
+        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        {
+            if (EnableUIBlur)
+            {
+                if (null == finalTexture)
+                {
+                    finalTexture = RenderTexture.GetTemporary(source.width / 2, source.height / 2, 0,
+                        RenderTextureFormat.Default);
+                }
+                RenderTexture tempRenderTexture = RenderTexture.GetTemporary(source.width / 2, source.height / 2, 0, RenderTextureFormat.Default);
+                Graphics.Blit(source, tempRenderTexture, EffectMaterial, 0);
+                Graphics.Blit(tempRenderTexture, finalTexture, EffectMaterial, 1);
+                RenderTexture.ReleaseTemporary(tempRenderTexture);
+                EnableUIBlur = false;
+            }
+        }
+
+        public static IEnumerator DelayInvoke(Action action, float interval)
+        {
+            yield return new WaitForSeconds(interval);
+            action();
+        }
     }
 }

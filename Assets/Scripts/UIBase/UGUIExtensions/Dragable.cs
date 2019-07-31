@@ -1,65 +1,67 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using ColaFramework;
 using UnityEngine.EventSystems;
 
-/// <summary>
-/// 可拖动组件，适用于UI
-/// </summary>
-[RequireComponent(typeof(Image))]
-public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+namespace UnityEngine.UI.Extensions
 {
-    private Vector3 offset;
-
-    private Camera uiCamera;
-
-    public delegate void OnBeginDragCallback(GameObject pointerDrag);
-    public OnBeginDragCallback onBeginDragCallback;
-
-    public delegate void OnDragingCallback(GameObject pointerDrag);
-    public OnDragingCallback onDragingCallback;
-
-    public delegate void OnDragEndCallback(GameObject pointerDrag, GameObject targetGo);
-    public OnDragEndCallback onDragEndCallback;
-
-    void Awake()
+    /// <summary>
+    /// 可拖动组件，适用于UI
+    /// </summary>
+    [RequireComponent(typeof(Image))]
+    public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        uiCamera = GUIHelper.GetUICamera();
-    }
+        private Vector3 offset;
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        Vector3 curTouchedWorldPos = uiCamera.ScreenToWorldPoint(eventData.position);
-        offset = transform.position - curTouchedWorldPos;
-        offset.z = 0;
-        GetComponent<Image>().raycastTarget = false;
-        SetDraggedPosition(eventData);
-        if (onBeginDragCallback != null)
-            onBeginDragCallback(eventData.pointerDrag);
-    }
+        private Camera uiCamera;
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        SetDraggedPosition(eventData);
-        if (onDragingCallback != null)
-            onDragingCallback(eventData.pointerDrag);
-    }
+        public delegate void OnBeginDragCallback(GameObject pointerDrag);
+        public OnBeginDragCallback onBeginDragCallback;
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        GetComponent<Image>().raycastTarget = true;
-        SetDraggedPosition(eventData);
-        if (onDragEndCallback != null)
-            onDragEndCallback(eventData.pointerDrag, eventData.pointerEnter);
-    }
+        public delegate void OnDragingCallback(GameObject pointerDrag);
+        public OnDragingCallback onDragingCallback;
 
-    private void SetDraggedPosition(PointerEventData eventData)
-    {
-        Vector3 worldpos;
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(transform as RectTransform, eventData.position, uiCamera, out worldpos))
+        public delegate void OnDragEndCallback(GameObject pointerDrag, GameObject targetGo);
+        public OnDragEndCallback onDragEndCallback;
+
+        void Awake()
         {
-            transform.position = worldpos + offset;
+            uiCamera = GUIHelper.GetUICamera();
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            Vector3 curTouchedWorldPos = uiCamera.ScreenToWorldPoint(eventData.position);
+            offset = transform.position - curTouchedWorldPos;
+            offset.z = 0;
+            GetComponent<Image>().raycastTarget = false;
+            SetDraggedPosition(eventData);
+            if (onBeginDragCallback != null)
+                onBeginDragCallback(eventData.pointerDrag);
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            SetDraggedPosition(eventData);
+            if (onDragingCallback != null)
+                onDragingCallback(eventData.pointerDrag);
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            GetComponent<Image>().raycastTarget = true;
+            SetDraggedPosition(eventData);
+            if (onDragEndCallback != null)
+                onDragEndCallback(eventData.pointerDrag, eventData.pointerEnter);
+        }
+
+        private void SetDraggedPosition(PointerEventData eventData)
+        {
+            Vector3 worldpos;
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(transform as RectTransform, eventData.position, uiCamera, out worldpos))
+            {
+                transform.position = worldpos + offset;
+            }
         }
     }
 }

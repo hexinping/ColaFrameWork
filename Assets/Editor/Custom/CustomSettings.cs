@@ -7,6 +7,7 @@ using UnityEditor;
 using BindType = ToLuaMenu.BindType;
 using System.Reflection;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 using ColaFramework;
 
 public static class CustomSettings
@@ -58,23 +59,23 @@ public static class CustomSettings
         //_GT(typeof(TestExport)),
         //_GT(typeof(TestExport.Space)),
         //-------------------------------------------------------------------        
-        _GT(typeof(Common_Utils)),
-        _GT(typeof(AssetLoader)),
-        _GT(typeof(SorterTag)),
-        _GT(typeof(ParticleOrderAutoSorter)),
+        _GT(typeof(Common_Utils)).SetNameSpace(null),
+        _GT(typeof(AssetLoader)).SetNameSpace(null),
+        _GT(typeof(SorterTag)).SetNameSpace(null),
+        _GT(typeof(ParticleOrderAutoSorter)).SetNameSpace(null),
         _GT(typeof(Debugger)).SetNameSpace(null),
-        _GT(typeof(TimeHelper)),
-        _GT(typeof(ColaHelper)),
-        _GT(typeof(UGUIMsgHandler)),
-        _GT(typeof(PlayerPrefs)),
-        _GT(typeof(SpriteAsset)),
-        _GT(typeof(SceneMgr)),
-        _GT(typeof(ISceneCharacter)),
-        _GT(typeof(SceneCharacter)),
-        _GT(typeof(UGUIModel)),
-        _GT(typeof(AnimCtrlEnum)),
-        _GT(typeof(AnimCurveNames)),
-        _GT(typeof(TouchHelper)),
+        _GT(typeof(TimeHelper)).SetNameSpace(null),
+        _GT(typeof(ColaHelper)).SetNameSpace(null),
+        _GT(typeof(UGUIMsgHandler)).SetNameSpace(null),
+        _GT(typeof(PlayerPrefs)).SetNameSpace(null),
+        _GT(typeof(SpriteAsset)).SetNameSpace(null),
+        _GT(typeof(SceneMgr)).SetNameSpace(null),
+        _GT(typeof(ISceneCharacter)).SetNameSpace(null),
+        _GT(typeof(SceneCharacter)).SetNameSpace(null),
+        _GT(typeof(UGUIModel)).SetNameSpace(null),
+        _GT(typeof(AnimCtrlEnum)).SetNameSpace(null),
+        _GT(typeof(AnimCurveNames)).SetNameSpace(null),
+        _GT(typeof(TouchHelper)).SetNameSpace(null),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

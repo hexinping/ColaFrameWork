@@ -1,6 +1,5 @@
 ﻿#if UNITY_EDITOR
-using System.Collections;
-using System.Collections.Generic;
+using ColaFramework;
 using UnityEditor;
 using UnityEngine;
 

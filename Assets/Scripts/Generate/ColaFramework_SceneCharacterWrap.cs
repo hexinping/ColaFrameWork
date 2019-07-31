@@ -2,14 +2,16 @@
 using System;
 using LuaInterface;
 
-public class ISceneCharacterWrap
+public class ColaFramework_SceneCharacterWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(ISceneCharacter), null);
-		L.RegFunction("SetPosition2D", SetPosition2D);
-		L.RegFunction("SetRotation2D", SetRotation2D);
-		L.RegFunction("Release", Release);
+		L.BeginClass(typeof(ColaFramework.SceneCharacter), typeof(System.Object));
+		L.RegFunction("CreateSceneCharacterInf", CreateSceneCharacterInf);
+		L.RegFunction("CreateSceneCharacter", CreateSceneCharacter);
+		L.RegFunction("PlayAnimation", PlayAnimation);
+		L.RegFunction("StopPlay", StopPlay);
+		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("gameObject", get_gameObject, set_gameObject);
 		L.RegVar("transform", get_transform, set_transform);
 		L.RegVar("Position", get_Position, set_Position);
@@ -20,16 +22,17 @@ public class ISceneCharacterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetPosition2D(IntPtr L)
+	static int CreateSceneCharacterInf(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			ISceneCharacter obj = (ISceneCharacter)ToLua.CheckObject<ISceneCharacter>(L, 1);
-			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 3);
-			obj.SetPosition2D(arg0, arg1);
-			return 0;
+			string arg0 = ToLua.CheckString(L, 1);
+			AnimCtrlEnum arg1 = (AnimCtrlEnum)ToLua.CheckObject(L, 2, typeof(AnimCtrlEnum));
+			bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
+			ColaFramework.ISceneCharacter o = ColaFramework.SceneCharacter.CreateSceneCharacterInf(arg0, arg1, arg2);
+			ToLua.PushObject(L, o);
+			return 1;
 		}
 		catch (Exception e)
 		{
@@ -38,16 +41,17 @@ public class ISceneCharacterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int SetRotation2D(IntPtr L)
+	static int CreateSceneCharacter(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			ISceneCharacter obj = (ISceneCharacter)ToLua.CheckObject<ISceneCharacter>(L, 1);
-			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
-			float arg1 = (float)LuaDLL.luaL_checknumber(L, 3);
-			obj.SetRotation2D(arg0, arg1);
-			return 0;
+			string arg0 = ToLua.CheckString(L, 1);
+			AnimCtrlEnum arg1 = (AnimCtrlEnum)ToLua.CheckObject(L, 2, typeof(AnimCtrlEnum));
+			bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
+			ColaFramework.SceneCharacter o = ColaFramework.SceneCharacter.CreateSceneCharacter(arg0, arg1, arg2);
+			ToLua.PushObject(L, o);
+			return 1;
 		}
 		catch (Exception e)
 		{
@@ -56,13 +60,61 @@ public class ISceneCharacterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Release(IntPtr L)
+	static int PlayAnimation(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2 && TypeChecker.CheckTypes<int>(L, 2))
+			{
+				ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)ToLua.CheckObject<ColaFramework.SceneCharacter>(L, 1);
+				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
+				obj.PlayAnimation(arg0);
+				return 0;
+			}
+			else if (count == 2 && TypeChecker.CheckTypes<string>(L, 2))
+			{
+				ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)ToLua.CheckObject<ColaFramework.SceneCharacter>(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				obj.PlayAnimation(arg0);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<int, System.Action<bool>>(L, 2))
+			{
+				ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)ToLua.CheckObject<ColaFramework.SceneCharacter>(L, 1);
+				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
+				System.Action<bool> arg1 = (System.Action<bool>)ToLua.ToObject(L, 3);
+				obj.PlayAnimation(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<string, System.Action<bool>>(L, 2))
+			{
+				ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)ToLua.CheckObject<ColaFramework.SceneCharacter>(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				System.Action<bool> arg1 = (System.Action<bool>)ToLua.ToObject(L, 3);
+				obj.PlayAnimation(arg0, arg1);
+				return 0;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ColaFramework.SceneCharacter.PlayAnimation");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int StopPlay(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)ToLua.CheckObject<ISceneCharacter>(L, 1);
-			obj.Release();
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)ToLua.CheckObject<ColaFramework.SceneCharacter>(L, 1);
+			obj.StopPlay();
 			return 0;
 		}
 		catch (Exception e)
@@ -79,7 +131,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.GameObject ret = obj.gameObject;
 			ToLua.PushSealed(L, ret);
 			return 1;
@@ -98,7 +150,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Transform ret = obj.transform;
 			ToLua.Push(L, ret);
 			return 1;
@@ -117,7 +169,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Vector3 ret = obj.Position;
 			ToLua.Push(L, ret);
 			return 1;
@@ -136,7 +188,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Vector3 ret = obj.Rotation;
 			ToLua.Push(L, ret);
 			return 1;
@@ -155,7 +207,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Vector3 ret = obj.Direction;
 			ToLua.Push(L, ret);
 			return 1;
@@ -174,7 +226,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			bool ret = obj.Visible;
 			LuaDLL.lua_pushboolean(L, ret);
 			return 1;
@@ -193,7 +245,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
 			obj.gameObject = arg0;
 			return 0;
@@ -212,7 +264,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 2);
 			obj.transform = arg0;
 			return 0;
@@ -231,7 +283,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
 			obj.Position = arg0;
 			return 0;
@@ -250,7 +302,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
 			obj.Rotation = arg0;
 			return 0;
@@ -269,7 +321,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
 			obj.Direction = arg0;
 			return 0;
@@ -288,7 +340,7 @@ public class ISceneCharacterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			ISceneCharacter obj = (ISceneCharacter)o;
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 			obj.Visible = arg0;
 			return 0;

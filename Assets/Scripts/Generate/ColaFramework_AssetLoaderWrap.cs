@@ -2,7 +2,7 @@
 using System;
 using LuaInterface;
 
-public class AssetLoaderWrap
+public class ColaFramework_AssetLoaderWrap
 {
 	public static void Register(LuaState L)
 	{
@@ -21,7 +21,7 @@ public class AssetLoaderWrap
 			ToLua.CheckArgsCount(L, 2);
 			string arg0 = ToLua.CheckString(L, 1);
 			System.Type arg1 = ToLua.CheckMonoType(L, 2);
-			UnityEngine.Object o = AssetLoader.Load(arg0, arg1);
+			UnityEngine.Object o = ColaFramework.AssetLoader.Load(arg0, arg1);
 			ToLua.Push(L, o);
 			return 1;
 		}
@@ -39,7 +39,7 @@ public class AssetLoaderWrap
 			ToLua.CheckArgsCount(L, 2);
 			string arg0 = ToLua.CheckString(L, 1);
 			System.Action<UnityEngine.Object,string> arg1 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 2);
-			AssetLoader.LoadWaitOneFrame(arg0, arg1);
+			ColaFramework.AssetLoader.LoadWaitOneFrame(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)
@@ -57,7 +57,7 @@ public class AssetLoaderWrap
 			string arg0 = ToLua.CheckString(L, 1);
 			System.Type arg1 = ToLua.CheckMonoType(L, 2);
 			System.Action<UnityEngine.Object,string> arg2 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 3);
-			AssetLoader.LoadAsync(arg0, arg1, arg2);
+			ColaFramework.AssetLoader.LoadAsync(arg0, arg1, arg2);
 			return 0;
 		}
 		catch (Exception e)

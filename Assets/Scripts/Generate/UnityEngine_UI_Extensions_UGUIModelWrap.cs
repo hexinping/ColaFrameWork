@@ -2,11 +2,11 @@
 using System;
 using LuaInterface;
 
-public class UGUIModelWrap
+public class UnityEngine_UI_Extensions_UGUIModelWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(UGUIModel), typeof(UnityEngine.EventSystems.UIBehaviour));
+		L.BeginClass(typeof(UnityEngine.UI.Extensions.UGUIModel), typeof(UnityEngine.EventSystems.UIBehaviour));
 		L.RegFunction("OnDrag", OnDrag);
 		L.RegFunction("SetCameraEffect", SetCameraEffect);
 		L.RegFunction("IsModelExist", IsModelExist);
@@ -31,7 +31,7 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
 			obj.OnDrag(arg0);
 			return 0;
@@ -48,7 +48,7 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 			obj.SetCameraEffect(arg0);
 			return 0;
@@ -65,7 +65,7 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			bool o = obj.IsModelExist(arg0);
 			LuaDLL.lua_pushboolean(L, o);
@@ -83,9 +83,9 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			ISceneCharacter arg1 = (ISceneCharacter)ToLua.CheckObject<ISceneCharacter>(L, 3);
+			ColaFramework.ISceneCharacter arg1 = (ColaFramework.ISceneCharacter)ToLua.CheckObject<ColaFramework.ISceneCharacter>(L, 3);
 			obj.SetModelAt(arg0, arg1);
 			return 0;
 		}
@@ -101,9 +101,9 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
-			ISceneCharacter o = obj.GetModelAt(arg0);
+			ColaFramework.ISceneCharacter o = obj.GetModelAt(arg0);
 			ToLua.PushObject(L, o);
 			return 1;
 		}
@@ -119,7 +119,7 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			obj.UpdateModelShownIndex(arg0);
 			return 0;
@@ -139,20 +139,20 @@ public class UGUIModelWrap
 
 			if (count == 1)
 			{
-				UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+				UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 				obj.ImportSetting();
 				return 0;
 			}
 			else if (count == 2)
 			{
-				UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+				UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 				string arg0 = ToLua.CheckString(L, 2);
 				obj.ImportSetting(arg0);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UGUIModel.ImportSetting");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.UI.Extensions.UGUIModel.ImportSetting");
 			}
 		}
 		catch (Exception e)
@@ -167,7 +167,7 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
 			obj.OnPointerClick(arg0);
 			return 0;
@@ -184,7 +184,7 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
 			obj.OnPointerDown(arg0);
 			return 0;
@@ -201,7 +201,7 @@ public class UGUIModelWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UGUIModel obj = (UGUIModel)ToLua.CheckObject<UGUIModel>(L, 1);
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)ToLua.CheckObject<UnityEngine.UI.Extensions.UGUIModel>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
 			obj.OnPointerUp(arg0);
 			return 0;
@@ -238,7 +238,7 @@ public class UGUIModelWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)o;
 			float ret = obj.cameraHeightOffset;
 			LuaDLL.lua_pushnumber(L, ret);
 			return 1;
@@ -257,7 +257,7 @@ public class UGUIModelWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)o;
 			System.Action<string> ret = obj.onModelClick;
 			ToLua.Push(L, ret);
 			return 1;
@@ -276,7 +276,7 @@ public class UGUIModelWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)o;
 			UnityEngine.Transform ret = obj.Model;
 			ToLua.Push(L, ret);
 			return 1;
@@ -295,7 +295,7 @@ public class UGUIModelWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)o;
 			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
 			obj.cameraHeightOffset = arg0;
 			return 0;
@@ -314,7 +314,7 @@ public class UGUIModelWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)o;
 			System.Action<string> arg0 = (System.Action<string>)ToLua.CheckDelegate<System.Action<string>>(L, 2);
 			obj.onModelClick = arg0;
 			return 0;
@@ -333,7 +333,7 @@ public class UGUIModelWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			UGUIModel obj = (UGUIModel)o;
+			UnityEngine.UI.Extensions.UGUIModel obj = (UnityEngine.UI.Extensions.UGUIModel)o;
 			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 2);
 			obj.Model = arg0;
 			return 0;
