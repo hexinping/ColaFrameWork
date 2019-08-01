@@ -131,7 +131,7 @@ namespace UnityEngine.UI.Extensions
             modelCamera = new GameObject("modelCamera", typeof(Camera)).GetComponent<Camera>();
             ModelCameraDepth = uiCamera.depth + 1.0f;
             modelCamera.cullingMask = LayerMask.GetMask(UIModelLayerTag);
-            modelCamera.clearFlags = CameraClearFlags.Nothing;
+            modelCamera.clearFlags = CameraClearFlags.Depth;
             modelCamera.fieldOfView = fieldOfView;
             modelCamera.farClipPlane = farClipPlane;
             modelCamera.transform.SetParent(root.transform);
@@ -517,7 +517,7 @@ namespace UnityEngine.UI.Extensions
             modelCamera = modelCameraObj.GetComponent<Camera>();
             ModelCameraDepth = uiCamera.depth + 1.0f;
             modelCamera.cullingMask = LayerMask.GetMask(UIModelLayerTag);
-            modelCamera.clearFlags = CameraClearFlags.Nothing;
+            modelCamera.clearFlags = CameraClearFlags.Depth;
             modelCamera.fieldOfView = fieldOfView;
             modelCamera.farClipPlane = farClipPlane;
             modelCamera.transform.SetParent(root.transform);
