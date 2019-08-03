@@ -200,7 +200,9 @@ namespace LuaInterface
 #endif
                 if (LuaFileUtils.Instance.GetType() == typeof(LuaFileUtils))
                 {
+                    //先读取热更的最新代码，如果读不到再去读StreamingAsset下面的lua代码
                     AddSearchPath(LuaConst.luaResDir);
+                    AddSearchPath(LuaConst.streamingAssetLua);
                 }
             }
         }
