@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using ColaFramework;
 
 public class LoomTest : MonoBehaviour
 {

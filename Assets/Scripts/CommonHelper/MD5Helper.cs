@@ -5,39 +5,41 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
-
-/// <summary>
-/// MD5码加密工具类
-/// </summary>
-public static class MD5Helper
+namespace ColaFramework
 {
     /// <summary>
-    /// 对指定路径的文件加密，返回加密后的文本
+    /// MD5码加密工具类
     /// </summary>
-    /// <param name="filePath"></param>
-    /// <returns></returns>
-    public static string MD5EncryptFile(string filePath)
+    public static class MD5Helper
     {
-        byte[] retVal;
-        using (FileStream fs = new FileStream(filePath, FileMode.Open))
+        /// <summary>
+        /// 对指定路径的文件加密，返回加密后的文本
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string MD5EncryptFile(string filePath)
         {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            retVal = md5.ComputeHash(fs);
+            byte[] retVal;
+            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            {
+                MD5 md5 = new MD5CryptoServiceProvider();
+                retVal = md5.ComputeHash(fs);
+            }
+            return retVal.ToHex("x2");
         }
-        return retVal.ToHex("x2");
-    }
 
 
-    /// <summary>
-    /// 对指定的字符串加密，返回加密后的字符串
-    /// </summary>
-    /// <param name="originStr"></param>
-    /// <returns></returns>
-    public static string MD5EncryptString(string originStr)
-    {
-        byte[] retVal;
-        MD5 md5 = new MD5CryptoServiceProvider();
-        retVal = md5.ComputeHash(Encoding.UTF8.GetBytes(originStr));
-        return retVal.ToHex("x2");
+        /// <summary>
+        /// 对指定的字符串加密，返回加密后的字符串
+        /// </summary>
+        /// <param name="originStr"></param>
+        /// <returns></returns>
+        public static string MD5EncryptString(string originStr)
+        {
+            byte[] retVal;
+            MD5 md5 = new MD5CryptoServiceProvider();
+            retVal = md5.ComputeHash(Encoding.UTF8.GetBytes(originStr));
+            return retVal.ToHex("x2");
+        }
     }
 }
