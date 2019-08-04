@@ -32,7 +32,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace FrameWork {
+namespace ColaFramework {
     // Example usage:
     //
     //  using UnityEngine;

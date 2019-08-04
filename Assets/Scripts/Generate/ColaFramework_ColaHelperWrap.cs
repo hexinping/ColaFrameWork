@@ -2,7 +2,7 @@
 using System;
 using LuaInterface;
 
-public class ColaHelperWrap
+public class ColaFramework_ColaHelperWrap
 {
 	public static void Register(LuaState L)
 	{
@@ -20,7 +20,7 @@ public class ColaHelperWrap
 	{
 		try
 		{
-			ToLua.Push(L, ColaHelper.Update);
+			ToLua.Push(L, ColaFramework.ColaHelper.Update);
 			return 1;
 		}
 		catch (Exception e)
@@ -34,7 +34,7 @@ public class ColaHelperWrap
 	{
 		try
 		{
-			ToLua.Push(L, ColaHelper.LateUpdate);
+			ToLua.Push(L, ColaFramework.ColaHelper.LateUpdate);
 			return 1;
 		}
 		catch (Exception e)
@@ -48,7 +48,7 @@ public class ColaHelperWrap
 	{
 		try
 		{
-			ToLua.Push(L, ColaHelper.FixedUpdate);
+			ToLua.Push(L, ColaFramework.ColaHelper.FixedUpdate);
 			return 1;
 		}
 		catch (Exception e)
@@ -62,7 +62,7 @@ public class ColaHelperWrap
 	{
 		try
 		{
-			ToLua.Push(L, ColaHelper.OnApplicationQuit);
+			ToLua.Push(L, ColaFramework.ColaHelper.OnApplicationQuit);
 			return 1;
 		}
 		catch (Exception e)
@@ -76,7 +76,7 @@ public class ColaHelperWrap
 	{
 		try
 		{
-			ToLua.Push(L, ColaHelper.OnApplicationPause);
+			ToLua.Push(L, ColaFramework.ColaHelper.OnApplicationPause);
 			return 1;
 		}
 		catch (Exception e)
@@ -91,7 +91,7 @@ public class ColaHelperWrap
 		try
 		{
 			System.Action<float> arg0 = (System.Action<float>)ToLua.CheckDelegate<System.Action<float>>(L, 2);
-			ColaHelper.Update = arg0;
+			ColaFramework.ColaHelper.Update = arg0;
 			return 0;
 		}
 		catch (Exception e)
@@ -106,7 +106,7 @@ public class ColaHelperWrap
 		try
 		{
 			System.Action<float> arg0 = (System.Action<float>)ToLua.CheckDelegate<System.Action<float>>(L, 2);
-			ColaHelper.LateUpdate = arg0;
+			ColaFramework.ColaHelper.LateUpdate = arg0;
 			return 0;
 		}
 		catch (Exception e)
@@ -121,7 +121,7 @@ public class ColaHelperWrap
 		try
 		{
 			System.Action<float> arg0 = (System.Action<float>)ToLua.CheckDelegate<System.Action<float>>(L, 2);
-			ColaHelper.FixedUpdate = arg0;
+			ColaFramework.ColaHelper.FixedUpdate = arg0;
 			return 0;
 		}
 		catch (Exception e)
@@ -136,7 +136,7 @@ public class ColaHelperWrap
 		try
 		{
 			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 2);
-			ColaHelper.OnApplicationQuit = arg0;
+			ColaFramework.ColaHelper.OnApplicationQuit = arg0;
 			return 0;
 		}
 		catch (Exception e)
@@ -151,7 +151,7 @@ public class ColaHelperWrap
 		try
 		{
 			System.Action<bool> arg0 = (System.Action<bool>)ToLua.CheckDelegate<System.Action<bool>>(L, 2);
-			ColaHelper.OnApplicationPause = arg0;
+			ColaFramework.ColaHelper.OnApplicationPause = arg0;
 			return 0;
 		}
 		catch (Exception e)

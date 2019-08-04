@@ -2,74 +2,76 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public delegate void TimerEnd(int timerID);
-
-public delegate void RepeatTimerEvent(int timerID);
-
-/// <summary>
-/// 附加在gameobject上用于计时的脚本
-/// </summary>
-public class TimerBehavior : MonoBehaviour
+namespace ColaFramework
 {
-    private TimerEnd timerEnd;
 
-    private RepeatTimerEvent repeatTimerEvent;
-
-    private int timerID;
+    public delegate void TimerEnd(int timerID);
+    public delegate void RepeatTimerEvent(int timerID);
 
     /// <summary>
-    /// 启动计时器
+    /// 附加在gameobject上用于计时的脚本
     /// </summary>
-    /// <param name="timeListener"></param>
-    /// <param name="tmpTimerID"></param>
-    /// <param name="time"></param>
-    /// <param name="isIgnoreTimeScale"></param>
-    public void BeginTimer(TimerEnd timeListener, int tmpTimerID, float time, bool isIgnoreTimeScale)
+    public class TimerBehavior : MonoBehaviour
     {
-        if (null != timeListener && time > 0.0f)
-        {
-            this.timerEnd = timeListener;
-            this.timerID = tmpTimerID;
+        private TimerEnd timerEnd;
 
-            Invoke("EndTimer", time * GetTimeScale(isIgnoreTimeScale));
+        private RepeatTimerEvent repeatTimerEvent;
+
+        private int timerID;
+
+        /// <summary>
+        /// 启动计时器
+        /// </summary>
+        /// <param name="timeListener"></param>
+        /// <param name="tmpTimerID"></param>
+        /// <param name="time"></param>
+        /// <param name="isIgnoreTimeScale"></param>
+        public void BeginTimer(TimerEnd timeListener, int tmpTimerID, float time, bool isIgnoreTimeScale)
+        {
+            if (null != timeListener && time > 0.0f)
+            {
+                this.timerEnd = timeListener;
+                this.timerID = tmpTimerID;
+
+                Invoke("EndTimer", time * GetTimeScale(isIgnoreTimeScale));
+            }
         }
-    }
 
-    private void EndTimer()
-    {
-        if (null != timerEnd)
+        private void EndTimer()
         {
-            timerEnd(timerID);
+            if (null != timerEnd)
+            {
+                timerEnd(timerID);
+            }
         }
-    }
 
-    private float GetTimeScale(bool isIgnoreTimeScale)
-    {
-        float timeScale = 1.0f;
-        if (isIgnoreTimeScale && Time.timeScale > 0)
+        private float GetTimeScale(bool isIgnoreTimeScale)
         {
-            timeScale = Time.timeScale;
+            float timeScale = 1.0f;
+            if (isIgnoreTimeScale && Time.timeScale > 0)
+            {
+                timeScale = Time.timeScale;
+            }
+            return timeScale;
         }
-        return timeScale;
-    }
 
-    public void BeginRepeatTimer(RepeatTimerEvent timerListener, int tmpTimerID, float time, bool isInoreTimeScale)
-    {
-        if (null != timerListener && time > 0.0f)
+        public void BeginRepeatTimer(RepeatTimerEvent timerListener, int tmpTimerID, float time, bool isInoreTimeScale)
         {
-            repeatTimerEvent = timerListener;
-            timerID = tmpTimerID;
+            if (null != timerListener && time > 0.0f)
+            {
+                repeatTimerEvent = timerListener;
+                timerID = tmpTimerID;
 
-            InvokeRepeating("EndRepeatTimer", time * GetTimeScale(isInoreTimeScale), time * GetTimeScale(isInoreTimeScale));
+                InvokeRepeating("EndRepeatTimer", time * GetTimeScale(isInoreTimeScale), time * GetTimeScale(isInoreTimeScale));
+            }
         }
-    }
 
-    private void EndRepeatTimer()
-    {
-        if (null != repeatTimerEvent)
+        private void EndRepeatTimer()
         {
-            repeatTimerEvent(timerID);
+            if (null != repeatTimerEvent)
+            {
+                repeatTimerEvent(timerID);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using LuaInterface;
 
-public class TimeHelperWrap
+public class ColaFramework_TimeHelperWrap
 {
 	public static void Register(LuaState L)
 	{
@@ -24,7 +24,7 @@ public class TimeHelperWrap
 			{
 				System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-				int o = TimeHelper.SetTimer(arg0, arg1);
+				int o = ColaFramework.TimeHelper.SetTimer(arg0, arg1);
 				LuaDLL.lua_pushinteger(L, o);
 				return 1;
 			}
@@ -33,13 +33,13 @@ public class TimeHelperWrap
 				System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
 				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
-				int o = TimeHelper.SetTimer(arg0, arg1, arg2);
+				int o = ColaFramework.TimeHelper.SetTimer(arg0, arg1, arg2);
 				LuaDLL.lua_pushinteger(L, o);
 				return 1;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: TimeHelper.SetTimer");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ColaFramework.TimeHelper.SetTimer");
 			}
 		}
 		catch (Exception e)
@@ -59,7 +59,7 @@ public class TimeHelperWrap
 			{
 				System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-				int o = TimeHelper.SetRepeatTimer(arg0, arg1);
+				int o = ColaFramework.TimeHelper.SetRepeatTimer(arg0, arg1);
 				LuaDLL.lua_pushinteger(L, o);
 				return 1;
 			}
@@ -68,13 +68,13 @@ public class TimeHelperWrap
 				System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
 				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
-				int o = TimeHelper.SetRepeatTimer(arg0, arg1, arg2);
+				int o = ColaFramework.TimeHelper.SetRepeatTimer(arg0, arg1, arg2);
 				LuaDLL.lua_pushinteger(L, o);
 				return 1;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: TimeHelper.SetRepeatTimer");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: ColaFramework.TimeHelper.SetRepeatTimer");
 			}
 		}
 		catch (Exception e)
@@ -90,7 +90,7 @@ public class TimeHelperWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
-			TimeHelper.KillTimer(arg0);
+			ColaFramework.TimeHelper.KillTimer(arg0);
 			return 0;
 		}
 		catch (Exception e)

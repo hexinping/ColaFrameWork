@@ -3,73 +3,74 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using System.Threading;
 
-/// <summary>
-/// StreamingAsset助手类
-/// </summary>
-public static class StreamingAssetHelper
+namespace ColaFramework
 {
     /// <summary>
-    /// 读取写资源路径
+    /// StreamingAsset助手类
     /// </summary>
-    private static String assetPath;
-
-    private static string sourceDir;
-    private static string destDir;
-    private static Action<bool> callback;
-
-    public static String AssetPathDir
+    public static class StreamingAssetHelper
     {
-        get { return assetPath; }
-    }
+        /// <summary>
+        /// 读取写资源路径
+        /// </summary>
+        private static String assetPath;
 
-    /// <summary>
-    /// 设置可读写路径
-    /// </summary>
-    /// <param name="debugDir"></param>
-    public static void SetAssetPathDir(String debugDir)
-    {
-        assetPath = debugDir;
-    }
+        private static string sourceDir;
+        private static string destDir;
+        private static Action<bool> callback;
 
-    /// <summary>
-    /// 拼接StreamingAsset的子路径
-    /// </summary>
-    /// <param name="subPath"></param>
-    /// <returns></returns>
-    public static String CombinePath(String subPath)
-    {
-        return Path.Combine(Application.streamingAssetsPath, subPath);
-    }
-
-    /// <summary>
-    /// 读取文件(从可读写资源路径或者StreamingAsset中)
-    /// </summary>
-    /// <param name="filePath"></param>
-    /// <returns></returns>
-    public static String ReadFileText(String filePath)
-    {
-        String debugPath = assetPath != null ? Path.Combine(assetPath, filePath) : null;
-        //先尝试从debupath中读取文件，如果没有再去StreamingAsset中读取
-        if (debugPath != null && File.Exists(debugPath))
+        public static String AssetPathDir
         {
-            return File.ReadAllText(debugPath);
+            get { return assetPath; }
         }
-        else
+
+        /// <summary>
+        /// 设置可读写路径
+        /// </summary>
+        /// <param name="debugDir"></param>
+        public static void SetAssetPathDir(String debugDir)
         {
-            string fullPath = CombinePath(filePath);
+            assetPath = debugDir;
+        }
+
+        /// <summary>
+        /// 拼接StreamingAsset的子路径
+        /// </summary>
+        /// <param name="subPath"></param>
+        /// <returns></returns>
+        public static String CombinePath(String subPath)
+        {
+            return Path.Combine(Application.streamingAssetsPath, subPath);
+        }
+
+        /// <summary>
+        /// 读取文件(从可读写资源路径或者StreamingAsset中)
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static String ReadFileText(String filePath)
+        {
+            String debugPath = assetPath != null ? Path.Combine(assetPath, filePath) : null;
+            //先尝试从debupath中读取文件，如果没有再去StreamingAsset中读取
+            if (debugPath != null && File.Exists(debugPath))
+            {
+                return File.ReadAllText(debugPath);
+            }
+            else
+            {
+                string fullPath = CombinePath(filePath);
 #if UNITY_ANDROID && !UNITY_EDITOR
 			WWW www = new WWW(fullPath); 
 			while(!www.isDone){}
 			return www.text;
 #else
-            return File.ReadAllText(fullPath);
+                return File.ReadAllText(fullPath);
 #endif
+            }
         }
-    }
 
-#if UNITY_ANDROID && ( ! UNITY_EDITOR)
+#if UNITY_ANDROID && (!UNITY_EDITOR)
     /// <summary>
     /// 在Android平台上，从(apk包中的) Assets目录复制文件至指定目录
     /// 注意：只能在子线程中调用
@@ -113,5 +114,6 @@ public static class StreamingAssetHelper
             Debug.Log("CopyAssetDirectory finished");
         });
     }
-#endif 
+#endif
+    }
 }

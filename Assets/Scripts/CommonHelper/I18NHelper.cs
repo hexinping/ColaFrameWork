@@ -2,71 +2,74 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 国际化助手类
-/// </summary>
-public class I18NHelper
+namespace ColaFramework
 {
-    private static I18NHelper instance;
-    private static I18NDataMap i18NDataMap;
-
-    private I18NHelper()
-    {
-        i18NDataMap = LocalDataMgr.GetLocalDataMap<I18NDataMap>();
-    }
-
-    public static I18NHelper GetInstance()
-    {
-        if (null == instance)
-        {
-            instance = new I18NHelper();
-        }
-        return instance;
-    }
-
     /// <summary>
-    /// 根据ID获取对应的国际化文字
+    /// 国际化助手类
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public string GetI18NText(int id)
+    public class I18NHelper
     {
-        if (null != i18NDataMap)
+        private static I18NHelper instance;
+        private static I18NDataMap i18NDataMap;
+
+        private I18NHelper()
         {
-            I18NData i18NData = i18NDataMap.GetDataById(id);
-            if (null != i18NData)
+            i18NDataMap = LocalDataMgr.GetLocalDataMap<I18NDataMap>();
+        }
+
+        public static I18NHelper GetInstance()
+        {
+            if (null == instance)
             {
-                return i18NData.desStr;
+                instance = new I18NHelper();
+            }
+            return instance;
+        }
+
+        /// <summary>
+        /// 根据ID获取对应的国际化文字
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetI18NText(int id)
+        {
+            if (null != i18NDataMap)
+            {
+                I18NData i18NData = i18NDataMap.GetDataById(id);
+                if (null != i18NData)
+                {
+                    return i18NData.desStr;
+                }
+                else
+                {
+                    Debug.LogWarning(string.Format("ID{0}没有包含在国际化表中！", id));
+                }
             }
             else
             {
-                Debug.LogWarning(string.Format("ID{0}没有包含在国际化表中！", id));
+                Debug.LogWarning("国际化表格加载失败！");
             }
+            return string.Empty;
         }
-        else
+
+        /// <summary>
+        /// 根据ID获取对应的国际化文字(静态方法，方便调用)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string GetText(int id)
         {
-            Debug.LogWarning("国际化表格加载失败！");
+            return GetInstance().GetI18NText(id);
         }
-        return string.Empty;
-    }
 
-    /// <summary>
-    /// 根据ID获取对应的国际化文字(静态方法，方便调用)
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public static string GetText(int id)
-    {
-        return GetInstance().GetI18NText(id);
-    }
-
-    /// <summary>
-    /// 重新加载数据文件
-    /// </summary>
-    public void ReloadI18NConfig()
-    {
-        //todo:暂时不支持重新加载startLoadDic中的数据表，以后完善
-        //LocalDataMgr.ClearLocalDataMap<I18NDataMap>();
-        //i18NDataMap = LocalDataMgr.GetLocalDataMap<I18NDataMap>();
+        /// <summary>
+        /// 重新加载数据文件
+        /// </summary>
+        public void ReloadI18NConfig()
+        {
+            //todo:暂时不支持重新加载startLoadDic中的数据表，以后完善
+            //LocalDataMgr.ClearLocalDataMap<I18NDataMap>();
+            //i18NDataMap = LocalDataMgr.GetLocalDataMap<I18NDataMap>();
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 
-namespace Downloader
+namespace ColaFramework
 {
 	public enum DownloadTaskStatus
 	{

@@ -11,7 +11,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Security;
 
-namespace Downloader
+namespace ColaFramework
 {
     /// <summary>
     /// Downloads and resumes files from HTTP, FTP, and File (file://) URLS
@@ -29,15 +29,15 @@ namespace Downloader
             this.canceled = true;
         }
 
-		/// <summary>
-		/// Timeout (ms)
-		/// </summary>
-		private Int32 m_timeout = 100;
-		public Int32 Timeout
-		{
-			get { return m_timeout; }
-			set { m_timeout = value; }
-		}
+        /// <summary>
+        /// Timeout (ms)
+        /// </summary>
+        private Int32 m_timeout = 100;
+        public Int32 Timeout
+        {
+            get { return m_timeout; }
+            set { m_timeout = value; }
+        }
 
         /// <summary>
         /// Progress update
@@ -66,13 +66,13 @@ namespace Downloader
                 this.DownloadComplete(this, new EventArgs());
         }
 
-		///// <summary>
-		///// Begin downloading the file at the specified url, and save it to the current fileName.
-		///// </summary>
-		//public void Download(string url)
-		//{
-		//    Download(url, "");
-		//}
+        ///// <summary>
+        ///// Begin downloading the file at the specified url, and save it to the current fileName.
+        ///// </summary>
+        //public void Download(string url)
+        //{
+        //    Download(url, "");
+        //}
         /// <summary>
         /// Begin downloading the file at the specified url, and save it to the given fileName.
         /// </summary>
@@ -85,8 +85,8 @@ namespace Downloader
             {
                 // get download details                
                 data = DownloadData.Create(url, destFileName, this.proxy, this.m_timeout);
-				//// Find out the name of the file that the web server gave us.
-				//string destFileName = Path.GetFileName(data.Response.ResponseUri.ToString());
+                //// Find out the name of the file that the web server gave us.
+                //string destFileName = Path.GetFileName(data.Response.ResponseUri.ToString());
 
                 // create the download buffer
                 byte[] buffer = new byte[downloadBlockSize];
@@ -128,18 +128,18 @@ namespace Downloader
                 }
 
                 if (!gotCanceled)
-				{
-					// stream could be incomplete
-					if (data.IsProgressKnown)
-					{
-						if (totalDownloaded < data.FileSize)
-							throw new WebException("date transfer not completed", WebExceptionStatus.ConnectionClosed);
-					}
+                {
+                    // stream could be incomplete
+                    if (data.IsProgressKnown)
+                    {
+                        if (totalDownloaded < data.FileSize)
+                            throw new WebException("date transfer not completed", WebExceptionStatus.ConnectionClosed);
+                    }
 
-					RaiseProgressChanged(data.FileSize, data.FileSize);
-					data.CleanOnFinish();
+                    RaiseProgressChanged(data.FileSize, data.FileSize);
+                    data.CleanOnFinish();
                     OnDownloadComplete();
-				}
+                }
             }
             catch (UriFormatException e)
             {
@@ -148,34 +148,34 @@ namespace Downloader
             }
             finally
             {
-				if (data != null)
-					data.Close();
+                if (data != null)
+                    data.Close();
             }
         }
 
-		public static String MakeFingerPrintFilePath(String localFilePatch)
-		{
-			return localFilePatch + ".fp";
-		}
+        public static String MakeFingerPrintFilePath(String localFilePatch)
+        {
+            return localFilePatch + ".fp";
+        }
 
-		/// <summary>
-		/// whether localFilePatch has downloading progressing information
-		/// </summary>
-		/// <param name="localFilePatch"></param>
-		/// <returns></returns>
-		public static Boolean IsFileInProgress(String localFilePatch)
-		{
-			return File.Exists(MakeFingerPrintFilePath(localFilePatch));
-		}
+        /// <summary>
+        /// whether localFilePatch has downloading progressing information
+        /// </summary>
+        /// <param name="localFilePatch"></param>
+        /// <returns></returns>
+        public static Boolean IsFileInProgress(String localFilePatch)
+        {
+            return File.Exists(MakeFingerPrintFilePath(localFilePatch));
+        }
 
-		///// <summary>
-		///// Download a file from a list or URLs. If downloading from one of the URLs fails,
-		///// another URL is tried.
-		///// </summary>
-		//public void Download(List<string> urlList)
-		//{
-		//    this.Download(urlList, "");
-		//}
+        ///// <summary>
+        ///// Download a file from a list or URLs. If downloading from one of the URLs fails,
+        ///// another URL is tried.
+        ///// </summary>
+        //public void Download(List<string> urlList)
+        //{
+        //    this.Download(urlList, "");
+        //}
         /// <summary>
         /// Download a file from a list or URLs. If downloading from one of the URLs fails,
         /// another URL is tried.
@@ -212,14 +212,14 @@ namespace Downloader
                 throw ex;
         }
 
-		///// <summary>
-		///// Asynchronously download a file from the url.
-		///// </summary>
-		//public void AsyncDownload(string url)
-		//{
-		//    System.Threading.ThreadPool.QueueUserWorkItem(
-		//        new System.Threading.WaitCallback(this.WaitCallbackMethod), new string[] { url, "" });
-		//}
+        ///// <summary>
+        ///// Asynchronously download a file from the url.
+        ///// </summary>
+        //public void AsyncDownload(string url)
+        //{
+        //    System.Threading.ThreadPool.QueueUserWorkItem(
+        //        new System.Threading.WaitCallback(this.WaitCallbackMethod), new string[] { url, "" });
+        //}
         /// <summary>
         /// Asynchronously download a file from the url to the destination fileName.
         /// </summary>
@@ -294,77 +294,77 @@ namespace Downloader
         private WebResponse response;
 
         private Stream stream;
-		private String downloadTo;
-		private FileStream downloadToStream = null;
+        private String downloadTo;
+        private FileStream downloadToStream = null;
         private long size;
         private long start;
 
-		private struct FingerPrint
-		{
-			public String timeStamp;
-			public Int64 fileSize;
-		}
-		private static FingerPrint LoadFingerPrint(String destFileName)
-		{
-			String fingerPrintFileName = FileDownloadHelper.MakeFingerPrintFilePath(destFileName);
+        private struct FingerPrint
+        {
+            public String timeStamp;
+            public Int64 fileSize;
+        }
+        private static FingerPrint LoadFingerPrint(String destFileName)
+        {
+            String fingerPrintFileName = FileDownloadHelper.MakeFingerPrintFilePath(destFileName);
 
-			if (!File.Exists(fingerPrintFileName))	//¼ÇÂ¼ÎÄ¼þÉÐÎ´´´½¨
-				return new FingerPrint { timeStamp="", fileSize=0 };
+            if (!File.Exists(fingerPrintFileName))  //è®°å½•æ–‡ä»¶å°šæœªåˆ›å»º
+                return new FingerPrint { timeStamp = "", fileSize = 0 };
 
-			try
-			{
-				SecurityElement xmlDoc = SecurityElement.FromString(File.ReadAllText(fingerPrintFileName));
-				String timeStamp = xmlDoc.Attributes["time_stamp"].ToString();
-				Int64 fileSize = Int64.Parse(xmlDoc.Attributes["file_size"].ToString());
-				return new FingerPrint { timeStamp=timeStamp, fileSize=fileSize };
-			}
-			catch (IOException)
-			{
-				return new FingerPrint { timeStamp="", fileSize=0 };
-			}
-			catch (System.IO.IsolatedStorage.IsolatedStorageException)
-			{
-				return new FingerPrint { timeStamp="", fileSize=0 };
-			}
-			catch (XmlSyntaxException)
-			{
-				return new FingerPrint { timeStamp="", fileSize=0 };
-			}
-			catch (FormatException)
-			{
-				return new FingerPrint { timeStamp="", fileSize=0 };
-			}
-			catch (NullReferenceException)
-			{
-				return new FingerPrint { timeStamp = "", fileSize = 0 };
-			}
-		}
+            try
+            {
+                SecurityElement xmlDoc = SecurityElement.FromString(File.ReadAllText(fingerPrintFileName));
+                String timeStamp = xmlDoc.Attributes["time_stamp"].ToString();
+                Int64 fileSize = Int64.Parse(xmlDoc.Attributes["file_size"].ToString());
+                return new FingerPrint { timeStamp = timeStamp, fileSize = fileSize };
+            }
+            catch (IOException)
+            {
+                return new FingerPrint { timeStamp = "", fileSize = 0 };
+            }
+            catch (System.IO.IsolatedStorage.IsolatedStorageException)
+            {
+                return new FingerPrint { timeStamp = "", fileSize = 0 };
+            }
+            catch (XmlSyntaxException)
+            {
+                return new FingerPrint { timeStamp = "", fileSize = 0 };
+            }
+            catch (FormatException)
+            {
+                return new FingerPrint { timeStamp = "", fileSize = 0 };
+            }
+            catch (NullReferenceException)
+            {
+                return new FingerPrint { timeStamp = "", fileSize = 0 };
+            }
+        }
 
-		private static void SaveFingerPrint(String destFileName, FingerPrint fingerPrint)
-		{
-			String fingerPrintFileName = FileDownloadHelper.MakeFingerPrintFilePath(destFileName);
+        private static void SaveFingerPrint(String destFileName, FingerPrint fingerPrint)
+        {
+            String fingerPrintFileName = FileDownloadHelper.MakeFingerPrintFilePath(destFileName);
 
-			SecurityElement finger_print = new SecurityElement("finger_print");
+            SecurityElement finger_print = new SecurityElement("finger_print");
 
-			finger_print.AddAttribute("time_stamp", fingerPrint.timeStamp);
-			finger_print.AddAttribute("file_size", fingerPrint.fileSize.ToString());
+            finger_print.AddAttribute("time_stamp", fingerPrint.timeStamp);
+            finger_print.AddAttribute("file_size", fingerPrint.fileSize.ToString());
 
-			File.WriteAllText(fingerPrintFileName, finger_print.ToString());
-		}
+            File.WriteAllText(fingerPrintFileName, finger_print.ToString());
+        }
 
-		private static void DeleteFingerPrint(String destFileName)
-		{
-			File.Delete(FileDownloadHelper.MakeFingerPrintFilePath(destFileName));
-		}
+        private static void DeleteFingerPrint(String destFileName)
+        {
+            File.Delete(FileDownloadHelper.MakeFingerPrintFilePath(destFileName));
+        }
 
-		private static void DeleteDestFile(String destFileName)
-		{
-			File.Delete(FileDownloadHelper.MakeFingerPrintFilePath(destFileName));
+        private static void DeleteDestFile(String destFileName)
+        {
+            File.Delete(FileDownloadHelper.MakeFingerPrintFilePath(destFileName));
 
-			File.Delete(destFileName);
-		}
+            File.Delete(destFileName);
+        }
 
-		private Int32 timeout = 0;
+        private Int32 timeout = 0;
         private IWebProxy proxy = null;
 
         public static DownloadData Create(string url, string destFileName)
@@ -378,8 +378,8 @@ namespace Downloader
             // This is what we will return
             DownloadData downloadData = new DownloadData();
             downloadData.proxy = proxy;
-			downloadData.timeout = timeout;
-			downloadData.downloadTo = destFileName;
+            downloadData.timeout = timeout;
+            downloadData.downloadTo = destFileName;
 
             long urlSize = downloadData.GetFileSize(url);
             downloadData.size = urlSize;
@@ -395,7 +395,7 @@ namespace Downloader
                     "Error downloading \"{0}\": {1}", url, e.Message), e);
             }
 
-			String lastModified = downloadData.response.Headers["Last-Modified"] ?? "";
+            String lastModified = downloadData.response.Headers["Last-Modified"] ?? "";
 
             // Check to make sure the response isn't an error. If it is this method
             // will throw exceptions.
@@ -403,23 +403,23 @@ namespace Downloader
 
 
             // Take the name of the file given to use from the web server.
-			//String fileName = System.IO.Path.GetFileName(downloadData.response.ResponseUri.ToString());
+            //String fileName = System.IO.Path.GetFileName(downloadData.response.ResponseUri.ToString());
 
-			//String downloadTo = Path.Combine(destFileName, fileName);
+            //String downloadTo = Path.Combine(destFileName, fileName);
 
-			String downloadTo = destFileName;
+            String downloadTo = destFileName;
 
-			FingerPrint fingerPrint = LoadFingerPrint(downloadTo);
+            FingerPrint fingerPrint = LoadFingerPrint(downloadTo);
             // If we don't know how big the file is supposed to be,
             // we can't resume, so delete what we already have if something is on disk already.
-			if (!downloadData.IsProgressKnown
-				|| fingerPrint.timeStamp != lastModified
-				|| fingerPrint.fileSize != urlSize)
-			{
-				DeleteDestFile(downloadTo);
-			}
+            if (!downloadData.IsProgressKnown
+                || fingerPrint.timeStamp != lastModified
+                || fingerPrint.fileSize != urlSize)
+            {
+                DeleteDestFile(downloadTo);
+            }
 
-			SaveFingerPrint(downloadTo, new FingerPrint { timeStamp = lastModified, fileSize = urlSize });
+            SaveFingerPrint(downloadTo, new FingerPrint { timeStamp = lastModified, fileSize = urlSize });
 
             if (downloadData.IsProgressKnown && File.Exists(downloadTo))
             {
@@ -451,7 +451,7 @@ namespace Downloader
                 }
             }
 
-			downloadData.downloadToStream = File.Open(downloadTo, FileMode.Append, FileAccess.Write);
+            downloadData.downloadToStream = File.Open(downloadTo, FileMode.Append, FileAccess.Write);
 
             return downloadData;
         }
@@ -512,8 +512,8 @@ namespace Downloader
             try
             {
                 response = GetRequest(url).GetResponse();
-				if (response != null)
-					size = response.ContentLength;
+                if (response != null)
+                    size = response.ContentLength;
             }
             finally
             {
@@ -528,8 +528,8 @@ namespace Downloader
         {
             //WebProxy proxy = WebProxy.GetDefaultProxy();
             WebRequest request = WebRequest.Create(url);
-			if (timeout != 0)
-				request.Timeout = timeout;
+            if (timeout != 0)
+                request.Timeout = timeout;
 
             if (request is HttpWebRequest)
             {
@@ -548,17 +548,17 @@ namespace Downloader
         public void Close()
         {
             this.response.Close();
-			if (this.downloadToStream != null)
-			{
-				this.downloadToStream.Dispose();
-				this.downloadToStream = null;
-			}
+            if (this.downloadToStream != null)
+            {
+                this.downloadToStream.Dispose();
+                this.downloadToStream = null;
+            }
         }
 
-		public void CleanOnFinish()
-		{
-			DeleteFingerPrint(downloadTo);
-		}
+        public void CleanOnFinish()
+        {
+            DeleteFingerPrint(downloadTo);
+        }
 
         #region Properties
         public WebResponse Response
@@ -577,13 +577,13 @@ namespace Downloader
                 return this.stream;
             }
         }
-		public FileStream DownloadingToStream
-		{
-			get
-			{
-				return this.downloadToStream;
-			}
-		}
+        public FileStream DownloadingToStream
+        {
+            get
+            {
+                return this.downloadToStream;
+            }
+        }
         public long FileSize
         {
             get
