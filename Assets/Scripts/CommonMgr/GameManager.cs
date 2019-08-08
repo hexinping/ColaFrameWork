@@ -38,6 +38,11 @@ namespace ColaFramework
         private AudioManager audioManager;
 
         /// <summary>
+        /// 计时器管理器
+        /// </summary>
+        private TimerManager timerManager;
+
+        /// <summary>
         /// UI管理器
         /// </summary>
         private UIMgr uiMgr;
@@ -71,6 +76,7 @@ namespace ColaFramework
             gameLauncherObj = gameObject;
             sceneMgr = gameObject.AddComponent<SceneMgr>();
             audioManager = AudioManager.Instance;
+            timerManager = TimerManager.Instance;
             inputMgr = gameLauncherObj.AddComponent<InputMgr>();
 
             GameStart();
@@ -82,6 +88,7 @@ namespace ColaFramework
         public void GameStart()
         {
             audioManager.Init();
+            timerManager.Init();
 
             //将lua初始化移动到这里，所有的必要条件都准备好以后再初始化lua虚拟机
             luaClient = gameLauncherObj.AddComponent<LuaEngine>();
@@ -94,10 +101,9 @@ namespace ColaFramework
         /// <param name="deltaTime"></param>
         public void Update(float deltaTime)
         {
-            if (null != resourceMgr)
-            {
-                resourceMgr.Update(deltaTime);
-            }
+            resourceMgr.Update(deltaTime);
+            timerManager.Update(deltaTime);
+            audioManager.Update(deltaTime);
         }
 
         /// <summary>

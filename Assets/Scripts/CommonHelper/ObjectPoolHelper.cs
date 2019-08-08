@@ -146,4 +146,32 @@ namespace ColaFramework
             m_Stack.Push(element);
         }
     }
+
+
+    /// <summary>
+    /// 极简的对象池
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class MiniObjectPool<T> where T : class, new()
+    {
+        private readonly Stack<T> _pool = new Stack<T>();
+
+        public MiniObjectPool(int initCount)
+        {
+            for (var i = 0; i < initCount; i++)
+            {
+                _pool.Push(new T());
+            }
+        }
+
+        public T Get()
+        {
+            return _pool.Count == 0 ? new T() : _pool.Pop();
+        }
+
+        public void Release(T obj)
+        {
+            _pool.Push(obj);
+        }
+    }
 }

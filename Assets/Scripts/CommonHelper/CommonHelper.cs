@@ -493,31 +493,30 @@ public static class CommonHelper
         {
             textCommponent.text = "";
             int length = 1;
-            int timerID = -1;
+            long timerID = -1;
 
             Action killTimer = () =>
             {
                 if (-1 != timerID)
                 {
-                    TimeHelper.KillTimer(timerID);
+                    Timer.Cancel(timerID);
                 }
             };
 
-            timerID = TimeHelper.SetRepeatTimer(() =>
-            {
-                var subContent = content.Substring(0, length);
-                textCommponent.text = subContent;
-                length++;
-                if (length > content.Length)
-                {
-                    killTimer();
-                    if (null != onComplete)
-                    {
-                        onComplete();
-                    }
-                }
-            }, delta);
-
+            timerID = Timer.RunBySeconds(delta, () =>
+             {
+                 var subContent = content.Substring(0, length);
+                 textCommponent.text = subContent;
+                 length++;
+                 if (length > content.Length)
+                 {
+                     killTimer();
+                     if (null != onComplete)
+                     {
+                         onComplete();
+                     }
+                 }
+             }, null);
         }
     }
 

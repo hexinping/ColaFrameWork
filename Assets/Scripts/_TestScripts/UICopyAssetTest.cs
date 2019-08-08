@@ -8,12 +8,12 @@ public class UICopyAssetTest : MonoBehaviour
 
     private int index = 1;
     private int totalCount = 12;
-    private int timerID = 0;
+    private long timerID = 0;
 
     // Use this for initialization
     void Start()
     {
-        timerID = TimeHelper.SetRepeatTimer(() =>
+        timerID = Timer.RunPerSecond((time) =>
         {
             if (index <= totalCount)
             {
@@ -23,9 +23,9 @@ public class UICopyAssetTest : MonoBehaviour
             else
             {
                 UICopyingAssetHelper.Instance().Close();
-                TimeHelper.KillTimer(timerID);
+                Timer.Cancel(timerID);
             }
-        }, 1.0f);
+        }, null);
     }
 
 }

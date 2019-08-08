@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using ColaFramework;
@@ -22,10 +20,10 @@ public class LoomTest : MonoBehaviour
         ColaLoom.QueueOnMainThread(() =>
         {
             this._text.text = Time.realtimeSinceStartup.ToString();
-            TimeHelper.SetRepeatTimer(() =>
+            ColaFramework.Timer.RunPerSecond((time) =>
             {
                 this._text.text = Time.realtimeSinceStartup.ToString();
-            }, 1);
+            }, null);
         });
 
     }
