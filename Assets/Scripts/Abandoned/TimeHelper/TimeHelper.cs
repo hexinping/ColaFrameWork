@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace ColaAbandoned
@@ -9,6 +7,7 @@ namespace ColaAbandoned
     /// <summary>
     /// 计时器助手类(已被废弃)
     /// </summary>
+    [Obsolete]
     public static class TimeHelper
     {
         private static int timerID;

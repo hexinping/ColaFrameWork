@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 
+using UnityEngine;
 namespace ColaAbandoned
 {
-
     public delegate void TimerEnd(int timerID);
     public delegate void RepeatTimerEvent(int timerID);
 
