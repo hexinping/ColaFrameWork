@@ -64,7 +64,6 @@ public static class CustomSettings
         _GT(typeof(SorterTag)).SetNameSpace(null),
         _GT(typeof(ParticleOrderAutoSorter)).SetNameSpace(null),
         _GT(typeof(Debugger)).SetNameSpace(null),
-        _GT(typeof(TimeHelper)).SetNameSpace(null),
         _GT(typeof(ColaHelper)).SetNameSpace(null),
         _GT(typeof(UGUIMsgHandler)).SetNameSpace(null),
         _GT(typeof(PlayerPrefs)).SetNameSpace(null),

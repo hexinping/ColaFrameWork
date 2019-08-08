@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace ColaFramework
+namespace ColaAbandoned
 {
     /// <summary>
-    /// 计时器助手类
+    /// 计时器助手类(已被废弃)
     /// </summary>
     public static class TimeHelper
     {

@@ -14,7 +14,6 @@ public static class LuaBinder
 		SorterTagWrap.Register(L);
 		ParticleOrderAutoSorterWrap.Register(L);
 		LuaInterface_DebuggerWrap.Register(L);
-		ColaFramework_TimeHelperWrap.Register(L);
 		ColaFramework_ColaHelperWrap.Register(L);
 		UGUIMsgHandlerWrap.Register(L);
 		UnityEngine_PlayerPrefsWrap.Register(L);
