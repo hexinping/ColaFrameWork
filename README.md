@@ -81,7 +81,6 @@ ColaFramework中的Debuglog与日志相关内容请查看[Debuglog与日志Wiki�
 #### LogCat 日志控制台拓展  
 ColaFramework框架提供了LogCat日志控制台拓展，通过它开发者可以很方便地在Unity编辑器内部查看来自Unity、Windows、macOS、Android等平台下游戏的日志。它可以让你忽略AndroidStudio的存在，直接在Unity中查看筛选日志，做到无缝对接。详情查看[Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/LogCat-%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%8B%93%E5%B1%95)  
 ![Initial window](https://github.com/XINCGer/ColaFrameWork/blob/master/Doc/image/LogCatExtension/InitialWindow.png)  
-![Filter by log type(s)]  
 
 #### 网络通信与协议  
 待补充  
