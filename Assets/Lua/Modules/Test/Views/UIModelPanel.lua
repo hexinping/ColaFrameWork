@@ -65,7 +65,6 @@ end
 -- 界面销毁的过程中触发
 function UIModelPanel:OnDestroy()
     UIBase.OnDestroy(self)
-    self.ResId = 0
     self.animIndex = -1;
     self.curChar = nil
 end
