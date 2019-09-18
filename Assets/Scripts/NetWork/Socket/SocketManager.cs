@@ -8,7 +8,9 @@ using System.Text;
 using System.IO;
 using ProtoBuf;
 
-
+/// <summary>
+/// Socket网络套接字管理器
+/// </summary>
 public class SocketManager
 {
     private static SocketManager _instance;
@@ -31,10 +33,62 @@ public class SocketManager
     private Socket clientSocket = null;
     private Thread receiveThread = null;
 
+    /// <summary>
+    /// 网络数据缓存器
+    /// </summary>
     private DataBuffer _databuffer = new DataBuffer();
 
+    /// <summary>
+    /// 数据接收缓冲区
+    /// </summary>
     byte[] _tmpReceiveBuff = new byte[4096];
+
+    /// <summary>
+    /// 网络数据结构
+    /// </summary>
     private sSocketData _socketData = new sSocketData();
+
+    #region 对外基本方法
+    /// <summary>
+    /// 以二进制方式发送
+    /// </summary>
+    /// <param name="_protocalType"></param>
+    /// <param name="_byteStreamBuff"></param>
+    public void SendMsg(eProtocalCommand _protocalType, ByteStreamBuff _byteStreamBuff)
+    {
+        SendMsgBase(_protocalType, _byteStreamBuff.ToArray());
+    }
+
+    /// <summary>
+    /// 以ProtoBuf方式发送
+    /// </summary>
+    /// <param name="_protocalType"></param>
+    /// <param name="data"></param>
+    public void SendMsg(eProtocalCommand _protocalType, ProtoBuf.IExtensible data)
+    {
+        SendMsgBase(_protocalType, ProtoBuf_Serializer(data));
+    }
+
+    /// <summary>
+    /// 连接服务器
+    /// </summary>
+    /// <param name="_currIP"></param>
+    /// <param name="_currPort"></param>
+    public void Connect(string _currIP, int _currPort)
+    {
+        if (!IsConnceted)
+        {
+            this._currIP = _currIP;
+            this._currPort = _currPort;
+            _onConnet();
+        }
+    }
+
+    public void Close()
+    {
+        _close();
+    }
+    #endregion
 
     /// <summary>
     /// 断开
@@ -59,6 +113,9 @@ public class SocketManager
         }
     }
 
+    /// <summary>
+    /// 重连机制
+    /// </summary>
     private void _ReConnect()
     {
     }
@@ -105,18 +162,24 @@ public class SocketManager
         }
     }
 
+    /// <summary>
+    /// 连接服务器超时
+    /// </summary>
     private void _onConnect_Outtime()
     {
         _close();
     }
 
+    /// <summary>
+    /// 连接服务器失败
+    /// </summary>
     private void _onConnect_Fail()
     {
         _close();
     }
 
     /// <summary>
-    /// 发送消息结果回掉，可判断当前网络状态
+    /// 发送消息结果回调，可判断当前网络状态
     /// </summary>
     /// <param name="asyncSend"></param>
     private void _onSendMsg(IAsyncResult asyncSend)
@@ -133,7 +196,7 @@ public class SocketManager
     }
 
     /// <summary>
-    /// 接受网络数据
+    /// 接收网络数据
     /// </summary>
     private void _onReceiveSocket()
     {
@@ -259,23 +322,6 @@ public class SocketManager
         }
     }
 
-
-
-    /// <summary>
-    /// 连接服务器
-    /// </summary>
-    /// <param name="_currIP"></param>
-    /// <param name="_currPort"></param>
-    public void Connect(string _currIP, int _currPort)
-    {
-        if (!IsConnceted)
-        {
-            this._currIP = _currIP;
-            this._currPort = _currPort;
-            _onConnet();
-        }
-    }
-
     /// <summary>
     /// 发送消息基本方法
     /// </summary>
@@ -292,30 +338,4 @@ public class SocketManager
         byte[] _msgdata = DataToBytes(_protocalType, _data);
         clientSocket.BeginSend(_msgdata, 0, _msgdata.Length, SocketFlags.None, new AsyncCallback(_onSendMsg), clientSocket);
     }
-
-    /// <summary>
-    /// 以二进制方式发送
-    /// </summary>
-    /// <param name="_protocalType"></param>
-    /// <param name="_byteStreamBuff"></param>
-    public void SendMsg(eProtocalCommand _protocalType, ByteStreamBuff _byteStreamBuff)
-    {
-        SendMsgBase(_protocalType, _byteStreamBuff.ToArray());
-    }
-
-    /// <summary>
-    /// 以ProtoBuf方式发送
-    /// </summary>
-    /// <param name="_protocalType"></param>
-    /// <param name="data"></param>
-    public void SendMsg(eProtocalCommand _protocalType, ProtoBuf.IExtensible data)
-    {
-        SendMsgBase(_protocalType, ProtoBuf_Serializer(data));
-    }
-
-    public void Close()
-    {
-        _close();
-    }
-
 }
