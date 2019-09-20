@@ -374,6 +374,10 @@ public class SocketManager : IDisposable
 
     public void Dispose()
     {
-
+        _close();
+        OnClose = null;
+        OnConnected = null;
+        OnFailed = null;
+        OnTimeOut = null;
     }
 }
