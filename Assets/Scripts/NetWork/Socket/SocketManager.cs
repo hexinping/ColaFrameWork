@@ -11,7 +11,7 @@ using ProtoBuf;
 /// <summary>
 /// Socket网络套接字管理器
 /// </summary>
-public class SocketManager
+public class SocketManager : IDisposable
 {
     private static SocketManager _instance;
     public static SocketManager Instance
@@ -27,6 +27,7 @@ public class SocketManager
     }
     private string _currIP;
     private int _currPort;
+    private int _timeOutMilliSec = 5000;
 
     private bool _isConnected = false;
     public bool IsConnceted { get { return _isConnected; } }
@@ -47,6 +48,13 @@ public class SocketManager
     /// 网络数据结构
     /// </summary>
     private sSocketData _socketData = new sSocketData();
+
+    #region 对外回调
+    public Action OnTimeOut;
+    public Action OnFailed;
+    public Action OnConnected;
+    public Action OnClose;
+    #endregion
 
     #region 对外基本方法
     /// <summary>
@@ -88,6 +96,15 @@ public class SocketManager
     {
         _close();
     }
+
+    /// <summary>
+    /// 设置超时的阈值
+    /// </summary>
+    /// <param name="milliSec"></param>
+    public void SetTimeOut(int milliSec)
+    {
+        _timeOutMilliSec = milliSec;
+    }
     #endregion
 
     /// <summary>
@@ -111,6 +128,10 @@ public class SocketManager
             clientSocket.Close();
             clientSocket = null;
         }
+        if(null != OnClose)
+        {
+            OnClose();
+        }
     }
 
     /// <summary>
@@ -131,7 +152,7 @@ public class SocketManager
             IPAddress ipAddress = IPAddress.Parse(_currIP);//解析IP地址
             IPEndPoint ipEndpoint = new IPEndPoint(ipAddress, _currPort);
             IAsyncResult result = clientSocket.BeginConnect(ipEndpoint, new AsyncCallback(_onConnect_Sucess), clientSocket);//异步连接
-            bool success = result.AsyncWaitHandle.WaitOne(5000, true);
+            bool success = result.AsyncWaitHandle.WaitOne(_timeOutMilliSec, true);
             if (!success) //超时
             {
                 _onConnect_Outtime();
@@ -155,6 +176,10 @@ public class SocketManager
             receiveThread.Start();
             _isConnected = true;
             Debug.Log("连接成功");
+            if(null != OnConnected)
+            {
+                OnConnected();
+            }
         }
         catch (Exception _e)
         {
@@ -167,6 +192,10 @@ public class SocketManager
     /// </summary>
     private void _onConnect_Outtime()
     {
+        if(null != OnTimeOut)
+        {
+            OnTimeOut();
+        }
         _close();
     }
 
@@ -175,6 +204,10 @@ public class SocketManager
     /// </summary>
     private void _onConnect_Fail()
     {
+        if(null != OnFailed)
+        {
+            OnFailed();
+        }
         _close();
     }
 
@@ -337,5 +370,10 @@ public class SocketManager
 
         byte[] _msgdata = DataToBytes(_protocalType, _data);
         clientSocket.BeginSend(_msgdata, 0, _msgdata.Length, SocketFlags.None, new AsyncCallback(_onSendMsg), clientSocket);
+    }
+
+    public void Dispose()
+    {
+
     }
 }
