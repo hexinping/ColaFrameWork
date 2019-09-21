@@ -69,7 +69,7 @@ Module的基类为ModuleBase，游戏内所有的系统的业务逻辑层均继�
 直接将文件夹拖到项目中即可使用。  
 详情请点击 [ReferenceFinder Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/%E8%B5%84%E6%BA%90%E5%BC%95%E7%94%A8%E6%9F%A5%E6%89%BE%E4%B8%8E%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90%E6%8F%92%E4%BB%B6)  
 #### 编辑器拓展与工具  
-待补充  
+可视化的EditorWindow应继承自 `EditorWindowBase` 基类，Inspector编辑拓展应继承自 `InspectorBase` 基类  
 
 #### 游戏自动化测试  
 框架中集成了WETEST_SDK，通过使用[GAutomator](https://github.com/Tencent/GAutomator)实现Unity手游的UI自动化测试。  
