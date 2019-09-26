@@ -78,9 +78,10 @@ TODO:对网易的自动化测试解决方案做一些调研[传送门](http://ai
 #### DebugLog与日志  
 ColaFramework中的Debuglog与日志相关内容请查看[Debuglog与日志Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/DebugLog%E4%B8%8E%E6%97%A5%E5%BF%97)  
 
-#### LogCat 日志控制台拓展  
-ColaFramework框架提供了LogCat日志控制台拓展，通过它开发者可以很方便地在Unity编辑器内部查看来自Unity、Windows、macOS、Android等平台下游戏的日志。它可以让你忽略AndroidStudio的存在，直接在Unity中查看筛选日志，做到无缝对接。详情查看[Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/LogCat-%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%8B%93%E5%B1%95)  
+#### 日志控制台拓展  
+ColaFramework框架提供了LogCat日志控制台拓展，通过它开发者可以很方便地在Unity编辑器内部查看来自Android平台下游戏的日志。它可以让你忽略AndroidStudio的存在，直接在Unity中查看筛选日志，做到无缝对接。详情查看[Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/LogCat-%E6%97%A5%E5%BF%97%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%8B%93%E5%B1%95)  
 ![Initial window](https://github.com/XINCGer/ColaFrameWork/blob/master/Doc/image/LogCatExtension/InitialWindow.png)  
+ColaFramework框架提供了Editor Console Pro插件，功能比原生的Console强大一些。点击错误信息会打开代码编辑器，并在编辑器中高亮显示出错的代码片段。虽然Unity自带的控制台已经可以满足一些常用需求，但结合一些高级功能会更加有助于项目调试，例如直接在控制台显示代码所在位置并且高亮。一个很重要的区别是：在Editor Console Pro中，出错的源代码会被直接显示在窗口中，一目了然，方便开发者直接定位出错的地方。更多介绍可以看这个文档: [Unity插件推荐Editor Console Pro](https://blog.csdn.net/wwlcsdn000/article/details/80542607)  
 
 #### 网络通信与协议  
 待补充  
