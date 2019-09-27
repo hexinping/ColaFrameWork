@@ -49,7 +49,7 @@ public class GameLauncher : MonoBehaviour
 #if UNITY_STANDALONE_WIN
             Screen.SetResolution(1280, 720, false);
 #endif
-        Application.targetFrameRate = 100;
+        Application.targetFrameRate = 30;
 
         DontDestroyOnLoad(gameObject);
 
