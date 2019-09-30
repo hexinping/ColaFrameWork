@@ -47,15 +47,27 @@ namespace ColaFramework {
         }
 
         public void WriteInt(int v) {
-            writer.Write((int)v);
+            writer.Write(v);
         }
 
-        public void WriteShort(ushort v) {
-            writer.Write((ushort)v);
+        public void WriteuInt(uint v) {
+            writer.Write(v);
+        }
+
+        public void WriteShort(short v) {
+            writer.Write(v);
+        }
+
+        public void WriteuShort(ushort v) {
+            writer.Write(v);
         }
 
         public void WriteLong(long v) {
-            writer.Write((long)v);
+            writer.Write(v);
+        }
+
+        public void WriteuLong(ulong v) {
+            writer.Write(v);
         }
 
         public void WriteFloat(float v) {
@@ -70,6 +82,10 @@ namespace ColaFramework {
             writer.Write(BitConverter.ToDouble(temp, 0));
         }
 
+        public void WriteBoolean(bool v) {
+            writer.Write(v);
+        }
+
         public void WriteString(string v) {
             byte[] bytes = Encoding.UTF8.GetBytes(v);
             writer.Write((ushort)bytes.Length);
@@ -77,7 +93,7 @@ namespace ColaFramework {
         }
 
         public void WriteBytes(byte[] v) {
-            writer.Write((int)v.Length);
+            writer.Write(v.Length);
             writer.Write(v);
         }
 
@@ -93,12 +109,26 @@ namespace ColaFramework {
             return (int)reader.ReadInt32();
         }
 
-        public ushort ReadShort() {
-            return (ushort)reader.ReadInt16();
+        public uint ReaduInt()
+        {
+            return reader.ReadUInt32();
+        }
+
+        public short ReadShort() {
+            return reader.ReadInt16();
+        }
+
+        public ushort ReaduShort() {
+            return reader.ReadUInt16();
         }
 
         public long ReadLong() {
-            return (long)reader.ReadInt64();
+            return reader.ReadInt64();
+        }
+
+        public ulong ReaduLong()
+        {
+            return reader.ReadUInt64();
         }
 
         public float ReadFloat() {
@@ -114,7 +144,7 @@ namespace ColaFramework {
         }
 
         public string ReadString() {
-            ushort len = ReadShort();
+            ushort len = ReaduShort();
             byte[] buffer = new byte[len];
             buffer = reader.ReadBytes(len);
             return Encoding.UTF8.GetString(buffer);
@@ -128,6 +158,13 @@ namespace ColaFramework {
         public LuaByteBuffer ReadBuffer() {
             byte[] bytes = ReadBytes();
             return new LuaByteBuffer(bytes);
+        }
+
+        private byte[] flip(byte[] _data)
+        {
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(_data);
+            return _data;
         }
 
         public byte[] ToBytes() {
