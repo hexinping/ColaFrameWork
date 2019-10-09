@@ -65,9 +65,9 @@ namespace ColaFramework
         /// </summary>
         /// <param name="_protocalType"></param>
         /// <param name="_byteStreamBuff"></param>
-        public void SendMsg(eProtocalCommand _protocalType, ByteStreamBuff _byteStreamBuff)
+        public void SendMsg(eProtocalCommand _protocalType, ByteBuffer _byteStreamBuff)
         {
-            SendMsgBase(_protocalType, _byteStreamBuff.ToArray());
+            SendMsgBase(_protocalType, _byteStreamBuff.ToBytes());
         }
 
         /// <summary>

@@ -75,6 +75,7 @@ public static class CustomSettings
         _GT(typeof(AnimCtrlEnum)).SetNameSpace(null),
         _GT(typeof(AnimCurveNames)).SetNameSpace(null),
         _GT(typeof(TouchHelper)).SetNameSpace(null),
+        _GT(typeof(ByteBuffer)).SetNameSpace(null),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

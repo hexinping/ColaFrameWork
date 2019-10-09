@@ -10,17 +10,24 @@ public class ColaFramework_ByteBufferWrap
 		L.RegFunction("Close", Close);
 		L.RegFunction("WriteByte", WriteByte);
 		L.RegFunction("WriteInt", WriteInt);
+		L.RegFunction("WriteuInt", WriteuInt);
 		L.RegFunction("WriteShort", WriteShort);
+		L.RegFunction("WriteuShort", WriteuShort);
 		L.RegFunction("WriteLong", WriteLong);
+		L.RegFunction("WriteuLong", WriteuLong);
 		L.RegFunction("WriteFloat", WriteFloat);
 		L.RegFunction("WriteDouble", WriteDouble);
+		L.RegFunction("WriteBoolean", WriteBoolean);
 		L.RegFunction("WriteString", WriteString);
 		L.RegFunction("WriteBytes", WriteBytes);
 		L.RegFunction("WriteBuffer", WriteBuffer);
 		L.RegFunction("ReadByte", ReadByte);
 		L.RegFunction("ReadInt", ReadInt);
+		L.RegFunction("ReaduInt", ReaduInt);
 		L.RegFunction("ReadShort", ReadShort);
+		L.RegFunction("ReaduShort", ReaduShort);
 		L.RegFunction("ReadLong", ReadLong);
+		L.RegFunction("ReaduLong", ReaduLong);
 		L.RegFunction("ReadFloat", ReadFloat);
 		L.RegFunction("ReadDouble", ReadDouble);
 		L.RegFunction("ReadString", ReadString);
@@ -115,14 +122,48 @@ public class ColaFramework_ByteBufferWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int WriteuInt(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			uint arg0 = (uint)LuaDLL.luaL_checknumber(L, 2);
+			obj.WriteuInt(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int WriteShort(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
 			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
-			ushort arg0 = (ushort)LuaDLL.luaL_checknumber(L, 2);
+			short arg0 = (short)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteShort(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int WriteuShort(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ushort arg0 = (ushort)LuaDLL.luaL_checknumber(L, 2);
+			obj.WriteuShort(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -140,6 +181,23 @@ public class ColaFramework_ByteBufferWrap
 			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
 			long arg0 = LuaDLL.tolua_checkint64(L, 2);
 			obj.WriteLong(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int WriteuLong(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ulong arg0 = LuaDLL.tolua_checkuint64(L, 2);
+			obj.WriteuLong(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -174,6 +232,23 @@ public class ColaFramework_ByteBufferWrap
 			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
 			double arg0 = (double)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteDouble(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int WriteBoolean(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			obj.WriteBoolean(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -268,13 +343,47 @@ public class ColaFramework_ByteBufferWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReaduInt(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			uint o = obj.ReaduInt();
+			LuaDLL.lua_pushnumber(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int ReadShort(IntPtr L)
 	{
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
 			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
-			ushort o = obj.ReadShort();
+			short o = obj.ReadShort();
+			LuaDLL.lua_pushnumber(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReaduShort(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ushort o = obj.ReaduShort();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
 		}
@@ -293,6 +402,23 @@ public class ColaFramework_ByteBufferWrap
 			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
 			long o = obj.ReadLong();
 			LuaDLL.tolua_pushint64(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReaduLong(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ulong o = obj.ReaduLong();
+			LuaDLL.tolua_pushuint64(L, o);
 			return 1;
 		}
 		catch (Exception e)
