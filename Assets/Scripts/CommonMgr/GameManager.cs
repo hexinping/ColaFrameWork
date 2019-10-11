@@ -49,7 +49,7 @@ namespace ColaFramework
 
         private InputMgr inputMgr;
 
-        private LuaEngine luaClient;
+        private LuaClient luaClient;
 
         private GameManager()
         {
@@ -94,7 +94,7 @@ namespace ColaFramework
             timerManager.Init();
 
             //将lua初始化移动到这里，所有的必要条件都准备好以后再初始化lua虚拟机
-            luaClient = gameLauncherObj.AddComponent<LuaEngine>();
+            luaClient = gameLauncherObj.AddComponent<LuaClient>();
 
         }
 
@@ -180,7 +180,7 @@ namespace ColaFramework
             return null;
         }
 
-        public LuaEngine GetLuaEngine()
+        public LuaClient GetLuaClient()
         {
             if(null != luaClient)
             {

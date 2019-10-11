@@ -44,6 +44,26 @@ public class LuaClient : MonoBehaviour
     protected bool openLuaSocket = false;
     protected bool beZbStart = false;
 
+    protected void Awake()
+    {
+        Instance = this;
+        Init();
+
+#if UNITY_5_4_OR_NEWER
+        SceneManager.sceneLoaded += OnSceneLoaded;
+#endif        
+    }
+
+    protected void Init()
+    {
+        InitLoader();
+        luaState = new LuaState();
+        OpenLibs();
+        luaState.LuaSetTop(0);
+        Bind();
+        LoadLuaFiles();
+    }
+
     protected virtual LuaFileUtils InitLoader()
     {
         return LuaFileUtils.Instance;       
@@ -54,6 +74,9 @@ public class LuaClient : MonoBehaviour
         OnLoadFinished();
     }
 
+    /// <summary>
+    /// 初始化加载第三方库
+    /// </summary>
     protected virtual void OpenLibs()
     {
         luaState.OpenLibs(LuaDLL.luaopen_pb);
@@ -155,26 +178,6 @@ public class LuaClient : MonoBehaviour
         ColaLuaExtension.Register(luaState);
         DelegateFactory.Init();   
         LuaCoroutine.Register(luaState, this);        
-    }
-
-    protected void Init()
-    {        
-        InitLoader();
-        luaState = new LuaState();
-        OpenLibs();
-        luaState.LuaSetTop(0);
-        Bind();        
-        LoadLuaFiles();        
-    }
-
-    protected void Awake()
-    {
-        Instance = this;
-        Init();
-
-#if UNITY_5_4_OR_NEWER
-        SceneManager.sceneLoaded += OnSceneLoaded;
-#endif        
     }
 
     protected virtual void OnLoadFinished()

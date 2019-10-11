@@ -575,9 +575,9 @@ public static class CommonHelper
     /// <returns></returns>
     public static object[] CallLuaMethod(string module, string func, params object[] args)
     {
-        LuaEngine luaEngine = GameManager.Instance.GetLuaEngine();
-        if (null == luaEngine) return null;
-        return luaEngine.CallFunction(module + "." + func, args);
+        LuaClient luaClient = GameManager.Instance.GetLuaClient();
+        if (null == luaClient) return null;
+        return luaClient.CallFunction(module + "." + func, args);
     }
 
     /// <summary>
