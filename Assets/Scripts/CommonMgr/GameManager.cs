@@ -56,13 +56,16 @@ namespace ColaFramework
 
         }
 
-        public static GameManager GetInstance()
+        public static GameManager Instance
         {
-            if (null == instance)
+            get
             {
-                instance = new GameManager();
+                if (null == instance)
+                {
+                    instance = new GameManager();
+                }
+                return instance;
             }
-            return instance;
         }
 
         /// <summary>
@@ -174,6 +177,16 @@ namespace ColaFramework
                 return sceneMgr;
             }
             Debug.LogWarning("sceneMgr构造异常");
+            return null;
+        }
+
+        public LuaEngine GetLuaEngine()
+        {
+            if(null != luaClient)
+            {
+                return luaClient;
+            }
+            Debug.LogWarning("luaClient构造异常");
             return null;
         }
 

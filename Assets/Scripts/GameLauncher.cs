@@ -43,7 +43,7 @@ public class GameLauncher : MonoBehaviour
     {
         instance = this;
         InitPath();
-        gameManager = GameManager.GetInstance();
+        gameManager = GameManager.Instance;
         DOTween.Init();
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 #if UNITY_STANDALONE_WIN

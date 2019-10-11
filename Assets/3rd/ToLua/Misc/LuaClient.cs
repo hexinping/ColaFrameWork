@@ -184,6 +184,31 @@ public class LuaClient : MonoBehaviour
         StartMain();        
     }
 
+    /// <summary>
+    /// 执行一个lua File
+    /// </summary>
+    /// <param name="filename"></param>
+    public void DoFile(string filename)
+    {
+        luaState.DoFile(filename);
+    }
+
+    // Update is called once per frame
+    public object[] CallFunction(string funcName, params object[] args)
+    {
+        LuaFunction func = luaState.GetFunction(funcName);
+        if (func != null)
+        {
+            return func.LazyCall(args);
+        }
+        return null;
+    }
+
+    public void LuaGC()
+    {
+        luaState.LuaGC(LuaGCOptions.LUA_GCCOLLECT);
+    }
+
     void OnLevelLoaded(int level)
     {
         if (levelLoaded != null)

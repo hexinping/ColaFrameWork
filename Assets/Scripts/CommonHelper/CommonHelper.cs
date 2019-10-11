@@ -236,7 +236,7 @@ public static class CommonHelper
     /// <returns></returns>
     public static ModuleMgr GetModuleMgr()
     {
-        return GameManager.GetInstance().GetModuleMgr();
+        return GameManager.Instance.GetModuleMgr();
     }
 
     /// <summary>
@@ -245,7 +245,7 @@ public static class CommonHelper
     /// <returns></returns>
     public static UIMgr GetUIMgr()
     {
-        return GameManager.GetInstance().GetUIMgr();
+        return GameManager.Instance.GetUIMgr();
     }
 
     /// <summary>
@@ -567,6 +567,17 @@ public static class CommonHelper
     {
         Resources.UnloadUnusedAssets();
         GC.Collect();
+    }
+
+    /// <summary>
+    /// 执行Lua方法
+    /// </summary>
+    /// <returns></returns>
+    public static object[] CallLuaMethod(string module, string func, params object[] args)
+    {
+        LuaEngine luaEngine = GameManager.Instance.GetLuaEngine();
+        if (null == luaEngine) return null;
+        return luaEngine.CallFunction(module + "." + func, args);
     }
 
     /// <summary>

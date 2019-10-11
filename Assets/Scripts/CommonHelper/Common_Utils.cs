@@ -17,6 +17,28 @@ public static class Common_Utils
     private static Vector2 vec2Tmp = Vector2.zero;
 
     /// <summary>
+    /// 网络可用
+    /// </summary>
+    public static bool NetAvailable
+    {
+        get
+        {
+            return Application.internetReachability != NetworkReachability.NotReachable;
+        }
+    }
+
+    /// <summary>
+    /// 是否是无线
+    /// </summary>
+    public static bool IsWifi
+    {
+        get
+        {
+            return Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
+        }
+    }
+
+    /// <summary>
     /// 给按钮添加点击事件(以后可以往这里添加点击声音)
     /// </summary>
     /// <param name="go"></param>
@@ -577,7 +599,7 @@ public static class Common_Utils
 
     public static SceneMgr GetSceneMgr()
     {
-        return GameManager.GetInstance().GetSceneMgr();
+        return GameManager.Instance.GetSceneMgr();
     }
 
     public static void DelayInvokeNextFrame(Action action)
