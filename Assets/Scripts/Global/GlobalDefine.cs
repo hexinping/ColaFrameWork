@@ -43,21 +43,6 @@ public static class GloablDefine
     public static Color ColorGray = Color.gray;
     public static Color ColorUIMask = new Color(0 / 255.0f, 0 / 255.0f, 0 / 255.0f, 125 / 255.0f);
 
-    /// <summary>
-    /// Bundle的资源后缀名
-    /// </summary>
-    public static readonly string extenName = ".u3d";
-
-    /// <summary>
-    /// StreamingAsset下的预装资源目录
-    /// </summary>
-    public static List<string> resbasePathList = new List<string>()
-    {
-        "config",
-        "res_base",
-        "Lua",
-    };
-
     public static readonly string UIViewTag = "UIView";
     public static readonly string UIIngeroTag = "UIIngero";
     public static readonly string UIPropertyTag = "UIProperty";
