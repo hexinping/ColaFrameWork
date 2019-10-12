@@ -80,14 +80,18 @@ public class LuaClient : MonoBehaviour
     protected virtual void OpenLibs()
     {
         luaState.OpenLibs(LuaDLL.luaopen_pb);
+        luaState.OpenLibs(LuaDLL.luaopen_sproto_core);
+        luaState.OpenLibs(LuaDLL.luaopen_protobuf_c);
         luaState.OpenLibs(LuaDLL.luaopen_struct);
         luaState.OpenLibs(LuaDLL.luaopen_lpeg);
+        luaState.OpenLibs(LuaDLL.luaopen_bit);
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
         luaState.OpenLibs(LuaDLL.luaopen_bit);
 #endif
 
         if (LuaConst.openLuaSocket)
         {
+            luaState.OpenLibs(LuaDLL.luaopen_socket_core);
             OpenLuaSocket();            
         }        
 
@@ -95,6 +99,7 @@ public class LuaClient : MonoBehaviour
         {
             OpenZbsDebugger();
         }
+        OpenCJson();
     }
 
     public void OpenZbsDebugger(string ip = "localhost")
