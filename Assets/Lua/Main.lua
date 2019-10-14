@@ -35,9 +35,11 @@ local function initialize()
     ConfigMgr.Instance()
     EventMgr.Instance()
     UIManager.Instance()
+	NetManager.Initialize()
 	-- 模块初始化
 	ModuleManager.Instance():RegisterAllModules()
 	ModuleManager.Instance():InitAllModules()
+
 end
 
 -- 在此处定义注册一些全局变量
@@ -53,6 +55,7 @@ local function gloablDefine()
 	define("UIManager",require("Mgrs.UIManager"))
 	define("ConfigMgr",require("Mgrs.ConfigMgr"))
 	define("ModuleManager",require("Mgrs.ModuleManager"))
+	define("NetManager",require("Core.Net.NetManager"))
 	--控制全局变量的新建与访问
 	require("Utilitys.LuaGlobalCheck")
 end
