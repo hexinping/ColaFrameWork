@@ -11,6 +11,7 @@ namespace ColaFramework
     {
 
         private static GameManager instance;
+        private bool init = false;
 
         /// <summary>
         /// Launcher的Obj
@@ -73,6 +74,8 @@ namespace ColaFramework
         /// </summary>
         public void InitGameCore(GameObject gameObject)
         {
+            init = false;
+
             //初始化各种管理器
             resourceMgr = ResourcesMgr.GetInstance();
 
@@ -96,6 +99,7 @@ namespace ColaFramework
             //将lua初始化移动到这里，所有的必要条件都准备好以后再初始化lua虚拟机
             luaClient = gameLauncherObj.AddComponent<LuaClient>();
 
+            init = true;
         }
 
         /// <summary>
@@ -104,6 +108,7 @@ namespace ColaFramework
         /// <param name="deltaTime"></param>
         public void Update(float deltaTime)
         {
+            if (!init) return;
             resourceMgr.Update(deltaTime);
             timerManager.Update(deltaTime);
             audioManager.Update(deltaTime);
@@ -115,7 +120,7 @@ namespace ColaFramework
         /// <param name="deltaTime"></param>
         public void LateUpdate(float deltaTime)
         {
-
+            if (!init) return;
         }
 
         /// <summary>
@@ -124,7 +129,7 @@ namespace ColaFramework
         /// <param name="fixedDeltaTime"></param>
         public void FixedUpdate(float fixedDeltaTime)
         {
-
+            if (!init) return;
         }
 
         public void OnApplicationQuit()
