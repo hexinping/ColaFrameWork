@@ -55,6 +55,7 @@ local function gloablDefine()
 	define("UIManager",require("Mgrs.UIManager"))
 	define("ConfigMgr",require("Mgrs.ConfigMgr"))
 	define("ModuleManager",require("Mgrs.ModuleManager"))
+	define("Protocol",require("Protocols.Protocol"))
 	define("NetManager",require("Core.Net.NetManager"))
 	--控制全局变量的新建与访问
 	require("Utilitys.LuaGlobalCheck")

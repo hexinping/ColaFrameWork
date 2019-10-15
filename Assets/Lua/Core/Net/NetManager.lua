@@ -10,6 +10,8 @@ local NetManager = {}
 
 --- NetManager的初始化
 function NetManager.Initialize()
+    --测试sproto功能
+    require("3rd.sproto.test")
 end
 
 --- NetManager尝试连接服务器
@@ -36,3 +38,5 @@ end
 function NetManager.Close(callback)
 
 end
+
+return NetManager
