@@ -1,6 +1,6 @@
-local sproto = require "sproto"
+local sproto = require "3rd.sproto.sproto"
 local core = require "sproto.core"
-local print_r = require "print_r"
+local print_r = require "3rd.sproto.print_r"
 
 local sp = sproto.parse [[
 .Person {

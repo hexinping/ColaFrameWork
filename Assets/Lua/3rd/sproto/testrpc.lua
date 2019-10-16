@@ -1,5 +1,5 @@
-local sproto = require "sproto"
-local print_r = require "print_r"
+local sproto = require "3rd.sproto.sproto"
+local print_r = require "3rd.sproto.print_r"
 
 local server_proto = sproto.parse [[
 .package {
