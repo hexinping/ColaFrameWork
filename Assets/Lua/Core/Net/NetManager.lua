@@ -4,14 +4,16 @@
 
 local sproto = require "3rd/sproto/sproto"
 local core = require "sproto.core"
-local print_r = require "3rd/sproto/print_r"
 
 local NetManager = {}
 
+local ByteBuffer = ByteBuffer
+local luabuffer = ByteBuffer.New()
+
 --- NetManager的初始化
 function NetManager.Initialize()
-    --测试sproto功能
-    require("3rd.sproto.test")
+    luabuffer:WriteInt(1)
+    luabuffer:WriteString("abc")
 end
 
 --- NetManager尝试连接服务器
@@ -20,12 +22,12 @@ function NetManager.Connect(ip,port,callback)
 end
 
 --- 监听网络协议
-function NetManager.Register(protoID,callback)
+function NetManager.Register(code,callback)
 
 end
 
 --- 取消监听网络协议
-function NetManager.UnRegister(protoID)
+function NetManager.UnRegister(code)
 
 end
 
