@@ -1,5 +1,7 @@
 ---
---- Module类的管理器
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                Module类的管理器
 ---
 
 local ModuleManager = Class("ModuleManager")

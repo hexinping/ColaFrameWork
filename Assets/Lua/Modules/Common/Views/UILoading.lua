@@ -1,6 +1,9 @@
 ---
---- 通用的Loading界面
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                通用的Loading界面
 ---
+
 local UIBase = require("Core.ui.UIBase")
 local UILoading = Class("UILoading",UIBase)
 

@@ -1,5 +1,7 @@
 ---
---- UIManager UI管理器
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                UIManager UI管理器
 ---
 
 local GUICollections = require("Game.Main.GUICollections")

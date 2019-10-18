@@ -1,5 +1,7 @@
 ---
---- UIBase基类
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                 UIBase基类
 ---
 
 local UIBase = Class("UIBase")

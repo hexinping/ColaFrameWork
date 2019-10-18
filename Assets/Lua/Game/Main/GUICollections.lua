@@ -1,5 +1,7 @@
 ---
---- UI界面的统一注册
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                UI界面的统一注册
 ---
 
 local GUICollections = {

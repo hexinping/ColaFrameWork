@@ -1,5 +1,7 @@
 ---
---- ColaFramwork的Lua端Network管理器
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                Lua端Network管理器
 ---
 
 local sproto = require "3rd/sproto/sproto"

@@ -1,6 +1,8 @@
---[[
-	Colaplus: Lua高级面向对象开发插件
-]]
+---
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---        Colaplus: Lua高级面向对象开发插件
+---
 
 local ColaPlus = {}
 

@@ -1,5 +1,7 @@
 ---
----  通用接口工具类
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                 通用接口工具类
 ---
 
 local LuaCommon_Utils = Class("LuaCommon_Utils")

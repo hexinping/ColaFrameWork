@@ -1,5 +1,7 @@
 ﻿---
---- UIDebugPanel UI类
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                UIDebugPanel UI类
 ---
 
 local UIBase = require("Core.ui.UIBase")

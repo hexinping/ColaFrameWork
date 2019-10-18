@@ -1,5 +1,7 @@
 ---
---- ModuleBase基类
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                通用的枚举定义
 ---
 
 local ModuleBase = Class("ModuleBase")

@@ -1,3 +1,9 @@
+---
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                 数据配置管理器
+---
+
 local ConfigMgr = Class("ConfigMgr")
 
 -- 数据配置文件的路径

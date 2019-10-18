@@ -1,4 +1,8 @@
--- Lua端的Log助手
+---
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                 Lua端的Log助手
+---
 
 local rawprint = print
 local rawerror = error

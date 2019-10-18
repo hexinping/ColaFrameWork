@@ -1,6 +1,9 @@
 ---
---- UI工具类
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                    UI工具类
 ---
+
 local UI_Utils = Class("UI_Utils")
 
 local COMMON_COLORS = {

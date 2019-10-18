@@ -1,5 +1,7 @@
 ---
---- ColaFramework框架事件管理中心
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                  事件管理中心
 ---
 
 local EventMgr = Class("EventMgr")

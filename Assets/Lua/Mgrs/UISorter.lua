@@ -1,5 +1,7 @@
 ---
---- UISorter UI界面层级排序
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---            UISorter UI界面层级排序
 ---
 
 local UISorter = Class("UISorter")

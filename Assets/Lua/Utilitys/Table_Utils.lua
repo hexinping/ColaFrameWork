@@ -1,5 +1,7 @@
 ---
---- Lua的table工具类
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                Lua的table工具类
 ---
 
 local Table_Utils = Class("Table_Utils")

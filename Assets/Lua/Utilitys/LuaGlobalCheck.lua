@@ -1,5 +1,7 @@
 ---
---- 全局变量的一些检查与控制
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---               全局变量的一些检查与控制
 ---
 
 setmetatable(_G, {

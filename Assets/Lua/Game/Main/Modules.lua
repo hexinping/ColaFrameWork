@@ -1,6 +1,9 @@
 ---
---- Modules的定义
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                 Modules的定义
 ---
+
 local Modules = {}
 -- 注册全局变量
 _G.Modules = Modules

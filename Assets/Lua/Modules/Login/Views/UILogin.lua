@@ -1,3 +1,9 @@
+---
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---                   登录界面
+---
+
 local UIBase = require("Core.ui.UIBase")
 local UILogin = Class("UILogin",UIBase)
 
