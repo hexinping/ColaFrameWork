@@ -1,5 +1,7 @@
 ---
---- #NAME# Module业务逻辑
+---                 ColaFramework
+--- Copyright © 2018-2049 ColaFramework 马三小伙儿
+---              #NAME# Module业务逻辑
 ---
 
 local ModuleBase = require("Core.module.ModuleBase")
