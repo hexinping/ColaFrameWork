@@ -1,4 +1,9 @@
-﻿#if PLATFORM_ANDROID
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
+
+#if PLATFORM_ANDROID
 using UnityEngine;
 using System.Collections;
 using UnityEditor;

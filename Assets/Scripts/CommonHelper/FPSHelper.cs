@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text;

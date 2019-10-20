@@ -1,4 +1,9 @@
-﻿using System.IO;
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
+
+using System.IO;
 using System;
 using UnityEngine;
 

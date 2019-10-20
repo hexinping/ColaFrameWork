@@ -1,4 +1,9 @@
-﻿//#define SIMULATE_MODE
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
+
+//#define SIMULATE_MODE
 using System;
 using System.Collections;
 using System.IO;
