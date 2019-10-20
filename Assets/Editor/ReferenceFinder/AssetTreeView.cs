@@ -25,6 +25,7 @@ public class AssetTreeView : TreeView
         Name,
         Path,
         State,
+        Type,
     }
 
     public AssetTreeView(TreeViewState state,MultiColumnHeader multicolumnHeader):base(state,multicolumnHeader)
@@ -153,6 +154,13 @@ public class AssetTreeView : TreeView
                 {
                     GUI.Label(cellRect, ReferenceFinderData.GetInfoByState(item.data.state),stateGUIStyle);
                 }
+                break;
+            case MyColumns.Type:
+                {
+                    GUI.Label(cellRect, item.data.type);
+                }
+                break;
+            default:
                 break;
         }
     }

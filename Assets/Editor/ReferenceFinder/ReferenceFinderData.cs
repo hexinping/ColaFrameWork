@@ -80,6 +80,7 @@ public class ReferenceFinderData
             AssetDescription ad = new AssetDescription();
             ad.name = Path.GetFileNameWithoutExtension(path);
             ad.path = path;
+            ad.type = AssetDatabase.GetMainAssetTypeAtPath(path).ToString();
             ad.assetDependencyHash = assetDependencyHash;
             ad.dependencies = guids;
 
@@ -118,6 +119,7 @@ public class ReferenceFinderData
                     var ad = new AssetDescription();
                     ad.name = Path.GetFileNameWithoutExtension(path);
                     ad.path = path;
+                    ad.type = AssetDatabase.GetMainAssetTypeAtPath(path).ToString();
                     ad.assetDependencyHash = serializedDependencyHash[i];
                     assetDict.Add(serializedGuid[i], ad);
                 }
@@ -208,6 +210,7 @@ public class ReferenceFinderData
             ad = new AssetDescription();
             ad.name = Path.GetFileNameWithoutExtension(path);
             ad.path = path;
+            ad.type = AssetDatabase.GetMainAssetTypeAtPath(path).ToString();
             ad.state = AssetState.NODATA;
             assetDict.Add(guid, ad);
         }
@@ -235,6 +238,7 @@ public class ReferenceFinderData
     {
         public string name = "";
         public string path = "";
+        public string type = "";
         public Hash128 assetDependencyHash;        
         public List<string> dependencies = new List<string>();
         public List<string> references = new List<string>();
