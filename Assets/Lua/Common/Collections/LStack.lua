@@ -10,6 +10,8 @@ LStack.__index = LStack
 function LStack:New()
     local t = {}
     setmetatable(t,LStack)
+    t:init()
+    return t
 
 end
 
