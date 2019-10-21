@@ -26,6 +26,32 @@ end
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
 function UILogin:OnCreate()
 
+    -- stack test
+    local LStack = require("Common.Collections.LStack")
+    local mStack = LStack:New()
+    local yStack = LStack:New()
+    mStack:push(1)
+    mStack:push(2)
+    mStack:push(3)
+
+    yStack:push(4)
+    yStack:push(5)
+    yStack:push(6)
+
+    print("------>长度：",mStack:count())
+    print("------>长度：",yStack:count())
+
+    while not mStack:isEmpty() do
+        print(mStack:pop())
+    end
+    print("------>长度：",mStack:count())
+    print("------>长度：",yStack:count())
+
+    while not yStack:isEmpty() do
+        print(yStack:pop())
+    end
+    print("------>长度：",mStack:count())
+    print("------>长度：",yStack:count())
 end
 
 -- 界面可见性变化的时候触发
