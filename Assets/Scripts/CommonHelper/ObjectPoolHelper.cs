@@ -69,7 +69,7 @@ namespace ColaFramework
             {
                 Debug.LogWarning(string.Format("获取类型:{0}的物体失败！请检查!", typeof(T)));
             }
-            if (null != createAction)
+            if (null != getAction)
             {
                 getAction(obj);
             }
