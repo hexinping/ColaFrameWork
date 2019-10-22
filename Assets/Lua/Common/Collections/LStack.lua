@@ -9,7 +9,7 @@ LStack.__index = LStack
 
 function LStack:New()
     local t = {}
-    setmetatable(t,LStack)
+    setmetatable(t, LStack)
     t:init()
     return t
 
@@ -20,7 +20,7 @@ function LStack:init()
 end
 
 function LStack:clear()
-     self:init()
+    self:init()
 end
 
 function LStack:pop()
@@ -32,7 +32,7 @@ function LStack:pop()
 end
 
 function LStack:push(t)
-    table.insert(self.stackList,t)
+    table.insert(self.stackList, t)
 end
 
 function LStack:count()
