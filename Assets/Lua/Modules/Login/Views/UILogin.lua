@@ -26,32 +26,35 @@ end
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
 function UILogin:OnCreate()
 
-    -- stack test
-    local LStack = require("Common.Collections.LStack")
-    local mStack = LStack:New()
-    local yStack = LStack:New()
-    mStack:push(1)
-    mStack:push(2)
-    mStack:push(3)
+    -- ObjectPool Test
+    local LOjectPool = require("Common.Collections.LObjectPool")
 
-    yStack:push(4)
-    yStack:push(5)
-    yStack:push(6)
-
-    print("------>长度：",mStack:count())
-    print("------>长度：",yStack:count())
-
-    while not mStack:isEmpty() do
-        print(mStack:pop())
+    local index = 0
+    local createAction = function()
+        local gameobj = UnityEngine.GameObject.New()
+        gameobj.name = "CacheObj" .. index
+        index = index + 1
+        return gameobj
     end
-    print("------>长度：",mStack:count())
-    print("------>长度：",yStack:count())
 
-    while not yStack:isEmpty() do
-        print(yStack:pop())
+    local releaseAction = function(obj)
+        print("------------>ObjType:",type(obj))
+        print("---->释放Obj:",obj.name)
     end
-    print("------>长度：",mStack:count())
-    print("------>长度：",yStack:count())
+
+    local mObjectPool = LOjectPool:New(createAction,releaseAction)
+
+    local obj_1 = mObjectPool:get()
+    print("-------->第一个物体的名字",obj_1.name)
+
+    local obj_2 = mObjectPool:get()
+    print("-------->第二个物体的名字",obj_2.name)
+
+    mObjectPool:release(obj_1)
+
+    local obj_3 = mObjectPool:get()
+    print("-------------->type",type(obj_3))
+    print("-------->第三个物体的名字",obj_3.name)
 end
 
 -- 界面可见性变化的时候触发
