@@ -30,7 +30,7 @@ function LObjectPool:get()
     local obj = nil
     if self.stack:isEmpty() then
         if nil ~= self.createFunc then
-            obj = self:createFunc()
+            obj = self.createFunc()
         else
             error("LObjectPool Create Function is NULL!")
         end
@@ -46,7 +46,7 @@ function LObjectPool:release(obj)
         return
     end
     if nil ~= self.releaseFunc then
-        self:releaseFunc(obj)
+        self.releaseFunc(obj)
     end
     self.stack:push(obj)
 end
