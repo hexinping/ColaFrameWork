@@ -290,12 +290,11 @@ namespace ColaFramework
         /// <param name="_protocalType"></param>
         /// <param name="_data"></param>
         /// <returns></returns>
-        private sSocketData BytesToSocketData(eProtocalCommand _protocalType, byte[] _data)
+        private sSocketData BytesToSocketData(byte[] _data)
         {
             sSocketData tmpSocketData = new sSocketData();
             tmpSocketData._buffLength = Constants.HEAD_LEN + _data.Length;
             tmpSocketData._dataLength = _data.Length;
-            tmpSocketData._protocallType = _protocalType;
             tmpSocketData._data = _data;
             return tmpSocketData;
         }
