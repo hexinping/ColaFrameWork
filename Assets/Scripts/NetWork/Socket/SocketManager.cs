@@ -66,23 +66,25 @@ namespace ColaFramework
 
         #region 对外基本方法
         /// <summary>
-        /// 以二进制方式发送
+        /// 向服务器发送消息
         /// </summary>
         /// <param name="_protocalType"></param>
         /// <param name="_byteStreamBuff"></param>
-        public void SendMsg(eProtocalCommand _protocalType, ByteBuffer _byteStreamBuff)
+        public void SendMsg(ByteBuffer _byteStreamBuff)
         {
-            SendMsgBase(_protocalType, _byteStreamBuff.ToBytes());
+            SendMsgBase(eProtocalCommand.sc_message, _byteStreamBuff.ToBytes());
         }
 
+
+
         /// <summary>
-        /// 以ProtoBuf方式发送
+        /// PingServer
         /// </summary>
-        /// <param name="_protocalType"></param>
-        /// <param name="data"></param>
-        public void SendMsg(eProtocalCommand _protocalType, ProtoBuf.IExtensible data)
+        [LuaInterface.NoToLua]
+        public void PingServer()
         {
-            SendMsgBase(_protocalType, ProtoBuf_Serializer(data));
+            //TODO处理ping
+            SendMsgBase(eProtocalCommand.sc_ping, new byte[10]);
         }
 
         /// <summary>
@@ -290,10 +292,11 @@ namespace ColaFramework
         /// <param name="_protocalType"></param>
         /// <param name="_data"></param>
         /// <returns></returns>
-        private sSocketData BytesToSocketData(byte[] _data)
+        private sSocketData BytesToSocketData(eProtocalCommand _protocalType,byte[] _data)
         {
             sSocketData tmpSocketData = new sSocketData();
             tmpSocketData._buffLength = Constants.HEAD_LEN + _data.Length;
+            tmpSocketData._protocallType = _protocalType;
             tmpSocketData._dataLength = _data.Length;
             tmpSocketData._data = _data;
             return tmpSocketData;

@@ -4,10 +4,10 @@
 //----------------------------------------------
 
 /// <summary>
-/// 网络事件协议ID
+/// 网络数据类型:是ping命令还是普通message
 /// </summary>
 public enum eProtocalCommand
 {
-    sc_binary_login = 0x1000,
-    sc_protobuf_login = 0x2000,
+    sc_ping = 0x1000,
+    sc_message = 0x2000,
 }
