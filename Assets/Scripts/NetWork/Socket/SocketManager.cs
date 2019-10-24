@@ -61,6 +61,7 @@ namespace ColaFramework
         public Action OnTimeOut;
         public Action OnFailed;
         public Action OnConnected;
+        public Action OnReConnected;
         public Action OnClose;
         #endregion
 
@@ -149,6 +150,10 @@ namespace ColaFramework
         /// </summary>
         private void _ReConnect()
         {
+            if(null != OnReConnected)
+            {
+                OnReConnected();
+            }
         }
 
         /// <summary>
@@ -281,9 +286,6 @@ namespace ColaFramework
                 }
             }
         }
-
-
-
 
 
         /// <summary>
