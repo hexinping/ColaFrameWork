@@ -333,40 +333,6 @@ namespace ColaFramework
             return SocketDataToBytes(BytesToSocketData(_protocalType, _data));
         }
 
-
-        /// <summary>
-        /// ProtoBuf序列化
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static byte[] ProtoBuf_Serializer(ProtoBuf.IExtensible data)
-        {
-            using (MemoryStream m = new MemoryStream())
-            {
-                byte[] buffer = null;
-                Serializer.Serialize(m, data);
-                m.Position = 0;
-                int length = (int)m.Length;
-                buffer = new byte[length];
-                m.Read(buffer, 0, length);
-                return buffer;
-            }
-        }
-
-        /// <summary>
-        /// ProtoBuf反序列化
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="_data"></param>
-        /// <returns></returns>
-        public static T ProtoBuf_Deserialize<T>(byte[] _data)
-        {
-            using (MemoryStream m = new MemoryStream(_data))
-            {
-                return Serializer.Deserialize<T>(m);
-            }
-        }
-
         /// <summary>
         /// 发送消息基本方法
         /// </summary>
