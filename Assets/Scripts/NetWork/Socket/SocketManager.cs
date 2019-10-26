@@ -18,7 +18,6 @@ namespace ColaFramework
     /// </summary>
     public class SocketManager : IDisposable
     {
-        private static SocketManager _instance;
         public static SocketManager Instance
         {
             get
@@ -30,12 +29,15 @@ namespace ColaFramework
                 return _instance;
             }
         }
+        public bool IsConnceted { get { return _isConnected; } }
+
+        private static SocketManager _instance;
         private string _currIP;
         private int _currPort;
         private int _timeOutMilliSec = 5000;
 
         private bool _isConnected = false;
-        public bool IsConnceted { get { return _isConnected; } }
+
         private Socket clientSocket = null;
         private Thread receiveThread = null;
 
@@ -266,10 +268,10 @@ namespace ColaFramework
                             tmpNetMessageData._eventData = _socketData._data;
 
                             //锁死消息中心消息队列，并添加数据
-                            lock (MessageCenter.Instance._netMessageDataQueue)
+                            lock (NetMessageCenter.Instance._netMessageDataQueue)
                             {
                                 Debug.Log(tmpNetMessageData._eventType);
-                                MessageCenter.Instance._netMessageDataQueue.Enqueue(tmpNetMessageData);
+                                NetMessageCenter.Instance._netMessageDataQueue.Enqueue(tmpNetMessageData);
                             }
                         }
                     }
