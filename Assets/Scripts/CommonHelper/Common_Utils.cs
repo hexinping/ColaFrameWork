@@ -63,6 +63,7 @@ public static class Common_Utils
         CommonHelper.RemoveBtnMsg(go, callback);
     }
 
+    #region 资源加载
     /// <summary>
     /// 根据路径实例化一个Prefab(同步方法)
     /// </summary>
@@ -74,6 +75,7 @@ public static class Common_Utils
         GameObject prefab = AssetLoader.Load<GameObject>(path);
         return CommonHelper.InstantiateGoByPrefab(prefab, parent);
     }
+
 
     /// <summary>
     /// 根据路径实例化一个Prefab(异步方法)
@@ -103,6 +105,83 @@ public static class Common_Utils
     {
         return CommonHelper.InstantiateGoByPrefab(prefab, parent);
     }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(同步方法)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static T Load<T>(string path) where T : UnityEngine.Object
+    {
+        //TODO:后期要加入资源池和AssetBunle
+        return AssetLoader.Load<T>(path);
+    }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(同步方法)
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static UnityEngine.Object Load(string path, Type type)
+    {
+        //TODO:后期要加入资源池和AssetBunle
+        return AssetLoader.Load(path, type);
+    }
+
+    /// <summary>
+    /// 延迟一帧以后加载资源
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="callback"></param>
+    public static void LoadWaitOneFrame(string path, Action<UnityEngine.Object, string> callback)
+    {
+        //TODO:后期要加入资源池和AssetBunle
+        AssetLoader.LoadWaitOneFrame(path, callback);
+    }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(异步方法)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="path"></param>
+    /// <param name="callback"></param>
+    public static void LoadAsync<T>(string path, Action<UnityEngine.Object, string> callback) where T : UnityEngine.Object
+    {
+        //TODO:后期要加入资源池和AssetBunle
+        AssetLoader.LoadAsync<T>(path, callback);
+    }
+
+    /// <summary>
+    /// 根据类型和路径返回相应的资源(异步方法)
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="t"></param>
+    public static void LoadAsync(string path, Type type, Action<UnityEngine.Object, string> callback)
+    {
+        //TODO:后期要加入资源池和AssetBunle
+        AssetLoader.LoadAsync(path, type, callback);
+    }
+
+    /// <summary>
+    /// 以字符串的形式加载文本
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static string LoadTextWithString(string path)
+    {
+        //TODO:后期要加入资源池和AssetBunle
+        return AssetLoader.LoadTextWithString(path);
+    }
+
+    public static byte[] LoadTextWithBytes(string path)
+    {
+        //TODO:后期要加入资源池和AssetBunle
+        return AssetLoader.LoadTextWithBytes(path);
+    }
+    #endregion
+
 
     /// <summary>
     /// 给物体添加一个单一组件

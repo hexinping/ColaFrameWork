@@ -60,7 +60,6 @@ public static class CustomSettings
         //_GT(typeof(TestExport.Space)),
         //-------------------------------------------------------------------        
         _GT(typeof(Common_Utils)).SetNameSpace(null),
-        _GT(typeof(AssetLoader)).SetNameSpace(null),
         _GT(typeof(SorterTag)).SetNameSpace(null),
         _GT(typeof(ParticleOrderAutoSorter)).SetNameSpace(null),
         _GT(typeof(Debugger)).SetNameSpace(null),

@@ -12,6 +12,11 @@ public class Common_UtilsWrap
 		L.RegFunction("InstantiateGoByPath", InstantiateGoByPath);
 		L.RegFunction("InstantiateGoByPathAsync", InstantiateGoByPathAsync);
 		L.RegFunction("InstantiateGoByPrefab", InstantiateGoByPrefab);
+		L.RegFunction("Load", Load);
+		L.RegFunction("LoadWaitOneFrame", LoadWaitOneFrame);
+		L.RegFunction("LoadAsync", LoadAsync);
+		L.RegFunction("LoadTextWithString", LoadTextWithString);
+		L.RegFunction("LoadTextWithBytes", LoadTextWithBytes);
 		L.RegFunction("AddSingleComponent", AddSingleComponent);
 		L.RegFunction("AddCustomComponent", AddCustomComponent);
 		L.RegFunction("GetGameObjectByName", GetGameObjectByName);
@@ -65,6 +70,8 @@ public class Common_UtilsWrap
 		L.RegFunction("StopAllWorldSound", StopAllWorldSound);
 		L.RegFunction("ClearIdleWorldAudioSource", ClearIdleWorldAudioSource);
 		L.RegFunction("HandleMainCameraEvent", HandleMainCameraEvent);
+		L.RegVar("NetAvailable", get_NetAvailable, null);
+		L.RegVar("IsWifi", get_IsWifi, null);
 		L.EndStaticLibs();
 	}
 
@@ -148,6 +155,93 @@ public class Common_UtilsWrap
 			UnityEngine.GameObject arg1 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
 			UnityEngine.GameObject o = Common_Utils.InstantiateGoByPrefab(arg0, arg1);
 			ToLua.PushSealed(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Load(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			System.Type arg1 = ToLua.CheckMonoType(L, 2);
+			UnityEngine.Object o = Common_Utils.Load(arg0, arg1);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadWaitOneFrame(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			System.Action<UnityEngine.Object,string> arg1 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 2);
+			Common_Utils.LoadWaitOneFrame(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadAsync(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			string arg0 = ToLua.CheckString(L, 1);
+			System.Type arg1 = ToLua.CheckMonoType(L, 2);
+			System.Action<UnityEngine.Object,string> arg2 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 3);
+			Common_Utils.LoadAsync(arg0, arg1, arg2);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadTextWithString(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			string o = Common_Utils.LoadTextWithString(arg0);
+			LuaDLL.lua_pushstring(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadTextWithBytes(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			byte[] o = Common_Utils.LoadTextWithBytes(arg0);
+			ToLua.Push(L, o);
 			return 1;
 		}
 		catch (Exception e)
@@ -1242,6 +1336,34 @@ public class Common_UtilsWrap
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			Common_Utils.HandleMainCameraEvent(arg0);
 			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_NetAvailable(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, Common_Utils.NetAvailable);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_IsWifi(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, Common_Utils.IsWifi);
+			return 1;
 		}
 		catch (Exception e)
 		{

@@ -10,7 +10,6 @@ public static class LuaBinder
 		float t = Time.realtimeSinceStartup;
 		L.BeginModule(null);
 		Common_UtilsWrap.Register(L);
-		ColaFramework_AssetLoaderWrap.Register(L);
 		SorterTagWrap.Register(L);
 		ParticleOrderAutoSorterWrap.Register(L);
 		LuaInterface_DebuggerWrap.Register(L);
