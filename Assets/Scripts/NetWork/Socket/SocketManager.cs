@@ -35,6 +35,8 @@ namespace ColaFramework
         private string _currIP;
         private int _currPort;
         private int _timeOutMilliSec = 5000;
+        private float pingloopSec = 1.0f;
+        private long pingTimerId = -1;
 
         private bool _isConnected = false;
 
@@ -74,7 +76,6 @@ namespace ColaFramework
         {
             SendMsgBase(eProtocalCommand.sc_message, _byteStreamBuff.ToBytes());
         }
-
 
 
         /// <summary>
@@ -126,6 +127,8 @@ namespace ColaFramework
                 return;
 
             _isConnected = false;
+            //停止pingServer
+            Timer.Cancel(pingTimerId);
 
             if (receiveThread != null)
             {
@@ -149,7 +152,9 @@ namespace ColaFramework
         /// </summary>
         private void _ReConnect()
         {
-            if(null != OnReConnected)
+            //停止pingServer
+            Timer.Cancel(pingTimerId);
+            if (null != OnReConnected)
             {
                 OnReConnected();
             }
@@ -190,6 +195,10 @@ namespace ColaFramework
                 receiveThread.Start();
                 _isConnected = true;
                 Debug.Log("连接成功");
+
+                //启动pingServer
+                pingTimerId = Timer.RunBySeconds(pingloopSec, PingServer, null);
+
                 if (null != OnConnected)
                 {
                     OnConnected();
