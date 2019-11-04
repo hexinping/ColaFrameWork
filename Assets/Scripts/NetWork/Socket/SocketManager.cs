@@ -37,6 +37,7 @@ namespace ColaFramework
         private int _timeOutMilliSec = 5000;
         private float pingloopSec = 1.0f;
         private long pingTimerId = -1;
+        private byte[] pingBytes = System.Text.Encoding.UTF8.GetBytes(AppConst.AppName);
 
         private bool _isConnected = false;
 
@@ -75,17 +76,6 @@ namespace ColaFramework
         public void SendMsg(ByteBuffer _byteStreamBuff)
         {
             SendMsgBase(eProtocalCommand.sc_message, _byteStreamBuff.ToBytes());
-        }
-
-
-        /// <summary>
-        /// PingServer
-        /// </summary>
-        [LuaInterface.NoToLua]
-        public void PingServer()
-        {
-            //TODO处理ping
-            SendMsgBase(eProtocalCommand.sc_ping, new byte[10]);
         }
 
         /// <summary>
@@ -302,7 +292,7 @@ namespace ColaFramework
         /// <param name="_protocalType"></param>
         /// <param name="_data"></param>
         /// <returns></returns>
-        private sSocketData BytesToSocketData(eProtocalCommand _protocalType,byte[] _data)
+        private sSocketData BytesToSocketData(eProtocalCommand _protocalType, byte[] _data)
         {
             sSocketData tmpSocketData = new sSocketData();
             tmpSocketData._buffLength = Constants.HEAD_LEN + _data.Length;
@@ -356,6 +346,14 @@ namespace ColaFramework
 
             byte[] _msgdata = DataToBytes(_protocalType, _data);
             clientSocket.BeginSend(_msgdata, 0, _msgdata.Length, SocketFlags.None, new AsyncCallback(_onSendMsg), clientSocket);
+        }
+
+        /// <summary>
+        /// PingServer
+        /// </summary>
+        private void PingServer()
+        {
+            SendMsgBase(eProtocalCommand.sc_ping, pingBytes);
         }
 
         public void Dispose()
