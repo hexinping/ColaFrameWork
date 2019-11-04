@@ -175,6 +175,7 @@ public static class Common_Utils
         return AssetLoader.LoadTextWithString(path);
     }
 
+    [LuaInterface.LuaByteBuffer]
     public static byte[] LoadTextWithBytes(string path)
     {
         //TODO:后期要加入资源池和AssetBunle
