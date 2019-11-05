@@ -3,7 +3,6 @@
 /// 
 /// </summary>
 
-
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,10 +17,14 @@ public struct sEvent_NetMessageData
 
 public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>,IManager
 {
+    [LuaInterface.NoToLua]
     public Queue<sEvent_NetMessageData> _netMessageDataQueue;
 
+    [LuaInterface.LuaByteBuffer]
+    public Action<byte[]> OnMessage;
+
     /// <summary>
-    /// 每帧处理3个协议
+    /// 每帧默认处理2个协议
     /// </summary>
     private int perHandleCnt = 3; 
 
@@ -32,6 +35,11 @@ public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>,IManage
         _netMessageDataQueue = new Queue<sEvent_NetMessageData>();
     }
 
+    public void SetPerFrameHandleCnt(int value)
+    {
+        perHandleCnt = value;
+    }
+
     public void Update(float deltaTime)
     {
         int handledCnt = 0;
@@ -40,7 +48,6 @@ public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>,IManage
             lock (_netMessageDataQueue)
             {
                 sEvent_NetMessageData tmpNetMessageData = _netMessageDataQueue.Dequeue();
-                //TODO:Handle Msg
                 handledCnt++;
                 if(handledCnt >=3)
                 {
