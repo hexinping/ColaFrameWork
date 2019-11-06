@@ -37,6 +37,7 @@ public class DelegateFactory
 		dict.Add(typeof(System.Action<string>), factory.System_Action_string);
 		dict.Add(typeof(OnSceneNameChanged), factory.OnSceneNameChanged);
 		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
+		dict.Add(typeof(System.Action<byte[]>), factory.System_Action_bytes);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
@@ -68,6 +69,7 @@ public class DelegateFactory
 		DelegateTraits<System.Action<string>>.Init(factory.System_Action_string);
 		DelegateTraits<OnSceneNameChanged>.Init(factory.OnSceneNameChanged);
 		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
+		DelegateTraits<System.Action<byte[]>>.Init(factory.System_Action_bytes);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
@@ -99,6 +101,7 @@ public class DelegateFactory
 		TypeTraits<System.Action<string>>.Init(factory.Check_System_Action_string);
 		TypeTraits<OnSceneNameChanged>.Init(factory.Check_OnSceneNameChanged);
 		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
+		TypeTraits<System.Action<byte[]>>.Init(factory.Check_System_Action_bytes);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
@@ -130,6 +133,7 @@ public class DelegateFactory
 		StackTraits<System.Action<string>>.Push = factory.Push_System_Action_string;
 		StackTraits<OnSceneNameChanged>.Push = factory.Push_OnSceneNameChanged;
 		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
+		StackTraits<System.Action<byte[]>>.Push = factory.Push_System_Action_bytes;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
@@ -1409,6 +1413,63 @@ public class DelegateFactory
 	}
 
 	void Push_OnSceneIndexChanged(IntPtr L, OnSceneIndexChanged o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_bytes_Event : LuaDelegate
+	{
+		public System_Action_bytes_Event(LuaFunction func) : base(func) { }
+		public System_Action_bytes_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(byte[] param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(byte[] param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<byte[]> System_Action_bytes(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<byte[]> fn = delegate(byte[] param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_bytes_Event target = new System_Action_bytes_Event(func);
+			System.Action<byte[]> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_bytes_Event target = new System_Action_bytes_Event(func, self);
+			System.Action<byte[]> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_bytes(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<byte[]>), L, pos);
+	}
+
+	void Push_System_Action_bytes(IntPtr L, System.Action<byte[]> o)
 	{
 		ToLua.Push(L, o);
 	}

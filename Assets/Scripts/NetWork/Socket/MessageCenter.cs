@@ -40,6 +40,7 @@ public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>, IManag
         perHandleCnt = value;
     }
 
+    [LuaInterface.NoToLua]
     public void Update(float deltaTime)
     {
         int handledCnt = 0;
