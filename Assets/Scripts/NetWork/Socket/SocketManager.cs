@@ -262,16 +262,25 @@ namespace ColaFramework
                         _databuffer.AddBuffer(_tmpReceiveBuff, receiveLength);//将收到的数据添加到缓存器中
                         while (_databuffer.GetData(out _socketData))//取出一条完整数据
                         {
-                            sEvent_NetMessageData tmpNetMessageData = new sEvent_NetMessageData();
-                            tmpNetMessageData._eventType = _socketData._protocallType;
-                            tmpNetMessageData._eventData = _socketData._data;
-
-                            //锁死消息中心消息队列，并添加数据
-                            lock (NetMessageCenter.Instance._netMessageDataQueue)
+                            //只有消息协议才进入队列
+                            if(eProtocalCommand.sc_message == _socketData._protocallType)
                             {
-                                Debug.Log(tmpNetMessageData._eventType);
-                                NetMessageCenter.Instance._netMessageDataQueue.Enqueue(tmpNetMessageData);
+                                sEvent_NetMessageData tmpNetMessageData = new sEvent_NetMessageData();
+                                tmpNetMessageData._eventType = _socketData._protocallType;
+                                tmpNetMessageData._eventData = _socketData._data;
+
+                                //锁死消息中心消息队列，并添加数据
+                                lock (NetMessageCenter.Instance._netMessageDataQueue)
+                                {
+                                    Debug.Log(tmpNetMessageData._eventType);
+                                    NetMessageCenter.Instance._netMessageDataQueue.Enqueue(tmpNetMessageData);
+                                }
                             }
+                            else
+                            {
+                                //TODO:处理ping协议
+                            }
+
                         }
                     }
                 }
