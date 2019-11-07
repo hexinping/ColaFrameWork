@@ -180,5 +180,11 @@ namespace ColaFramework {
         public void Flush() {
             writer.Flush();
         }
+
+        public void Clear()
+        {
+            stream.Position = 0;
+            writer.Flush();
+        }
     }
 }

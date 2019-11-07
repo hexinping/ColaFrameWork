@@ -49,6 +49,11 @@ namespace ColaFramework
         private TimerManager timerManager;
 
         /// <summary>
+        /// 网络消息处理器
+        /// </summary>
+        private NetMessageCenter netMessageCenter;
+
+        /// <summary>
         /// UI管理器
         /// </summary>
         private UIMgr uiMgr;
@@ -89,6 +94,7 @@ namespace ColaFramework
             audioManager = AudioManager.Instance;
             timerManager = TimerManager.Instance;
             inputMgr = gameLauncherObj.AddComponent<InputMgr>();
+            netMessageCenter = NetMessageCenter.Instance;
 
             GameStart();
         }
@@ -117,6 +123,7 @@ namespace ColaFramework
             resourceMgr.Update(deltaTime);
             timerManager.Update(deltaTime);
             audioManager.Update(deltaTime);
+            netMessageCenter.Update(deltaTime);
         }
 
         /// <summary>
