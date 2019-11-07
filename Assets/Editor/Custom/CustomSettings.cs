@@ -76,6 +76,7 @@ public static class CustomSettings
         _GT(typeof(TouchHelper)).SetNameSpace(null),
         _GT(typeof(ByteBuffer)).SetNameSpace(null),
         _GT(typeof(SocketManager)).SetNameSpace(null),
+        _GT(typeof(NetMessageCenter)).SetNameSpace(null),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
@@ -97,7 +98,7 @@ public static class CustomSettings
         //_GT(typeof(TrailRenderer)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),    
 #else
 
-        _GT(typeof(Component)).AddExtendType(typeof(Common_Utils)),
+    _GT(typeof(Component)).AddExtendType(typeof(Common_Utils)),
         _GT(typeof(Transform)).AddExtendType(typeof(Common_Utils)),
         _GT(typeof(Material)),
         _GT(typeof(Light)),

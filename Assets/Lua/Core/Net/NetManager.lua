@@ -14,6 +14,8 @@ local ByteBuffer = ByteBuffer
 local luabuffer = ByteBuffer.New()
 local sprotoCoder = nil
 local SPROTO_BYTES_PATH = "SprotoBytes/sproto.bytes"
+local code2ProtoNameMap = {}  -- code 到 ProtoName的映射关系
+local DummyMsg = {}
 
 local OnConnectedCallback = nil
 
@@ -23,23 +25,27 @@ function NetManager.Initialize()
     local sprotoBytes = Common_Utils.LoadTextWithBytes(SPROTO_BYTES_PATH)
     sprotoCoder = sproto.new(sprotoBytes)
 
+    for k,v in pairs(Protocol) do
+        code2ProtoNameMap[v] = k
+    end
+
     Socket.OnConnected = NetManager.OnConnected
     Socket.OnReConnected = NetManager.OnReConnected
     Socket.OnClose = NetManager.OnClosed
     Socket.OnFailed = NetManager.OnFailed
     Socket.OnTimeOut = NetManager.OnTimeOut
-    --NetMessageCenter.OnMessage = NetManager.OnMessage
+    NetMessageCenter.Instance.OnMessage = NetManager.OnMessage
     -- TODO:配置网络加密等
 end
 
 --- NetManager尝试连接服务器
-function NetManager.Connect(ip,port,callback)
-    print("-------->try to connect:",ip,port)
+function NetManager.Connect(ip, port, callback)
+    print("-------->try to connect:", ip, port)
     OnConnectedCallback = callback
 end
 
 --- 监听网络协议
-function NetManager.Register(code,callback)
+function NetManager.Register(code, callback)
 
 end
 
@@ -95,8 +101,8 @@ function NetManager.OnTimeOut()
 
 end
 
-function NetManager.Tick(deltaTime)
-    print("------------>Update",deltaTime)
+function NetManager.RequestSproto(code, msg)
+    luabuffer:Clear()
 end
 
 return NetManager

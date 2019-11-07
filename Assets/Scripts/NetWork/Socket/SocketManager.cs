@@ -72,10 +72,22 @@ namespace ColaFramework
         /// 向服务器发送消息
         /// </summary>
         /// <param name="_protocalType"></param>
-        /// <param name="_byteStreamBuff"></param>
-        public void SendMsg(ByteBuffer _byteStreamBuff)
+        /// <param name="byteBuffer"></param>
+        public void SendMsg(ByteBuffer byteBuffer)
         {
-            SendMsgBase(eProtocalCommand.sc_message, _byteStreamBuff.ToBytes());
+            //SendMsgBase(eProtocalCommand.sc_message, byteBuffer.ToBytes());
+
+            //Test Code
+            sEvent_NetMessageData tmpNetMessageData = new sEvent_NetMessageData();
+            tmpNetMessageData._eventType = eProtocalCommand.sc_message;
+            tmpNetMessageData._eventData = byteBuffer.ToBytes();
+
+            //锁死消息中心消息队列，并添加数据
+            lock (NetMessageCenter.Instance._netMessageDataQueue)
+            {
+                Debug.Log(tmpNetMessageData._eventType);
+                NetMessageCenter.Instance._netMessageDataQueue.Enqueue(tmpNetMessageData);
+            }
         }
 
         /// <summary>
