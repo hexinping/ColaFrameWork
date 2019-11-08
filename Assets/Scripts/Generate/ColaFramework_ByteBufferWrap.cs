@@ -35,7 +35,6 @@ public class ColaFramework_ByteBufferWrap
 		L.RegFunction("ReadBuffer", ReadBuffer);
 		L.RegFunction("ToBytes", ToBytes);
 		L.RegFunction("Flush", Flush);
-		L.RegFunction("Clear", Clear);
 		L.RegFunction("New", _CreateColaFramework_ByteBuffer);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
@@ -538,22 +537,6 @@ public class ColaFramework_ByteBufferWrap
 			ToLua.CheckArgsCount(L, 1);
 			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
 			obj.Flush();
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Clear(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
-			obj.Clear();
 			return 0;
 		}
 		catch (Exception e)

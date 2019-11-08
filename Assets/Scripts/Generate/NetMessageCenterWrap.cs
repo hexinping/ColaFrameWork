@@ -6,12 +6,11 @@ public class NetMessageCenterWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(NetMessageCenter), typeof(SingletonMonoBehaviour<NetMessageCenter>));
+		L.BeginClass(typeof(NetMessageCenter), typeof(System.Object));
 		L.RegFunction("SetPerFrameHandleCnt", SetPerFrameHandleCnt);
-		L.RegFunction("Dispose", Dispose);
-		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("OnMessage", get_OnMessage, set_OnMessage);
+		L.RegVar("Instance", get_Instance, null);
 		L.RegVar("TimeSinceUpdate", get_TimeSinceUpdate, set_TimeSinceUpdate);
 		L.EndClass();
 	}
@@ -26,40 +25,6 @@ public class NetMessageCenterWrap
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			obj.SetPerFrameHandleCnt(arg0);
 			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Dispose(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			NetMessageCenter obj = (NetMessageCenter)ToLua.CheckObject<NetMessageCenter>(L, 1);
-			obj.Dispose();
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int op_Equality(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.Object arg0 = (UnityEngine.Object)ToLua.ToObject(L, 1);
-			UnityEngine.Object arg1 = (UnityEngine.Object)ToLua.ToObject(L, 2);
-			bool o = arg0 == arg1;
-			LuaDLL.lua_pushboolean(L, o);
-			return 1;
 		}
 		catch (Exception e)
 		{
@@ -83,6 +48,20 @@ public class NetMessageCenterWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index OnMessage on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_Instance(IntPtr L)
+	{
+		try
+		{
+			ToLua.PushObject(L, NetMessageCenter.Instance);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
 		}
 	}
 

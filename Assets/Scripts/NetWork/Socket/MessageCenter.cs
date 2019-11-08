@@ -9,19 +9,33 @@ using System.Collections.Generic;
 using System;
 
 
-public struct sEvent_NetMessageData
+public struct NetMessageData
 {
     public eProtocalCommand _eventType;
     public byte[] _eventData;
 }
 
-public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>, IManager
+public class NetMessageCenter : IManager
 {
     [LuaInterface.NoToLua]
-    public Queue<sEvent_NetMessageData> _netMessageDataQueue;
+    public Queue<NetMessageData> netMessageDataQueue;
 
     [LuaInterface.LuaByteBuffer]
     public Action<byte[]> OnMessage;
+
+    private static NetMessageCenter _instance = null;
+
+    public static NetMessageCenter Instance
+    {
+        get
+        {
+            if (null == _instance)
+            {
+                _instance = new NetMessageCenter();
+            }
+            return _instance;
+        }
+    }
 
     /// <summary>
     /// 每帧默认处理2个协议
@@ -30,9 +44,15 @@ public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>, IManag
 
     public float TimeSinceUpdate { get; set; }
 
-    void IManager.Init()
+    private NetMessageCenter()
     {
-        _netMessageDataQueue = new Queue<sEvent_NetMessageData>();
+
+    }
+
+    [LuaInterface.NoToLua]
+    public void Init()
+    {
+        netMessageDataQueue = new Queue<NetMessageData>();
     }
 
     public void SetPerFrameHandleCnt(int value)
@@ -44,11 +64,11 @@ public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>, IManag
     public void Update(float deltaTime)
     {
         int handledCnt = 0;
-        while (_netMessageDataQueue.Count > 0)
+        while (netMessageDataQueue.Count > 0)
         {
-            lock (_netMessageDataQueue)
+            lock (netMessageDataQueue)
             {
-                sEvent_NetMessageData tmpNetMessageData = _netMessageDataQueue.Dequeue();
+                NetMessageData tmpNetMessageData = netMessageDataQueue.Dequeue();
                 handledCnt++;
                 try
                 {
@@ -69,13 +89,14 @@ public class NetMessageCenter : SingletonMonoBehaviour<NetMessageCenter>, IManag
         }
     }
 
+    [LuaInterface.NoToLua]
     public void Dispose()
     {
-        if (null != _netMessageDataQueue)
+        if (null != netMessageDataQueue)
         {
-            _netMessageDataQueue.Clear();
+            netMessageDataQueue.Clear();
         }
-        _netMessageDataQueue = null;
+        netMessageDataQueue = null;
         OnMessage = null;
     }
 }

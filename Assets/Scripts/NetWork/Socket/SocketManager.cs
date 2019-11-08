@@ -78,15 +78,15 @@ namespace ColaFramework
             //SendMsgBase(eProtocalCommand.sc_message, byteBuffer.ToBytes());
 
             //Test Code
-            sEvent_NetMessageData tmpNetMessageData = new sEvent_NetMessageData();
+            NetMessageData tmpNetMessageData = new NetMessageData();
             tmpNetMessageData._eventType = eProtocalCommand.sc_message;
             tmpNetMessageData._eventData = byteBuffer.ToBytes();
 
             //锁死消息中心消息队列，并添加数据
-            lock (NetMessageCenter.Instance._netMessageDataQueue)
+            lock (NetMessageCenter.Instance.netMessageDataQueue)
             {
                 Debug.Log(tmpNetMessageData._eventType);
-                NetMessageCenter.Instance._netMessageDataQueue.Enqueue(tmpNetMessageData);
+                NetMessageCenter.Instance.netMessageDataQueue.Enqueue(tmpNetMessageData);
             }
         }
 
@@ -277,15 +277,15 @@ namespace ColaFramework
                             //只有消息协议才进入队列
                             if(eProtocalCommand.sc_message == _socketData._protocallType)
                             {
-                                sEvent_NetMessageData tmpNetMessageData = new sEvent_NetMessageData();
+                                NetMessageData tmpNetMessageData = new NetMessageData();
                                 tmpNetMessageData._eventType = _socketData._protocallType;
                                 tmpNetMessageData._eventData = _socketData._data;
 
                                 //锁死消息中心消息队列，并添加数据
-                                lock (NetMessageCenter.Instance._netMessageDataQueue)
+                                lock (NetMessageCenter.Instance.netMessageDataQueue)
                                 {
                                     Debug.Log(tmpNetMessageData._eventType);
-                                    NetMessageCenter.Instance._netMessageDataQueue.Enqueue(tmpNetMessageData);
+                                    NetMessageCenter.Instance.netMessageDataQueue.Enqueue(tmpNetMessageData);
                                 }
                             }
                             else

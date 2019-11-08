@@ -179,12 +179,11 @@ namespace ColaFramework {
 
         public void Flush() {
             writer.Flush();
-        }
-
-        public void Clear()
-        {
+            stream.Flush();
             stream.Position = 0;
-            writer.Flush();
+
+            //Debug
+            var bytes = stream.ToArray();
         }
     }
 }

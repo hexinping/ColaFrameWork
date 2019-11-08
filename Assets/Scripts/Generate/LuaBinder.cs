@@ -28,7 +28,6 @@ public static class LuaBinder
 		ColaFramework_SocketManagerWrap.Register(L);
 		NetMessageCenterWrap.Register(L);
 		LuaProfilerWrap.Register(L);
-		SingletonMonoBehaviour_NetMessageCenterWrap.Register(L);
 		L.RegFunction("UIEventHandler", UIEventHandler);
 		L.RegFunction("UIDragEventHandlerDetail", UIDragEventHandlerDetail);
 		L.RegFunction("StrValueChangeAction", StrValueChangeAction);

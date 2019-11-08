@@ -106,6 +106,7 @@ namespace ColaFramework
         {
             audioManager.Init();
             timerManager.Init();
+            netMessageCenter.Init();
 
             //将lua初始化移动到这里，所有的必要条件都准备好以后再初始化lua虚拟机
             luaClient = gameLauncherObj.AddComponent<LuaClient>();
