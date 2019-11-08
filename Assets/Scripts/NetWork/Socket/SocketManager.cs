@@ -85,7 +85,6 @@ namespace ColaFramework
             //锁死消息中心消息队列，并添加数据
             lock (NetMessageCenter.Instance.netMessageDataQueue)
             {
-                Debug.Log(tmpNetMessageData._eventType);
                 NetMessageCenter.Instance.netMessageDataQueue.Enqueue(tmpNetMessageData);
             }
         }
@@ -284,7 +283,6 @@ namespace ColaFramework
                                 //锁死消息中心消息队列，并添加数据
                                 lock (NetMessageCenter.Instance.netMessageDataQueue)
                                 {
-                                    Debug.Log(tmpNetMessageData._eventType);
                                     NetMessageCenter.Instance.netMessageDataQueue.Enqueue(tmpNetMessageData);
                                 }
                             }

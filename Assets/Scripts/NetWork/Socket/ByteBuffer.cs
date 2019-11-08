@@ -181,10 +181,6 @@ namespace ColaFramework {
             stream.Position = 0;
             writer.Flush();
             stream.Flush();
-
-            //Debug
-            var bytes = stream.ToArray();
-            Debug.Log("-------->数据长度: "+ bytes.Length);
         }
     }
 }
