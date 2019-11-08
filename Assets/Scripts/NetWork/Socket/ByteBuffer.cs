@@ -178,12 +178,13 @@ namespace ColaFramework {
         }
 
         public void Flush() {
+            stream.Position = 0;
             writer.Flush();
             stream.Flush();
-            stream.Position = 0;
 
             //Debug
             var bytes = stream.ToArray();
+            Debug.Log("-------->数据长度: "+ bytes.Length);
         }
     }
 }

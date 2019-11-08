@@ -72,6 +72,7 @@ end
 --- 处理C#端传到Lua端的消息
 function NetManager.OnMessage(byteMsg)
     print("----------->接受到了消息")
+    luabuffer:Flush()
 end
 
 --- 处理Socket成功连接服务器
@@ -106,6 +107,8 @@ function NetManager.RequestSproto(code, msg)
     local byteMsg = sprotoCoder:encode(code2ProtoNameMap[code], nil ~= msg and msg or DUMMY_MSG)
     luabuffer:WriteBuffer(byteMsg)
     Socket:SendMsg(luabuffer)
+
+    luabuffer:Flush()
 end
 
 return NetManager
