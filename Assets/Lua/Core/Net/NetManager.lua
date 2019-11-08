@@ -15,7 +15,7 @@ local luabuffer = ByteBuffer.New()
 local sprotoCoder = nil
 local SPROTO_BYTES_PATH = "SprotoBytes/sproto.bytes"
 local code2ProtoNameMap = {}  -- code 到 ProtoName的映射关系
-local DummyMsg = {}
+local DUMMY_MSG = {}
 
 local OnConnectedCallback = nil
 
@@ -25,7 +25,7 @@ function NetManager.Initialize()
     local sprotoBytes = Common_Utils.LoadTextWithBytes(SPROTO_BYTES_PATH)
     sprotoCoder = sproto.new(sprotoBytes)
 
-    for k,v in pairs(Protocol) do
+    for k, v in pairs(Protocol) do
         code2ProtoNameMap[v] = k
     end
 
@@ -71,7 +71,7 @@ end
 
 --- 处理C#端传到Lua端的消息
 function NetManager.OnMessage(byteMsg)
-
+    print("----------->接受到了消息")
 end
 
 --- 处理Socket成功连接服务器
@@ -102,7 +102,10 @@ function NetManager.OnTimeOut()
 end
 
 function NetManager.RequestSproto(code, msg)
-    luabuffer:Clear()
+    luabuffer:Flush()
+    local byteMsg = sprotoCoder:encode(code2ProtoNameMap[code], nil ~= msg and msg or DUMMY_MSG)
+    luabuffer:WriteBuffer(byteMsg)
+    Socket:SendMsg(luabuffer)
 end
 
 return NetManager

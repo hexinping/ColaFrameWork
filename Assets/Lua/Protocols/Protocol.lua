@@ -6,4 +6,7 @@
 
 local Protocol = {}
 
+Protocol.C2S_PING = 1
+Protocol.C2S_Login = 2
+
 return Protocol

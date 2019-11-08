@@ -15,3 +15,9 @@
 	person 0 : *Person(id)
 	others 1 : *Person(id)
 }
+
+.C2S_Login{
+	accountId 0 : integer
+	charId 1 : integer
+	userName 2 : string
+}

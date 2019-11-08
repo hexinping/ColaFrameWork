@@ -86,6 +86,8 @@ function Main()
 		SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_girl.prefab",AnimCtrlEnum.CharAnimator,true)
         UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
         EventMgr.Instance():DispatchEvent(Modules.moduleId.Common,Modules.notifyId.Common.CREATE_PANEL,ECEnumType.UIEnum.Login)
+
+		NetManager.RequestSproto(Protocol.C2S_Login,{accountId = 1001,charId = 10086,userName = "Jackson"})
     end)
 end
 
