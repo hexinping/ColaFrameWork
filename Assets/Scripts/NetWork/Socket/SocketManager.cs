@@ -29,17 +29,17 @@ namespace ColaFramework
                 return _instance;
             }
         }
-        public bool IsConnceted { get { return _isConnected; } }
+        public bool IsConnceted { get { return isConnected; } }
 
         private static SocketManager _instance;
-        private string _currIP;
-        private int _currPort;
-        private int _timeOutMilliSec = 5000;
+        private string currIP;
+        private int currPort;
+        private int timeOutMilliSec = 5000;
         private float pingloopSec = 1.0f;
         private long pingTimerId = -1;
         private byte[] pingBytes = System.Text.Encoding.UTF8.GetBytes(AppConst.AppName);
 
-        private bool _isConnected = false;
+        private bool isConnected = false;
 
         private Socket clientSocket = null;
         private Thread receiveThread = null;
@@ -47,17 +47,17 @@ namespace ColaFramework
         /// <summary>
         /// 网络数据缓存器
         /// </summary>
-        private DataBuffer _databuffer = new DataBuffer();
+        private DataBuffer databuffer = new DataBuffer();
 
         /// <summary>
         /// 数据接收缓冲区
         /// </summary>
-        byte[] _tmpReceiveBuff = new byte[4096];
+        byte[] tmpReceiveBuff = new byte[4096];
 
         /// <summary>
         /// 网络数据结构
         /// </summary>
-        private sSocketData _socketData = new sSocketData();
+        private sSocketData socketData = new sSocketData();
 
         #region 对外回调
         public Action OnTimeOut;
@@ -68,11 +68,12 @@ namespace ColaFramework
         #endregion
 
         #region 对外基本方法
+
         /// <summary>
         /// 向服务器发送消息
         /// </summary>
-        /// <param name="_protocalType"></param>
-        /// <param name="byteBuffer"></param>
+        /// <param name="protocol"></param>
+        /// <param name="byteMsg"></param>
         [LuaInterface.LuaByteBuffer]
         public void SendMsg(int protocol, byte[] byteMsg)
         {
@@ -81,7 +82,7 @@ namespace ColaFramework
             //Test Code
             NetMessageData tmpNetMessageData = new NetMessageData();
             tmpNetMessageData.protocol = protocol;
-            tmpNetMessageData._eventData = byteMsg;
+            tmpNetMessageData.eventData = byteMsg;
 
             //锁死消息中心消息队列，并添加数据
             lock (NetMessageCenter.Instance.NetMessageQueue)
@@ -93,14 +94,14 @@ namespace ColaFramework
         /// <summary>
         /// 连接服务器
         /// </summary>
-        /// <param name="_currIP"></param>
-        /// <param name="_currPort"></param>
-        public void Connect(string _currIP, int _currPort)
+        /// <param name="currIP"></param>
+        /// <param name="currPort"></param>
+        public void Connect(string currIP, int currPort)
         {
             if (!IsConnceted)
             {
-                this._currIP = _currIP;
-                this._currPort = _currPort;
+                this.currIP = currIP;
+                this.currPort = currPort;
                 _onConnet();
             }
         }
@@ -116,7 +117,7 @@ namespace ColaFramework
         /// <param name="milliSec"></param>
         public void SetTimeOut(int milliSec)
         {
-            _timeOutMilliSec = milliSec;
+            timeOutMilliSec = milliSec;
         }
         #endregion
 
@@ -125,10 +126,10 @@ namespace ColaFramework
         /// </summary>
         private void _close()
         {
-            if (!_isConnected)
+            if (!isConnected)
                 return;
 
-            _isConnected = false;
+            isConnected = false;
             //停止pingServer
             Timer.Cancel(pingTimerId);
 
@@ -170,10 +171,10 @@ namespace ColaFramework
             try
             {
                 clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);//创建套接字
-                IPAddress ipAddress = IPAddress.Parse(_currIP);//解析IP地址
-                IPEndPoint ipEndpoint = new IPEndPoint(ipAddress, _currPort);
+                IPAddress ipAddress = IPAddress.Parse(currIP);//解析IP地址
+                IPEndPoint ipEndpoint = new IPEndPoint(ipAddress, currPort);
                 IAsyncResult result = clientSocket.BeginConnect(ipEndpoint, new AsyncCallback(_onConnect_Sucess), clientSocket);//异步连接
-                bool success = result.AsyncWaitHandle.WaitOne(_timeOutMilliSec, true);
+                bool success = result.AsyncWaitHandle.WaitOne(timeOutMilliSec, true);
                 if (!success) //超时
                 {
                     _onConnect_Outtime();
@@ -195,7 +196,7 @@ namespace ColaFramework
                 receiveThread = new Thread(new ThreadStart(_onReceiveSocket));
                 receiveThread.IsBackground = true;
                 receiveThread.Start();
-                _isConnected = true;
+                isConnected = true;
                 Debug.Log("连接成功");
 
                 //启动pingServer
@@ -262,24 +263,24 @@ namespace ColaFramework
             {
                 if (!clientSocket.Connected)
                 {
-                    _isConnected = false;
+                    isConnected = false;
                     _ReConnect();
                     break;
                 }
                 try
                 {
-                    int receiveLength = clientSocket.Receive(_tmpReceiveBuff);
+                    int receiveLength = clientSocket.Receive(tmpReceiveBuff);
                     if (receiveLength > 0)
                     {
-                        _databuffer.AddBuffer(_tmpReceiveBuff, receiveLength);//将收到的数据添加到缓存器中
-                        while (_databuffer.GetData(out _socketData))//取出一条完整数据
+                        databuffer.AddBuffer(tmpReceiveBuff, receiveLength);//将收到的数据添加到缓存器中
+                        while (databuffer.GetData(out socketData))//取出一条完整数据
                         {
                             //只有消息协议才进入队列
-                            if (Constants.PING_PROTO_CODE == _socketData.protocal)
+                            if (Constants.PING_PROTO_CODE == socketData.protocal)
                             {
                                 NetMessageData tmpNetMessageData = new NetMessageData();
-                                tmpNetMessageData.protocol = _socketData.protocal;
-                                tmpNetMessageData._eventData = _socketData.data;
+                                tmpNetMessageData.protocol = socketData.protocal;
+                                tmpNetMessageData.eventData = socketData.data;
 
                                 //锁死消息中心消息队列，并添加数据
                                 lock (NetMessageCenter.Instance.NetMessageQueue)
@@ -310,15 +311,15 @@ namespace ColaFramework
         /// 数据转网络结构
         /// </summary>
         /// <param name="_protocalType"></param>
-        /// <param name="_data"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        private sSocketData BytesToSocketData(int protocol, byte[] _data)
+        private sSocketData BytesToSocketData(int protocol, byte[] data)
         {
             sSocketData tmpSocketData = new sSocketData();
-            tmpSocketData.buffLength = Constants.HEAD_LEN + _data.Length;
+            tmpSocketData.buffLength = Constants.HEAD_LEN + data.Length;
             tmpSocketData.protocal = protocol;
-            tmpSocketData.dataLength = _data.Length;
-            tmpSocketData.data = _data;
+            tmpSocketData.dataLength = data.Length;
+            tmpSocketData.data = data;
             return tmpSocketData;
         }
 
@@ -329,34 +330,34 @@ namespace ColaFramework
         /// <returns></returns>
         private byte[] SocketDataToBytes(sSocketData tmpSocketData)
         {
-            byte[] _tmpBuff = new byte[tmpSocketData.buffLength];
-            byte[] _tmpBuffLength = BitConverter.GetBytes(tmpSocketData.buffLength);
-            byte[] _tmpDataLenght = BitConverter.GetBytes(tmpSocketData.protocal);
+            byte[] tmpBuff = new byte[tmpSocketData.buffLength];
+            byte[] tmpBuffLength = BitConverter.GetBytes(tmpSocketData.buffLength);
+            byte[] tmpDataLenght = BitConverter.GetBytes(tmpSocketData.protocal);
 
-            Array.Copy(_tmpBuffLength, 0, _tmpBuff, 0, Constants.HEAD_DATA_LEN);//缓存总长度
-            Array.Copy(_tmpDataLenght, 0, _tmpBuff, Constants.HEAD_DATA_LEN, Constants.HEAD_TYPE_LEN);//协议类型
-            Array.Copy(tmpSocketData.data, 0, _tmpBuff, Constants.HEAD_LEN, tmpSocketData.dataLength);//协议数据
+            Array.Copy(tmpBuffLength, 0, tmpBuff, 0, Constants.HEAD_DATA_LEN);//缓存总长度
+            Array.Copy(tmpDataLenght, 0, tmpBuff, Constants.HEAD_DATA_LEN, Constants.HEAD_TYPE_LEN);//协议类型
+            Array.Copy(tmpSocketData.data, 0, tmpBuff, Constants.HEAD_LEN, tmpSocketData.dataLength);//协议数据
 
-            return _tmpBuff;
+            return tmpBuff;
         }
 
         /// <summary>
         /// 合并协议，数据
         /// </summary>
         /// <param name="_protocalType"></param>
-        /// <param name="_data"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        private byte[] DataToBytes(int protocol, byte[] _data)
+        private byte[] DataToBytes(int protocol, byte[] data)
         {
-            return SocketDataToBytes(BytesToSocketData(protocol, _data));
+            return SocketDataToBytes(BytesToSocketData(protocol, data));
         }
 
         /// <summary>
         /// 发送消息基本方法
         /// </summary>
         /// <param name="_protocalType"></param>
-        /// <param name="_data"></param>
-        private void SendMsgBase(int protocol, byte[] _data)
+        /// <param name="data"></param>
+        private void SendMsgBase(int protocol, byte[] data)
         {
             if (clientSocket == null || !clientSocket.Connected)
             {
@@ -364,8 +365,8 @@ namespace ColaFramework
                 return;
             }
 
-            byte[] _msgdata = DataToBytes(protocol, _data);
-            clientSocket.BeginSend(_msgdata, 0, _msgdata.Length, SocketFlags.None, new AsyncCallback(_onSendMsg), clientSocket);
+            byte[] msgdata = DataToBytes(protocol, data);
+            clientSocket.BeginSend(msgdata, 0, msgdata.Length, SocketFlags.None, new AsyncCallback(_onSendMsg), clientSocket);
         }
 
         /// <summary>

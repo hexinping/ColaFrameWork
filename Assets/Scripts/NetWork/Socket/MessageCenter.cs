@@ -12,7 +12,7 @@ using System;
 public struct NetMessageData
 {
     public int protocol;
-    public byte[] _eventData;
+    public byte[] eventData;
 }
 
 public class NetMessageCenter : IManager
@@ -74,7 +74,7 @@ public class NetMessageCenter : IManager
                 {
                     if (null != OnMessage)
                     {
-                        OnMessage(tmpNetMessageData._eventData);
+                        OnMessage(tmpNetMessageData.eventData);
                     }
                 }
                 catch (Exception e)

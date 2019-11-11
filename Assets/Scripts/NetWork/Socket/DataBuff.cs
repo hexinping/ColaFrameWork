@@ -66,23 +66,23 @@ public class DataBuffer
     /// <summary>
     /// 添加缓存数据
     /// </summary>
-    /// <param name="_data"></param>
-    /// <param name="_dataLen"></param>
-    public void AddBuffer(byte[] _data, int _dataLen)
+    /// <param name="data"></param>
+    /// <param name="dataLen"></param>
+    public void AddBuffer(byte[] data, int dataLen)
     {
-        if (_dataLen > buff.Length - curBuffPosition)//超过当前缓存
+        if (dataLen > buff.Length - curBuffPosition)//超过当前缓存
         {
-            byte[] _tmpBuff = new byte[curBuffPosition + _dataLen];
-            Array.Copy(buff, 0, _tmpBuff, 0, curBuffPosition);
-            Array.Copy(_data, 0, _tmpBuff, curBuffPosition, _dataLen);
-            buff = _tmpBuff;
-            _tmpBuff = null;
+            byte[] tmpBuff = new byte[curBuffPosition + dataLen];
+            Array.Copy(buff, 0, tmpBuff, 0, curBuffPosition);
+            Array.Copy(data, 0, tmpBuff, curBuffPosition, dataLen);
+            buff = tmpBuff;
+            tmpBuff = null;
         }
         else
         {
-            Array.Copy(_data, 0, buff, curBuffPosition, _dataLen);
+            Array.Copy(data, 0, buff, curBuffPosition, dataLen);
         }
-        curBuffPosition += _dataLen;//修改当前数据标记
+        curBuffPosition += dataLen;//修改当前数据标记
     }
 
     /// <summary>
@@ -107,11 +107,11 @@ public class DataBuffer
     /// <summary>
     /// 获取一条可用数据，返回值标记是否有数据
     /// </summary>
-    /// <param name="_tmpSocketData"></param>
+    /// <param name="tmpSocketData"></param>
     /// <returns></returns>
-    public bool GetData(out sSocketData _tmpSocketData)
+    public bool GetData(out sSocketData tmpSocketData)
     {
-        _tmpSocketData = new sSocketData();
+        tmpSocketData = new sSocketData();
 
         if (buffLength <= 0)
         {
@@ -120,15 +120,15 @@ public class DataBuffer
 
         if (buffLength > 0 && curBuffPosition >= buffLength)
         {
-            _tmpSocketData.buffLength = buffLength;
-            _tmpSocketData.dataLength = dataLength;
-            _tmpSocketData.protocal = protocal;
-            _tmpSocketData.data = new byte[dataLength];
-            Array.Copy(buff, Constants.HEAD_LEN, _tmpSocketData.data, 0, dataLength);
+            tmpSocketData.buffLength = buffLength;
+            tmpSocketData.dataLength = dataLength;
+            tmpSocketData.protocal = protocal;
+            tmpSocketData.data = new byte[dataLength];
+            Array.Copy(buff, Constants.HEAD_LEN, tmpSocketData.data, 0, dataLength);
             curBuffPosition -= buffLength;
-            byte[] _tmpBuff = new byte[curBuffPosition < minBuffLen ? minBuffLen : curBuffPosition];
-            Array.Copy(buff, buffLength, _tmpBuff, 0, curBuffPosition);
-            buff = _tmpBuff;
+            byte[] tmpBuff = new byte[curBuffPosition < minBuffLen ? minBuffLen : curBuffPosition];
+            Array.Copy(buff, buffLength, tmpBuff, 0, curBuffPosition);
+            buff = tmpBuff;
 
 
             buffLength = 0;
