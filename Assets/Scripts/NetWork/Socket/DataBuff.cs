@@ -13,10 +13,12 @@ public class Constants
     //消息：数据总长度(4byte) + 协议类型(4byte) + 数据(N byte)
     public static int HEAD_DATA_LEN = 4;
     public static int HEAD_TYPE_LEN = 4;
-    public static int HEAD_LEN//6byte
+    public static int HEAD_LEN //8byte
     {
         get { return HEAD_DATA_LEN + HEAD_TYPE_LEN; }
     }
+
+    public static readonly int PING_PROTO_CODE = 1; //ping protocol的id
 }
 
 /// <summary>

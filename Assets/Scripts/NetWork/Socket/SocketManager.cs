@@ -275,10 +275,10 @@ namespace ColaFramework
                         while (_databuffer.GetData(out _socketData))//取出一条完整数据
                         {
                             //只有消息协议才进入队列
-                            if(eProtocalCommand.sc_message == _socketData._protocallType)
+                            if (Constants.PING_PROTO_CODE == _socketData.protocal)
                             {
                                 NetMessageData tmpNetMessageData = new NetMessageData();
-                                tmpNetMessageData._eventType = _socketData._protocallType;
+                                tmpNetMessageData.protocol = _socketData.protocal;
                                 tmpNetMessageData._eventData = _socketData.data;
 
                                 //锁死消息中心消息队列，并添加数据
@@ -312,11 +312,11 @@ namespace ColaFramework
         /// <param name="_protocalType"></param>
         /// <param name="_data"></param>
         /// <returns></returns>
-        private sSocketData BytesToSocketData(eProtocalCommand _protocalType, byte[] _data)
+        private sSocketData BytesToSocketData(int protocol, byte[] _data)
         {
             sSocketData tmpSocketData = new sSocketData();
             tmpSocketData.buffLength = Constants.HEAD_LEN + _data.Length;
-            tmpSocketData._protocallType = _protocalType;
+            tmpSocketData.protocal = protocol;
             tmpSocketData.dataLength = _data.Length;
             tmpSocketData.data = _data;
             return tmpSocketData;
@@ -331,7 +331,7 @@ namespace ColaFramework
         {
             byte[] _tmpBuff = new byte[tmpSocketData.buffLength];
             byte[] _tmpBuffLength = BitConverter.GetBytes(tmpSocketData.buffLength);
-            byte[] _tmpDataLenght = BitConverter.GetBytes((UInt16)tmpSocketData._protocallType);
+            byte[] _tmpDataLenght = BitConverter.GetBytes(tmpSocketData.protocal);
 
             Array.Copy(_tmpBuffLength, 0, _tmpBuff, 0, Constants.HEAD_DATA_LEN);//缓存总长度
             Array.Copy(_tmpDataLenght, 0, _tmpBuff, Constants.HEAD_DATA_LEN, Constants.HEAD_TYPE_LEN);//协议类型
@@ -346,9 +346,9 @@ namespace ColaFramework
         /// <param name="_protocalType"></param>
         /// <param name="_data"></param>
         /// <returns></returns>
-        private byte[] DataToBytes(eProtocalCommand _protocalType, byte[] _data)
+        private byte[] DataToBytes(int protocol, byte[] _data)
         {
-            return SocketDataToBytes(BytesToSocketData(_protocalType, _data));
+            return SocketDataToBytes(BytesToSocketData(protocol, _data));
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace ColaFramework
         /// </summary>
         /// <param name="_protocalType"></param>
         /// <param name="_data"></param>
-        private void SendMsgBase(eProtocalCommand _protocalType, byte[] _data)
+        private void SendMsgBase(int protocol, byte[] _data)
         {
             if (clientSocket == null || !clientSocket.Connected)
             {
@@ -364,7 +364,7 @@ namespace ColaFramework
                 return;
             }
 
-            byte[] _msgdata = DataToBytes(_protocalType, _data);
+            byte[] _msgdata = DataToBytes(protocol, _data);
             clientSocket.BeginSend(_msgdata, 0, _msgdata.Length, SocketFlags.None, new AsyncCallback(_onSendMsg), clientSocket);
         }
 
@@ -373,7 +373,7 @@ namespace ColaFramework
         /// </summary>
         private void PingServer()
         {
-            SendMsgBase(eProtocalCommand.sc_ping, pingBytes);
+            SendMsgBase(Constants.PING_PROTO_CODE, pingBytes);
         }
 
         public void Dispose()
