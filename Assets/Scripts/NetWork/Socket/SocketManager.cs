@@ -73,19 +73,20 @@ namespace ColaFramework
         /// </summary>
         /// <param name="_protocalType"></param>
         /// <param name="byteBuffer"></param>
-        public void SendMsg(ByteBuffer byteBuffer)
+        [LuaInterface.LuaByteBuffer]
+        public void SendMsg(int protocol, byte[] byteMsg)
         {
             //SendMsgBase(eProtocalCommand.sc_message, byteBuffer.ToBytes());
 
             //Test Code
             NetMessageData tmpNetMessageData = new NetMessageData();
-            tmpNetMessageData._eventType = eProtocalCommand.sc_message;
-            tmpNetMessageData._eventData = byteBuffer.ToBytes();
+            tmpNetMessageData.protocol = protocol;
+            tmpNetMessageData._eventData = byteMsg;
 
             //锁死消息中心消息队列，并添加数据
-            lock (NetMessageCenter.Instance.netMessageDataQueue)
+            lock (NetMessageCenter.Instance.NetMessageQueue)
             {
-                NetMessageCenter.Instance.netMessageDataQueue.Enqueue(tmpNetMessageData);
+                NetMessageCenter.Instance.NetMessageQueue.Enqueue(tmpNetMessageData);
             }
         }
 
@@ -278,12 +279,12 @@ namespace ColaFramework
                             {
                                 NetMessageData tmpNetMessageData = new NetMessageData();
                                 tmpNetMessageData._eventType = _socketData._protocallType;
-                                tmpNetMessageData._eventData = _socketData._data;
+                                tmpNetMessageData._eventData = _socketData.data;
 
                                 //锁死消息中心消息队列，并添加数据
-                                lock (NetMessageCenter.Instance.netMessageDataQueue)
+                                lock (NetMessageCenter.Instance.NetMessageQueue)
                                 {
-                                    NetMessageCenter.Instance.netMessageDataQueue.Enqueue(tmpNetMessageData);
+                                    NetMessageCenter.Instance.NetMessageQueue.Enqueue(tmpNetMessageData);
                                 }
                             }
                             else
@@ -314,10 +315,10 @@ namespace ColaFramework
         private sSocketData BytesToSocketData(eProtocalCommand _protocalType, byte[] _data)
         {
             sSocketData tmpSocketData = new sSocketData();
-            tmpSocketData._buffLength = Constants.HEAD_LEN + _data.Length;
+            tmpSocketData.buffLength = Constants.HEAD_LEN + _data.Length;
             tmpSocketData._protocallType = _protocalType;
-            tmpSocketData._dataLength = _data.Length;
-            tmpSocketData._data = _data;
+            tmpSocketData.dataLength = _data.Length;
+            tmpSocketData.data = _data;
             return tmpSocketData;
         }
 
@@ -328,13 +329,13 @@ namespace ColaFramework
         /// <returns></returns>
         private byte[] SocketDataToBytes(sSocketData tmpSocketData)
         {
-            byte[] _tmpBuff = new byte[tmpSocketData._buffLength];
-            byte[] _tmpBuffLength = BitConverter.GetBytes(tmpSocketData._buffLength);
+            byte[] _tmpBuff = new byte[tmpSocketData.buffLength];
+            byte[] _tmpBuffLength = BitConverter.GetBytes(tmpSocketData.buffLength);
             byte[] _tmpDataLenght = BitConverter.GetBytes((UInt16)tmpSocketData._protocallType);
 
             Array.Copy(_tmpBuffLength, 0, _tmpBuff, 0, Constants.HEAD_DATA_LEN);//缓存总长度
             Array.Copy(_tmpDataLenght, 0, _tmpBuff, Constants.HEAD_DATA_LEN, Constants.HEAD_TYPE_LEN);//协议类型
-            Array.Copy(tmpSocketData._data, 0, _tmpBuff, Constants.HEAD_LEN, tmpSocketData._dataLength);//协议数据
+            Array.Copy(tmpSocketData.data, 0, _tmpBuff, Constants.HEAD_LEN, tmpSocketData.dataLength);//协议数据
 
             return _tmpBuff;
         }

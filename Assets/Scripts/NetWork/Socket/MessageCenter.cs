@@ -11,14 +11,14 @@ using System;
 
 public struct NetMessageData
 {
-    public eProtocalCommand _eventType;
+    public int protocol;
     public byte[] _eventData;
 }
 
 public class NetMessageCenter : IManager
 {
     [LuaInterface.NoToLua]
-    public Queue<NetMessageData> netMessageDataQueue;
+    public Queue<NetMessageData> NetMessageQueue;
 
     [LuaInterface.LuaByteBuffer]
     public Action<byte[]> OnMessage;
@@ -52,7 +52,7 @@ public class NetMessageCenter : IManager
     [LuaInterface.NoToLua]
     public void Init()
     {
-        netMessageDataQueue = new Queue<NetMessageData>();
+        NetMessageQueue = new Queue<NetMessageData>();
     }
 
     public void SetPerFrameHandleCnt(int value)
@@ -64,11 +64,11 @@ public class NetMessageCenter : IManager
     public void Update(float deltaTime)
     {
         int handledCnt = 0;
-        while (netMessageDataQueue.Count > 0)
+        while (NetMessageQueue.Count > 0)
         {
-            lock (netMessageDataQueue)
+            lock (NetMessageQueue)
             {
-                NetMessageData tmpNetMessageData = netMessageDataQueue.Dequeue();
+                NetMessageData tmpNetMessageData = NetMessageQueue.Dequeue();
                 handledCnt++;
                 try
                 {
@@ -92,11 +92,11 @@ public class NetMessageCenter : IManager
     [LuaInterface.NoToLua]
     public void Dispose()
     {
-        if (null != netMessageDataQueue)
+        if (null != NetMessageQueue)
         {
-            netMessageDataQueue.Clear();
+            NetMessageQueue.Clear();
         }
-        netMessageDataQueue = null;
+        NetMessageQueue = null;
         OnMessage = null;
     }
 }
