@@ -37,7 +37,7 @@ public class DelegateFactory
 		dict.Add(typeof(System.Action<string>), factory.System_Action_string);
 		dict.Add(typeof(OnSceneNameChanged), factory.OnSceneNameChanged);
 		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
-		dict.Add(typeof(System.Action<int,byte[]>), factory.System_Action_int_bytes);
+		dict.Add(typeof(NetMessageCenter.NetMessageAction), factory.NetMessageCenter_NetMessageAction);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
@@ -69,7 +69,7 @@ public class DelegateFactory
 		DelegateTraits<System.Action<string>>.Init(factory.System_Action_string);
 		DelegateTraits<OnSceneNameChanged>.Init(factory.OnSceneNameChanged);
 		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
-		DelegateTraits<System.Action<int,byte[]>>.Init(factory.System_Action_int_bytes);
+		DelegateTraits<NetMessageCenter.NetMessageAction>.Init(factory.NetMessageCenter_NetMessageAction);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
@@ -101,7 +101,7 @@ public class DelegateFactory
 		TypeTraits<System.Action<string>>.Init(factory.Check_System_Action_string);
 		TypeTraits<OnSceneNameChanged>.Init(factory.Check_OnSceneNameChanged);
 		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
-		TypeTraits<System.Action<int,byte[]>>.Init(factory.Check_System_Action_int_bytes);
+		TypeTraits<NetMessageCenter.NetMessageAction>.Init(factory.Check_NetMessageCenter_NetMessageAction);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
@@ -133,7 +133,7 @@ public class DelegateFactory
 		StackTraits<System.Action<string>>.Push = factory.Push_System_Action_string;
 		StackTraits<OnSceneNameChanged>.Push = factory.Push_OnSceneNameChanged;
 		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
-		StackTraits<System.Action<int,byte[]>>.Push = factory.Push_System_Action_int_bytes;
+		StackTraits<NetMessageCenter.NetMessageAction>.Push = factory.Push_NetMessageCenter_NetMessageAction;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
@@ -1417,16 +1417,16 @@ public class DelegateFactory
 		ToLua.Push(L, o);
 	}
 
-	class System_Action_int_bytes_Event : LuaDelegate
+	class NetMessageCenter_NetMessageAction_Event : LuaDelegate
 	{
-		public System_Action_int_bytes_Event(LuaFunction func) : base(func) { }
-		public System_Action_int_bytes_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+		public NetMessageCenter_NetMessageAction_Event(LuaFunction func) : base(func) { }
+		public NetMessageCenter_NetMessageAction_Event(LuaFunction func, LuaTable self) : base(func, self) { }
 
 		public void Call(int param0, byte[] param1)
 		{
 			func.BeginPCall();
 			func.Push(param0);
-			func.Push(param1);
+			func.PushByteBuffer(param1);
 			func.PCall();
 			func.EndPCall();
 		}
@@ -1436,42 +1436,42 @@ public class DelegateFactory
 			func.BeginPCall();
 			func.Push(self);
 			func.Push(param0);
-			func.Push(param1);
+			func.PushByteBuffer(param1);
 			func.PCall();
 			func.EndPCall();
 		}
 	}
 
-	public System.Action<int,byte[]> System_Action_int_bytes(LuaFunction func, LuaTable self, bool flag)
+	public NetMessageCenter.NetMessageAction NetMessageCenter_NetMessageAction(LuaFunction func, LuaTable self, bool flag)
 	{
 		if (func == null)
 		{
-			System.Action<int,byte[]> fn = delegate(int param0, byte[] param1) { };
+			NetMessageCenter.NetMessageAction fn = delegate(int param0, byte[] param1) { };
 			return fn;
 		}
 
 		if(!flag)
 		{
-			System_Action_int_bytes_Event target = new System_Action_int_bytes_Event(func);
-			System.Action<int,byte[]> d = target.Call;
+			NetMessageCenter_NetMessageAction_Event target = new NetMessageCenter_NetMessageAction_Event(func);
+			NetMessageCenter.NetMessageAction d = target.Call;
 			target.method = d.Method;
 			return d;
 		}
 		else
 		{
-			System_Action_int_bytes_Event target = new System_Action_int_bytes_Event(func, self);
-			System.Action<int,byte[]> d = target.CallWithSelf;
+			NetMessageCenter_NetMessageAction_Event target = new NetMessageCenter_NetMessageAction_Event(func, self);
+			NetMessageCenter.NetMessageAction d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}
 	}
 
-	bool Check_System_Action_int_bytes(IntPtr L, int pos)
+	bool Check_NetMessageCenter_NetMessageAction(IntPtr L, int pos)
 	{
-		return TypeChecker.CheckDelegateType(typeof(System.Action<int,byte[]>), L, pos);
+		return TypeChecker.CheckDelegateType(typeof(NetMessageCenter.NetMessageAction), L, pos);
 	}
 
-	void Push_System_Action_int_bytes(IntPtr L, System.Action<int,byte[]> o)
+	void Push_NetMessageCenter_NetMessageAction(IntPtr L, NetMessageCenter.NetMessageAction o)
 	{
 		ToLua.Push(L, o);
 	}

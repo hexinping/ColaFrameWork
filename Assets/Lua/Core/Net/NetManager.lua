@@ -109,6 +109,7 @@ function NetManager.RequestSproto(code, msg)
     local byteMsg = sprotoCoder:encode(code2ProtoNameMap[code], nil ~= msg and msg or DUMMY_MSG)
     --luabuffer:WriteInt(code)
     --luabuffer:WriteBuffer(byteMsg)
+    print("----------->发送",type(byteMsg))
     Socket:SendMsg(code,byteMsg)
 end
 

@@ -12,6 +12,7 @@ public class NetMessageCenterWrap
 		L.RegVar("OnMessage", get_OnMessage, set_OnMessage);
 		L.RegVar("Instance", get_Instance, null);
 		L.RegVar("TimeSinceUpdate", get_TimeSinceUpdate, set_TimeSinceUpdate);
+		L.RegFunction("NetMessageAction", NetMessageCenter_NetMessageAction);
 		L.EndClass();
 	}
 
@@ -41,7 +42,7 @@ public class NetMessageCenterWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			NetMessageCenter obj = (NetMessageCenter)o;
-			System.Action<int,byte[]> ret = obj.OnMessage;
+			NetMessageCenter.NetMessageAction ret = obj.OnMessage;
 			ToLua.Push(L, ret);
 			return 1;
 		}
@@ -93,7 +94,7 @@ public class NetMessageCenterWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			NetMessageCenter obj = (NetMessageCenter)o;
-			System.Action<int,byte[]> arg0 = (System.Action<int,byte[]>)ToLua.CheckDelegate<System.Action<int,byte[]>>(L, 2);
+			NetMessageCenter.NetMessageAction arg0 = (NetMessageCenter.NetMessageAction)ToLua.CheckDelegate<NetMessageCenter.NetMessageAction>(L, 2);
 			obj.OnMessage = arg0;
 			return 0;
 		}
@@ -119,6 +120,33 @@ public class NetMessageCenterWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index TimeSinceUpdate on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int NetMessageCenter_NetMessageAction(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateTraits<NetMessageCenter.NetMessageAction>.Create(func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateTraits<NetMessageCenter.NetMessageAction>.Create(func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
 		}
 	}
 }

@@ -21,7 +21,9 @@ public class NetMessageCenter : IManager
     public Queue<NetMessageData> NetMessageQueue;
 
     [LuaInterface.LuaByteBuffer]
-    public Action<int, byte[]> OnMessage;
+    public delegate void NetMessageAction(int protocol, byte[] byteMsg);
+
+    public NetMessageAction OnMessage;
 
     private static NetMessageCenter _instance = null;
 
