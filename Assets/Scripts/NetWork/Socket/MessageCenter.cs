@@ -21,7 +21,7 @@ public class NetMessageCenter : IManager
     public Queue<NetMessageData> NetMessageQueue;
 
     [LuaInterface.LuaByteBuffer]
-    public Action<byte[]> OnMessage;
+    public Action<int, byte[]> OnMessage;
 
     private static NetMessageCenter _instance = null;
 
@@ -74,12 +74,12 @@ public class NetMessageCenter : IManager
                 {
                     if (null != OnMessage)
                     {
-                        OnMessage(tmpNetMessageData.eventData);
+                        OnMessage(tmpNetMessageData.protocol,tmpNetMessageData.eventData);
                     }
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError("try to handle message error!");
+                    Debug.LogError("try to handle message error!"+e.ToString());
                 }
                 if (handledCnt >= perHandleCnt)
                 {

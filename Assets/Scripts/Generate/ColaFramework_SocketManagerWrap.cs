@@ -53,10 +53,11 @@ public class ColaFramework_SocketManagerWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
+			ToLua.CheckArgsCount(L, 3);
 			ColaFramework.SocketManager obj = (ColaFramework.SocketManager)ToLua.CheckObject<ColaFramework.SocketManager>(L, 1);
-			ColaFramework.ByteBuffer arg0 = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 2);
-			obj.SendMsg(arg0);
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
+			byte[] arg1 = ToLua.CheckByteBuffer(L, 3);
+			obj.SendMsg(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)

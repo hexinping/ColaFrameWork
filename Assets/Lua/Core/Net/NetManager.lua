@@ -69,11 +69,11 @@ function NetManager.Update()
 end
 
 --- 处理C#端传到Lua端的消息
-function NetManager.OnMessage(byteMsg)
-    local newByteBuffer = ByteBuffer.New(byteMsg)
-    local code = newByteBuffer:ReadInt()
-    local msgBody = newByteBuffer:ReadBuffer()
-    local msg = sprotoCoder:decode(code2ProtoNameMap[code],msgBody)
+function NetManager.OnMessage(code,byteMsg)
+    --local newByteBuffer = ByteBuffer.New(byteMsg)
+    --local code = newByteBuffer:ReadInt()
+    --local msgBody = newByteBuffer:ReadBuffer()
+    local msg = sprotoCoder:decode(code2ProtoNameMap[code],byteMsg)
     print("----------->接受到了消息",msg)
 end
 
@@ -105,11 +105,11 @@ function NetManager.OnTimeOut()
 end
 
 function NetManager.RequestSproto(code, msg)
-    local luabuffer = ByteBuffer.New()
+    --local luabuffer = ByteBuffer.New()
     local byteMsg = sprotoCoder:encode(code2ProtoNameMap[code], nil ~= msg and msg or DUMMY_MSG)
-    luabuffer:WriteInt(code)
-    luabuffer:WriteBuffer(byteMsg)
-    Socket:SendMsg(luabuffer)
+    --luabuffer:WriteInt(code)
+    --luabuffer:WriteBuffer(byteMsg)
+    Socket:SendMsg(code,byteMsg)
 end
 
 return NetManager

@@ -41,7 +41,7 @@ public class NetMessageCenterWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			NetMessageCenter obj = (NetMessageCenter)o;
-			System.Action<byte[]> ret = obj.OnMessage;
+			System.Action<int,byte[]> ret = obj.OnMessage;
 			ToLua.Push(L, ret);
 			return 1;
 		}
@@ -93,7 +93,7 @@ public class NetMessageCenterWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			NetMessageCenter obj = (NetMessageCenter)o;
-			System.Action<byte[]> arg0 = (System.Action<byte[]>)ToLua.CheckDelegate<System.Action<byte[]>>(L, 2);
+			System.Action<int,byte[]> arg0 = (System.Action<int,byte[]>)ToLua.CheckDelegate<System.Action<int,byte[]>>(L, 2);
 			obj.OnMessage = arg0;
 			return 0;
 		}
