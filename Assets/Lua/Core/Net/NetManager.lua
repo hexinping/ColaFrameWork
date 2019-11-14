@@ -75,16 +75,25 @@ end
 
 --- 在这里真正去处理网络消息
 local function HandleNetMessage(code, msg)
-
+    local callback = listeners[code]
+    if nil ~= callback then
+        callback(code, msg)
+    else
+        error("NetManager protocol is not be listened! code is:", code2ProtoNameMap[code])
+    end
 end
 
 --- 处理C#端传到Lua端的消息
 function NetManager.OnMessage(code, byteMsg)
     if nil ~= code2ProtoNameMap[code] then
         local msg = sprotoCoder:decode(code2ProtoNameMap[code], byteMsg)
+        if nil == msg then
+            error("NetManger decode sproto result is nil! code is: ", code2ProtoNameMap[code])
+            return
+        end
         xpcall(HandleNetMessage, PCALL_ERROR_FUNCTION, code, msg)
     else
-        error("NetManager protocol code: ", code, " is not define in Protocol!")
+        error("NetManager protocol code: ", code2ProtoNameMap[code], " is not define in Protocol!")
     end
 end
 
