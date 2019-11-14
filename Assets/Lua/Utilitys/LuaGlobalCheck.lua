@@ -4,6 +4,10 @@
 ---               全局变量的一些检查与控制
 ---
 
+_G.PCALL_ERROR_FUNCTION = function(message)
+    error(message)
+end
+
 setmetatable(_G, {
     -- 控制新建全局变量
     __newindex = function(_, k)

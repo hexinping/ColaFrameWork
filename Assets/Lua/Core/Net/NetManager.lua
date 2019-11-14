@@ -10,7 +10,7 @@ local Protocol = require("Protocols.Protocol")
 
 local NetManager = {}
 local Socket = nil
-local ByteBuffer = ByteBuffer
+local listeners = {}
 local sprotoCoder = nil
 local SPROTO_BYTES_PATH = "SprotoBytes/sproto.bytes"
 local code2ProtoNameMap = {}  -- code 到 ProtoName的映射关系
@@ -45,17 +45,27 @@ end
 
 --- 监听网络协议
 function NetManager.Register(code, callback)
-
+    if code and code > 0 then
+        if nil ~= listeners[code] then
+            error("repeat register net event! code is: ", code2ProtoNameMap[code])
+            return
+        end
+        if nil == callback then
+            error("register net event callback is nil! code is: ", code2ProtoNameMap[code])
+            return
+        end
+        listeners[code] = callback
+    end
 end
 
 --- 取消监听网络协议
 function NetManager.UnRegister(code)
-
+    listeners[code] = nil
 end
 
 --- 取消监听所有的网络协议
 function NetManager.UnRegisterAll()
-
+    listeners = {}
 end
 
 --- 关闭网络连接
@@ -63,18 +73,19 @@ function NetManager.Close(callback)
 
 end
 
---- 分帧处理网络消息
-function NetManager.Update()
+--- 在这里真正去处理网络消息
+local function HandleNetMessage(code, msg)
 
 end
 
 --- 处理C#端传到Lua端的消息
-function NetManager.OnMessage(code,byteMsg)
-    --local newByteBuffer = ByteBuffer.New(byteMsg)
-    --local code = newByteBuffer:ReadInt()
-    --local msgBody = newByteBuffer:ReadBuffer()
-    local msg = sprotoCoder:decode(code2ProtoNameMap[code],byteMsg)
-    print("----------->接受到了消息",msg)
+function NetManager.OnMessage(code, byteMsg)
+    if nil ~= code2ProtoNameMap[code] then
+        local msg = sprotoCoder:decode(code2ProtoNameMap[code], byteMsg)
+        xpcall(HandleNetMessage, PCALL_ERROR_FUNCTION, code, msg)
+    else
+        error("NetManager protocol code: ", code, " is not define in Protocol!")
+    end
 end
 
 --- 处理Socket成功连接服务器
@@ -105,12 +116,8 @@ function NetManager.OnTimeOut()
 end
 
 function NetManager.RequestSproto(code, msg)
-    --local luabuffer = ByteBuffer.New()
     local byteMsg = sprotoCoder:encode(code2ProtoNameMap[code], nil ~= msg and msg or DUMMY_MSG)
-    --luabuffer:WriteInt(code)
-    --luabuffer:WriteBuffer(byteMsg)
-    print("----------->发送",type(byteMsg))
-    Socket:SendMsg(code,byteMsg)
+    Socket:SendMsg(code, byteMsg)
 end
 
 return NetManager
