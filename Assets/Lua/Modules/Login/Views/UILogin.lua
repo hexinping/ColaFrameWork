@@ -26,6 +26,11 @@ end
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
 function UILogin:OnCreate()
 
+    -- 网络测试
+    NetManager.Register(Protocol.C2S_Login,function (code,msg)
+        self:OnNetTest(code,msg)
+    end)
+    NetManager.RequestSproto(Protocol.C2S_Login,{accountId = 1001,charId = 10086,userName = "Jackson"})
     -- ObjectPool Test
     --local LOjectPool = require("Common.Collections.LObjectPool")
     --
@@ -67,6 +72,10 @@ function UILogin:onClick(name)
     elseif name == "okBtn" then
         self:DestroySelf()
     end
+end
+
+function UILogin:OnNetTest(code,msg)
+    print("------------->接受到网络消息：",code,msg)
 end
 
 -- 界面销毁的过程中触发
