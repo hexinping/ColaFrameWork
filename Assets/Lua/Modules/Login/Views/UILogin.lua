@@ -27,9 +27,7 @@ end
 function UILogin:OnCreate()
 
     -- 网络测试
-    NetManager.Register(Protocol.C2S_Login,function (code,msg)
-        self:OnNetTest(code,msg)
-    end)
+    NetManager.Register(Protocol.C2S_Login,self.OnNetTest,self)
     NetManager.RequestSproto(Protocol.C2S_Login,{accountId = 1001,charId = 10086,userName = "Jackson"})
 end
 
