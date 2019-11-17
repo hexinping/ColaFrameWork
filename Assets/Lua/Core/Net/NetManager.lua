@@ -44,7 +44,7 @@ function NetManager.Connect(ip, port, callback)
 end
 
 --- 监听网络协议
-function NetManager.Register(code, callback)
+function NetManager.Register(code, callback, instance)
     if code and code > 0 then
         if nil ~= listeners[code] then
             error("repeat register net event! code is: ", code2ProtoNameMap[code])
@@ -54,7 +54,7 @@ function NetManager.Register(code, callback)
             error("register net event callback is nil! code is: ", code2ProtoNameMap[code])
             return
         end
-        listeners[code] = callback
+        listeners[code] = { inst = instance, cb = callback }
     end
 end
 
@@ -75,9 +75,17 @@ end
 
 --- 在这里真正去处理网络消息
 local function HandleNetMessage(code, msg)
-    local callback = listeners[code]
-    if nil ~= callback then
-        callback(code, msg)
+    local t = listeners[code]
+    if nil ~= t then
+        local callback = listeners[code].cb
+        local instance = listeners[code].inst
+        if nil ~= callback and nil ~= instance then
+            callback(instance, code, msg)
+        elseif nil ~= callback then
+            callback(code, msg)
+        else
+            error("NetManager protocol callback is null! code is:", code2ProtoNameMap[code])
+        end
     else
         error("NetManager protocol is not be listened! code is:", code2ProtoNameMap[code])
     end
