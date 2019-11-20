@@ -22,7 +22,6 @@ end
 function EventMgr:initialize()
     --观察者列表
     self._listeners = {}
-    self.testTable = { 1, 2, 3, 4 }
 end
 
 function EventMgr:RegisterEvent(moduleId, eventId, func)
