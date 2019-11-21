@@ -24,9 +24,9 @@ function EventMgr:initialize()
     self._listeners = {}
 end
 
-function EventMgr:RegisterEvent(moduleId, eventId, func)
+function EventMgr:RegisterEvent(moduleId, eventId, func, inst)
     local key = bit.lshift(moduleId, 16) + eventId
-    self:AddEventListener(key, func, nil)
+    self:AddEventListener(key, func, inst, nil)
 end
 
 function EventMgr:UnRegisterEvent(moduleId, eventId, func)
@@ -42,14 +42,22 @@ function EventMgr:DispatchEvent(moduleId, eventId, param)
     end
     for _, v in ipairs(listeners) do
         if v.p then
-            v.f(v.p, param)
+            if v.instance then
+                v.f(v.instance, param, v.p)
+            else
+                v.f(param, v.p)
+            end
         else
-            v.f(param)
+            if v.instance then
+                v.f(v.instance, param)
+            else
+                v.f(param)
+            end
         end
     end
 end
 
-function EventMgr:AddEventListener(eventId, func, param)
+function EventMgr:AddEventListener(eventId, func, inst, param)
     local listeners = self._listeners[eventId]
     -- 获取key对应的监听者列表，结构为{func,para}，如果没有就新建
     if listeners == nil then
@@ -66,7 +74,7 @@ function EventMgr:AddEventListener(eventId, func, param)
     --    print("func is nil!")
     --end
     --加入监听者的回调和参数
-    table.insert(listeners, { f = func, p = param })
+    table.insert(listeners, { f = func, instance = inst, p = param })
 end
 
 function EventMgr:RemoveEventListener(eventId, func)
