@@ -31,13 +31,9 @@ end
 -- 注册事件
 function UIManager:RegisterEvent()
     -- 创建界面
-    EventMgr.Instance():RegisterEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, function(UIEnum)
-        self:Open(UIEnum)
-    end)
+    EventMgr.Instance():RegisterEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, self.Open, self)
     -- 销毁界面
-    EventMgr.Instance():RegisterEvent(Modules.moduleId.Common, Modules.notifyId.Common.DESTROY_PANEL, function(UIEnum)
-        self:Close(UIEnum)
-    end)
+    EventMgr.Instance():RegisterEvent(Modules.moduleId.Common, Modules.notifyId.Common.DESTROY_PANEL, self.Close, self)
 end
 
 -- 设置一个UI界面参与点击其他地方关闭面板管理
@@ -78,7 +74,7 @@ function UIManager:Open(UIEnum)
         GUICollections[UIEnum].Instance():Create()
         table.insert(self.uiList, GUICollections[UIEnum].Instance())
     else
-        error("要打开的界面不存在",UIEnum)
+        error("要打开的界面不存在", UIEnum)
     end
 end
 
@@ -187,12 +183,12 @@ end
 
 -- 显示UI背景模糊
 function UIManager:ShowUIBlur(ui)
-    Common_Utils.ShowUIBlur(ui.Panel,ui.PanelName)
+    Common_Utils.ShowUIBlur(ui.Panel, ui.PanelName)
 end
 
 -- 显示UI背景遮罩
 function UIManager:ShowUIMask(ui)
-    Common_Utils.ShowUIMask(ui.Panel,ui.PanelName)
+    Common_Utils.ShowUIMask(ui.Panel, ui.PanelName)
 end
 
 --  获取UI排序管理器
