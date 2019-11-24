@@ -118,7 +118,6 @@ public static class CreateScriptsEditor
     {
         string basePath = GetSelectedPath();
         string templateFullPath = LuaTemplateModulePath;
-        Debug.Log(basePath);
         ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
             ScriptableObject.CreateInstance<CreateLuaScriptEndAction>(),
             basePath + "/New_Module.lua",
