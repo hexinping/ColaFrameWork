@@ -11,7 +11,7 @@ function public.OnInit()
 
 end
 
-function public.OnExit()
+function public.OnDestroy()
 
 end
 

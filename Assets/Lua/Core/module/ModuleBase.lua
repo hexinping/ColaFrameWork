@@ -1,67 +1,24 @@
 ---
 ---                 ColaFramework
 --- Copyright © 2018-2049 ColaFramework 马三小伙儿
----                通用的枚举定义
+---                 XX Controller
 ---
 
-local ModuleBase = Class("ModuleBase")
+local public = {}
+local private = {}
 
--- override 初始化各种数据
-function ModuleBase:initialize()
-    self.moduleId = 0
-    self.isInit = false
-end
 
-function ModuleBase:Init()
-    if not self.isInit then
-        self.isInit = true
-        self:RegisterNetListener()
-        self:RegisterEventListener()
-    end
-end
-
-function ModuleBase:Exit()
-    self.isInit = false
-    self:UnRegisterNetListener()
-    self:UnRegisterEventListener()
-end
-
-function ModuleBase:Reset()
-    self:Exit()
-    self:Init()
-    self:OnReset()
-end
-
-function ModuleBase:OnReset()
+function public.OnInit()
 
 end
 
-function ModuleBase:RegisterNetListener()
+function public.OnDestroy()
 
 end
 
-function ModuleBase:RegisterEventListener()
+-- 测试函数如无需要可以删除
+function private.Test()
 
 end
 
-function ModuleBase:UnRegisterNetListener()
-
-end
-
-function ModuleBase:UnRegisterEventListener()
-
-end
-
-function ModuleBase:IsInit()
-    return self.isInit
-end
-
-function ModuleBase:GetModuleId()
-    return self.moduleId
-end
-
-function ModuleBase:SetModuleId(moduleId)
-    self.moduleId = moduleId
-end
-
-return ModuleBase
+return public

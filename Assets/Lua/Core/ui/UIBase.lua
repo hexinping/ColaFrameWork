@@ -35,7 +35,7 @@ function UIBase:Create()
     if nil ~= self.Panel then
         UnityEngine.GameObject.Destroy(self.Panel)
     end
-    self.Panel = UTL.LuaCommon.InstantiateGoById(self.ResId, Common_Utils.GetUIRootObj())
+    self.Panel = Util.LuaCommon.InstantiateGoById(self.ResId, Common_Utils.GetUIRootObj())
     self.PanelName = self.Panel.name
     self.Layer = self.Panel.layer
     -- 如果参与UI排序
