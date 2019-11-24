@@ -21,6 +21,7 @@ public static class CreateScriptsEditor
     private static readonly string CSharpTemplateUIViewPath = "Assets/Editor/CreateScriptEditor/Templates/CSharp/UIViewTemplate.txt";
     private static readonly string CSharpTemplateModulePath = "Assets/Editor/CreateScriptEditor/Templates/CSharp/ModuleTemplate.txt";
     private static readonly string LuaTemplateModulePath = "Assets/Editor/CreateScriptEditor/Templates/Lua/ModuleTemplate.txt";
+    private static readonly string LuaTemplateControllerPath = "Assets/Editor/CreateScriptEditor/Templates/Lua/ControllerTemplate.txt";
     private static readonly string LuaTemplateViewPath = "Assets/Editor/CreateScriptEditor/Templates/Lua/UIViewTemplate.txt";
     #endregion
 
@@ -117,10 +118,23 @@ public static class CreateScriptsEditor
     {
         string basePath = GetSelectedPath();
         string templateFullPath = LuaTemplateModulePath;
-
+        Debug.Log(basePath);
         ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
             ScriptableObject.CreateInstance<CreateLuaScriptEndAction>(),
-            basePath + "/NewModule.lua",
+            basePath + "/New_Module.lua",
+            null,
+            templateFullPath);
+    }
+
+    [MenuItem("Assets/Create/Lua/Controller", false, 95)]
+    public static void CreateLuaController()
+    {
+        string basePath = GetSelectedPath();
+        string templateFullPath = LuaTemplateControllerPath;
+        Debug.Log(basePath);
+        ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,
+            ScriptableObject.CreateInstance<CreateLuaScriptEndAction>(),
+            basePath + "/New_Controller.lua",
             null,
             templateFullPath);
     }
