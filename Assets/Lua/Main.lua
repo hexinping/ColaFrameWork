@@ -1,7 +1,6 @@
 --主入口函数。从这里开始lua逻辑
 local rawset = rawset
 
-local UTL = {}
 
 -- 全局函数
 -- 用于声明全局变量
@@ -9,26 +8,7 @@ function define(name,value)
 	rawset(_G,name,value)
 end
 
--- 注册工具类
-local function RegisterUtility(name)
-	local result,utl = pcall(require,string.format("Utilitys.%s_Utils",name))
-	if result and utl then
-		UTL[name] = utl
-		--执行Utility的initialize初始化方法
-		if utl.initialize and "function" == type(utl.initialize) then
-			utl.initialize()
-		end
-	end
-end
 
--- 工具类在这里初始化
-local function InitUtilitys()
-	define("UTL",UTL)
-
-	RegisterUtility("LuaCommon")
-	RegisterUtility("UI")
-	RegisterUtility("Table")
-end
 
 local function initialize()
 	LuaLogHelper.initialize()
@@ -37,9 +17,7 @@ local function initialize()
     UIManager.Instance()
 	NetManager.Initialize()
 	-- 模块初始化
-	ModuleManager.Instance():RegisterAllModules()
-	ModuleManager.Instance():InitAllModules()
-
+    Modules.PriorityBoot()
 end
 
 -- 在此处定义注册一些全局变量
@@ -51,10 +29,8 @@ local function gloablDefine()
 	define("EventMgr",require("Mgrs.EventMgr"))
 	require("Game.Main.Modules")
 	require("Game.Main.GUICollections")
-	InitUtilitys()
 	define("UIManager",require("Mgrs.UIManager"))
 	define("ConfigMgr",require("Mgrs.ConfigMgr"))
-	define("ModuleManager",require("Mgrs.ModuleManager"))
 	define("Protocol",require("Protocols.Protocol"))
 	define("NetManager",require("Core.Net.NetManager"))
 	--控制全局变量的新建与访问
