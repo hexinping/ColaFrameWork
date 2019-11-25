@@ -16,26 +16,26 @@ Modules.moduleId = require("Game.Main.ModuleId")
 Modules.notifyId = require("Game.Main.NotifyId")
 
 -- 把要注册的工具都放在此列表里面
-local UtilList ={
+local UtilList = {
     "LuaCommon",
     "UI",
     "Table",
 }
 
 -- 优先启动的Module列表
-local PriorityBootList ={
+local PriorityBootList = {
     "Login",
 }
 
 -- 正常启动的Module列表
-local NornamlBootList ={
+local NornamlBootList = {
 
 }
 
 
 -- 注册工具类
 local function RegisterUtility(name)
-    local result,utl = pcall(require,string.format("Utilitys.%s_Utils",name))
+    local result, utl = pcall(require, string.format("Utilitys.%s_Utils", name))
     if result and utl then
         Util[name] = utl
         --执行Utility的initialize初始化方法
@@ -47,38 +47,37 @@ end
 
 -- 注册Module\注册Controller
 local function InitModule(name)
-    local result,controller = pcall(require,string.format("Modules.%s.%s_Controller",name,name))
+    local result, controller = pcall(require, string.format("Modules.%s.%s_Controller", name, name))
     if result and controller then
         Ctrl[name] = controller
     end
-    local result,module = pcall(require,string.format("Modules.%s.%s_Module",name,name))
+    local result, module = pcall(require, string.format("Modules.%s.%s_Module", name, name))
     if result and module then
-        Modules[name] = module
+        Mod[name] = module
     end
 end
 
 local function RegisterGlobalVar()
-    define("Util",Util)
-    define("Ctrl",Ctrl)
-    define("Mod",Mod)
+    define("Util", Util)
+    define("Ctrl", Ctrl)
+    define("Mod", Mod)
 end
 
 --- 初始化：注册全局变量和工具类，应该优先于Boot启动
 function Modules.Initialize()
     RegisterGlobalVar()
 
-    for _,v in UtilList do
-        print("--------->kkk:",v)
+    for _, v in ipairs(UtilList) do
         RegisterUtility(v)
     end
 end
 
 function Modules.PriorityBoot()
-    for _,v in PriorityBootList do
+    for _, v in ipairs(PriorityBootList) do
         InitModule(v)
     end
 
-    for _,v in PriorityBootList do
+    for _, v in ipairs(PriorityBootList) do
         --执行Module的OnInit方法
         local controller = Ctrl[v]
         if controller and controller.OnInit and "function" == type(controller.OnInit) then
@@ -93,11 +92,11 @@ function Modules.PriorityBoot()
 end
 
 function Modules.Boot()
-    for _,v in NornamlBootList do
+    for _, v in ipairs(NornamlBootList) do
         InitModule(v)
     end
 
-    for _,v in NornamlBootList do
+    for _, v in ipairs(NornamlBootList) do
         --执行Module的OnInit方法
         local controller = Ctrl[v]
         if controller and controller.OnInit and "function" == type(controller.OnInit) then

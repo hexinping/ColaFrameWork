@@ -11,12 +11,12 @@ local private = {}
 
 --- Module模块的初始化，可以在这里做初始化和添加监听等操作
 function public.OnInit()
-
+    print("------------->Login Module 启动")
 end
 
 --- Module模块的销毁，可以在这里做清理工作和取消监听等操作
 function public.OnDestroy()
-
+    print("-------------->Login Module 关闭")
 end
 
 --- 测试函数如无需要可以删除

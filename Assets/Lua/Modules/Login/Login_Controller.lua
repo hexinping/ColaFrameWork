@@ -11,12 +11,12 @@ local private = {}
 
 --- Controller模块的初始化，可以在这里做初始化和添加监听等操作
 function public.OnInit()
-
+    print("------------->Login Controller 启动")
 end
 
 --- Controller模块的销毁，可以在这里做清理工作和取消监听等操作
 function public.OnDestroy()
-
+    print("-------------->Login Controller 关闭")
 end
 
 --- 测试函数如无需要可以删除
