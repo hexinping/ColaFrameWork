@@ -24,7 +24,7 @@ local UtilList ={
 
 -- 优先启动的Module列表
 local PriorityBootList ={
-
+    "Login",
 }
 
 -- 正常启动的Module列表
@@ -63,13 +63,17 @@ local function RegisterGlobalVar()
     define("Mod",Mod)
 end
 
-function Modules.PriorityBoot()
+--- 初始化：注册全局变量和工具类，应该优先于Boot启动
+function Modules.Initialize()
     RegisterGlobalVar()
 
     for _,v in UtilList do
+        print("--------->kkk:",v)
         RegisterUtility(v)
     end
+end
 
+function Modules.PriorityBoot()
     for _,v in PriorityBootList do
         InitModule(v)
     end

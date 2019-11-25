@@ -16,7 +16,8 @@ local function initialize()
     EventMgr.Instance()
     UIManager.Instance()
 	NetManager.Initialize()
-	-- 模块初始化
+
+    -- 模块开始加载
     Modules.PriorityBoot()
 end
 
@@ -29,6 +30,8 @@ local function gloablDefine()
 	define("EventMgr",require("Mgrs.EventMgr"))
 	require("Game.Main.Modules")
 	require("Game.Main.GUICollections")
+    -- 模块初始化
+    Modules.Initialize()
 	define("UIManager",require("Mgrs.UIManager"))
 	define("ConfigMgr",require("Mgrs.ConfigMgr"))
 	define("Protocol",require("Protocols.Protocol"))
