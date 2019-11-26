@@ -77,18 +77,7 @@ namespace ColaFramework
         [LuaInterface.LuaByteBuffer]
         public void SendMsg(int protocol, byte[] byteMsg)
         {
-            //SendMsgBase(eProtocalCommand.sc_message, byteBuffer.ToBytes());
-
-            //Test Code
-            NetMessageData tmpNetMessageData = new NetMessageData();
-            tmpNetMessageData.protocol = protocol;
-            tmpNetMessageData.eventData = byteMsg;
-
-            //锁死消息中心消息队列，并添加数据
-            lock (NetMessageCenter.Instance.NetMessageQueue)
-            {
-                NetMessageCenter.Instance.NetMessageQueue.Enqueue(tmpNetMessageData);
-            }
+            SendMsgBase(protocol, byteMsg);
         }
 
         /// <summary>
@@ -276,16 +265,16 @@ namespace ColaFramework
                         while (databuffer.GetData(out socketData))//取出一条完整数据
                         {
                             //只有消息协议才进入队列
-                            if (Constants.PING_PROTO_CODE == socketData.protocal)
+                            if (Constants.PING_PROTO_CODE != socketData.protocal)
                             {
-                                NetMessageData tmpNetMessageData = new NetMessageData();
-                                tmpNetMessageData.protocol = socketData.protocal;
-                                tmpNetMessageData.eventData = socketData.data;
+                                NetMessageData netMsgData = new NetMessageData();
+                                netMsgData.protocol = socketData.protocal;
+                                netMsgData.eventData = socketData.data;
 
                                 //锁死消息中心消息队列，并添加数据
                                 lock (NetMessageCenter.Instance.NetMessageQueue)
                                 {
-                                    NetMessageCenter.Instance.NetMessageQueue.Enqueue(tmpNetMessageData);
+                                    NetMessageCenter.Instance.NetMessageQueue.Enqueue(netMsgData);
                                 }
                             }
                             else

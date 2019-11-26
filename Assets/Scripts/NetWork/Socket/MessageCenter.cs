@@ -70,13 +70,13 @@ public class NetMessageCenter : IManager
         {
             lock (NetMessageQueue)
             {
-                NetMessageData tmpNetMessageData = NetMessageQueue.Dequeue();
+                NetMessageData netMsgData = NetMessageQueue.Dequeue();
                 handledCnt++;
                 try
                 {
                     if (null != OnMessage)
                     {
-                        OnMessage(tmpNetMessageData.protocol,tmpNetMessageData.eventData);
+                        OnMessage(netMsgData.protocol,netMsgData.eventData);
                     }
                 }
                 catch (Exception e)
