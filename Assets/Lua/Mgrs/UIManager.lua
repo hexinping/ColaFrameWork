@@ -74,7 +74,7 @@ function UIManager:Open(UIEnum)
         GUICollections[UIEnum].Instance():Create()
         table.insert(self.uiList, GUICollections[UIEnum].Instance())
     else
-        error("要打开的界面不存在", UIEnum)
+        error("要打开的界面未在GUICollections注册或者已经打开！", UIEnum)
     end
 end
 
