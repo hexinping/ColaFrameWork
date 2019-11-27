@@ -15,6 +15,22 @@ _G.Modules = Modules
 Modules.moduleId = require("Game.Main.ModuleId")
 Modules.notifyId = require("Game.Main.NotifyId")
 
+local ModuleNameEnum = {
+    Ctrl = 1,
+    Mod = 2,
+    Util = 3,
+}
+
+local function AssemModuleName(name, moduleEnum)
+    if ModuleNameEnum.Ctrl == moduleEnum then
+        return string.format("Modules.%s.%s_Controller", name, name)
+    elseif ModuleNameEnum.Mod == moduleEnum then
+        return string.format("Modules.%s.%s_Module", name, name)
+    elseif ModuleNameEnum.Util == moduleEnum then
+        return string.format("Utilitys.%s_Utils", name)
+    end
+end
+
 -- 把要注册的工具都放在此列表里面
 local UtilList = {
     "LuaCommon",
@@ -35,7 +51,7 @@ local NornamlBootList = {
 
 -- 注册工具类
 local function RegisterUtility(name)
-    local result, utl = pcall(require, string.format("Utilitys.%s_Utils", name))
+    local result, utl = pcall(require, AssemModuleName(name, ModuleNameEnum.Util))
     if result and utl then
         Util[name] = utl
         --执行Utility的initialize初始化方法
@@ -47,13 +63,25 @@ end
 
 -- 注册Module\注册Controller
 local function InitModule(name)
-    local result, controller = pcall(require, string.format("Modules.%s.%s_Controller", name, name))
+    local result, controller = pcall(require, AssemModuleName(name, ModuleNameEnum.Ctrl))
     if result and controller then
         Ctrl[name] = controller
     end
-    local result, module = pcall(require, string.format("Modules.%s.%s_Module", name, name))
+    local result, module = pcall(require, AssemModuleName(name, ModuleNameEnum.Mod))
     if result and module then
         Mod[name] = module
+    end
+end
+
+local function ShutDownModule(name)
+    local controller = Ctrl[name]
+    if controller and controller.OnDestroy and "function" == controller.OnDestroy then
+        controller.OnDestroy()
+    end
+
+    local module = Mod[name]
+    if module and module.OnDestroy and "function" == module.OnDestroy then
+        controller.OnDestroy()
     end
 end
 
