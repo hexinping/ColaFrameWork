@@ -60,12 +60,11 @@ function Main()
 	initParam()
 	initialize()
 
-    UIManager.Instance():Open(ECEnumType.UIEnum.Loading)
-    Common_Utils.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun",function(sceneName)
-		SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_girl.prefab",AnimCtrlEnum.CharAnimator,true)
-        UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
-        EventMgr.Instance():DispatchEvent(Modules.moduleId.Common,Modules.notifyId.Common.CREATE_PANEL,ECEnumType.UIEnum.Login)
-    end)
+	UIManager.Instance():Open(ECEnumType.UIEnum.Loading)
+	Common_Utils.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun",function(sceneName)
+		EventMgr.Instance():DispatchEvent(Modules.moduleId.Common,Modules.notifyId.Common.CREATE_PANEL,ECEnumType.UIEnum.Login)
+		UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
+	end)
 end
 
 --场景切换通知

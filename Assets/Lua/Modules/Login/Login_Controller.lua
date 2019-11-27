@@ -11,17 +11,29 @@ local private = {}
 
 --- Controller模块的初始化，可以在这里做初始化和添加监听等操作
 function public.OnInit()
-    print("------------->Login Controller 启动")
+    NetManager.Register(Protocol.C2S_Login, private.OnLoginServer)
 end
 
 --- Controller模块的销毁，可以在这里做清理工作和取消监听等操作
 function public.OnDestroy()
-    print("-------------->Login Controller 关闭")
+    NetManager.UnRegister(Protocol.C2S_Login)
+end
+
+function public.RequestConnectServer()
+    NetManager.Connect("127.0.0.1","55078")
+end
+
+--- 测试请求登录服务器
+function public.RequestLoginServer()
+    NetManager.RequestSproto(Protocol.C2S_Login, { accountId = 1001, charId = 10086, userName = "Jackson" })
 end
 
 --- 测试函数如无需要可以删除
-function private.Test()
-
+function private.OnLoginServer(code, msg)
+    print("------------>成功登录游戏服务器,code is:", code, "msg is:", msg)
+    UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
+    UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
+    SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_girl.prefab", AnimCtrlEnum.CharAnimator, true)
 end
 
 return public

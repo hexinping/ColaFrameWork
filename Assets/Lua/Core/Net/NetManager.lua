@@ -124,12 +124,12 @@ end
 
 --- 连接服务器失败
 function NetManager.OnFailed()
-
+    print("-------------->链接服务器失败！")
 end
 
 --- 连接服务器超时
 function NetManager.OnTimeOut()
-
+    print("-------------->链接服务器超时！")
 end
 
 function NetManager.RequestSproto(code, msg)
