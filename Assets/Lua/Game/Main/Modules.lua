@@ -139,7 +139,22 @@ function Modules.Boot()
 end
 
 function Modules.ShutDown()
+    for _, v in ipairs(PriorityBootList) do
+        ShutDownModule(v)
+    end
+    for _, v in ipairs(NornamlBootList) do
+        ShutDownModule(v)
+    end
 
+    for k, v in pairs(Ctrl) do
+        package.loaded[AssemModuleName(k,ModuleNameEnum.Ctrl)] = nil
+        Ctrl[k] = nil
+    end
+
+    for k, v in pairs(Mod) do
+        package.loaded[AssemModuleName(k,ModuleNameEnum.Mod)] = nil
+        Mod[k] = nil
+    end
 end
 
 return Modules
