@@ -146,8 +146,8 @@ public static class CreateScriptsEditor
         string dirName = basePath.Substring(basePath.LastIndexOf(@"/") + 1);
 
         //拷贝模板文件并创建新的文件
-        string moduleFilePath = basePath + dirName + "_Module.lua";
-        string controllerFilePath = basePath + dirName + "_Controller.lua";
+        string moduleFilePath = basePath + "/" + dirName + "_Module.lua";
+        string controllerFilePath = basePath + "/" + dirName + "_Controller.lua";
         CreateCSharpScriptEndAction.CreateScriptAssetFromTemplate(moduleFilePath, LuaTemplateModulePath);
         CreateCSharpScriptEndAction.CreateScriptAssetFromTemplate(controllerFilePath, LuaTemplateControllerPath);
 
