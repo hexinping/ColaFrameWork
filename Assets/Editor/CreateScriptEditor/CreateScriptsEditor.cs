@@ -137,6 +137,24 @@ public static class CreateScriptsEditor
             null,
             templateFullPath);
     }
+
+    [MenuItem("Assets/Create/Lua/Templates(Module和Controller)", false, 95)]
+    public static void CreateLuaTemplate()
+    {
+        string basePath = GetSelectedPath();
+        //获取最后一级文件夹名，即选中的文件夹的名称
+        string dirName = basePath.Substring(basePath.LastIndexOf(@"/") + 1);
+
+        //拷贝模板文件并创建新的文件
+        string moduleFilePath = basePath + dirName + "_Module.lua";
+        string controllerFilePath = basePath + dirName + "_Controller.lua";
+        CreateCSharpScriptEndAction.CreateScriptAssetFromTemplate(moduleFilePath, LuaTemplateModulePath);
+        CreateCSharpScriptEndAction.CreateScriptAssetFromTemplate(controllerFilePath, LuaTemplateControllerPath);
+
+        //刷新资源
+        AssetDatabase.Refresh();
+    }
+
     #endregion
 }
 
