@@ -20,7 +20,9 @@ function public.OnDestroy()
 end
 
 function public.RequestConnectServer()
-    NetManager.Connect("127.0.0.1","55078")
+    NetManager.Connect("203.0.0.1","55078",function()
+        print("--------------->连接成功!")
+    end)
 end
 
 --- 测试请求登录服务器

@@ -40,6 +40,7 @@ end
 --- NetManager尝试连接服务器
 function NetManager.Connect(ip, port, callback)
     print("-------->try to connect:", ip, port)
+    Socket:Connect(ip,port)
     OnConnectedCallback = callback
 end
 
