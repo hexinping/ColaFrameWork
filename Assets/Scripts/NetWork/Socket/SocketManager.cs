@@ -91,7 +91,7 @@ namespace ColaFramework
             {
                 this.currIP = currIP;
                 this.currPort = currPort;
-                _onConnet();
+                ColaLoom.RunAsync(_onConnet);
             }
         }
 
