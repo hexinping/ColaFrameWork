@@ -34,7 +34,7 @@ namespace ColaFramework
         private static SocketManager _instance;
         private string currIP;
         private int currPort;
-        private int timeOutMilliSec = 5000;
+        private int timeOutMilliSec = 10;
         private float pingloopSec = 1.0f;
         private long pingTimerId = -1;
         private byte[] pingBytes = System.Text.Encoding.UTF8.GetBytes(AppConst.AppName);
@@ -98,6 +98,10 @@ namespace ColaFramework
         public void Close()
         {
             _close();
+            if (null != OnClose)
+            {
+                OnClose();
+            }
         }
 
         /// <summary>
@@ -133,10 +137,6 @@ namespace ColaFramework
                 clientSocket.Close();
                 clientSocket = null;
             }
-            if (null != OnClose)
-            {
-                OnClose();
-            }
         }
 
         /// <summary>
@@ -144,8 +144,7 @@ namespace ColaFramework
         /// </summary>
         private void _ReConnect()
         {
-            //停止pingServer
-            Timer.Cancel(pingTimerId);
+            _close();
             if (null != OnReConnected)
             {
                 OnReConnected();
@@ -164,6 +163,7 @@ namespace ColaFramework
                 IPEndPoint ipEndpoint = new IPEndPoint(ipAddress, currPort);
                 IAsyncResult result = clientSocket.BeginConnect(ipEndpoint, new AsyncCallback(_onConnect_Sucess), clientSocket);//异步连接
                 bool success = result.AsyncWaitHandle.WaitOne(timeOutMilliSec, true);
+                Debug.Log("------------->链接成功?" + success);
                 if (!success) //超时
                 {
                     _onConnect_Outtime();
@@ -207,11 +207,11 @@ namespace ColaFramework
         /// </summary>
         private void _onConnect_Outtime()
         {
+            _close();
             if (null != OnTimeOut)
             {
                 OnTimeOut();
             }
-            _close();
         }
 
         /// <summary>
@@ -219,11 +219,11 @@ namespace ColaFramework
         /// </summary>
         private void _onConnect_Fail()
         {
+            _close();
             if (null != OnFailed)
             {
                 OnFailed();
             }
-            _close();
         }
 
         /// <summary>
