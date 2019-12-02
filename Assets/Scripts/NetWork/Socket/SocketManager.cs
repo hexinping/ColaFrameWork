@@ -198,7 +198,7 @@ namespace ColaFramework
             }
             catch (Exception _e)
             {
-                Close();
+                _close();
             }
         }
 
