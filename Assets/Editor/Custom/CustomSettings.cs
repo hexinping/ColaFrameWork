@@ -9,6 +9,7 @@ using System.Reflection;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using ColaFramework;
+using ColaFramework.NetWork;
 
 public static class CustomSettings
 {

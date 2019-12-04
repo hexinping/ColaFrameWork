@@ -11,7 +11,7 @@ using System.Net;
 using System;
 
 
-namespace ColaFramework
+namespace ColaFramework.NetWork
 {
     /// <summary>
     /// Socket网络套接字管理器
@@ -65,6 +65,7 @@ namespace ColaFramework
         public Action OnConnected;
         public Action OnReConnected;
         public Action OnClose;
+        public Action<int> OnErrorCode;
         #endregion
 
         #region 对外基本方法
@@ -163,7 +164,6 @@ namespace ColaFramework
                 IPEndPoint ipEndpoint = new IPEndPoint(ipAddress, currPort);
                 IAsyncResult result = clientSocket.BeginConnect(ipEndpoint, new AsyncCallback(_onConnect_Sucess), clientSocket);//异步连接
                 bool success = result.AsyncWaitHandle.WaitOne(timeOutMilliSec, true);
-                Debug.Log("------------->链接成功?" + success);
                 if (!success) //超时
                 {
                     _onConnect_Outtime();
@@ -171,6 +171,9 @@ namespace ColaFramework
             }
             catch (System.Exception _e)
             {
+                if(null != OnErrorCode)
+                {
+                }
                 _onConnect_Fail();
             }
         }

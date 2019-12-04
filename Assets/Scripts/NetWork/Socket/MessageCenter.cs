@@ -8,97 +8,99 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-
-public struct NetMessageData
+namespace ColaFramework.NetWork
 {
-    public int protocol;
-    public byte[] eventData;
-}
-
-public class NetMessageCenter : IManager
-{
-    [LuaInterface.NoToLua]
-    public Queue<NetMessageData> NetMessageQueue;
-
-    [LuaInterface.LuaByteBuffer]
-    public delegate void NetMessageAction(int protocol, byte[] byteMsg);
-
-    public NetMessageAction OnMessage;
-
-    private static NetMessageCenter _instance = null;
-
-    public static NetMessageCenter Instance
+    public struct NetMessageData
     {
-        get
+        public int protocol;
+        public byte[] eventData;
+    }
+
+    public class NetMessageCenter : IManager
+    {
+        [LuaInterface.NoToLua]
+        public Queue<NetMessageData> NetMessageQueue;
+
+        [LuaInterface.LuaByteBuffer]
+        public delegate void NetMessageAction(int protocol, byte[] byteMsg);
+
+        public NetMessageAction OnMessage;
+
+        private static NetMessageCenter _instance = null;
+
+        public static NetMessageCenter Instance
         {
-            if (null == _instance)
+            get
             {
-                _instance = new NetMessageCenter();
-            }
-            return _instance;
-        }
-    }
-
-    /// <summary>
-    /// 每帧默认处理2个协议
-    /// </summary>
-    private int perHandleCnt = 3;
-
-    public float TimeSinceUpdate { get; set; }
-
-    private NetMessageCenter()
-    {
-
-    }
-
-    [LuaInterface.NoToLua]
-    public void Init()
-    {
-        NetMessageQueue = new Queue<NetMessageData>();
-    }
-
-    public void SetPerFrameHandleCnt(int value)
-    {
-        perHandleCnt = value;
-    }
-
-    [LuaInterface.NoToLua]
-    public void Update(float deltaTime)
-    {
-        int handledCnt = 0;
-        while (NetMessageQueue.Count > 0)
-        {
-            lock (NetMessageQueue)
-            {
-                NetMessageData netMsgData = NetMessageQueue.Dequeue();
-                handledCnt++;
-                try
+                if (null == _instance)
                 {
-                    if (null != OnMessage)
+                    _instance = new NetMessageCenter();
+                }
+                return _instance;
+            }
+        }
+
+        /// <summary>
+        /// 每帧默认处理2个协议
+        /// </summary>
+        private int perHandleCnt = 3;
+
+        public float TimeSinceUpdate { get; set; }
+
+        private NetMessageCenter()
+        {
+
+        }
+
+        [LuaInterface.NoToLua]
+        public void Init()
+        {
+            NetMessageQueue = new Queue<NetMessageData>();
+        }
+
+        public void SetPerFrameHandleCnt(int value)
+        {
+            perHandleCnt = value;
+        }
+
+        [LuaInterface.NoToLua]
+        public void Update(float deltaTime)
+        {
+            int handledCnt = 0;
+            while (NetMessageQueue.Count > 0)
+            {
+                lock (NetMessageQueue)
+                {
+                    NetMessageData netMsgData = NetMessageQueue.Dequeue();
+                    handledCnt++;
+                    try
                     {
-                        OnMessage(netMsgData.protocol,netMsgData.eventData);
+                        if (null != OnMessage)
+                        {
+                            OnMessage(netMsgData.protocol, netMsgData.eventData);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError("try to handle message error!" + e.ToString());
+                    }
+                    if (handledCnt >= perHandleCnt)
+                    {
+                        break;
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.LogError("try to handle message error!"+e.ToString());
-                }
-                if (handledCnt >= perHandleCnt)
-                {
-                    break;
-                }
             }
         }
-    }
 
-    [LuaInterface.NoToLua]
-    public void Dispose()
-    {
-        if (null != NetMessageQueue)
+        [LuaInterface.NoToLua]
+        public void Dispose()
         {
-            NetMessageQueue.Clear();
+            if (null != NetMessageQueue)
+            {
+                NetMessageQueue.Clear();
+            }
+            NetMessageQueue = null;
+            OnMessage = null;
         }
-        NetMessageQueue = null;
-        OnMessage = null;
     }
 }
