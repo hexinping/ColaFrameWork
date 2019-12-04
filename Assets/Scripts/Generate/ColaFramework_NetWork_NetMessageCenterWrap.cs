@@ -2,17 +2,17 @@
 using System;
 using LuaInterface;
 
-public class NetMessageCenterWrap
+public class ColaFramework_NetWork_NetMessageCenterWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(NetMessageCenter), typeof(System.Object));
+		L.BeginClass(typeof(ColaFramework.NetWork.NetMessageCenter), typeof(System.Object));
 		L.RegFunction("SetPerFrameHandleCnt", SetPerFrameHandleCnt);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("OnMessage", get_OnMessage, set_OnMessage);
 		L.RegVar("Instance", get_Instance, null);
 		L.RegVar("TimeSinceUpdate", get_TimeSinceUpdate, set_TimeSinceUpdate);
-		L.RegFunction("NetMessageAction", NetMessageCenter_NetMessageAction);
+		L.RegFunction("NetMessageAction", ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		L.EndClass();
 	}
 
@@ -22,7 +22,7 @@ public class NetMessageCenterWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			NetMessageCenter obj = (NetMessageCenter)ToLua.CheckObject<NetMessageCenter>(L, 1);
+			ColaFramework.NetWork.NetMessageCenter obj = (ColaFramework.NetWork.NetMessageCenter)ToLua.CheckObject<ColaFramework.NetWork.NetMessageCenter>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			obj.SetPerFrameHandleCnt(arg0);
 			return 0;
@@ -41,8 +41,8 @@ public class NetMessageCenterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			NetMessageCenter obj = (NetMessageCenter)o;
-			NetMessageCenter.NetMessageAction ret = obj.OnMessage;
+			ColaFramework.NetWork.NetMessageCenter obj = (ColaFramework.NetWork.NetMessageCenter)o;
+			ColaFramework.NetWork.NetMessageCenter.NetMessageAction ret = obj.OnMessage;
 			ToLua.Push(L, ret);
 			return 1;
 		}
@@ -57,7 +57,7 @@ public class NetMessageCenterWrap
 	{
 		try
 		{
-			ToLua.PushObject(L, NetMessageCenter.Instance);
+			ToLua.PushObject(L, ColaFramework.NetWork.NetMessageCenter.Instance);
 			return 1;
 		}
 		catch (Exception e)
@@ -74,7 +74,7 @@ public class NetMessageCenterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			NetMessageCenter obj = (NetMessageCenter)o;
+			ColaFramework.NetWork.NetMessageCenter obj = (ColaFramework.NetWork.NetMessageCenter)o;
 			float ret = obj.TimeSinceUpdate;
 			LuaDLL.lua_pushnumber(L, ret);
 			return 1;
@@ -93,8 +93,8 @@ public class NetMessageCenterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			NetMessageCenter obj = (NetMessageCenter)o;
-			NetMessageCenter.NetMessageAction arg0 = (NetMessageCenter.NetMessageAction)ToLua.CheckDelegate<NetMessageCenter.NetMessageAction>(L, 2);
+			ColaFramework.NetWork.NetMessageCenter obj = (ColaFramework.NetWork.NetMessageCenter)o;
+			ColaFramework.NetWork.NetMessageCenter.NetMessageAction arg0 = (ColaFramework.NetWork.NetMessageCenter.NetMessageAction)ToLua.CheckDelegate<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>(L, 2);
 			obj.OnMessage = arg0;
 			return 0;
 		}
@@ -112,7 +112,7 @@ public class NetMessageCenterWrap
 		try
 		{
 			o = ToLua.ToObject(L, 1);
-			NetMessageCenter obj = (NetMessageCenter)o;
+			ColaFramework.NetWork.NetMessageCenter obj = (ColaFramework.NetWork.NetMessageCenter)o;
 			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
 			obj.TimeSinceUpdate = arg0;
 			return 0;
@@ -124,7 +124,7 @@ public class NetMessageCenterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int NetMessageCenter_NetMessageAction(IntPtr L)
+	static int ColaFramework_NetWork_NetMessageCenter_NetMessageAction(IntPtr L)
 	{
 		try
 		{
@@ -133,13 +133,13 @@ public class NetMessageCenterWrap
 
 			if (count == 1)
 			{
-				Delegate arg1 = DelegateTraits<NetMessageCenter.NetMessageAction>.Create(func);
+				Delegate arg1 = DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Create(func);
 				ToLua.Push(L, arg1);
 			}
 			else
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
-				Delegate arg1 = DelegateTraits<NetMessageCenter.NetMessageAction>.Create(func, self);
+				Delegate arg1 = DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

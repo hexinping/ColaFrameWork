@@ -37,7 +37,7 @@ public class DelegateFactory
 		dict.Add(typeof(System.Action<string>), factory.System_Action_string);
 		dict.Add(typeof(OnSceneNameChanged), factory.OnSceneNameChanged);
 		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
-		dict.Add(typeof(NetMessageCenter.NetMessageAction), factory.NetMessageCenter_NetMessageAction);
+		dict.Add(typeof(ColaFramework.NetWork.NetMessageCenter.NetMessageAction), factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
@@ -69,7 +69,7 @@ public class DelegateFactory
 		DelegateTraits<System.Action<string>>.Init(factory.System_Action_string);
 		DelegateTraits<OnSceneNameChanged>.Init(factory.OnSceneNameChanged);
 		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
-		DelegateTraits<NetMessageCenter.NetMessageAction>.Init(factory.NetMessageCenter_NetMessageAction);
+		DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
@@ -101,7 +101,7 @@ public class DelegateFactory
 		TypeTraits<System.Action<string>>.Init(factory.Check_System_Action_string);
 		TypeTraits<OnSceneNameChanged>.Init(factory.Check_OnSceneNameChanged);
 		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
-		TypeTraits<NetMessageCenter.NetMessageAction>.Init(factory.Check_NetMessageCenter_NetMessageAction);
+		TypeTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.Check_ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
@@ -133,7 +133,7 @@ public class DelegateFactory
 		StackTraits<System.Action<string>>.Push = factory.Push_System_Action_string;
 		StackTraits<OnSceneNameChanged>.Push = factory.Push_OnSceneNameChanged;
 		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
-		StackTraits<NetMessageCenter.NetMessageAction>.Push = factory.Push_NetMessageCenter_NetMessageAction;
+		StackTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Push = factory.Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
@@ -1417,10 +1417,10 @@ public class DelegateFactory
 		ToLua.Push(L, o);
 	}
 
-	class NetMessageCenter_NetMessageAction_Event : LuaDelegate
+	class ColaFramework_NetWork_NetMessageCenter_NetMessageAction_Event : LuaDelegate
 	{
-		public NetMessageCenter_NetMessageAction_Event(LuaFunction func) : base(func) { }
-		public NetMessageCenter_NetMessageAction_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+		public ColaFramework_NetWork_NetMessageCenter_NetMessageAction_Event(LuaFunction func) : base(func) { }
+		public ColaFramework_NetWork_NetMessageCenter_NetMessageAction_Event(LuaFunction func, LuaTable self) : base(func, self) { }
 
 		public void Call(int param0, byte[] param1)
 		{
@@ -1442,36 +1442,36 @@ public class DelegateFactory
 		}
 	}
 
-	public NetMessageCenter.NetMessageAction NetMessageCenter_NetMessageAction(LuaFunction func, LuaTable self, bool flag)
+	public ColaFramework.NetWork.NetMessageCenter.NetMessageAction ColaFramework_NetWork_NetMessageCenter_NetMessageAction(LuaFunction func, LuaTable self, bool flag)
 	{
 		if (func == null)
 		{
-			NetMessageCenter.NetMessageAction fn = delegate(int param0, byte[] param1) { };
+			ColaFramework.NetWork.NetMessageCenter.NetMessageAction fn = delegate(int param0, byte[] param1) { };
 			return fn;
 		}
 
 		if(!flag)
 		{
-			NetMessageCenter_NetMessageAction_Event target = new NetMessageCenter_NetMessageAction_Event(func);
-			NetMessageCenter.NetMessageAction d = target.Call;
+			ColaFramework_NetWork_NetMessageCenter_NetMessageAction_Event target = new ColaFramework_NetWork_NetMessageCenter_NetMessageAction_Event(func);
+			ColaFramework.NetWork.NetMessageCenter.NetMessageAction d = target.Call;
 			target.method = d.Method;
 			return d;
 		}
 		else
 		{
-			NetMessageCenter_NetMessageAction_Event target = new NetMessageCenter_NetMessageAction_Event(func, self);
-			NetMessageCenter.NetMessageAction d = target.CallWithSelf;
+			ColaFramework_NetWork_NetMessageCenter_NetMessageAction_Event target = new ColaFramework_NetWork_NetMessageCenter_NetMessageAction_Event(func, self);
+			ColaFramework.NetWork.NetMessageCenter.NetMessageAction d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}
 	}
 
-	bool Check_NetMessageCenter_NetMessageAction(IntPtr L, int pos)
+	bool Check_ColaFramework_NetWork_NetMessageCenter_NetMessageAction(IntPtr L, int pos)
 	{
-		return TypeChecker.CheckDelegateType(typeof(NetMessageCenter.NetMessageAction), L, pos);
+		return TypeChecker.CheckDelegateType(typeof(ColaFramework.NetWork.NetMessageCenter.NetMessageAction), L, pos);
 	}
 
-	void Push_NetMessageCenter_NetMessageAction(IntPtr L, NetMessageCenter.NetMessageAction o)
+	void Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction(IntPtr L, ColaFramework.NetWork.NetMessageCenter.NetMessageAction o)
 	{
 		ToLua.Push(L, o);
 	}

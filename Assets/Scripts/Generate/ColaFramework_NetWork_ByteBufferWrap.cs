@@ -2,11 +2,11 @@
 using System;
 using LuaInterface;
 
-public class ColaFramework_ByteBufferWrap
+public class ColaFramework_NetWork_ByteBufferWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(ColaFramework.ByteBuffer), typeof(System.Object));
+		L.BeginClass(typeof(ColaFramework.NetWork.ByteBuffer), typeof(System.Object));
 		L.RegFunction("Close", Close);
 		L.RegFunction("WriteByte", WriteByte);
 		L.RegFunction("WriteInt", WriteInt);
@@ -35,13 +35,13 @@ public class ColaFramework_ByteBufferWrap
 		L.RegFunction("ReadBuffer", ReadBuffer);
 		L.RegFunction("ToBytes", ToBytes);
 		L.RegFunction("Flush", Flush);
-		L.RegFunction("New", _CreateColaFramework_ByteBuffer);
+		L.RegFunction("New", _CreateColaFramework_NetWork_ByteBuffer);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.EndClass();
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int _CreateColaFramework_ByteBuffer(IntPtr L)
+	static int _CreateColaFramework_NetWork_ByteBuffer(IntPtr L)
 	{
 		try
 		{
@@ -49,20 +49,20 @@ public class ColaFramework_ByteBufferWrap
 
 			if (count == 0)
 			{
-				ColaFramework.ByteBuffer obj = new ColaFramework.ByteBuffer();
+				ColaFramework.NetWork.ByteBuffer obj = new ColaFramework.NetWork.ByteBuffer();
 				ToLua.PushObject(L, obj);
 				return 1;
 			}
 			else if (count == 1)
 			{
 				byte[] arg0 = ToLua.CheckByteBuffer(L, 1);
-				ColaFramework.ByteBuffer obj = new ColaFramework.ByteBuffer(arg0);
+				ColaFramework.NetWork.ByteBuffer obj = new ColaFramework.NetWork.ByteBuffer(arg0);
 				ToLua.PushObject(L, obj);
 				return 1;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: ColaFramework.ByteBuffer.New");
+				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: ColaFramework.NetWork.ByteBuffer.New");
 			}
 		}
 		catch (Exception e)
@@ -77,7 +77,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			obj.Close();
 			return 0;
 		}
@@ -93,7 +93,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			byte arg0 = (byte)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteByte(arg0);
 			return 0;
@@ -110,7 +110,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteInt(arg0);
 			return 0;
@@ -127,7 +127,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			uint arg0 = (uint)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteuInt(arg0);
 			return 0;
@@ -144,7 +144,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			short arg0 = (short)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteShort(arg0);
 			return 0;
@@ -161,7 +161,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			ushort arg0 = (ushort)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteuShort(arg0);
 			return 0;
@@ -178,7 +178,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			long arg0 = LuaDLL.tolua_checkint64(L, 2);
 			obj.WriteLong(arg0);
 			return 0;
@@ -195,7 +195,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			ulong arg0 = LuaDLL.tolua_checkuint64(L, 2);
 			obj.WriteuLong(arg0);
 			return 0;
@@ -212,7 +212,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteFloat(arg0);
 			return 0;
@@ -229,7 +229,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			double arg0 = (double)LuaDLL.luaL_checknumber(L, 2);
 			obj.WriteDouble(arg0);
 			return 0;
@@ -246,7 +246,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 			obj.WriteBoolean(arg0);
 			return 0;
@@ -263,7 +263,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			string arg0 = ToLua.CheckString(L, 2);
 			obj.WriteString(arg0);
 			return 0;
@@ -280,7 +280,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			byte[] arg0 = ToLua.CheckByteBuffer(L, 2);
 			obj.WriteBytes(arg0);
 			return 0;
@@ -297,7 +297,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			LuaByteBuffer arg0 = new LuaByteBuffer(ToLua.CheckByteBuffer(L, 2));
 			obj.WriteBuffer(arg0);
 			return 0;
@@ -314,7 +314,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			byte o = obj.ReadByte();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
@@ -331,7 +331,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			int o = obj.ReadInt();
 			LuaDLL.lua_pushinteger(L, o);
 			return 1;
@@ -348,7 +348,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			uint o = obj.ReaduInt();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
@@ -365,7 +365,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			short o = obj.ReadShort();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
@@ -382,7 +382,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			ushort o = obj.ReaduShort();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
@@ -399,7 +399,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			long o = obj.ReadLong();
 			LuaDLL.tolua_pushint64(L, o);
 			return 1;
@@ -416,7 +416,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			ulong o = obj.ReaduLong();
 			LuaDLL.tolua_pushuint64(L, o);
 			return 1;
@@ -433,7 +433,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			float o = obj.ReadFloat();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
@@ -450,7 +450,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			double o = obj.ReadDouble();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
@@ -467,7 +467,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			string o = obj.ReadString();
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
@@ -484,7 +484,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			byte[] o = obj.ReadBytes();
 			ToLua.Push(L, o);
 			return 1;
@@ -501,7 +501,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			LuaInterface.LuaByteBuffer o = obj.ReadBuffer();
 			ToLua.Push(L, o);
 			return 1;
@@ -518,7 +518,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			byte[] o = obj.ToBytes();
 			ToLua.Push(L, o);
 			return 1;
@@ -535,7 +535,7 @@ public class ColaFramework_ByteBufferWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			ColaFramework.ByteBuffer obj = (ColaFramework.ByteBuffer)ToLua.CheckObject<ColaFramework.ByteBuffer>(L, 1);
+			ColaFramework.NetWork.ByteBuffer obj = (ColaFramework.NetWork.ByteBuffer)ToLua.CheckObject<ColaFramework.NetWork.ByteBuffer>(L, 1);
 			obj.Flush();
 			return 0;
 		}

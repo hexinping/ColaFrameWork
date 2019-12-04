@@ -24,9 +24,9 @@ public static class LuaBinder
 		AnimCtrlEnumWrap.Register(L);
 		AnimCurveNamesWrap.Register(L);
 		TouchHelperWrap.Register(L);
-		ColaFramework_ByteBufferWrap.Register(L);
-		ColaFramework_SocketManagerWrap.Register(L);
-		NetMessageCenterWrap.Register(L);
+		ColaFramework_NetWork_ByteBufferWrap.Register(L);
+		ColaFramework_NetWork_SocketManagerWrap.Register(L);
+		ColaFramework_NetWork_NetMessageCenterWrap.Register(L);
 		LuaProfilerWrap.Register(L);
 		L.RegFunction("UIEventHandler", UIEventHandler);
 		L.RegFunction("UIDragEventHandlerDetail", UIDragEventHandlerDetail);
@@ -131,8 +131,12 @@ public static class LuaBinder
 		L.RegFunction("Func_bool", System_Func_bool);
 		L.RegFunction("Action_UnityEngine_AsyncOperation", System_Action_UnityEngine_AsyncOperation);
 		L.EndModule();
+		L.BeginModule("ColaFramework");
+		L.BeginModule("NetWork");
 		L.BeginModule("NetMessageCenter");
-		L.RegFunction("NetMessageAction", NetMessageCenter_NetMessageAction);
+		L.RegFunction("NetMessageAction", ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
+		L.EndModule();
+		L.EndModule();
 		L.EndModule();
 		L.EndModule();
 		L.BeginPreLoad();
@@ -963,7 +967,7 @@ public static class LuaBinder
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int NetMessageCenter_NetMessageAction(IntPtr L)
+	static int ColaFramework_NetWork_NetMessageCenter_NetMessageAction(IntPtr L)
 	{
 		try
 		{
@@ -972,13 +976,13 @@ public static class LuaBinder
 
 			if (count == 1)
 			{
-				Delegate arg1 = DelegateTraits<NetMessageCenter.NetMessageAction>.Create(func);
+				Delegate arg1 = DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Create(func);
 				ToLua.Push(L, arg1);
 			}
 			else
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
-				Delegate arg1 = DelegateTraits<NetMessageCenter.NetMessageAction>.Create(func, self);
+				Delegate arg1 = DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;
