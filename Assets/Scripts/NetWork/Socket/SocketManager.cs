@@ -173,6 +173,7 @@ namespace ColaFramework.NetWork
             {
                 if(null != OnErrorCode)
                 {
+                    OnErrorCode((int)NetErrorEnum.BeginConnectError);
                 }
                 _onConnect_Fail();
             }
@@ -201,6 +202,10 @@ namespace ColaFramework.NetWork
             }
             catch (Exception _e)
             {
+                if (null != OnErrorCode)
+                {
+                    OnErrorCode((int)NetErrorEnum.ConnnectedError);
+                }
                 _close();
             }
         }
@@ -242,6 +247,10 @@ namespace ColaFramework.NetWork
             }
             catch (Exception e)
             {
+                if (null != OnErrorCode)
+                {
+                    OnErrorCode((int)NetErrorEnum.SendMsgError);
+                }
                 Debug.Log("send msg exception:" + e.StackTrace);
             }
         }
@@ -290,6 +299,10 @@ namespace ColaFramework.NetWork
                 }
                 catch (System.Exception e)
                 {
+                    if (null != OnErrorCode)
+                    {
+                        OnErrorCode((int)NetErrorEnum.ReceiveError);
+                    }
                     clientSocket.Disconnect(true);
                     clientSocket.Shutdown(SocketShutdown.Both);
                     clientSocket.Close();

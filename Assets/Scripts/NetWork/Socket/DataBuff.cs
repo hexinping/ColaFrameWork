@@ -24,6 +24,14 @@ namespace ColaFramework.NetWork
         public static readonly int PING_PROTO_CODE = 1; //ping protocol的id
     }
 
+    public enum NetErrorEnum
+    {
+        BeginConnectError = 1,
+        ConnnectedError = 2,
+        SendMsgError = 3,
+        ReceiveError = 4,
+    }
+
     /// <summary>
     /// 网络数据结构
     /// </summary>
