@@ -33,6 +33,7 @@ function NetManager.Initialize()
     Socket.OnClose = NetManager.OnClosed
     Socket.OnFailed = NetManager.OnFailed
     Socket.OnTimeOut = NetManager.OnTimeOut
+    Socket.OnErrorCode = NetManager.OnErrorCode
     NetMessageCenter.Instance.OnMessage = NetManager.OnMessage
     -- TODO:配置网络加密等
 end
@@ -40,7 +41,7 @@ end
 --- NetManager尝试连接服务器
 function NetManager.Connect(ip, port, callback)
     print("-------->try to connect:", ip, port)
-    Socket:Connect(ip,port)
+    Socket:Connect(ip, port)
     OnConnectedCallback = callback
 end
 
@@ -131,6 +132,10 @@ end
 --- 连接服务器超时
 function NetManager.OnTimeOut()
     print("-------------->链接服务器超时！")
+end
+
+function NetManager.OnErrorCode(errorCode)
+    print("------->出现错误：错误码：" + errorCode)
 end
 
 function NetManager.RequestSproto(code, msg)
