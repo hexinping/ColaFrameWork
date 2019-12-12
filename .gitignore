@@ -298,3 +298,5 @@ Library/
 Temp/
 /*.sln
 /*.csproj
+Sirenix/
+Sirenix.meta
