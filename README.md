@@ -36,8 +36,8 @@ ColaFramework 一款简洁的MVC架构的测试性Unity客户端框架。目前�
 ColaFramework框架提供了CSV版本和原生lua版本的数据配置表管理，可以根据自己的实际需要进行选择。  
 详情请见[数据配置表管理Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/%E6%95%B0%E6%8D%AE%E9%85%8D%E7%BD%AE%E8%A1%A8%E7%AE%A1%E7%90%86)  
 
-#### 事件/消息处理中心(Controller层)    
-框架支持C#版和Lua版两套消息监听与派发机制，用来充当普通的Controller层，用于V和M的解耦等操作。具体的实现原理和用法可以看以下这篇博客：  
+#### 事件/消息处理中心
+框架支持C#版和Lua版两套消息监听与派发机制，可以派发消息，用于V、M和C之间的解耦和消息监听等操作。具体的实现原理和用法可以看以下这篇博客：  
 [【Unity游戏开发】用C#和Lua实现Unity中的事件分发机制EventDispatcher](https://www.cnblogs.com/msxh/p/9539231.html)  
 
 #### UI框架(View层)   
@@ -49,7 +49,7 @@ ColaFramework框架提供了CSV版本和原生lua版本的数据配置表管理�
 ColaFrameWork框架在UI开发方面提供了编辑器拓展。通过编辑器可以快速通过模版创建新的UIView类、Module类。也可以新建新的UI模版，支持C#和Lua模板。   
 详见[Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/%E5%9C%A8ColaFramework%E6%A1%86%E6%9E%B6%E4%B8%AD%E9%80%9A%E8%BF%87%E7%BC%96%E8%BE%91%E5%99%A8%E6%8F%90%E9%AB%98UI%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87)  
 
-#### SubSys系统框架(Module层)  
+#### 系统框架(Module层)  
 Module的基类为ModuleBase，游戏内所有的系统的业务逻辑层均继承自该类。框架采用厚Module类型的MVC结构，弱化了C层的作用，强化了M层。游戏中的业务逻辑大部分都放在M层进行处理处理。M层负责处理业务逻辑、监听网络消息、请求网络消息、派发事件通知其他模块或者UI等更新。M层不应该了解View层的存在，不可以直接调用View层，应该通过消息机制通知View做出动作。
 
 #### 组件与实体获取  
