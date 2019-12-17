@@ -84,7 +84,8 @@ ColaFramework框架提供了LogCat日志控制台拓展，通过它开发者可�
 ColaFramework框架提供了Editor Console Pro插件，功能比原生的Console强大一些。点击错误信息会打开代码编辑器，并在编辑器中高亮显示出错的代码片段。虽然Unity自带的控制台已经可以满足一些常用需求，但结合一些高级功能会更加有助于项目调试，例如直接在控制台显示代码所在位置并且高亮。一个很重要的区别是：在Editor Console Pro中，出错的源代码会被直接显示在窗口中，一目了然，方便开发者直接定位出错的地方。更多介绍可以看这个文档: [Unity插件推荐Editor Console Pro](https://blog.csdn.net/wwlcsdn000/article/details/80542607)  
 
 #### 网络通信与协议  
-待补充  
+框架采用TCP网络连接，协议采用的是sproto协议，C#层封装了相关API，Lua层负责调用接口和注册回调，C#中主要是SocketManger和MessageCenter这两个类。SocketManger主要封装了网络的连接、断开、消息的发送与接收。
+MessageCenter相当于一个网络消息缓存中心，用于分帧处理网络消息并抛到Lua层执行对应的handle函数。
 
 #### 寻路系统  
 ColaFramework框架目前集成了AStar、Recast两种寻路系统。  
