@@ -616,5 +616,73 @@ public static class CommonHelper
         return null;
     }
 
+    /// <summary>
+    /// 取得数据存放目录
+    /// </summary>
+    public static string DataPath
+    {
+        get
+        {
+            string game = AppConst.AppName.ToLower();
+            if (Application.isMobilePlatform)
+            {
+                return Application.persistentDataPath + "/" + game + "/";
+            }
+            if (AppConst.DebugMode)
+            {
+                return Application.dataPath + "/" + AppConst.AssetDir + "/";
+            }
+            if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                int i = Application.dataPath.LastIndexOf('/');
+                return Application.dataPath.Substring(0, i + 1) + game + "/";
+            }
+            return "c:/" + game + "/";
+        }
+    }
+
+    /// <summary>
+    /// 网络可用
+    /// </summary>
+    public static bool NetAvailable
+    {
+        get
+        {
+            return Application.internetReachability != NetworkReachability.NotReachable;
+        }
+    }
+
+    /// <summary>
+    /// 是否是无线
+    /// </summary>
+    public static bool IsWifi
+    {
+        get
+        {
+            return Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
+        }
+    }
+
+    /// <summary>
+    /// 应用程序内容路径
+    /// </summary>
+    public static string AppContentPath()
+    {
+        string path = string.Empty;
+        switch (Application.platform)
+        {
+            case RuntimePlatform.Android:
+                path = "jar:file://" + Application.dataPath + "!/assets/";
+                break;
+            case RuntimePlatform.IPhonePlayer:
+                path = Application.dataPath + "/Raw/";
+                break;
+            default:
+                path = Application.dataPath + "/" + AppConst.AssetDir + "/";
+                break;
+        }
+        return path;
+    }
+
 }
 

@@ -25,6 +25,7 @@ using UnityEngine;
 using LuaInterface;
 using System.IO;
 using System.Text;
+using ColaFramework;
 
 
 /// <summary>
@@ -35,9 +36,15 @@ public class LuaResLoader : LuaFileUtils
     public LuaResLoader()
     {
         instance = this;
-        beZip = false;
+        beZip = AppConst.LuaBundleMode;
     }
 
+    /// <summary>
+    /// 当LuaVM加载Lua文件的时候，这里就会被调用，
+    /// 用户可以自定义加载行为，只要返回byte[]即可。
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
     public override byte[] ReadFile(string fileName)
     {
 #if !UNITY_EDITOR
@@ -143,5 +150,27 @@ public class LuaResLoader : LuaFileUtils
         }
 
         return null;
+    }
+
+
+    /// <summary>
+    /// 添加打入Lua代码的AssetBundle
+    /// </summary>
+    /// <param name="bundle"></param>
+    public void AddBundle(string bundleName)
+    {
+        string url = CommonHelper.DataPath + bundleName.ToLower();
+        if (File.Exists(url))
+        {
+            var bytes = File.ReadAllBytes(url);
+            // 已注释, CreateFromMemoryImmediate从5.3开始改为LoadFromMemory,需要用的请自行取消注释~
+            // AssetBundle bundle = AssetBundle.CreateFromMemoryImmediate(bytes);
+            AssetBundle bundle = AssetBundle.LoadFromMemory(bytes);
+            if (bundle != null)
+            {
+                bundleName = bundleName.Replace("lua/", "").Replace(".unity3d", "");
+                base.AddSearchBundle(bundleName.ToLower(), bundle);
+            }
+        }
     }
 }
