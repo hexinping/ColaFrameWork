@@ -20,12 +20,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 //优先读取persistentDataPath/系统/Lua 目录下的文件（默认下载目录）
-//未找到文件怎读取 Resources/Lua 目录下文件（仍没有使用LuaFileUtil读取）
+//未找到文件再去读取StreamingAsset目录下的lua文件
 using UnityEngine;
 using LuaInterface;
 using System.IO;
 using System.Text;
 
+
+/// <summary>
+/// 继承自LuaFileUtils 重写里面的ReadFile
+/// </summary>
 public class LuaResLoader : LuaFileUtils
 {
     public LuaResLoader()

@@ -20,15 +20,15 @@ namespace ColaFramework
         /// </summary>
         public const bool UpdateMode = false;                       //更新模式-默认关闭 
         public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
-        public const bool LuaBundleMode = true;                    //Lua代码AssetBundle模式
+        public const bool LuaBundleMode = false;                    //Lua代码AssetBundle模式
 
         public const int GameFrameRate = 30;                        //游戏帧频
 
         public const string AppName = "ColaFramework";               //应用程序名称
         public const string LuaTempDir = "Lua/";                    //临时目录
         public const string AppPrefix = AppName + "_";              //应用程序前缀
-        public const string ExtName = ".u3d";                   //素材扩展名
-        public const string AssetDir = "StreamingAssets";           //素材目录 
+        public const string ExtName = ".cab";                   //AssetBundle的扩展名
+        public const string AssetDir = "StreamingAssets";           
         public const string WebUrl = "http://localhost:6688/";      //测试更新地址
 
         /// <summary>
