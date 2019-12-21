@@ -72,7 +72,7 @@ namespace ColaFramework
 
             if (GUI.Button(GCBtnPosition, "GC"))
             {
-                CommonHelper.ResourcesClearAndGC();
+                CommonHelper.ClearMemory();
             }
             if (fps > 50)
             {

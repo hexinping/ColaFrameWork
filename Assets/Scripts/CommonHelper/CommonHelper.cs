@@ -35,6 +35,8 @@ public static class CommonHelper
         }
     }
 
+    #endregion
+
     /// <summary>
     /// 通过ID获取国际化文字
     /// </summary>
@@ -546,7 +548,7 @@ public static class CommonHelper
     /// <summary>
     /// 资源清理和垃圾回收
     /// </summary>
-    public static void ResourcesClearAndGC()
+    public static void ClearMemory()
     {
         Resources.UnloadUnusedAssets();
         GC.Collect();

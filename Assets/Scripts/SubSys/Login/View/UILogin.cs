@@ -90,7 +90,7 @@ public class UILogin : UIBase
         {
             Debug.LogWarning("点击了OK按钮！");
             //TODO: 测试视频下载
-            var path = Path.Combine(CommonHelper.GetAssetPath(), "Videos.mp4");
+            var path = Path.Combine(CommonHelper.AssetPath, "Videos.mp4");
             //var testUrl = @"http://vjs.zencdn.net/v/oceans.mp4";
             var testUrl = @"http://vjs.zencdn.net/v/oceans.mp4" + "?" + DateTime.Now;
             Debug.LogWarning("-------------->视频网络资源地址" + testUrl);

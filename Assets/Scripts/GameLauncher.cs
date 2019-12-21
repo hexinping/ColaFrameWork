@@ -47,7 +47,6 @@ public class GameLauncher : MonoBehaviour
     void Awake()
     {
         instance = this;
-        InitPath();
         gameManager = GameManager.Instance;
         DOTween.Init();
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -229,14 +228,6 @@ public class GameLauncher : MonoBehaviour
         gameManager.InitGameCore(gameObject);
     }
 #endif
-
-    /// <summary>
-    /// 初始化一些路径
-    /// </summary>
-    private void InitPath()
-    {
-        assetPath = CommonHelper.GetAssetPath();
-    }
 
 
     public void DelayInvokeNextFrame(System.Action action)

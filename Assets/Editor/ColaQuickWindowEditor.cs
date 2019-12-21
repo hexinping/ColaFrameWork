@@ -101,11 +101,11 @@ public class ColaQuickWindowEditor : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("打开AssetPath目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            ColaEditHelper.OpenDirectory(CommonHelper.GetAssetPath());
+            ColaEditHelper.OpenDirectory(CommonHelper.AssetPath);
         }
         if (GUILayout.Button("打开GameLog文件目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            ColaEditHelper.OpenDirectory(Path.Combine(CommonHelper.GetAssetPath(), "logs"));
+            ColaEditHelper.OpenDirectory(Path.Combine(CommonHelper.AssetPath, "logs"));
         }
         GUILayout.EndHorizontal();
     }

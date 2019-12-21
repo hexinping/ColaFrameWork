@@ -476,7 +476,7 @@ public static class Common_Utils
     /// <returns></returns>
     public static string GetAssetPath()
     {
-        return CommonHelper.GetAssetPath();
+        return CommonHelper.AssetPath;
     }
 
     /// <summary>

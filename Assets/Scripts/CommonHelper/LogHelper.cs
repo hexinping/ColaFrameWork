@@ -37,7 +37,7 @@ namespace ColaFramework
 
         private void Awake()
         {
-            outputPath = Path.Combine(CommonHelper.GetAssetPath(), "logs");
+            outputPath = Path.Combine(CommonHelper.AssetPath, "logs");
             filePath = Path.Combine(outputPath, fileName);
             if (!Directory.Exists(outputPath))
             {
