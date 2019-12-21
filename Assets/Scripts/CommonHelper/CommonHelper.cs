@@ -27,18 +27,13 @@ public static class CommonHelper
     /// <summary>
     /// 资源可读写路径
     /// </summary>
-    private static string assetPath = "";
-
-#if UNITY_STANDALONE
-    public static string osDir = "Win";
-#elif UNITY_ANDROID
-    public static string osDir = "Android";
-#elif UNITY_IPHONE
-    public static string osDir = "iOS";        
-#else
-    public static string osDir = "";        
-#endif
-    #endregion
+    public static string AssetPath
+    {
+        get
+        {
+            return Application.persistentDataPath;
+        }
+    }
 
     /// <summary>
     /// 通过ID获取国际化文字
@@ -358,23 +353,6 @@ public static class CommonHelper
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,
             gameCamera.WorldToScreenPoint(worldPos), canvas.worldCamera, out pos);
         return pos;
-    }
-
-    /// <summary>
-    /// 获取资源路径(可读写)
-    /// </summary>
-    /// <returns></returns>
-    public static string GetAssetPath()
-    {
-        if (string.IsNullOrEmpty(assetPath))
-        {
-#if !UNITY_EDITOR && UNITY_IOS
-            assetPath = string.Format("{0}/{1}", Application.temporaryCachePath, osDir);
-#else
-            assetPath = string.Format("{0}/{1}", Application.persistentDataPath, osDir);
-#endif
-        }
-        return assetPath;
     }
 
     /// <summary>
