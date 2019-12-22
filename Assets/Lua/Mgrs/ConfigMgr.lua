@@ -7,7 +7,7 @@
 local ConfigMgr = Class("ConfigMgr")
 
 -- 数据配置文件的路径
-local cfgPath = Util.LuaCommon.LuaDir .. "/LuaConfigs/%s.lua"
+local cfgPath = "LuaConfigs/%s.lua"
 
 
 --实例对象
