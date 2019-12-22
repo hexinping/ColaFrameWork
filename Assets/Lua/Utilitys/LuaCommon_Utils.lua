@@ -7,10 +7,6 @@
 local LuaCommon_Utils = Class("LuaCommon_Utils")
 
 LuaCommon_Utils._instance = nil
--- 可读写的路径
-LuaCommon_Utils.AssetPath = ""
--- lua脚本的根目录
-LuaCommon_Utils.LuaDir = UnityEngine.Application.dataPath .. "/Lua"
 
 -- override 初始化各种数据
 function LuaCommon_Utils.initialize()
@@ -35,14 +31,6 @@ function LuaCommon_Utils.InstantiateGoByPathAsync(id, parent, callback)
         error("ResPathConfig表中未配置" .. id)
         return
     end
-end
-
-function LuaCommon_Utils.GetResourceByPath(path, type)
-    return Common_Utils.Load(path, type)
-end
-
-function LuaCommon_Utils.GetResourceByPathAsync(path, type, callback)
-    return Common_Utils.LoadAsync(path, type, callback)
 end
 
 function LuaCommon_Utils.GetResourceById(id, type)
