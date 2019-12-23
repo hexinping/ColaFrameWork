@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using ColaFramework.Foundation;
 
 /// <summary>
 /// ColaFramework 编辑器助手类
@@ -39,96 +40,10 @@ public class ColaEditHelper
     /// </summary>
     public static void BuildLuaToStreamingAsset()
     {
-        RmDir(LuaConst.streamingAssetLua);
-        CopyDir(LuaConst.toluaDir, LuaConst.streamingAssetLua);
-        CopyDir(LuaConst.luaDir, LuaConst.streamingAssetLua);
+        FileHelper.RmDir(LuaConst.streamingAssetLua);
+        FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.streamingAssetLua);
+        FileHelper.CopyDir(LuaConst.luaDir, LuaConst.streamingAssetLua);
         AssetDatabase.Refresh();
-    }
-
-    /// <summary>
-    /// 创建目录
-    /// </summary>
-    /// <param name="path"></param> 路径
-    /// <param name="isOverride"></param> 是否覆盖原有同名目录
-    public static void Mkdir(string path, bool isOverride = false)
-    {
-        if (string.IsNullOrEmpty(path))
-        {
-            return;
-        }
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
-        else if(Directory.Exists(path) && isOverride)
-        {
-            Directory.Delete(path, true);
-            Directory.CreateDirectory(path);
-        }
-    }
-
-    /// <summary>
-    /// 删除目录
-    /// </summary>
-    /// <param name="path"></param>
-    public static void RmDir(string path)
-    {
-        if (string.IsNullOrEmpty(path))
-        {
-            return;
-        }
-        if (Directory.Exists(path))
-        {
-            Directory.Delete(path, true);
-        }
-    }
-
-    public static void CopyDir(string srcPath, string destPath)
-    {
-        if(string.IsNullOrEmpty(srcPath) || string.IsNullOrEmpty(destPath))
-        {
-            return;
-        }
-        Mkdir(destPath);
-        DirectoryInfo sDir = new DirectoryInfo(srcPath);
-        FileInfo[] fileArray = sDir.GetFiles();
-        foreach (FileInfo file in fileArray)
-        {
-            if (file.Extension != ".meta")
-                file.CopyTo(destPath + "/" + file.Name, true);
-        }
-        //递归复制子文件夹
-        DirectoryInfo[] subDirArray = sDir.GetDirectories();
-        foreach (DirectoryInfo subDir in subDirArray)
-        {
-            if(subDir.Name != ".idea")
-            {
-                CopyDir(subDir.FullName, destPath + "/" + subDir.Name);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 清空目录下内容
-    /// </summary>
-    /// <param name="path"></param>
-    public static void ClearDir(string path)
-    {
-        if (string.IsNullOrEmpty(path))
-        {
-            return;
-        }
-        DirectoryInfo sDir = new DirectoryInfo(path);
-        FileInfo[] fileArray = sDir.GetFiles();
-        foreach (FileInfo file in fileArray)
-        {
-            file.Delete();
-        }
-        DirectoryInfo[] subDirArray = sDir.GetDirectories();
-        foreach (DirectoryInfo subDir in subDirArray)
-        {
-            subDir.Delete(true);
-        }
     }
 }
 

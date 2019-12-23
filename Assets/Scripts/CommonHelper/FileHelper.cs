@@ -7,8 +7,11 @@ using System;
 using System.IO;
 using System.Text;
 using System.Security.Cryptography;
+using UnityEngine;
+using System.Collections.Generic;
 
-namespace ColaFramework
+
+namespace ColaFramework.Foundation
 {
     /// <summary>
     /// 文件\目录操作助手类
@@ -21,19 +24,197 @@ namespace ColaFramework
         private static readonly UTF8Encoding UTF8EnCode = new UTF8Encoding(false);
 
         /// <summary>
-        /// 创建一个目录
+        /// 文件是否存在
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool IsFileExist(string path)
+        {
+            return File.Exists(path);
+        }
+
+        /// <summary>
+        /// 目录是否存在
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool IsDirectoryExist(string path)
+        {
+            return Directory.Exists(path);
+        }
+
+        public static string CurrentDirectory
+        {
+            get { return System.Environment.CurrentDirectory; }
+        }
+
+        public static long GetFileSize(string path)
+        {
+            System.IO.FileInfo info = new System.IO.FileInfo(path);
+            return info.Length;
+        }
+
+        /// <summary>
+        /// 获取所有子文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="suffix"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        public static string[] GetAllChildFiles(string path, string suffix = "", SearchOption option = SearchOption.AllDirectories)
+        {
+            string strPattner = "*";
+            if (suffix.Length > 0 && suffix[0] != '.')
+            {
+                strPattner += "." + suffix;
+            }
+            else
+            {
+                strPattner += suffix;
+            }
+
+            string[] files = Directory.GetFiles(path, strPattner, option);
+
+            return files;
+        }
+
+        public static void DeleteFile(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
+        }
+
+        // 删除delPath目录中 不存在于srcPath中的文件
+        public static void RidOfUnNecessaryFile(string srcPath, string checkPath)
+        {
+            Debug.LogFormat("RidOfUnNecessaryFile, srcPath:{0}, checkPath:{1}", srcPath, checkPath);
+            if (!Directory.Exists(checkPath))
+            {
+                Debug.Log("目标路径不存在");
+                return;
+            }
+            if (!Directory.Exists(srcPath))
+            {
+                Debug.Log("参考路径不存在，删除目标路径整个目录");
+                RmDir(checkPath);
+                Mkdir(checkPath);
+                return;
+            }
+
+
+            string[] allSrcFiles = Directory.GetFiles(srcPath);
+            string[] allCheckFiles = Directory.GetFiles(checkPath);
+            Dictionary<string, bool> dicSrcFiles = new Dictionary<string, bool>();
+            for (int i = 0; i < allSrcFiles.Length; i++)
+            {
+                string strFile = Path.GetFileName(allSrcFiles[i]);
+                dicSrcFiles.Add(strFile, true);
+            }
+            for (int i = 0; i < allCheckFiles.Length; i++)
+            {
+                string strFile = allCheckFiles[i];
+                string filename = Path.GetFileName(strFile);
+                if (!dicSrcFiles.ContainsKey(filename))
+                {
+                    Debug.LogFormat("删除多余文件：{0}", strFile);
+                    DeleteFile(strFile);
+                }
+            }
+            Debug.Log("清除完成！");
+        }
+
+        /// <summary>
+        /// 创建目录
         /// </summary>
         /// <param name="path"></param> 路径
-        /// <param name="isContainFileName"></param> 路径中是否包含文件名
-        public static void MkDir(string path, bool isContainFileName = true)
+        /// <param name="isOverride"></param> 是否覆盖原有同名目录
+        public static void Mkdir(string path, bool isOverride = false)
         {
-            if (isContainFileName)
+            if (string.IsNullOrEmpty(path))
             {
-                path = Path.GetDirectoryName(path);
+                return;
             }
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
+            }
+            else if (Directory.Exists(path) && isOverride)
+            {
+                Directory.Delete(path, true);
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        /// <summary>
+        /// 删除目录
+        /// </summary>
+        /// <param name="path"></param>
+        public static void RmDir(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+        }
+
+        public static void CopyDir(string srcPath, string destPath)
+        {
+            if (string.IsNullOrEmpty(srcPath) || string.IsNullOrEmpty(destPath))
+            {
+                return;
+            }
+            Mkdir(destPath);
+            DirectoryInfo sDir = new DirectoryInfo(srcPath);
+            FileInfo[] fileArray = sDir.GetFiles();
+            foreach (FileInfo file in fileArray)
+            {
+                if (file.Extension != ".meta")
+                    file.CopyTo(destPath + "/" + file.Name, true);
+            }
+            //递归复制子文件夹
+            DirectoryInfo[] subDirArray = sDir.GetDirectories();
+            foreach (DirectoryInfo subDir in subDirArray)
+            {
+                if (subDir.Name != ".idea")
+                {
+                    CopyDir(subDir.FullName, destPath + "/" + subDir.Name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 清空目录下内容
+        /// </summary>
+        /// <param name="path"></param>
+        public static void ClearDir(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+            DirectoryInfo sDir = new DirectoryInfo(path);
+            FileInfo[] fileArray = sDir.GetFiles();
+            foreach (FileInfo file in fileArray)
+            {
+                file.Delete();
+            }
+            DirectoryInfo[] subDirArray = sDir.GetDirectories();
+            foreach (DirectoryInfo subDir in subDirArray)
+            {
+                subDir.Delete(true);
             }
         }
 
@@ -45,7 +226,7 @@ namespace ColaFramework
         /// <param name="isOverwrite"></param>
         public static void CopyFile(string orginPath, string destPath, bool isOverwrite)
         {
-            MkDir(destPath);
+            Mkdir(destPath);
             File.Copy(orginPath, destPath, isOverwrite);
         }
 
@@ -84,7 +265,7 @@ namespace ColaFramework
         /// <param name="content"></param>
         public static void WriteBytes(string filePath, byte[] content)
         {
-            MkDir(filePath);
+            EnsureParentDirExist(filePath);
             File.WriteAllBytes(filePath, content);
         }
 
@@ -95,10 +276,26 @@ namespace ColaFramework
         /// <param name="content"></param>
         public static void WriteString(string filePath, string content)
         {
-            MkDir(filePath);
+            EnsureParentDirExist(filePath);
             File.WriteAllText(filePath, content.Replace(Environment.NewLine, "\n"), UTF8EnCode);
         }
 
+        static void EnsureParentDirExist(string path)
+        {
+            var dir = Path.GetDirectoryName(path);
+            var parents = new Queue<string>();
+            while (!Directory.Exists(dir))
+            {
+                parents.Enqueue(dir);
+                dir = Path.GetDirectoryName(dir);
+            }
+            while (parents.Count > 0)
+            {
+                Directory.CreateDirectory(parents.Dequeue());
+            }
+        }
+
+        #region 文件读Md5相关
         /// <summary>
         /// 对指定路径的文件进行生成MD5码
         /// </summary>
@@ -125,5 +322,78 @@ namespace ColaFramework
             MD5 md5 = new MD5CryptoServiceProvider();
             return BitConverter.ToString(md5.ComputeHash(buffer)).Replace("-", "").ToLower();
         }
+
+        //public static string GenABFileListMd5String(List<ABFileInfo> files)
+        //{
+        //    string text = "";
+        //    for (int i = 0; i < files.Count; ++i)
+        //    {
+        //        ABFileInfo info = files[i];
+        //        text += string.Format("{0}:{1}:{2}:{3}\n", info.filename, info.md5, info.rawSize, info.compressSize);
+        //    }
+
+        //    return text;
+        //}
+        //public static string GenABFileDicMd5String(Dictionary<string, ABFileInfo> files)
+        //{
+        //    string text = "";
+        //    foreach (var item in files)
+        //    {
+        //        ABFileInfo info = item.Value;
+        //        text += string.Format("{0}:{1}:{2}:{3}\n", info.filename, info.md5, info.rawSize, info.compressSize);
+        //    }
+
+        //    return text;
+        //}
+        //public static Dictionary<string, ABFileInfo> ReadAbMD5Info(string path)
+        //{
+        //    string text = FileHelper.ReadTextFromFile(path);
+        //    return ReadABMD5FromText(text);
+        //}
+
+        //public static Dictionary<string, ABFileInfo> ReadABMD5FromText(string text)
+        //{
+        //    Dictionary<string, ABFileInfo> datas = new Dictionary<string, ABFileInfo>();
+        //    string[] md5s = text.Split(new[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+        //    for (int i = 0; i < md5s.Length; ++i)
+        //    {
+        //        string[] temp = md5s[i].Split(new[] { ":" }, System.StringSplitOptions.RemoveEmptyEntries);
+        //        if (temp.Length == 4)
+        //        {
+        //            ABFileInfo abInfo = new ABFileInfo();
+        //            abInfo.filename = temp[0];
+        //            abInfo.md5 = temp[1];
+        //            abInfo.rawSize = int.Parse(temp[2]);
+        //            abInfo.compressSize = int.Parse(temp[3]);
+        //            datas.Add(temp[0], abInfo);
+        //        }
+        //    }
+        //    return datas;
+        //}
+
+        ////读取 文件名:md5 格式md5信息列表
+        //public static Dictionary<string, string> ReadMD5Info(string path)
+        //{
+        //    string text = FileHelper.ReadTextFromFile(path);
+        //    return ReadMD5FromText(text);
+        //}
+
+        //public static Dictionary<string, string> ReadMD5FromText(string text)
+        //{
+        //    Dictionary<string, string> datas = new Dictionary<string, string>();
+        //    string[] md5s = text.Split(new[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+        //    for (int i = 0; i < md5s.Length; ++i)
+        //    {
+        //        string[] temp = md5s[i].Split(new[] { ":" }, System.StringSplitOptions.RemoveEmptyEntries);
+        //        if (temp.Length == 2)
+        //        {
+        //            datas.Add(temp[0], temp[1]);
+        //        }
+        //    }
+        //    return datas;
+        //}
+        #endregion
     }
 }
