@@ -7,6 +7,8 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 using UnityEditor;
+using ColaFramework;
+using ColaFramework.Foundation;
 
 public class ColaQuickWindowEditor : EditorWindow
 {
@@ -119,6 +121,24 @@ public class ColaQuickWindowEditor : EditorWindow
         if (GUILayout.Button("Build Lua To StreamingAsset", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             ColaEditHelper.BuildLuaToStreamingAsset();
+        }
+        if (GUILayout.Button("Zip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            var result = ZipHelper.Zip(LuaConst.luaDir, Path.Combine(Application.dataPath, "../output/luaout.zip"));
+            Debug.Log("------------>压缩结果:" + result);
+        }
+        if (GUILayout.Button("UnZip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            var filePath = Path.Combine(Application.dataPath, "../output/luaout.zip");
+            if (File.Exists(filePath))
+            {
+                var result = ZipHelper.UnZip(filePath, Path.Combine(Application.dataPath, "../output"));
+                Debug.Log("------------>压缩结果:" + result);
+            }
+            else
+            {
+                Debug.LogError("解压错误！要解压的文件不存在！路径:" + filePath);
+            }
         }
         GUILayout.EndHorizontal();
     }
