@@ -2,13 +2,41 @@
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace ColaFramework.Foundation
 {
     public class ZipHelper
     {
-        private string rootPath = string.Empty;
+        private static string rootPath = string.Empty;
+        //private static List<string> skipList = new List<string>()
+        //{
+        //    ".idea",
+        //};
 
+        #region 校验
+
+        /// <summary>
+        /// 是否需要跳过不导出
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        //private static bool isExportSkip(string path)
+        //{
+        //    bool result = false;
+        //    foreach(var item in skipList)
+        //    {
+        //        if (path.Contains(item))
+        //        {
+        //            result = true;
+        //            break;
+        //        }
+        //    }
+        //    return result;
+        //}
+
+        #endregion
         #region 压缩  
 
         /// <summary>   
@@ -18,8 +46,12 @@ namespace ColaFramework.Foundation
         /// <param name="zipStream">压缩输出流</param>   
         /// <param name="parentFolderName">此文件夹的上级文件夹</param>   
         /// <returns></returns>   
-        private bool ZipDirectory(string folderToZip, ZipOutputStream zipStream, string parentFolderName)
+        private static bool ZipDirectory(string folderToZip, ZipOutputStream zipStream, string parentFolderName)
         {
+            //if (isExportSkip(folderToZip))
+            //{
+            //    return true;
+            //}
             bool result = true;
             string[] folders, files;
             ZipEntry ent = null;
@@ -28,7 +60,7 @@ namespace ColaFramework.Foundation
 
             try
             {
-                string entName = folderToZip.Replace(this.rootPath, string.Empty) + "/";
+                string entName = folderToZip.Replace(rootPath, string.Empty) + "/";
                 //Path.Combine(parentFolderName, Path.GetFileName(folderToZip) + "/")
                 ent = new ZipEntry(entName);
                 zipStream.PutNextEntry(ent);
@@ -56,8 +88,9 @@ namespace ColaFramework.Foundation
                 }
 
             }
-            catch
+            catch(Exception e)
             {
+                Debug.LogError("ZipDirectory 失败！路径为：" + folderToZip + "失败原因:" + e.ToString());
                 result = false;
             }
             finally
@@ -90,7 +123,7 @@ namespace ColaFramework.Foundation
         /// <param name="zipedFile">压缩文件完整路径</param>   
         /// <param name="password">密码</param>   
         /// <returns>是否压缩成功</returns>   
-        public bool ZipDirectory(string folderToZip, string zipedFile, string password)
+        public static bool ZipDirectory(string folderToZip, string zipedFile, string password)
         {
             bool result = false;
             if (!Directory.Exists(folderToZip))
@@ -114,7 +147,7 @@ namespace ColaFramework.Foundation
         /// <param name="folderToZip">要压缩的文件夹路径</param>   
         /// <param name="zipedFile">压缩文件完整路径</param>   
         /// <returns>是否压缩成功</returns>   
-        public bool ZipDirectory(string folderToZip, string zipedFile)
+        public static bool ZipDirectory(string folderToZip, string zipedFile)
         {
             bool result = ZipDirectory(folderToZip, zipedFile, null);
             return result;
@@ -127,7 +160,7 @@ namespace ColaFramework.Foundation
         /// <param name="zipedFile">压缩后的文件名</param>   
         /// <param name="password">密码</param>   
         /// <returns>压缩结果</returns>   
-        public bool ZipFile(string fileToZip, string zipedFile, string password)
+        public static bool ZipFile(string fileToZip, string zipedFile, string password)
         {
             bool result = true;
             ZipOutputStream zipStream = null;
@@ -187,7 +220,7 @@ namespace ColaFramework.Foundation
         /// <param name="fileToZip">要压缩的文件全名</param>   
         /// <param name="zipedFile">压缩后的文件名</param>   
         /// <returns>压缩结果</returns>   
-        public bool ZipFile(string fileToZip, string zipedFile)
+        public static bool ZipFile(string fileToZip, string zipedFile)
         {
             bool result = ZipFile(fileToZip, zipedFile, null);
             return result;
@@ -200,17 +233,17 @@ namespace ColaFramework.Foundation
         /// <param name="zipedFile">压缩后的文件名</param>   
         /// <param name="password">密码</param>   
         /// <returns>压缩结果</returns>   
-        public bool Zip(string fileToZip, string zipedFile, string password)
+        public static bool Zip(string fileToZip, string zipedFile, string password)
         {
             bool result = false;
             if (Directory.Exists(fileToZip))
             {
-                this.rootPath = Path.GetDirectoryName(fileToZip);
+                rootPath = Path.GetDirectoryName(fileToZip);
                 result = ZipDirectory(fileToZip, zipedFile, password);
             }
             else if (File.Exists(fileToZip))
             {
-                this.rootPath = Path.GetDirectoryName(fileToZip);
+                rootPath = Path.GetDirectoryName(fileToZip);
                 result = ZipFile(fileToZip, zipedFile, password);
             }
             return result;
@@ -222,7 +255,7 @@ namespace ColaFramework.Foundation
         /// <param name="fileToZip">要压缩的路径</param>   
         /// <param name="zipedFile">压缩后的文件名</param>   
         /// <returns>压缩结果</returns>   
-        public bool Zip(string fileToZip, string zipedFile)
+        public static bool Zip(string fileToZip, string zipedFile)
         {
             bool result = Zip(fileToZip, zipedFile, null);
             return result;
@@ -240,7 +273,7 @@ namespace ColaFramework.Foundation
         /// <param name="zipedFolder">指定解压目标目录</param>   
         /// <param name="password">密码</param>   
         /// <returns>解压结果</returns>   
-        public bool UnZip(string fileToUnZip, string zipedFolder, string password)
+        public static bool UnZip(string fileToUnZip, string zipedFolder, string password)
         {
             bool result = true;
             FileStream fs = null;
@@ -317,7 +350,7 @@ namespace ColaFramework.Foundation
         /// <param name="fileToUnZip">待解压的文件</param>   
         /// <param name="zipedFolder">指定解压目标目录</param>   
         /// <returns>解压结果</returns>   
-        public bool UnZip(string fileToUnZip, string zipedFolder)
+        public static bool UnZip(string fileToUnZip, string zipedFolder)
         {
             bool result = UnZip(fileToUnZip, zipedFolder, null);
             return result;
