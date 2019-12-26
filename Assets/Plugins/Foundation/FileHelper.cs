@@ -231,7 +231,7 @@ namespace ColaFramework.Foundation
         }
 
         /// <summary>
-        /// 以二进制的形式读取对应路径的文件
+        /// 读取对应路径的文件到字节数组
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -245,7 +245,7 @@ namespace ColaFramework.Foundation
         }
 
         /// <summary>
-        /// 以文本的形式读取对应路径的文件
+        /// 读取对应路径的文件到string
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -259,7 +259,7 @@ namespace ColaFramework.Foundation
         }
 
         /// <summary>
-        /// 以二进制的形式写入文件到对应路径
+        /// 将字节数组写到对应路径的文件
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="content"></param>
@@ -270,7 +270,7 @@ namespace ColaFramework.Foundation
         }
 
         /// <summary>
-        /// 以文本的形式写入文件到对应路径
+        /// 将string写到对应路径的文件
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="content"></param>

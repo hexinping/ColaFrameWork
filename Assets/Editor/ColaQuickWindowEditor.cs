@@ -124,16 +124,16 @@ public class ColaQuickWindowEditor : EditorWindow
         }
         if (GUILayout.Button("Zip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            var result = ZipHelper.Zip(LuaConst.luaDir, Path.Combine(Application.dataPath, "../output/luaout.zip"));
-            Debug.Log("------------>压缩结果:" + result);
+            var result = ZipHelper.Zip("Assets/Lua", Path.Combine(Application.dataPath, "../output/luaout.zip"));
+            Debug.Log("Zip Lua结果:" + result);
         }
         if (GUILayout.Button("UnZip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            var filePath = Path.Combine(Application.dataPath, "../output/luaout.zip");
+            var filePath = Path.Combine("Assets","../output/luaout.zip");
             if (File.Exists(filePath))
             {
-                var result = ZipHelper.UnZip(filePath, Path.Combine(Application.dataPath, "../output"));
-                Debug.Log("------------>压缩结果:" + result);
+                var result = ZipHelper.UnZip(filePath, Path.Combine("Assets", "../output"));
+                Debug.Log("UnZip Lua结果:" + result);
             }
             else
             {
