@@ -1,4 +1,9 @@
-﻿using ICSharpCode.SharpZipLib.Checksums;
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
+
+using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using System;
