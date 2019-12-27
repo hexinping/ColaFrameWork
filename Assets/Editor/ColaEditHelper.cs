@@ -16,6 +16,13 @@ using ColaFramework.Foundation;
 /// </summary>
 public class ColaEditHelper
 {
+    /// <summary>
+    /// 编辑器会用到的一些临时目录
+    /// </summary>
+    private static string TempCachePath
+    {
+        get { return Path.Combine(Application.dataPath, "../ColaCache"); }
+    }
 
     /// <summary>
     /// 打开指定文件夹(编辑器模式下)
