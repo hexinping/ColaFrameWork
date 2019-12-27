@@ -4,14 +4,21 @@
 //----------------------------------------------
 
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using ColaFramework;
+using System.Text;
 using ColaFramework.Foundation;
+using System.Text.RegularExpressions;
 
 public class ColaQuickWindowEditor : EditorWindow
 {
+    /// <summary>
+    /// Lua业务逻辑代码的路径
+    /// </summary>
+    private const string LuaLogicPath = "Assets/Lua";
+
     [MenuItem("ColaFramework/Open Quick Window %Q")]
     static void Popup()
     {
@@ -122,6 +129,9 @@ public class ColaQuickWindowEditor : EditorWindow
         {
             ColaEditHelper.BuildLuaToStreamingAsset();
         }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("Zip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
             var result = ZipHelper.Zip("Assets/Lua", Path.Combine(Application.dataPath, "../output/luaout.zip"));
@@ -129,7 +139,7 @@ public class ColaQuickWindowEditor : EditorWindow
         }
         if (GUILayout.Button("UnZip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
         {
-            var filePath = Path.Combine("Assets","../output/luaout.zip");
+            var filePath = Path.Combine("Assets", "../output/luaout.zip");
             if (File.Exists(filePath))
             {
                 var result = ZipHelper.UnZip(filePath, Path.Combine("Assets", "../output"));
@@ -139,6 +149,53 @@ public class ColaQuickWindowEditor : EditorWindow
             {
                 Debug.LogError("解压错误！要解压的文件不存在！路径:" + filePath);
             }
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("筛选出MD5码变化的lua文件", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+        {
+            var md5Dic = new Dictionary<string, string>();
+            var luaMd5FilePath = ColaEditHelper.TempCachePath + "/LuaMD5.txt";
+            if (File.Exists(luaMd5FilePath))
+            {
+                using (var sm = new StreamReader(luaMd5FilePath, Encoding.UTF8))
+                {
+                    var fileLines = sm.ReadToEnd().Split('\n');
+                    foreach (var item in fileLines)
+                    {
+                        var lineContent = item.Split('|');
+                        if (lineContent.Length == 2)
+                        {
+                            md5Dic[lineContent[0]] = lineContent[1];
+                        }
+                        else
+                        {
+                            Debug.LogError("LuaMD5.txt格式错误！内容为: " + lineContent);
+                        }
+                    }
+                }
+            }
+
+            var luaFiles = new List<string>(Directory.GetFiles(LuaLogicPath, "*.lua", SearchOption.AllDirectories));
+            var fLength = (float)luaFiles.Count;
+
+            for (int i = 0; i < luaFiles.Count; i++)
+            {
+                var fileName = luaFiles[i];
+                string curMd5 = FileHelper.GetMD5Hash(fileName);
+                if (md5Dic.ContainsKey(fileName) && curMd5 == md5Dic[fileName])
+                {
+                    continue;
+                }
+                string destPath = Regex.Replace(fileName, "^Assets", "..output");
+                FileHelper.EnsureParentDirExist(destPath);
+                File.Copy(fileName, destPath,true);
+                md5Dic[fileName] = curMd5;
+                EditorUtility.DisplayProgressBar("正在分析Lua差异化..", fileName, i / fLength);
+
+            }
+            EditorUtility.ClearProgressBar();
         }
         GUILayout.EndHorizontal();
     }

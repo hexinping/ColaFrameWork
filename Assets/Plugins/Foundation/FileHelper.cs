@@ -280,7 +280,7 @@ namespace ColaFramework.Foundation
             File.WriteAllText(filePath, content.Replace(Environment.NewLine, "\n"), UTF8EnCode);
         }
 
-        static void EnsureParentDirExist(string path)
+        public static void EnsureParentDirExist(string path)
         {
             var dir = Path.GetDirectoryName(path);
             var parents = new Queue<string>();

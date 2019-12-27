@@ -19,7 +19,7 @@ public class ColaEditHelper
     /// <summary>
     /// 编辑器会用到的一些临时目录
     /// </summary>
-    private static string TempCachePath
+    public static string TempCachePath
     {
         get { return Path.Combine(Application.dataPath, "../ColaCache"); }
     }
