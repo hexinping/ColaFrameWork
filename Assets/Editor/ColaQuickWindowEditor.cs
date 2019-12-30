@@ -188,7 +188,7 @@ public class ColaQuickWindowEditor : EditorWindow
                 {
                     continue;
                 }
-                string destPath = Regex.Replace(fileName, "^Assets", "..output");
+                string destPath = Regex.Replace(fileName, "^Assets", "output");
                 FileHelper.EnsureParentDirExist(destPath);
                 File.Copy(fileName, destPath,true);
                 md5Dic[fileName] = curMd5;
