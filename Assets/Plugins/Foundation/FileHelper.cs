@@ -284,7 +284,7 @@ namespace ColaFramework.Foundation
         {
             var dir = Path.GetDirectoryName(path);
             var parents = new Queue<string>();
-            while (!Directory.Exists(dir))
+            while (!Directory.Exists(dir) && !string.IsNullOrEmpty(dir))
             {
                 parents.Enqueue(dir);
                 dir = Path.GetDirectoryName(dir);
