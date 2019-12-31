@@ -190,11 +190,18 @@ public class ColaQuickWindowEditor : EditorWindow
                 }
                 string destPath = Regex.Replace(fileName, "^Assets", "output");
                 FileHelper.EnsureParentDirExist(destPath);
-                File.Copy(fileName, destPath,true);
+                File.Copy(fileName, destPath, true);
                 md5Dic[fileName] = curMd5;
                 EditorUtility.DisplayProgressBar("正在分析Lua差异化..", fileName, i / fLength);
 
             }
+
+            var sb = new StringBuilder();
+            foreach (var item in md5Dic)
+            {
+                sb.AppendFormat("{0}|{1}", item.Key, item.Value).AppendLine();
+            }
+            FileHelper.WriteString(luaMd5FilePath, sb.ToString());
             EditorUtility.ClearProgressBar();
         }
         GUILayout.EndHorizontal();
