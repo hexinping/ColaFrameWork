@@ -184,6 +184,7 @@ public class ColaQuickWindowEditor : EditorWindow
             var luaFiles = new List<string>(Directory.GetFiles(LuaLogicPath, "*.lua", SearchOption.AllDirectories));
             var fLength = (float)luaFiles.Count;
 
+            int diffCnt = 0;
             for (int i = 0; i < luaFiles.Count; i++)
             {
                 var fileName = luaFiles[i];
@@ -192,6 +193,7 @@ public class ColaQuickWindowEditor : EditorWindow
                 {
                     continue;
                 }
+                diffCnt++;
                 string destPath = Regex.Replace(fileName, "^Assets", "output");
                 FileHelper.EnsureParentDirExist(destPath);
                 File.Copy(fileName, destPath, true);
@@ -207,6 +209,8 @@ public class ColaQuickWindowEditor : EditorWindow
             }
             FileHelper.WriteString(luaMd5FilePath, sb.ToString());
             EditorUtility.ClearProgressBar();
+
+            Debug.LogFormat("Lua差异化分析完毕！共有{0}个差异化文件！", diffCnt);
         }
         GUILayout.EndHorizontal();
     }

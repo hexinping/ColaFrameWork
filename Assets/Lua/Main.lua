@@ -74,4 +74,5 @@ function OnLevelWasLoaded(level)
 end
 
 function OnApplicationQuit()
+
 end
