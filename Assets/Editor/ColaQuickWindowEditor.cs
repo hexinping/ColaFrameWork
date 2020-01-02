@@ -164,6 +164,10 @@ public class ColaQuickWindowEditor : EditorWindow
                     var fileLines = sm.ReadToEnd().Split('\n');
                     foreach (var item in fileLines)
                     {
+                        if (string.IsNullOrEmpty(item))
+                        {
+                            continue;
+                        }
                         var lineContent = item.Split('|');
                         if (lineContent.Length == 2)
                         {
