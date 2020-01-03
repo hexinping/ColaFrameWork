@@ -41,14 +41,13 @@ namespace Plugins.XAsset.Editor
         private const string KCopyPath = "Assets/复制路径";
         private const string KMarkAssets = "标记资源";
         private const string KCopyToStreamingAssets = "Assets/AssetBundles/拷贝到StreamingAssets";
-        public static string assetRootPath;
+        public static string assetRootPath = "Assets/Plugins/XAsset/Demo/";
 
         [InitializeOnLoadMethod]
         private static void OnInitialize()
         {
             EditorUtility.ClearProgressBar();
-            var settings = BuildScript.GetSettings(); 
-            if (settings.localServer)
+            if (AppConst.isLocalServer)
             {
                 bool isRunning = LaunchLocalServer.IsRunning();
                 if (!isRunning)
@@ -66,7 +65,7 @@ namespace Plugins.XAsset.Editor
             }
             Utility.dataPath = System.Environment.CurrentDirectory;
             Utility.downloadURL = BuildScript.GetManifest().downloadURL;
-            Utility.assetBundleMode = settings.runtimeMode;
+            Utility.assetBundleMode = AppConst.SimulateMode;
             Utility.getPlatformDelegate = BuildScript.GetPlatformName;
             Utility.loadDelegate = AssetDatabase.LoadAssetAtPath;
         }
@@ -88,8 +87,6 @@ namespace Plugins.XAsset.Editor
         [MenuItem(KMarkAssetsWithDir)]
         private static void MarkAssetsWithDir()
         {
-            var settings = BuildScript.GetSettings();
-            assetRootPath = settings.assetRootPath; 
             var assetsManifest = BuildScript.GetManifest();
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
             for (var i = 0; i < assets.Length; i++)
@@ -111,8 +108,6 @@ namespace Plugins.XAsset.Editor
         [MenuItem(KMarkAssetsWithFile)]
         private static void MarkAssetsWithFile()
         {
-            var settings = BuildScript.GetSettings();
-            assetRootPath = settings.assetRootPath; 
             var assetsManifest = BuildScript.GetManifest();
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
             for (var i = 0; i < assets.Length; i++)
@@ -143,8 +138,6 @@ namespace Plugins.XAsset.Editor
         [MenuItem(KMarkAssetsWithName)]
         private static void MarkAssetsWithName()
         {
-            var settings = BuildScript.GetSettings();
-            assetRootPath = settings.assetRootPath; 
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
             var assetsManifest = BuildScript.GetManifest();
             for (var i = 0; i < assets.Length; i++)

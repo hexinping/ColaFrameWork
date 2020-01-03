@@ -352,12 +352,6 @@ namespace Plugins.XAsset.Editor
             return asset;
         }
 
-        public static Settings GetSettings()
-        {
-            const string path = "Assets/Settings.asset";
-            return GetAsset<Settings>(path);
-        }
-
         public static AssetsManifest GetManifest()
         {
             return GetAsset<AssetsManifest>(Utility.AssetsManifestAsset);
