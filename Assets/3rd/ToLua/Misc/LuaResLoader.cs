@@ -159,7 +159,7 @@ public class LuaResLoader : LuaFileUtils
     /// <param name="bundle"></param>
     public void AddBundle(string bundleName)
     {
-        string url = CommonHelper.DataPath + bundleName.ToLower();
+        string url = CommonHelper.AssetPath + bundleName.ToLower();
         if (File.Exists(url))
         {
             var bytes = File.ReadAllBytes(url);
@@ -168,7 +168,7 @@ public class LuaResLoader : LuaFileUtils
             AssetBundle bundle = AssetBundle.LoadFromMemory(bytes);
             if (bundle != null)
             {
-                bundleName = bundleName.Replace("lua/", "").Replace(".unity3d", "");
+                bundleName = bundleName.Replace("lua/", "").Replace(AppConst.ExtName, "");
                 base.AddSearchBundle(bundleName.ToLower(), bundle);
             }
         }

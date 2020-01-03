@@ -56,7 +56,7 @@ namespace Plugins.XAsset
             var instance = FindObjectOfType<Assets>();
             if (instance == null)
             {
-                instance = new GameObject("Assets").AddComponent<Assets>();
+                instance = new GameObject("AssetMgr").AddComponent<Assets>();
                 DontDestroyOnLoad(instance.gameObject);
             }
 
