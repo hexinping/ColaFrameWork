@@ -56,20 +56,6 @@ namespace ColaFramework
         }
 
         /// <summary>
-        /// 延迟一帧以后加载资源
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="callback"></param>
-        public static void LoadWaitOneFrame(string path, Action<Object, string> callback)
-        {
-#if UNITY_EDITOR && !SIMULATE_MODE
-            Debug.LogError("This Function is not implement in UnityEditor!");
-#else
-        ResourcesMgr.GetInstance().LoadWaitOneFrame(path, callback);
-#endif
-        }
-
-        /// <summary>
         /// 根据类型和路径返回相应的资源(异步方法)
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -77,12 +63,7 @@ namespace ColaFramework
         /// <param name="callback"></param>
         public static void LoadAsync<T>(string path, Action<Object, string> callback) where T : Object
         {
-#if UNITY_EDITOR && !SIMULATE_MODE
-            Debug.LogError("This Function is not implement in UnityEditor!");
-#else
-        LoadAsync(path, typeof(T), callback);
-#endif
-
+            LoadAsync(path, typeof(T), callback);
         }
 
         /// <summary>
@@ -93,7 +74,9 @@ namespace ColaFramework
         public static void LoadAsync(string path, Type type, Action<Object, string> callback)
         {
 #if UNITY_EDITOR && !SIMULATE_MODE
-            Debug.LogError("This Function is not implement in UnityEditor!");
+            //模拟异步
+            var asset = Load(path, type);
+            callback(asset, path);
 #else
         ResourcesMgr.GetInstance().LoadAsync(path, type, callback);
 #endif
@@ -107,7 +90,7 @@ namespace ColaFramework
         public static string LoadTextWithString(string path)
         {
             TextAsset textAsset = Load<TextAsset>(path);
-            if(null != textAsset)
+            if (null != textAsset)
             {
                 return textAsset.text;
             }
@@ -117,7 +100,7 @@ namespace ColaFramework
         public static byte[] LoadTextWithBytes(string path)
         {
             TextAsset textAsset = Load<TextAsset>(path);
-            if(null != textAsset)
+            if (null != textAsset)
             {
                 return textAsset.bytes;
             }
