@@ -97,6 +97,7 @@ namespace ColaFramework
             return null;
         }
 
+        [LuaInterface.LuaByteBuffer]
         public static byte[] LoadTextWithBytes(string path)
         {
             TextAsset textAsset = Load<TextAsset>(path);

@@ -57,22 +57,22 @@ public class UnityEngine_Texture2DWrap
 				ToLua.PushSealed(L, obj);
 				return 1;
 			}
-			else if (count == 4 && TypeChecker.CheckTypes<UnityEngine.TextureFormat, bool>(L, 3))
-			{
-				int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
-				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
-				UnityEngine.TextureFormat arg2 = (UnityEngine.TextureFormat)ToLua.ToObject(L, 3);
-				bool arg3 = LuaDLL.lua_toboolean(L, 4);
-				UnityEngine.Texture2D obj = new UnityEngine.Texture2D(arg0, arg1, arg2, arg3);
-				ToLua.PushSealed(L, obj);
-				return 1;
-			}
 			else if (count == 4 && TypeChecker.CheckTypes<UnityEngine.Experimental.Rendering.GraphicsFormat, UnityEngine.Experimental.Rendering.TextureCreationFlags>(L, 3))
 			{
 				int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
 				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
 				UnityEngine.Experimental.Rendering.GraphicsFormat arg2 = (UnityEngine.Experimental.Rendering.GraphicsFormat)ToLua.ToObject(L, 3);
 				UnityEngine.Experimental.Rendering.TextureCreationFlags arg3 = (UnityEngine.Experimental.Rendering.TextureCreationFlags)ToLua.ToObject(L, 4);
+				UnityEngine.Texture2D obj = new UnityEngine.Texture2D(arg0, arg1, arg2, arg3);
+				ToLua.PushSealed(L, obj);
+				return 1;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes<UnityEngine.TextureFormat, bool>(L, 3))
+			{
+				int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
+				int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
+				UnityEngine.TextureFormat arg2 = (UnityEngine.TextureFormat)ToLua.ToObject(L, 3);
+				bool arg3 = LuaDLL.lua_toboolean(L, 4);
 				UnityEngine.Texture2D obj = new UnityEngine.Texture2D(arg0, arg1, arg2, arg3);
 				ToLua.PushSealed(L, obj);
 				return 1;

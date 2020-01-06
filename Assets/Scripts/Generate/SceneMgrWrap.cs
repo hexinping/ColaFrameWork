@@ -59,19 +59,19 @@ public class SceneMgrWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 3 && TypeChecker.CheckTypes<string, OnSceneNameChanged>(L, 2))
-			{
-				SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
-				string arg0 = ToLua.ToString(L, 2);
-				OnSceneNameChanged arg1 = (OnSceneNameChanged)ToLua.ToObject(L, 3);
-				obj.LoadSceneAsync(arg0, arg1);
-				return 0;
-			}
-			else if (count == 3 && TypeChecker.CheckTypes<int, OnSceneIndexChanged>(L, 2))
+			if (count == 3 && TypeChecker.CheckTypes<int, OnSceneIndexChanged>(L, 2))
 			{
 				SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
 				int arg0 = (int)LuaDLL.lua_tonumber(L, 2);
 				OnSceneIndexChanged arg1 = (OnSceneIndexChanged)ToLua.ToObject(L, 3);
+				obj.LoadSceneAsync(arg0, arg1);
+				return 0;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<string, OnSceneNameChanged>(L, 2))
+			{
+				SceneMgr obj = (SceneMgr)ToLua.CheckObject<SceneMgr>(L, 1);
+				string arg0 = ToLua.ToString(L, 2);
+				OnSceneNameChanged arg1 = (OnSceneNameChanged)ToLua.ToObject(L, 3);
 				obj.LoadSceneAsync(arg0, arg1);
 				return 0;
 			}

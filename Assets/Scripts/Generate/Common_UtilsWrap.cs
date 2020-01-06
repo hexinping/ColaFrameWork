@@ -12,11 +12,6 @@ public class Common_UtilsWrap
 		L.RegFunction("InstantiateGoByPath", InstantiateGoByPath);
 		L.RegFunction("InstantiateGoByPathAsync", InstantiateGoByPathAsync);
 		L.RegFunction("InstantiateGoByPrefab", InstantiateGoByPrefab);
-		L.RegFunction("Load", Load);
-		L.RegFunction("LoadWaitOneFrame", LoadWaitOneFrame);
-		L.RegFunction("LoadAsync", LoadAsync);
-		L.RegFunction("LoadTextWithString", LoadTextWithString);
-		L.RegFunction("LoadTextWithBytes", LoadTextWithBytes);
 		L.RegFunction("AddSingleComponent", AddSingleComponent);
 		L.RegFunction("AddCustomComponent", AddCustomComponent);
 		L.RegFunction("GetGameObjectByName", GetGameObjectByName);
@@ -164,111 +159,24 @@ public class Common_UtilsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Load(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			System.Type arg1 = ToLua.CheckMonoType(L, 2);
-			UnityEngine.Object o = Common_Utils.Load(arg0, arg1);
-			ToLua.Push(L, o);
-			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadWaitOneFrame(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			System.Action<UnityEngine.Object,string> arg1 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 2);
-			Common_Utils.LoadWaitOneFrame(arg0, arg1);
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadAsync(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 3);
-			string arg0 = ToLua.CheckString(L, 1);
-			System.Type arg1 = ToLua.CheckMonoType(L, 2);
-			System.Action<UnityEngine.Object,string> arg2 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 3);
-			Common_Utils.LoadAsync(arg0, arg1, arg2);
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadTextWithString(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			string o = Common_Utils.LoadTextWithString(arg0);
-			LuaDLL.lua_pushstring(L, o);
-			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int LoadTextWithBytes(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			byte[] o = Common_Utils.LoadTextWithBytes(arg0);
-			LuaDLL.tolua_pushlstring(L, o, o.Length);
-			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int AddSingleComponent(IntPtr L)
 	{
 		try
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 2 && TypeChecker.CheckTypes<string>(L, 2))
+			if (count == 2 && TypeChecker.CheckTypes<System.Type>(L, 2))
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
-				string arg1 = ToLua.ToString(L, 2);
+				System.Type arg1 = (System.Type)ToLua.ToObject(L, 2);
 				UnityEngine.Component o = Common_Utils.AddSingleComponent(arg0, arg1);
 				ToLua.Push(L, o);
 				return 1;
 			}
-			else if (count == 2 && TypeChecker.CheckTypes<System.Type>(L, 2))
+			else if (count == 2 && TypeChecker.CheckTypes<string>(L, 2))
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
-				System.Type arg1 = (System.Type)ToLua.ToObject(L, 2);
+				string arg1 = ToLua.ToString(L, 2);
 				UnityEngine.Component o = Common_Utils.AddSingleComponent(arg0, arg1);
 				ToLua.Push(L, o);
 				return 1;
