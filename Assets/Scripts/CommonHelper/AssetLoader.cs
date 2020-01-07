@@ -11,6 +11,7 @@ using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
+using Plugins.XAsset;
 using Object = UnityEngine.Object;
 
 namespace ColaFramework
@@ -51,7 +52,7 @@ namespace ColaFramework
                 return null;
             }
 #else
-        return ResourcesMgr.GetInstance().Load(path, type);
+
 #endif
         }
 
@@ -78,7 +79,7 @@ namespace ColaFramework
             var asset = Load(path, type);
             callback(asset, path);
 #else
-        ResourcesMgr.GetInstance().LoadAsync(path, type, callback);
+
 #endif
         }
 
