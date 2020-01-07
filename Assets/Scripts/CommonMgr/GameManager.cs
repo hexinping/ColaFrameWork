@@ -35,11 +35,6 @@ namespace ColaFramework
         private SceneMgr sceneMgr;
 
         /// <summary>
-        /// 资源管理器
-        /// </summary>
-        private ResourcesMgr resourceMgr;
-
-        /// <summary>
         /// 音频管理器
         /// </summary>
         private AudioManager audioManager;
@@ -87,9 +82,6 @@ namespace ColaFramework
         {
             init = false;
 
-            //初始化各种管理器
-            resourceMgr = ResourcesMgr.GetInstance();
-
             gameLauncherObj = gameObject;
             sceneMgr = gameObject.AddComponent<SceneMgr>();
             audioManager = AudioManager.Instance;
@@ -122,7 +114,6 @@ namespace ColaFramework
         public void Update(float deltaTime)
         {
             if (!init) return;
-            resourceMgr.Update(deltaTime);
             timerManager.Update(deltaTime);
             audioManager.Update(deltaTime);
             netMessageCenter.Update(deltaTime);

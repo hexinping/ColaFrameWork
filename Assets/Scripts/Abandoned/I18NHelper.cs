@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ColaFramework
+namespace ColaAbandoned
 {
     /// <summary>
     /// 国际化助手类

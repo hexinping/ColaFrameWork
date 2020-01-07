@@ -11,6 +11,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using ColaFramework;
+using ColaAbandoned;
 
 /// <summary>
 /// 通用工具类（C#端，lua端专门有Common_Util.cs供导出使用）
@@ -221,15 +222,6 @@ public static class CommonHelper
             return null;
         }
         return component;
-    }
-
-    /// <summary>
-    /// 获取资源管理器
-    /// </summary>
-    /// <returns></returns>
-    public static ResourcesMgr GetResourceMgr()
-    {
-        return ResourcesMgr.GetInstance();
     }
 
     /// <summary>
