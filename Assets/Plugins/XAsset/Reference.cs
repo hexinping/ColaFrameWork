@@ -44,5 +44,10 @@ namespace Plugins.XAsset
 		{
 			refCount--;
 		} 
+
+        public void ReleaseAll()
+        {
+            refCount = 0;
+        }
 	} 
 }

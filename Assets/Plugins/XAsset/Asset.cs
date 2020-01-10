@@ -118,7 +118,10 @@ namespace Plugins.XAsset
             }
 
             if (_requires.Count == 0)
+            {
+                ReleaseAll();
                 _requires = null;
+            }
         }
 
         internal virtual void Load()
