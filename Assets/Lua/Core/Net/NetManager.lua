@@ -21,7 +21,7 @@ local OnConnectedCallback = nil
 --- NetManager的初始化
 function NetManager.Initialize()
     Socket = SocketManager.Instance
-    local sprotoBytes = Common_Utils.LoadTextWithBytes(SPROTO_BYTES_PATH)
+    local sprotoBytes = AssetLoader.LoadTextWithBytes(SPROTO_BYTES_PATH)
     sprotoCoder = sproto.new(sprotoBytes)
 
     for k, v in pairs(Protocol) do
