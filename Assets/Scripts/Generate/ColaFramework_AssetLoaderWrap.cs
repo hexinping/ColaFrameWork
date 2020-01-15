@@ -9,8 +9,12 @@ public class ColaFramework_AssetLoaderWrap
 		L.BeginStaticLibs("AssetLoader");
 		L.RegFunction("Load", Load);
 		L.RegFunction("LoadAsync", LoadAsync);
+		L.RegFunction("LoadAsyncInternal", LoadAsyncInternal);
 		L.RegFunction("LoadTextWithString", LoadTextWithString);
 		L.RegFunction("LoadTextWithBytes", LoadTextWithBytes);
+		L.RegFunction("Update", Update);
+		L.RegFunction("Initialize", Initialize);
+		L.RegFunction("Release", Release);
 		L.EndStaticLibs();
 	}
 
@@ -40,8 +44,26 @@ public class ColaFramework_AssetLoaderWrap
 			ToLua.CheckArgsCount(L, 3);
 			string arg0 = ToLua.CheckString(L, 1);
 			System.Type arg1 = ToLua.CheckMonoType(L, 2);
-			System.Action<UnityEngine.Object,string> arg2 = (System.Action<UnityEngine.Object,string>)ToLua.CheckDelegate<System.Action<UnityEngine.Object,string>>(L, 3);
+			System.Action<UnityEngine.Object> arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckDelegate<System.Action<UnityEngine.Object>>(L, 3);
 			ColaFramework.AssetLoader.LoadAsync(arg0, arg1, arg2);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadAsyncInternal(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 3);
+			string arg0 = ToLua.CheckString(L, 1);
+			System.Type arg1 = ToLua.CheckMonoType(L, 2);
+			System.Action<UnityEngine.Object> arg2 = (System.Action<UnityEngine.Object>)ToLua.CheckDelegate<System.Action<UnityEngine.Object>>(L, 3);
+			ColaFramework.AssetLoader.LoadAsyncInternal(arg0, arg1, arg2);
 			return 0;
 		}
 		catch (Exception e)
@@ -77,6 +99,52 @@ public class ColaFramework_AssetLoaderWrap
 			byte[] o = ColaFramework.AssetLoader.LoadTextWithBytes(arg0);
 			LuaDLL.tolua_pushlstring(L, o, o.Length);
 			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Update(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			float arg0 = (float)LuaDLL.luaL_checknumber(L, 1);
+			ColaFramework.AssetLoader.Update(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Initialize(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			ColaFramework.AssetLoader.Initialize();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Release(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			ColaFramework.AssetLoader.Release();
+			return 0;
 		}
 		catch (Exception e)
 		{

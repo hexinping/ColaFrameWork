@@ -36,7 +36,7 @@ public class DelegateFactory
 		dict.Add(typeof(System.Action<string>), factory.System_Action_string);
 		dict.Add(typeof(OnSceneNameChanged), factory.OnSceneNameChanged);
 		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
-		dict.Add(typeof(System.Action<UnityEngine.Object,string>), factory.System_Action_UnityEngine_Object_string);
+		dict.Add(typeof(System.Action<UnityEngine.Object>), factory.System_Action_UnityEngine_Object);
 		dict.Add(typeof(ColaFramework.NetWork.NetMessageCenter.NetMessageAction), factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -68,7 +68,7 @@ public class DelegateFactory
 		DelegateTraits<System.Action<string>>.Init(factory.System_Action_string);
 		DelegateTraits<OnSceneNameChanged>.Init(factory.OnSceneNameChanged);
 		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
-		DelegateTraits<System.Action<UnityEngine.Object,string>>.Init(factory.System_Action_UnityEngine_Object_string);
+		DelegateTraits<System.Action<UnityEngine.Object>>.Init(factory.System_Action_UnityEngine_Object);
 		DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -100,7 +100,7 @@ public class DelegateFactory
 		TypeTraits<System.Action<string>>.Init(factory.Check_System_Action_string);
 		TypeTraits<OnSceneNameChanged>.Init(factory.Check_OnSceneNameChanged);
 		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
-		TypeTraits<System.Action<UnityEngine.Object,string>>.Init(factory.Check_System_Action_UnityEngine_Object_string);
+		TypeTraits<System.Action<UnityEngine.Object>>.Init(factory.Check_System_Action_UnityEngine_Object);
 		TypeTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.Check_ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -132,7 +132,7 @@ public class DelegateFactory
 		StackTraits<System.Action<string>>.Push = factory.Push_System_Action_string;
 		StackTraits<OnSceneNameChanged>.Push = factory.Push_OnSceneNameChanged;
 		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
-		StackTraits<System.Action<UnityEngine.Object,string>>.Push = factory.Push_System_Action_UnityEngine_Object_string;
+		StackTraits<System.Action<UnityEngine.Object>>.Push = factory.Push_System_Action_UnityEngine_Object;
 		StackTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Push = factory.Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
@@ -1358,61 +1358,59 @@ public class DelegateFactory
 		ToLua.Push(L, o);
 	}
 
-	class System_Action_UnityEngine_Object_string_Event : LuaDelegate
+	class System_Action_UnityEngine_Object_Event : LuaDelegate
 	{
-		public System_Action_UnityEngine_Object_string_Event(LuaFunction func) : base(func) { }
-		public System_Action_UnityEngine_Object_string_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+		public System_Action_UnityEngine_Object_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_Object_Event(LuaFunction func, LuaTable self) : base(func, self) { }
 
-		public void Call(UnityEngine.Object param0, string param1)
+		public void Call(UnityEngine.Object param0)
 		{
 			func.BeginPCall();
 			func.Push(param0);
-			func.Push(param1);
 			func.PCall();
 			func.EndPCall();
 		}
 
-		public void CallWithSelf(UnityEngine.Object param0, string param1)
+		public void CallWithSelf(UnityEngine.Object param0)
 		{
 			func.BeginPCall();
 			func.Push(self);
 			func.Push(param0);
-			func.Push(param1);
 			func.PCall();
 			func.EndPCall();
 		}
 	}
 
-	public System.Action<UnityEngine.Object,string> System_Action_UnityEngine_Object_string(LuaFunction func, LuaTable self, bool flag)
+	public System.Action<UnityEngine.Object> System_Action_UnityEngine_Object(LuaFunction func, LuaTable self, bool flag)
 	{
 		if (func == null)
 		{
-			System.Action<UnityEngine.Object,string> fn = delegate(UnityEngine.Object param0, string param1) { };
+			System.Action<UnityEngine.Object> fn = delegate(UnityEngine.Object param0) { };
 			return fn;
 		}
 
 		if(!flag)
 		{
-			System_Action_UnityEngine_Object_string_Event target = new System_Action_UnityEngine_Object_string_Event(func);
-			System.Action<UnityEngine.Object,string> d = target.Call;
+			System_Action_UnityEngine_Object_Event target = new System_Action_UnityEngine_Object_Event(func);
+			System.Action<UnityEngine.Object> d = target.Call;
 			target.method = d.Method;
 			return d;
 		}
 		else
 		{
-			System_Action_UnityEngine_Object_string_Event target = new System_Action_UnityEngine_Object_string_Event(func, self);
-			System.Action<UnityEngine.Object,string> d = target.CallWithSelf;
+			System_Action_UnityEngine_Object_Event target = new System_Action_UnityEngine_Object_Event(func, self);
+			System.Action<UnityEngine.Object> d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}
 	}
 
-	bool Check_System_Action_UnityEngine_Object_string(IntPtr L, int pos)
+	bool Check_System_Action_UnityEngine_Object(IntPtr L, int pos)
 	{
-		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.Object,string>), L, pos);
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.Object>), L, pos);
 	}
 
-	void Push_System_Action_UnityEngine_Object_string(IntPtr L, System.Action<UnityEngine.Object,string> o)
+	void Push_System_Action_UnityEngine_Object(IntPtr L, System.Action<UnityEngine.Object> o)
 	{
 		ToLua.Push(L, o);
 	}
