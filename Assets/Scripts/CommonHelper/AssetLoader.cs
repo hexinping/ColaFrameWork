@@ -236,14 +236,17 @@ namespace ColaFramework
             }
         }
 
-        public static void Initialize()
+        public static void Initialize(Action onSuccess, Action<string> onError)
         {
             time = 0;
+            Assets.Initialize(onSuccess, onError);
         }
 
         public static void Release()
         {
             time = 0;
+            //强制卸载所有的资源
+
         }
     }
 

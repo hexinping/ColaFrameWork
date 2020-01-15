@@ -127,8 +127,10 @@ public class ColaFramework_AssetLoaderWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 0);
-			ColaFramework.AssetLoader.Initialize();
+			ToLua.CheckArgsCount(L, 2);
+			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
+			System.Action<string> arg1 = (System.Action<string>)ToLua.CheckDelegate<System.Action<string>>(L, 2);
+			ColaFramework.AssetLoader.Initialize(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)

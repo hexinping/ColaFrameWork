@@ -82,14 +82,18 @@ namespace ColaFramework
         {
             init = false;
 
-            gameLauncherObj = gameObject;
-            sceneMgr = gameObject.AddComponent<SceneMgr>();
-            audioManager = AudioManager.Instance;
-            timerManager = TimerManager.Instance;
-            inputMgr = gameLauncherObj.AddComponent<InputMgr>();
-            netMessageCenter = NetMessageCenter.Instance;
+            AssetLoader.Initialize(() =>
+            {
+                gameLauncherObj = gameObject;
+                sceneMgr = gameObject.AddComponent<SceneMgr>();
+                audioManager = AudioManager.Instance;
+                timerManager = TimerManager.Instance;
+                inputMgr = gameLauncherObj.AddComponent<InputMgr>();
+                netMessageCenter = NetMessageCenter.Instance;
 
-            GameStart();
+                GameStart();
+            }, (error) => { Debug.Log(error); });
+
         }
 
         /// <summary>
@@ -192,7 +196,7 @@ namespace ColaFramework
 
         public LuaClient GetLuaClient()
         {
-            if(null != luaClient)
+            if (null != luaClient)
             {
                 return luaClient;
             }
