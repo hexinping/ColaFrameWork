@@ -85,7 +85,7 @@ public static class Common_Utils
     /// <returns></returns>
     public static void InstantiateGoByPathAsync(string path, GameObject parent, Action<GameObject> callback)
     {
-        AssetLoader.LoadAsync<GameObject>(path, (obj, name) =>
+        AssetLoader.LoadAsync<GameObject>(path, (obj) =>
         {
             var go = InstantiateGoByPrefab(obj as GameObject, parent);
             if (null != callback)

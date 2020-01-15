@@ -199,14 +199,14 @@ namespace Plugins.XAsset
                 return null;
             }
 
-            for (int i = 0, max = _assets.Count; i < max; i++)
-            {
-                var item = _assets[i];
-                if (!item.name.Equals(path))
-                    continue;
-                item.Retain();
-                return item;
-            }
+            //for (int i = 0, max = _assets.Count; i < max; i++)
+            //{
+            //    var item = _assets[i];
+            //    if (!item.name.Equals(path))
+            //        continue;
+            //    item.Retain();
+            //    return item;
+            //}
 
             string assetBundleName;
             Asset asset;

@@ -173,6 +173,11 @@ namespace Plugins.XAsset
             return false;
         }
 
+        public void ClearAsset()
+        {
+            asset = null;
+        }
+
         // ReSharper disable once InconsistentNaming
         public event Action<Asset> completed;
 

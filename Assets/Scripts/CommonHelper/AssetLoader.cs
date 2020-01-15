@@ -3,9 +3,8 @@
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
 
-//#define SIMULATE_MODE
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,6 +20,12 @@ namespace ColaFramework
     /// </summary>
     public static class AssetLoader
     {
+        private const int CHECK_INTERVAL = 1;
+        private static float time = 0f;
+        private static Dictionary<string, WeakReference> AssetReferences = new Dictionary<string, WeakReference>(32);
+        private static Dictionary<string, Asset> LoadedAssets = new Dictionary<string, Asset>(32);
+        private static List<Asset> UnusedAssets = new List<Asset>(16);
+
         /// <summary>
         /// 根据类型和路径返回相应的资源(同步方法)
         /// </summary>
@@ -40,7 +45,12 @@ namespace ColaFramework
         /// <returns></returns>
         public static Object Load(string path, Type type)
         {
-#if UNITY_EDITOR && !SIMULATE_MODE
+#if UNITY_EDITOR 
+            //是否开启了Editor下模拟模式
+            if (AppConst.SimulateMode)
+            {
+                LoadInternal(path, type);
+            }
             path = GloablDefine.GameAssetBasePath + path;
             if (Path.HasExtension(path))
             {
@@ -52,9 +62,37 @@ namespace ColaFramework
                 return null;
             }
 #else
-
+            LoadInternal(path, type);
 #endif
         }
+
+        private static Object LoadInternal(string path, Type type)
+        {
+            WeakReference wkRef = null;
+            if (AssetReferences.TryGetValue(path, out wkRef))
+            {
+                if (CheckAssetAlive(wkRef.Target))
+                {
+                    return wkRef.Target as Object;
+                }
+            }
+            var assetProxy = Assets.Load(path, type);
+            wkRef.Target = assetProxy.asset;
+            var asset = assetProxy.asset;
+            Asset assetRef = null;
+            if (LoadedAssets.TryGetValue(path, out assetRef))
+            {
+                LoadedAssets[path] = assetProxy;
+                Assets.Unload(assetRef);
+            }
+            else
+            {
+                LoadedAssets.Add(path, assetProxy);
+            }
+            assetProxy.ClearAsset();
+            return asset;
+        }
+
 
         /// <summary>
         /// 根据类型和路径返回相应的资源(异步方法)
@@ -62,7 +100,7 @@ namespace ColaFramework
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
         /// <param name="callback"></param>
-        public static void LoadAsync<T>(string path, Action<Object, string> callback) where T : Object
+        public static void LoadAsync<T>(string path, Action<Object> callback) where T : Object
         {
             LoadAsync(path, typeof(T), callback);
         }
@@ -72,15 +110,25 @@ namespace ColaFramework
         /// </summary>
         /// <param name="path"></param>
         /// <param name="t"></param>
-        public static void LoadAsync(string path, Type type, Action<Object, string> callback)
+        public static void LoadAsync(string path, Type type, Action<Object> callback)
         {
-#if UNITY_EDITOR && !SIMULATE_MODE
+#if UNITY_EDITOR
+            //是否开启了Editor下模拟模式
+            if (AppConst.SimulateMode)
+            {
+                LoadAsyncInternal(path, type,callback);
+            }
             //模拟异步
             var asset = Load(path, type);
-            callback(asset, path);
+            callback(asset);
 #else
-
+            LoadAsyncInternal(path, type,callback);
 #endif
+        }
+
+        public static void LoadAsyncInternal(string path, Type type, Action<Object> callback)
+        {
+
         }
 
         /// <summary>
@@ -116,5 +164,38 @@ namespace ColaFramework
             objects = AssetDatabase.LoadAllAssetsAtPath(path);
         }
 #endif
+
+        private static bool CheckAssetAlive(System.Object asset)
+        {
+            if (null == asset) { return false; }
+            if (asset is Object)
+            {
+                Object UnityObject = asset as Object;
+                if (null == UnityObject || !UnityObject)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                throw new Exception(string.Format("InVaild Asset Type:{0}", asset.GetType()));
+            }
+            return true;
+        }
+
+        public static void Update(float deltaTime)
+        {
+        }
+
+        public static void Initialize()
+        {
+            time = 0;
+        }
+
+        public static void Release()
+        {
+            time = 0;
+        }
     }
+
 }
