@@ -24,7 +24,7 @@ namespace ColaFramework
         private static float time = 0f;
         private static Dictionary<string, WeakReference> AssetReferences = new Dictionary<string, WeakReference>(32);
         private static Dictionary<string, Asset> LoadedAssets = new Dictionary<string, Asset>(32);
-        private static List<Asset> UnusedAssets = new List<Asset>(16);
+        private static List<string> UnUsedAssets = new List<string>(16);
 
         /// <summary>
         /// 根据类型和路径返回相应的资源(同步方法)
@@ -116,7 +116,7 @@ namespace ColaFramework
             //是否开启了Editor下模拟模式
             if (AppConst.SimulateMode)
             {
-                LoadAsyncInternal(path, type,callback);
+                LoadAsyncInternal(path, type, callback);
             }
             //模拟异步
             var asset = Load(path, type);
@@ -128,7 +128,32 @@ namespace ColaFramework
 
         public static void LoadAsyncInternal(string path, Type type, Action<Object> callback)
         {
-
+            WeakReference wkRef = null;
+            if (AssetReferences.TryGetValue(path, out wkRef))
+            {
+                if (CheckAssetAlive(wkRef.Target))
+                {
+                    callback(wkRef.Target as Object);
+                }
+            }
+            var assetProxy = Assets.LoadAsync(path, type);
+            assetProxy.completed += (obj) =>
+            {
+                wkRef.Target = obj.asset;
+                var asset = obj.asset;
+                Asset assetRef = null;
+                if (LoadedAssets.TryGetValue(path, out assetRef))
+                {
+                    LoadedAssets[path] = assetProxy;
+                    Assets.Unload(assetRef);
+                }
+                else
+                {
+                    LoadedAssets.Add(path, assetProxy);
+                }
+                obj.ClearAsset();
+                callback(asset);
+            };
         }
 
         /// <summary>
@@ -185,6 +210,30 @@ namespace ColaFramework
 
         public static void Update(float deltaTime)
         {
+            time += deltaTime;
+            if (deltaTime < CHECK_INTERVAL) { return; }
+            time = 0;
+            foreach (KeyValuePair<string, WeakReference> kvPair in AssetReferences)
+            {
+                if (false == CheckAssetAlive(kvPair.Value.Target))
+                {
+                    UnUsedAssets.Add(kvPair.Key);
+                }
+            }
+            if (UnUsedAssets.Count > 0)
+            {
+                foreach (var name in UnUsedAssets)
+                {
+                    AssetReferences.Remove(name);
+                    Asset asset = null;
+                    if (LoadedAssets.TryGetValue(name, out asset))
+                    {
+                        Assets.Unload(asset);
+                        LoadedAssets.Remove(name);
+                    }
+                }
+                UnUsedAssets.Clear();
+            }
         }
 
         public static void Initialize()
