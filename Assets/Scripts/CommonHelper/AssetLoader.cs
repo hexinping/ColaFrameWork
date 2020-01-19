@@ -62,7 +62,7 @@ namespace ColaFramework
                 return null;
             }
 #else
-            LoadInternal(path, type);
+            return LoadInternal(path, type);
 #endif
         }
 
