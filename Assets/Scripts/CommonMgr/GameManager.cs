@@ -119,6 +119,7 @@ namespace ColaFramework
         {
             if (!init) return;
             timerManager.Update(deltaTime);
+            AssetLoader.Update(deltaTime);
             audioManager.Update(deltaTime);
             netMessageCenter.Update(deltaTime);
         }
