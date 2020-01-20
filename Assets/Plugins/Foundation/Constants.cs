@@ -35,9 +35,9 @@ public enum CheckFuncResult : byte
 }
 
 /// <summary>
-/// 公共定义数据
+/// 常量数据定义 
 /// </summary>
-public static class GloablDefine
+public static class Constants
 {
     public static Color ColorWhite = Color.white;
     public static Color ColorRed = Color.red;

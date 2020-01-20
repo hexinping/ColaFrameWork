@@ -27,6 +27,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using ColaFramework;
 
 namespace Plugins.XAsset.Editor
 {
@@ -41,7 +42,6 @@ namespace Plugins.XAsset.Editor
         private const string KCopyPath = "Assets/复制路径";
         private const string KMarkAssets = "标记资源";
         private const string KCopyToStreamingAssets = "Assets/AssetBundles/拷贝到StreamingAssets";
-        public static string assetRootPath = "Assets/Plugins/XAsset/Demo/";
 
         [InitializeOnLoadMethod]
         private static void OnInitialize()
@@ -72,9 +72,7 @@ namespace Plugins.XAsset.Editor
 
         public static string TrimedAssetBundleName(string assetBundleName)
         {
-            if(string.IsNullOrEmpty(assetRootPath))
-                return assetBundleName;
-            return assetBundleName.Replace(assetRootPath, "");
+            return assetBundleName.Replace(Constants.GameAssetBasePath, "");
         }
 
         [MenuItem(KCopyToStreamingAssets)]

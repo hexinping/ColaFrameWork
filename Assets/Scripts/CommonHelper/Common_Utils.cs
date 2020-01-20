@@ -595,7 +595,7 @@ public static class Common_Utils
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
         rectTransform.sizeDelta = Vector2.zero;
         rectTransform.SetAsFirstSibling();
-        image.color = GloablDefine.ColorUIMask;
+        image.color = Constants.ColorUIMask;
     }
     /// <summary>
     /// 销毁渲染出来的临时UIBlur RenderTexture

@@ -32,7 +32,7 @@ public class ColaGUIEditor
 
         //创建新的UI Prefab
         GameObject view = new GameObject("NewUIView", typeof(RectTransform));
-        view.tag = GloablDefine.UIViewTag;
+        view.tag = Constants.UIViewTag;
         view.layer = LayerMask.NameToLayer("UI");
         string uniqueName = GameObjectUtility.GetUniqueNameForSibling(uguiRoot.transform, view.name);
         view.name = uniqueName;

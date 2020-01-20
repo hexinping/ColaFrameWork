@@ -51,7 +51,7 @@ namespace ColaFramework
             {
                 LoadInternal(path, type);
             }
-            path = GloablDefine.GameAssetBasePath + path;
+            path = Constants.GameAssetBasePath + path;
             if (Path.HasExtension(path))
             {
                 return AssetDatabase.LoadAssetAtPath(path, type);

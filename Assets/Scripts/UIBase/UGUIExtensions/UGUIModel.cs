@@ -366,7 +366,7 @@ namespace UnityEngine.UI.Extensions
         public void ImportSetting(string settingName = "")
         {
             //读取序列化的配置文件，如果没有找到配置就使用默认配置
-            string path = GloablDefine.UIModelSettingPath + settingName + ".asset";
+            string path = Constants.UIModelSettingPath + settingName + ".asset";
             if (string.IsNullOrEmpty(settingName))
             {
                 DefaultSetting();
@@ -557,7 +557,7 @@ namespace UnityEngine.UI.Extensions
                 var settingName = model.name;
                 if (!string.IsNullOrEmpty(settingName))
                 {
-                    string fullPath = GloablDefine.GameAssetBasePath + GloablDefine.UIModelSettingPath + settingName + ".asset";
+                    string fullPath = Constants.GameAssetBasePath + Constants.UIModelSettingPath + settingName + ".asset";
                     if (!File.Exists(fullPath))
                     {
                         AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<UIModelSettingData>(), fullPath);

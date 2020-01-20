@@ -161,7 +161,7 @@ namespace ColaFramework
 
                 //添加ImageEffect特效插件Lutify
                 lutify = mainCameraObj.AddComponent<Lutify>();
-                lutify.LookupTexture = AssetLoader.Load<Texture2D>(GloablDefine.LutifyTexturePath + "Standard/Cine Pack 1/Deep Dream.png");
+                lutify.LookupTexture = AssetLoader.Load<Texture2D>(Constants.LutifyTexturePath + "Standard/Cine Pack 1/Deep Dream.png");
                 lutify.enabled = true;
 
                 mainCamCtrl = mainCameraObj.AddSingleComponent<MainCameraCtrl>();
