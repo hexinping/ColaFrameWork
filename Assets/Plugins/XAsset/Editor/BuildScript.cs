@@ -383,5 +383,17 @@ namespace Plugins.XAsset.Editor
 
             return downloadURL;
         }
+
+        /// <summary>
+        /// 清除所有的AB Name
+        /// </summary>
+        public static void ClearAllAssetBundleName()
+        {
+            string[] oldAssetBundleNames = AssetDatabase.GetAllAssetBundleNames();
+            for (int j = oldAssetBundleNames.Length - 1; j >= 0; j--)
+            {
+                AssetDatabase.RemoveAssetBundleName(oldAssetBundleNames[j], true);
+            }
+        }
     }
 }
