@@ -75,18 +75,18 @@ namespace Plugins.XAsset
             }
         }
 
-        public static string updatePath
+        public static string UpdatePath
         {
             get
             {
-                return Path.Combine(Application.persistentDataPath, Path.Combine(AssetBundles, GetPlatform())) +
+                return Path.Combine(Application.persistentDataPath, AssetBundles) +
                        Path.DirectorySeparatorChar;
             }
         }
 
         public static string GetRelativePath4Update(string path)
         {
-            return updatePath + path;
+            return UpdatePath + path;
         }
 
         public static string GetDownloadURL(string filename)
@@ -96,7 +96,7 @@ namespace Plugins.XAsset
 
         public static string GetWebUrlFromDataPath(string filename)
         {
-            var path = Path.Combine(dataPath, Path.Combine(AssetBundles, GetPlatform())) + Path.DirectorySeparatorChar + filename;
+            var path = Path.Combine(dataPath, AssetBundles) + Path.DirectorySeparatorChar + filename;
 #if UNITY_IOS || UNITY_EDITOR
             path = "file://" + path;
 #elif UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
@@ -107,7 +107,7 @@ namespace Plugins.XAsset
 
         public static string GetWebUrlFromStreamingAssets(string filename)
         {
-            var path = updatePath + filename;
+            var path = UpdatePath + filename;
             if (!File.Exists(path))
             {
                 path = Application.streamingAssetsPath + "/" + filename;

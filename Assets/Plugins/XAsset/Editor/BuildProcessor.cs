@@ -65,8 +65,7 @@ namespace Plugins.XAsset.Editor
         {
             BuildScript.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
             var platformName = BuildScript.GetPlatformName();
-            var searchPath = Path.Combine(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles),
-                platformName);
+            var searchPath = Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles);
             if (!Directory.Exists(searchPath)) return;
             var files = Directory.GetFiles(searchPath, "*.manifest", SearchOption.AllDirectories);
             foreach (var file in files)

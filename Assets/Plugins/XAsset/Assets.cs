@@ -66,9 +66,9 @@ namespace Plugins.XAsset
 
             if (Utility.assetBundleMode)
             {
-                updatePath = Utility.updatePath;
+                updatePath = Utility.UpdatePath;
                 var platform = Utility.GetPlatform();
-                var path = Path.Combine(Utility.dataPath, Path.Combine(Utility.AssetBundles, platform)) +
+                var path = Path.Combine(Utility.dataPath, Utility.AssetBundles) +
                            Path.DirectorySeparatorChar;
                 Bundles.OverrideBaseDownloadingUrl += Bundles_overrideBaseDownloadingURL;
                 Bundles.Initialize(path, platform, () =>

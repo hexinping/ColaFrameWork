@@ -42,7 +42,7 @@ namespace Plugins.XAsset
         public static void Load()
         {
             Clear();
-            var path = Utility.updatePath + versionFile;
+            var path = Utility.UpdatePath + versionFile;
             if (File.Exists(path))
             { 
                 using (var s = new StreamReader(path))
@@ -79,7 +79,7 @@ namespace Plugins.XAsset
 
         public static void Save()
         {
-            var path = Utility.updatePath + versionFile;
+            var path = Utility.UpdatePath + versionFile;
             if (File.Exists(path))
                 File.Delete(path);
 

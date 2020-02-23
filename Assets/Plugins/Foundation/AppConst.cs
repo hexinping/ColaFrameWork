@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 public class AppConst
 {
-    public const bool SimulateMode = true;                       //调试/模式模式-用于在编辑器上模拟手机
+    public const bool SimulateMode = false;                       //调试/模式模式-用于在编辑器上模拟手机
     public const bool isLocalServer = true;
 
     /// <summary>
