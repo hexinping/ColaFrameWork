@@ -78,7 +78,7 @@ namespace Plugins.XAsset
 
         void Clear()
         {
-            var dir = Path.GetDirectoryName(Utility.updatePath);
+            var dir = Path.GetDirectoryName(Utility.UpdatePath);
             if (Directory.Exists(dir))
             {
                 Directory.Delete(dir, true);
@@ -93,7 +93,7 @@ namespace Plugins.XAsset
 
             Versions.Clear(); 
 
-            var path = Utility.updatePath + Versions.versionFile;
+            var path = Utility.UpdatePath + Versions.versionFile;
             if (File.Exists(path))
                 File.Delete(path);
         }
