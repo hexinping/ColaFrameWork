@@ -43,7 +43,7 @@ namespace Plugins.XAsset.Editor
         {
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
-            var source = Path.Combine(Environment.CurrentDirectory, Utility.AssetBundles);
+            var source = Path.Combine(Environment.CurrentDirectory, Utility.AssetBundles, GetPlatformName());
             if (!Directory.Exists(source))
                 Debug.Log("No assetBundle output folder, try to build the assetBundles first.");
             if (Directory.Exists(outputPath))
