@@ -1,4 +1,4 @@
-//
+ï»¿//
 // BuildScript.cs
 //
 // Author:
@@ -383,15 +383,18 @@ namespace Plugins.XAsset.Editor
         }
 
         /// <summary>
-        /// Çå³ýËùÓÐµÄAB Name
+        /// æ¸…é™¤æ‰€æœ‰çš„AB Name
         /// </summary>
         public static void ClearAllAssetBundleName()
         {
             string[] oldAssetBundleNames = AssetDatabase.GetAllAssetBundleNames();
-            for (int j = oldAssetBundleNames.Length - 1; j >= 0; j--)
+            var length = oldAssetBundleNames.Length;
+            for (int i =0; i < length; i++)
             {
-                AssetDatabase.RemoveAssetBundleName(oldAssetBundleNames[j], true);
+                EditorUtility.DisplayProgressBar("æ¸…é™¤AssetBundleName", "æ­£åœ¨æ¸…é™¤AssetBundleName", i / length);
+                AssetDatabase.RemoveAssetBundleName(oldAssetBundleNames[i], true);
             }
+            EditorUtility.ClearProgressBar();
         }
     }
 }

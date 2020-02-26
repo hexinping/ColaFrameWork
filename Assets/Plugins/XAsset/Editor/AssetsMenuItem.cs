@@ -36,6 +36,7 @@ namespace Plugins.XAsset.Editor
         private const string KMarkAssetsWithDir = "Assets/AssetBundles/按目录标记";
         private const string KMarkAssetsWithFile = "Assets/AssetBundles/按文件标记";
         private const string KMarkAssetsWithName = "Assets/AssetBundles/按名称标记";
+        private const string KClearABName = "Assets/AssetBundles/清除所有AssetBundle的标记";
         private const string KBuildManifest = "Assets/AssetBundles/生成配置";
         private const string KBuildAssetBundles = "Assets/AssetBundles/生成资源包";
         private const string KBuildPlayer = "Assets/AssetBundles/生成播放器";
@@ -152,6 +153,12 @@ namespace Plugins.XAsset.Editor
             EditorUtility.SetDirty(assetsManifest);
             AssetDatabase.SaveAssets();
             EditorUtility.ClearProgressBar();
+        }
+
+        [MenuItem(KClearABName)]
+        private static void ClearAllABName()
+        {
+            BuildScript.ClearAllAssetBundleName();
         }
 
         [MenuItem(KBuildManifest)]
