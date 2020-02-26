@@ -391,7 +391,7 @@ namespace Plugins.XAsset.Editor
             var length = oldAssetBundleNames.Length;
             for (int i =0; i < length; i++)
             {
-                EditorUtility.DisplayProgressBar("清除AssetBundleName", "正在清除AssetBundleName", i / length);
+                EditorUtility.DisplayProgressBar("清除AssetBundleName", "正在清除AssetBundleName", i *1f / length);
                 AssetDatabase.RemoveAssetBundleName(oldAssetBundleNames[i], true);
             }
             EditorUtility.ClearProgressBar();
