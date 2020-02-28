@@ -33,16 +33,16 @@ namespace Plugins.XAsset.Editor
 {
     public static class AssetsMenuItem
     {
-        private const string KMarkAssetsWithDir = "Assets/AssetBundles/按目录标记";
-        private const string KMarkAssetsWithFile = "Assets/AssetBundles/按文件标记";
-        private const string KMarkAssetsWithName = "Assets/AssetBundles/按名称标记";
-        private const string KClearABName = "Assets/AssetBundles/清除所有AssetBundle的标记";
-        private const string KBuildManifest = "Assets/AssetBundles/生成配置";
-        private const string KBuildAssetBundles = "Assets/AssetBundles/生成资源包";
-        private const string KBuildPlayer = "Assets/AssetBundles/生成播放器";
-        private const string KCopyPath = "Assets/复制路径";
-        private const string KMarkAssets = "标记资源";
-        private const string KCopyToStreamingAssets = "Assets/AssetBundles/拷贝到StreamingAssets";
+        private const string MARK_ASSET_WITH_DIR = "Assets/AssetBundles/按目录标记";
+        private const string MARK_ASSET_WITH_FILE = "Assets/AssetBundles/按文件标记";
+        private const string MARK_ASSET_WITH_NAME = "Assets/AssetBundles/按名称标记";
+        private const string CLEAR_ABNAME = "Assets/AssetBundles/清除所有AssetBundle的标记";
+        private const string BUILD_MANIFEST = "Assets/AssetBundles/生成配置";
+        private const string BUILD_ASSETBUNDLES = "Assets/AssetBundles/生成资源包";
+        private const string BUILD_PLAYER = "Assets/AssetBundles/生成播放器";
+        private const string COPY_PATH = "Assets/复制路径";
+        private const string MARK_ASSETS = "正在标记资源";
+        private const string COPY_TO_STREAMINGASSETS = "Assets/AssetBundles/拷贝到StreamingAssets";
 
         [InitializeOnLoadMethod]
         private static void OnInitialize()
@@ -76,14 +76,14 @@ namespace Plugins.XAsset.Editor
             return assetBundleName.Replace(Constants.GameAssetBasePath, "");
         }
 
-        [MenuItem(KCopyToStreamingAssets)]
+        [MenuItem(COPY_TO_STREAMINGASSETS)]
         private static void CopyAssetBundles()
         {
             BuildScript.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
             AssetDatabase.Refresh();
         }
 
-        [MenuItem(KMarkAssetsWithDir)]
+        [MenuItem(MARK_ASSET_WITH_DIR)]
         private static void MarkAssetsWithDir()
         {
             var assetsManifest = BuildScript.GetManifest();
@@ -94,7 +94,7 @@ namespace Plugins.XAsset.Editor
                 var path = AssetDatabase.GetAssetPath(asset);
                 if (Directory.Exists(path) || path.EndsWith(".cs", System.StringComparison.CurrentCulture))
                     continue;
-                if (EditorUtility.DisplayCancelableProgressBar(KMarkAssets, path, i * 1f / assets.Length))
+                if (EditorUtility.DisplayCancelableProgressBar(MARK_ASSETS, path, i * 1f / assets.Length))
                     break;
                 var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(path).Replace("\\", "/")) + "_g";
                 BuildScript.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
@@ -104,7 +104,7 @@ namespace Plugins.XAsset.Editor
             EditorUtility.ClearProgressBar();
         }
 
-        [MenuItem(KMarkAssetsWithFile)]
+        [MenuItem(MARK_ASSET_WITH_FILE)]
         private static void MarkAssetsWithFile()
         {
             var assetsManifest = BuildScript.GetManifest();
@@ -115,7 +115,7 @@ namespace Plugins.XAsset.Editor
                 var path = AssetDatabase.GetAssetPath(asset);
                 if (Directory.Exists(path) || path.EndsWith(".cs", System.StringComparison.CurrentCulture))
                     continue;
-                if (EditorUtility.DisplayCancelableProgressBar(KMarkAssets, path, i * 1f / assets.Length))
+                if (EditorUtility.DisplayCancelableProgressBar(MARK_ASSETS, path, i * 1f / assets.Length))
                     break;
 
                 var dir = Path.GetDirectoryName(path);
@@ -134,7 +134,7 @@ namespace Plugins.XAsset.Editor
             EditorUtility.ClearProgressBar();
         }
 
-        [MenuItem(KMarkAssetsWithName)]
+        [MenuItem(MARK_ASSET_WITH_NAME)]
         private static void MarkAssetsWithName()
         {
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
@@ -145,7 +145,7 @@ namespace Plugins.XAsset.Editor
                 var path = AssetDatabase.GetAssetPath(asset);
                 if (Directory.Exists(path) || path.EndsWith(".cs", System.StringComparison.CurrentCulture))
                     continue;
-                if (EditorUtility.DisplayCancelableProgressBar(KMarkAssets, path, i * 1f / assets.Length))
+                if (EditorUtility.DisplayCancelableProgressBar(MARK_ASSETS, path, i * 1f / assets.Length))
                     break;
                 var assetBundleName = Path.GetFileNameWithoutExtension(path);
                 BuildScript.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
@@ -155,32 +155,32 @@ namespace Plugins.XAsset.Editor
             EditorUtility.ClearProgressBar();
         }
 
-        [MenuItem(KClearABName)]
+        [MenuItem(CLEAR_ABNAME)]
         private static void ClearAllABName()
         {
             BuildScript.ClearAllAssetBundleName();
         }
 
-        [MenuItem(KBuildManifest)]
+        [MenuItem(BUILD_MANIFEST)]
         private static void BuildManifest()
         {
             BuildScript.BuildManifest();
         }
 
-        [MenuItem(KBuildAssetBundles)]
+        [MenuItem(BUILD_ASSETBUNDLES)]
         private static void BuildAssetBundles()
         {
             BuildScript.BuildManifest();
             BuildScript.BuildAssetBundles();
         }
 
-        [MenuItem(KBuildPlayer)]
+        [MenuItem(BUILD_PLAYER)]
         private static void BuildStandalonePlayer()
         {
             BuildScript.BuildStandalonePlayer();
         }
 
-        [MenuItem(KCopyPath)]
+        [MenuItem(COPY_PATH)]
         private static void CopyPath()
         {
             var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
