@@ -204,7 +204,7 @@ namespace Plugins.XAsset.Editor
                 var paths = AssetDatabase.GetAssetPathsFromAssetBundle(bundles[i]);
                 foreach (var path in paths)
                 {
-                    var dir = Path.GetDirectoryName(path);
+                    var dir = TrimedAssetDirName(Path.GetDirectoryName(path));
                     var index = dirs.FindIndex((o) => o.Equals(dir));
                     if (index == -1)
                     {
@@ -232,6 +232,12 @@ namespace Plugins.XAsset.Editor
             EditorUtility.SetDirty(manifest);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+        }
+
+        public static string TrimedAssetDirName(string assetDirName)
+        {
+            assetDirName = assetDirName.Replace("\\", "/");
+            return assetDirName.Replace(Constants.GameAssetBasePath, "");
         }
 
         public static void BuildAssetBundles()
