@@ -43,6 +43,7 @@ namespace Plugins.XAsset.Editor
         private const string COPY_PATH = "Assets/复制路径";
         private const string MARK_ASSETS = "正在标记资源";
         private const string COPY_TO_STREAMINGASSETS = "Assets/AssetBundles/拷贝到StreamingAssets";
+        private const string CLEAR_SANDBOX = "Assets/AssetBundles/清除沙盒目录下的内容";
 
         [InitializeOnLoadMethod]
         private static void OnInitialize()
@@ -186,6 +187,16 @@ namespace Plugins.XAsset.Editor
             var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
             EditorGUIUtility.systemCopyBuffer = assetPath;
             Debug.Log(assetPath);
+        }
+
+        [MenuItem(CLEAR_SANDBOX)]
+        private static void ClearSandBox()
+        {
+            var dir = Path.GetDirectoryName(Utility.UpdatePath);
+            if (Directory.Exists(dir))
+            {
+                Directory.Delete(dir, true);             
+            }
         }
     }
 }
