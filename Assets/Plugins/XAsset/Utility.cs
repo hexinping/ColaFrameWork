@@ -39,6 +39,7 @@ namespace Plugins.XAsset
     {
         public const string AssetBundles = "AssetBundles";
         public const string AssetsManifestAsset = "Assets/GameAssets/Manifest.asset";
+        public const string ManifestAsset = "Manifest.asset";
         public static bool assetBundleMode = true;
         public static LoadDelegate loadDelegate = null;
         public static GetPlatformDelegate getPlatformDelegate = null;

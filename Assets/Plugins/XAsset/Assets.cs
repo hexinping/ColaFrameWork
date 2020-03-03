@@ -73,7 +73,7 @@ namespace Plugins.XAsset
                 Bundles.OverrideBaseDownloadingUrl += Bundles_overrideBaseDownloadingURL;
                 Bundles.Initialize(path, platform, () =>
                 {
-                    var asset = LoadAsync(Utility.AssetsManifestAsset, typeof(AssetsManifest));
+                    var asset = LoadAsync(Utility.ManifestAsset, typeof(AssetsManifest));
                     asset.completed += obj =>
                     {
                         var manifest = obj.asset as AssetsManifest;
@@ -92,7 +92,14 @@ namespace Plugins.XAsset
                         for (int i = 0, max = manifest.assets.Length; i < max; i++)
                         {
                             var item = manifest.assets[i];
-                            _bundleAssets[string.Format("{0}/{1}", dirs[item.dir], item.name)] = item.bundle;
+                            if (!string.IsNullOrEmpty(dirs[item.dir]))
+                            {
+                                _bundleAssets[string.Format("{0}/{1}", dirs[item.dir], item.name)] = item.bundle;
+                            }
+                            else
+                            {
+                                _bundleAssets[item.name] = item.bundle;
+                            }
                         }
 
                         if (onSuccess != null)
@@ -238,7 +245,7 @@ namespace Plugins.XAsset
 
         private static bool GetAssetBundleName(string path, out string assetBundleName)
         {
-            if (path.Equals(Utility.AssetsManifestAsset))
+            if (path.Equals(Utility.ManifestAsset))
             {
                 assetBundleName = Path.GetFileNameWithoutExtension(path).ToLower();
                 return true;

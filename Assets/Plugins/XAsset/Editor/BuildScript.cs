@@ -193,6 +193,10 @@ namespace Plugins.XAsset.Editor
         {
             var manifest = GetManifest();
 
+            var assetPath = TrimedAssetDirName(AssetDatabase.GetAssetPath(manifest));
+            var bundleName = Path.GetFileNameWithoutExtension(assetPath).ToLower();
+            SetAssetBundleNameAndVariant(assetPath, bundleName, null);
+
             AssetDatabase.RemoveUnusedAssetBundleNames();
             var bundles = AssetDatabase.GetAllAssetBundleNames();
 
@@ -201,10 +205,14 @@ namespace Plugins.XAsset.Editor
 
             for (int i = 0; i < bundles.Length; i++)
             {
+                if(i ==27 || bundles[i].Contains("manifest.asset"))
+                {
+
+                }
                 var paths = AssetDatabase.GetAssetPathsFromAssetBundle(bundles[i]);
                 foreach (var path in paths)
                 {
-                    var dir = TrimedAssetDirName(Path.GetDirectoryName(path));
+                    var dir = TrimedAssetDirName(path);
                     var index = dirs.FindIndex((o) => o.Equals(dir));
                     if (index == -1)
                     {
@@ -225,10 +233,6 @@ namespace Plugins.XAsset.Editor
             manifest.dirs = dirs.ToArray();
             manifest.assets = assets.ToArray();
 
-            var assetPath = AssetDatabase.GetAssetPath(manifest);
-            var bundleName = Path.GetFileNameWithoutExtension(assetPath).ToLower();
-            SetAssetBundleNameAndVariant(assetPath, bundleName, null);
-
             EditorUtility.SetDirty(manifest);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -237,7 +241,8 @@ namespace Plugins.XAsset.Editor
         public static string TrimedAssetDirName(string assetDirName)
         {
             assetDirName = assetDirName.Replace("\\", "/");
-            return assetDirName.Replace(Constants.GameAssetBasePath, "");
+            assetDirName = assetDirName.Replace(Constants.GameAssetBasePath, "");
+            return Path.GetDirectoryName(assetDirName);
         }
 
         public static void BuildAssetBundles()

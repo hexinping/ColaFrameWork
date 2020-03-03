@@ -49,7 +49,7 @@ namespace ColaFramework
             //是否开启了Editor下模拟模式
             if (AppConst.SimulateMode)
             {
-                LoadInternal(path, type);
+                return LoadInternal(path, type);
             }
             path = Constants.GameAssetBasePath + path;
             if (Path.HasExtension(path))
@@ -117,6 +117,7 @@ namespace ColaFramework
             if (AppConst.SimulateMode)
             {
                 LoadAsyncInternal(path, type, callback);
+                return;
             }
             //模拟异步
             var asset = Load(path, type);
