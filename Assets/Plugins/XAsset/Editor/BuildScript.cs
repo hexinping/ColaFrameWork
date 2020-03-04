@@ -242,7 +242,7 @@ namespace Plugins.XAsset.Editor
         {
             assetDirName = assetDirName.Replace("\\", "/");
             assetDirName = assetDirName.Replace(Constants.GameAssetBasePath, "");
-            return Path.GetDirectoryName(assetDirName);
+            return Path.GetDirectoryName(assetDirName).Replace("\\", "/"); ;
         }
 
         public static void BuildAssetBundles()
