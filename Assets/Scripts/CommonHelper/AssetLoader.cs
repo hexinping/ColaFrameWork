@@ -76,6 +76,7 @@ namespace ColaFramework
                     return wkRef.Target as Object;
                 }
             }
+            wkRef = new WeakReference(null);
             var assetProxy = Assets.Load(path, type);
             wkRef.Target = assetProxy.asset;
             var asset = assetProxy.asset;
