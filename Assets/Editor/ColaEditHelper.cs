@@ -10,12 +10,15 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using ColaFramework.Foundation;
+using ColaFramework.EditorExtension;
 
 /// <summary>
 /// ColaFramework 编辑器助手类
 /// </summary>
 public class ColaEditHelper
 {
+
+
     /// <summary>
     /// 编辑器会用到的一些临时目录
     /// </summary>
@@ -51,6 +54,19 @@ public class ColaEditHelper
         FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.streamingAssetLua);
         FileHelper.CopyDir(LuaConst.luaDir, LuaConst.streamingAssetLua);
         AssetDatabase.Refresh();
+    }
+
+    public static T GetScriptableObjectAsset<T>(string path) where T : ScriptableObject
+    {
+        var asset = AssetDatabase.LoadAssetAtPath<T>(path);
+        if (asset == null)
+        {
+            asset = ScriptableObject.CreateInstance<T>();
+            AssetDatabase.CreateAsset(asset, path);
+            AssetDatabase.SaveAssets();
+        }
+
+        return asset;
     }
 }
 
