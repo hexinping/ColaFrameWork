@@ -213,7 +213,7 @@ namespace ColaFramework
         public static void Update(float deltaTime)
         {
             time += deltaTime;
-            if (deltaTime < CHECK_INTERVAL) { return; }
+            if (time < CHECK_INTERVAL) { return; }
             time = 0;
             foreach (KeyValuePair<string, WeakReference> kvPair in AssetReferences)
             {
@@ -226,6 +226,7 @@ namespace ColaFramework
             {
                 foreach (var name in UnUsedAssets)
                 {
+                    Debug.Log("卸载无用资源:" + name);
                     AssetReferences.Remove(name);
                     Asset asset = null;
                     if (LoadedAssets.TryGetValue(name, out asset))
