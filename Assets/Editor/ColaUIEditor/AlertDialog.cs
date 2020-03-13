@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace ColaFramework
+namespace ColaFramework.ToolKit
 {
     /// <summary>
     /// 编辑器中的弹出提示框

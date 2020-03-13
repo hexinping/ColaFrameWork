@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI.Extensions;
 
-namespace ColaFramework
+namespace ColaFramework.ToolKit
 {
     /// <summary>
     /// UGUIModel组件的Inspector编辑器拓展

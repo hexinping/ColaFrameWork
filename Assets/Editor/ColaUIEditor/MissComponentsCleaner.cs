@@ -8,65 +8,68 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// 预制体组件丢失清理助手类
-/// </summary>
-public class MissComponentsCleaner
+namespace ColaFramework.ToolKit
 {
-    [MenuItem("ColaFramework/Cleaner/清除丢失组件")]
-    public static void ClearMissComonents()
+    /// <summary>
+    /// 预制体组件丢失清理助手类
+    /// </summary>
+    public class MissComponentsCleaner
     {
-        Transform[] transforms = Selection.GetTransforms(SelectionMode.Deep);
-        for (int i = 0; i < transforms.Length; i++)
+        [MenuItem("ColaFramework/Cleaner/清除丢失组件")]
+        public static void ClearMissComonents()
         {
-            EditorUtility.DisplayProgressBar("清理组件中...", "清理重复组件:" + transforms[i].name, i / (float)transforms.Length);
-            ClearMissComponents(transforms[i].gameObject);
-        }
-        EditorUtility.ClearProgressBar();
-    }
-
-    private static void ClearMissComponents(GameObject obj)
-    {
-        if (null == obj)
-        {
-            return;
-        }
-        var components = obj.GetComponents<Component>();
-        SerializedObject serializedObject = new SerializedObject(obj);
-        SerializedProperty props = serializedObject.FindProperty("m_Component");
-        int offset = 0;
-        for (int j = 0; j < components.Length; j++)
-        {
-            if (null == components[j])
+            Transform[] transforms = Selection.GetTransforms(SelectionMode.Deep);
+            for (int i = 0; i < transforms.Length; i++)
             {
-                props.DeleteArrayElementAtIndex(j - offset);
-                offset++;
-                Debug.LogWarning(string.Format("移除丢失组件:{0}", obj.name));
+                EditorUtility.DisplayProgressBar("清理组件中...", "清理重复组件:" + transforms[i].name, i / (float)transforms.Length);
+                ClearMissComponents(transforms[i].gameObject);
             }
+            EditorUtility.ClearProgressBar();
         }
-        serializedObject.ApplyModifiedProperties();
-    }
 
-    [MenuItem("ColaFramework/Cleaner/ResetAll预制")]
-    public static void PrefabApply()
-    {
-        GameObject[] objs = Selection.gameObjects;
-        for (int i = 0; i < objs.Length; i++)
+        private static void ClearMissComponents(GameObject obj)
         {
-            EditorUtility.DisplayProgressBar("Reset组件...", "Apply组件:" + objs[i].name, i / (float)objs.Length);
-            SavePrefabObj(objs[i]);
+            if (null == obj)
+            {
+                return;
+            }
+            var components = obj.GetComponents<Component>();
+            SerializedObject serializedObject = new SerializedObject(obj);
+            SerializedProperty props = serializedObject.FindProperty("m_Component");
+            int offset = 0;
+            for (int j = 0; j < components.Length; j++)
+            {
+                if (null == components[j])
+                {
+                    props.DeleteArrayElementAtIndex(j - offset);
+                    offset++;
+                    Debug.LogWarning(string.Format("移除丢失组件:{0}", obj.name));
+                }
+            }
+            serializedObject.ApplyModifiedProperties();
         }
-        EditorUtility.ClearProgressBar();
-    }
 
-    private static void SavePrefabObj(GameObject go)
-    {
-        Object prefabParent = PrefabUtility.GetCorrespondingObjectFromSource(go);
-        if (null == prefabParent)
+        [MenuItem("ColaFramework/Cleaner/ResetAll预制")]
+        public static void PrefabApply()
         {
-            Debug.LogError("Can not find prefab from obj:" + go.name);
-            return;
+            GameObject[] objs = Selection.gameObjects;
+            for (int i = 0; i < objs.Length; i++)
+            {
+                EditorUtility.DisplayProgressBar("Reset组件...", "Apply组件:" + objs[i].name, i / (float)objs.Length);
+                SavePrefabObj(objs[i]);
+            }
+            EditorUtility.ClearProgressBar();
         }
-        PrefabUtility.ReplacePrefab(go, prefabParent, ReplacePrefabOptions.ConnectToPrefab);
+
+        private static void SavePrefabObj(GameObject go)
+        {
+            Object prefabParent = PrefabUtility.GetCorrespondingObjectFromSource(go);
+            if (null == prefabParent)
+            {
+                Debug.LogError("Can not find prefab from obj:" + go.name);
+                return;
+            }
+            PrefabUtility.ReplacePrefab(go, prefabParent, ReplacePrefabOptions.ConnectToPrefab);
+        }
     }
 }

@@ -10,38 +10,41 @@ using System.IO;
 using System.Text;
 using UnityEditor.ProjectWindowCallback;
 
-/// <summary>
-/// 创建Lua代码的EndAction
-/// </summary>
-public class CreateLuaScriptEndAction : EndNameEditAction
+namespace ColaFramework.ToolKit
 {
-    public override void Action(int instanceId, string pathName, string resourceFile)
+    /// <summary>
+    /// 创建Lua代码的EndAction
+    /// </summary>
+    public class CreateLuaScriptEndAction : EndNameEditAction
     {
-        UnityEngine.Object o = CreateScriptAssetFromTemplate(pathName, resourceFile);
-        ProjectWindowUtil.ShowCreatedAsset(o);
-    }
+        public override void Action(int instanceId, string pathName, string resourceFile)
+        {
+            UnityEngine.Object o = CreateScriptAssetFromTemplate(pathName, resourceFile);
+            ProjectWindowUtil.ShowCreatedAsset(o);
+        }
 
-    internal static UnityEngine.Object CreateScriptAssetFromTemplate(string pathName, string resourceFile)
-    {
-        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(pathName);
-        CreateTemplateFile(pathName, resourceFile, fileNameWithoutExtension);
-        return AssetDatabase.LoadAssetAtPath(pathName, typeof(UnityEngine.Object));
-    }
+        internal static UnityEngine.Object CreateScriptAssetFromTemplate(string pathName, string resourceFile)
+        {
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(pathName);
+            CreateTemplateFile(pathName, resourceFile, fileNameWithoutExtension);
+            return AssetDatabase.LoadAssetAtPath(pathName, typeof(UnityEngine.Object));
+        }
 
-    internal static void CreateTemplateFile(string pathName, string resourceFile, string replaceName)
-    {
-        string fullPath = Path.GetFullPath(pathName);
-        StreamReader streamReader = new StreamReader(resourceFile);
-        string text = streamReader.ReadToEnd();
-        streamReader.Close();
-        text = Regex.Replace(text, "#NAME#", replaceName);
-        bool encoderShouldEmitUTF8Identifier = true;
-        bool throwOnInvalidBytes = false;
-        UTF8Encoding encoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier, throwOnInvalidBytes);
-        bool append = false;
-        StreamWriter streamWriter = new StreamWriter(fullPath, append, encoding);
-        streamWriter.Write(text);
-        streamWriter.Close();
-        AssetDatabase.ImportAsset(pathName);
+        internal static void CreateTemplateFile(string pathName, string resourceFile, string replaceName)
+        {
+            string fullPath = Path.GetFullPath(pathName);
+            StreamReader streamReader = new StreamReader(resourceFile);
+            string text = streamReader.ReadToEnd();
+            streamReader.Close();
+            text = Regex.Replace(text, "#NAME#", replaceName);
+            bool encoderShouldEmitUTF8Identifier = true;
+            bool throwOnInvalidBytes = false;
+            UTF8Encoding encoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier, throwOnInvalidBytes);
+            bool append = false;
+            StreamWriter streamWriter = new StreamWriter(fullPath, append, encoding);
+            streamWriter.Write(text);
+            streamWriter.Close();
+            AssetDatabase.ImportAsset(pathName);
+        }
     }
 }
