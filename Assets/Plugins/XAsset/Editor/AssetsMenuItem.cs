@@ -46,7 +46,7 @@ namespace Plugins.XAsset.Editor
         private const string CLEAR_SANDBOX = "Assets/AssetBundles/清除沙盒目录下的内容";
 
         [InitializeOnLoadMethod]
-        private static void OnInitialize()
+        public static void OnInitialize()
         {
             EditorUtility.ClearProgressBar();
             if (AppConst.isLocalServer)

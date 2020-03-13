@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Sirenix.OdinInspector;
+using Plugins.XAsset.Editor;
 
-namespace ColaFramework.EditorExtension
+namespace ColaFramework.ToolKit
 {
     public class AppSetting : SerializedScriptableObject
     {
@@ -33,6 +34,8 @@ namespace ColaFramework.EditorExtension
             AppConst.SimulateMode = setting.SimulateMode;
             AppConst.isLocalServer = setting.isLocalServer;
             AppConst.GameFrameRate = setting.GameFrameRate;
+
+            AssetsMenuItem.OnInitialize();
         }
 
         private static AppSetting GetSetting()
