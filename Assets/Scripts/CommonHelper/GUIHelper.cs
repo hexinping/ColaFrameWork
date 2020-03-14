@@ -179,6 +179,7 @@ namespace ColaFramework
                 effectCameraObj.AddComponent<ImageEffectUIBlur>();
                 effectCamera.enabled = false;
             }
+            effectCamera.transform.position = mainCamera.transform.position;
         }
 
 
