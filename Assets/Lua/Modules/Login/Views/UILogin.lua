@@ -36,7 +36,11 @@ function UILogin:onClick(name)
     if name == "cancelBtn" then
         self:DestroySelf()
     elseif name == "okBtn" then
-        Ctrl.Login.RequestConnectServer()
+        self:DestroySelf()
+        UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
+        UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
+        SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_girl.prefab", AnimCtrlEnum.CharAnimator, true)
+        --Ctrl.Login.RequestConnectServer()
     end
 end
 
