@@ -39,10 +39,13 @@ namespace ColaFramework.ToolKit
                 //3.自动化接入SDK
                 BuildSDK(buildTargetGroup);
 
-                //4.打Bundle
+                //4.处理Lua文件
+                BuildLua(buildTargetGroup);
+
+                //5.打Bundle
                 BuildAssetBundle(buildTargetGroup);
 
-                //5.出包
+                //6.出包
                 InternalBuildPkg(buildTargetGroup);
             }
             catch
@@ -109,6 +112,15 @@ namespace ColaFramework.ToolKit
         /// </summary>
         /// <param name="buildTargetGroup"></param>
         private static void BuildAssetBundle(BuildTargetGroup buildTargetGroup)
+        {
+
+        }
+
+        /// <summary>
+        /// Build Lua
+        /// </summary>
+        /// <param name="buildTargetGroup"></param>
+        private static void BuildLua(BuildTargetGroup buildTargetGroup)
         {
 
         }
