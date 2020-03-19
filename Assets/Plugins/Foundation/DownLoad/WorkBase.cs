@@ -6,21 +6,25 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// 下载任务队列的基类
-/// </summary>
-public class WorkBase
+namespace ColaFramework.Foundation.DownLoad
 {
-    public virtual void Update () { }
-    public virtual void Dispose () { }
-
-    public bool IsFinish {
-        get;
-        protected set;
-    }
-
-    public virtual void Run()
+    /// <summary>
+    /// 下载任务队列的基类
+    /// </summary>
+    public class WorkBase
     {
-        
+        public virtual void Update() { }
+        public virtual void Dispose() { }
+
+        public bool IsFinish
+        {
+            get;
+            protected set;
+        }
+
+        public virtual void Run()
+        {
+
+        }
     }
 }
