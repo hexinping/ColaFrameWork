@@ -19,6 +19,7 @@ public class AppVersion : SerializedScriptableObject
     [OnValueChanged("OnValueChanged")]
     public int StoreVersion;
 
+
     [LabelText("热更版本号")]
     [OnValueChanged("OnValueChanged")]
     public int HotUpdateVersion;
@@ -29,6 +30,12 @@ public class AppVersion : SerializedScriptableObject
 
     [ReadOnly]
     public string Version;
+
+    [LabelText("强更版本号")]
+    public string MinVersion;
+
+    [LabelText("推荐版本号")]
+    public string RecommandVersion;
 
     public void OnValueChanged()
     {
