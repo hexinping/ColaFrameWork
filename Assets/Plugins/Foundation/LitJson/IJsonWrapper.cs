@@ -30,19 +30,6 @@ namespace LitJson
         Boolean
     }
 
-    public interface IOrderedDictionary : IDictionary
-    {
-        new IDictionaryEnumerator GetEnumerator();
-        void Insert(int index, object key, object value);
-        void RemoveAt(int index);
-
-        object this[int index]
-        {
-            get;
-            set;
-        }
-    }
-
     public interface IJsonWrapper : IList, IOrderedDictionary
     {
         bool IsArray   { get; }
