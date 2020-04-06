@@ -23,5 +23,7 @@ public class AppConst
     public const string AppName = "ColaFramework";               //应用程序名称
     public const string ExtName = ".cab";                   //AssetBundle的扩展名
     public const string WebUrl = "http://localhost:6688/";      //测试更新地址
+    public const string IP = "127.0.0.1";                       //测试服务器地址
+    public const int Port = 9876;                              //测试端口号
 }
 
