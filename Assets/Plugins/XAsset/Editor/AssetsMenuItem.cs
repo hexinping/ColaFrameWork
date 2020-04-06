@@ -49,7 +49,7 @@ namespace Plugins.XAsset.Editor
         public static void OnInitialize()
         {
             EditorUtility.ClearProgressBar();
-            if (AppConst.isLocalServer)
+            if (AppConst.isLocalResServer)
             {
                 bool isRunning = LaunchLocalServer.IsRunning();
                 if (!isRunning)

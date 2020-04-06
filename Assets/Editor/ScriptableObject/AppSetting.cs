@@ -37,7 +37,7 @@ namespace ColaFramework.ToolKit
         {
             var setting = GetSetting();
             AppConst.SimulateMode = setting.SimulateMode;
-            AppConst.isLocalServer = setting.isLocalServer;
+            AppConst.isLocalResServer = setting.isLocalServer;
             AppConst.GameFrameRate = setting.GameFrameRate;
 
             AssetsMenuItem.OnInitialize();

@@ -13,7 +13,7 @@ using UnityEngine;
 public class AppConst
 {
     public static bool SimulateMode = false;                       //调试/模式模式-用于在编辑器上模拟手机
-    public static bool isLocalServer = true;
+    public static bool isLocalResServer = true;
 
     public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
     public const bool LuaBundleMode = false;                    //Lua代码AssetBundle模式
@@ -25,5 +25,6 @@ public class AppConst
     public const string WebUrl = "http://localhost:6688/";      //测试更新地址
     public const string IP = "127.0.0.1";                       //测试服务器地址
     public const int Port = 9876;                              //测试端口号
+    public const bool isLocalGameServer = true;
 }
 

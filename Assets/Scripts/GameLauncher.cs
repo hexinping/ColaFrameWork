@@ -66,6 +66,13 @@ public class GameLauncher : MonoBehaviour
         GameObject.DontDestroyOnLoad(fpsHelperObj);
 #endif
 
+        if (AppConst.isLocalGameServer)
+        {
+            var ServerObj = new GameObject("SimulateServer");
+            ServerObj.AddComponent<ColaFramework.NetWork.SimulateServer>();
+            GameObject.DontDestroyOnLoad(ServerObj);
+        }
+
 #if BUILD_DEBUG_LOG || UNITY_EDITOR
 #if UNITY_2017_1_OR_NEWER
         Debug.unityLogger.logEnabled = true;

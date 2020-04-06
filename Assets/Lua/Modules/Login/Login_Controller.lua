@@ -20,7 +20,7 @@ function public.OnDestroy()
 end
 
 function public.RequestConnectServer()
-    NetManager.Connect("203.0.0.1","55078",function()
+    NetManager.Connect("127.0.0.1","9876",function()
         print("--------------->连接成功!")
     end)
 end
