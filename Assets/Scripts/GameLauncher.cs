@@ -168,72 +168,71 @@ public class GameLauncher : MonoBehaviour
     IEnumerator InitGameCore()
     {
         yield return null;
-        // 
+
 #if UNITY_ANDROID && (!UNITY_EDITOR)
         //从APK拷贝资源到本地
-        CopyAssetDirectory();
+        //CopyAssetDirectory();
 #else
         gameManager.InitGameCore(gameObject);
 #endif
     }
 
-    //
 #if UNITY_ANDROID && (!UNITY_EDITOR)
-    /// <summary>
-    /// 复制StreamingAsset资源
-    /// </summary>
-    private void CopyAssetDirectory()
-    {
-        if (GloablDefine.resbasePathList.Count > 0 && resbaseIndex < GloablDefine.resbasePathList.Count)
-        {          
-            var resbasePath = GloablDefine.resbasePathList[resbaseIndex];
-            var fullresbasePath = Path.Combine(StreamingAssetHelper.AssetPathDir, resbasePath);
-            DirectoryInfo directoryInfo = new DirectoryInfo(fullresbasePath);
-            resbaseIndex++;
-            //Debug.LogWarning("------------------------>resbasePath" + fullresbasePath);
-            //Debug.LogWarning("------------------------>resbasePath Is Exist" + directoryInfo.Exists);
-            if (!directoryInfo.Exists)
-            {
-                UICopyingAssetHelper.Instance().UpdateUI(resbaseIndex,GloablDefine.resbasePathList.Count,"首次运行游戏正在解压资源...");
-                StreamingAssetHelper.CopyAssetDirectoryInThread(resbasePath, resbasePath, OnCopyAssetDirectoryNext);
-            }
-            else
-            {
-                OnCopyAssetDirectoryNext(true);
-            }
-        }
-        else
-        {
-            OnCopyAssetDirectoryFinished();
-        }
-    }
+    ///// <summary>
+    ///// 复制StreamingAsset资源
+    ///// </summary>
+    //private void CopyAssetDirectory()
+    //{
+    //    if (GloablDefine.resbasePathList.Count > 0 && resbaseIndex < GloablDefine.resbasePathList.Count)
+    //    {          
+    //        var resbasePath = GloablDefine.resbasePathList[resbaseIndex];
+    //        var fullresbasePath = Path.Combine(StreamingAssetHelper.AssetPathDir, resbasePath);
+    //        DirectoryInfo directoryInfo = new DirectoryInfo(fullresbasePath);
+    //        resbaseIndex++;
+    //        //Debug.LogWarning("------------------------>resbasePath" + fullresbasePath);
+    //        //Debug.LogWarning("------------------------>resbasePath Is Exist" + directoryInfo.Exists);
+    //        if (!directoryInfo.Exists)
+    //        {
+    //            UICopyingAssetHelper.Instance().UpdateUI(resbaseIndex,GloablDefine.resbasePathList.Count,"首次运行游戏正在解压资源...");
+    //            StreamingAssetHelper.CopyAssetDirectoryInThread(resbasePath, resbasePath, OnCopyAssetDirectoryNext);
+    //        }
+    //        else
+    //        {
+    //            OnCopyAssetDirectoryNext(true);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        OnCopyAssetDirectoryFinished();
+    //    }
+    //}
 
-    /// <summary>
-    /// 复制资源的回调
-    /// </summary>
-    /// <param name="isSuccess"></param>
-    private void OnCopyAssetDirectoryNext(bool isSuccess)
-    {
-        //Debug.LogWarning("初始化拷贝资源结果" + isSuccess);
-        if (isSuccess)
-        {
-            //如果成功则继续拷贝剩余资源
-            CopyAssetDirectory();
-        }
-        else
-        {
-            Debug.LogError("初始化拷贝资源错误，请检查手机内存空间是否充足！");
-        }
-    }
+    ///// <summary>
+    ///// 复制资源的回调
+    ///// </summary>
+    ///// <param name="isSuccess"></param>
+    //private void OnCopyAssetDirectoryNext(bool isSuccess)
+    //{
+    //    //Debug.LogWarning("初始化拷贝资源结果" + isSuccess);
+    //    if (isSuccess)
+    //    {
+    //        //如果成功则继续拷贝剩余资源
+    //        CopyAssetDirectory();
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("初始化拷贝资源错误，请检查手机内存空间是否充足！");
+    //    }
+    //}
 
-    /// <summary>
-    /// 所有的资源拷贝完成之后的回调
-    /// </summary>
-    private void OnCopyAssetDirectoryFinished()
-    {
-        UICopyingAssetHelper.Instance().Close();
-        gameManager.InitGameCore(gameObject);
-    }
+    ///// <summary>
+    ///// 所有的资源拷贝完成之后的回调
+    ///// </summary>
+    //private void OnCopyAssetDirectoryFinished()
+    //{
+    //    UICopyingAssetHelper.Instance().Close();
+    //    gameManager.InitGameCore(gameObject);
+    //}
 #endif
 
 

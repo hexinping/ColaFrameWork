@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
+
+using UnityEngine;
 using UnityEngine.Networking;
 using System.IO;
 using System.Collections.Generic;
