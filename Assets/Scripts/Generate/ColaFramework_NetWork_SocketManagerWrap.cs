@@ -12,7 +12,6 @@ public class ColaFramework_NetWork_SocketManagerWrap
 		L.RegFunction("Close", Close);
 		L.RegFunction("SetTimeOut", SetTimeOut);
 		L.RegFunction("Dispose", Dispose);
-		L.RegFunction("New", _CreateColaFramework_NetWork_SocketManager);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("OnTimeOut", get_OnTimeOut, set_OnTimeOut);
 		L.RegVar("OnFailed", get_OnFailed, set_OnFailed);
@@ -23,30 +22,6 @@ public class ColaFramework_NetWork_SocketManagerWrap
 		L.RegVar("Instance", get_Instance, null);
 		L.RegVar("IsConnceted", get_IsConnceted, null);
 		L.EndClass();
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int _CreateColaFramework_NetWork_SocketManager(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 0)
-			{
-				ColaFramework.NetWork.SocketManager obj = new ColaFramework.NetWork.SocketManager();
-				ToLua.PushObject(L, obj);
-				return 1;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to ctor method: ColaFramework.NetWork.SocketManager.New");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]

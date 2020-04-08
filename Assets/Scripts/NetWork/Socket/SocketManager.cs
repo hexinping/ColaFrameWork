@@ -66,7 +66,13 @@ namespace ColaFramework.NetWork
         public Action OnReConnected;
         public Action OnClose;
         public Action<int> OnErrorCode;
+        private Action pingServerHandler;
         #endregion
+
+        private SocketManager()
+        {
+            pingServerHandler = pingServer;
+        }
 
         #region 对外基本方法
 
@@ -99,10 +105,7 @@ namespace ColaFramework.NetWork
         public void Close()
         {
             _close();
-            if (null != OnClose)
-            {
-                OnClose();
-            }
+            OnClose?.Invoke();
         }
 
         /// <summary>
@@ -146,10 +149,13 @@ namespace ColaFramework.NetWork
         private void _ReConnect()
         {
             _close();
-            if (null != OnReConnected)
-            {
-                OnReConnected();
-            }
+            OnReConnected?.Invoke();
+        }
+
+        private void pingServer()
+        {
+            //启动pingServer
+            pingTimerId = Timer.RunBySeconds(pingloopSec, PingServer, null);
         }
 
         /// <summary>
@@ -171,10 +177,7 @@ namespace ColaFramework.NetWork
             }
             catch (System.Exception _e)
             {
-                if(null != OnErrorCode)
-                {
-                    OnErrorCode((int)NetErrorEnum.BeginConnectError);
-                }
+                OnErrorCode?.Invoke((int)NetErrorEnum.BeginConnectError);
                 _onConnect_Fail();
             }
         }
@@ -192,20 +195,12 @@ namespace ColaFramework.NetWork
                 isConnected = true;
                 Debug.Log("连接成功");
 
-                //启动pingServer
-                pingTimerId = Timer.RunBySeconds(pingloopSec, PingServer, null);
-
-                if (null != OnConnected)
-                {
-                    OnConnected();
-                }
+                pingServerHandler?.Invoke();
+                OnConnected?.Invoke();
             }
             catch (Exception _e)
             {
-                if (null != OnErrorCode)
-                {
-                    OnErrorCode((int)NetErrorEnum.ConnnectedError);
-                }
+                OnErrorCode?.Invoke((int)NetErrorEnum.ConnnectedError);
                 _close();
             }
         }
@@ -216,10 +211,7 @@ namespace ColaFramework.NetWork
         private void _onConnect_Outtime()
         {
             _close();
-            if (null != OnTimeOut)
-            {
-                OnTimeOut();
-            }
+            OnTimeOut?.Invoke();
         }
 
         /// <summary>
@@ -228,10 +220,7 @@ namespace ColaFramework.NetWork
         private void _onConnect_Fail()
         {
             _close();
-            if (null != OnFailed)
-            {
-                OnFailed();
-            }
+            OnFailed?.Invoke();
         }
 
         /// <summary>
@@ -247,10 +236,7 @@ namespace ColaFramework.NetWork
             }
             catch (Exception e)
             {
-                if (null != OnErrorCode)
-                {
-                    OnErrorCode((int)NetErrorEnum.SendMsgError);
-                }
+                OnErrorCode?.Invoke((int)NetErrorEnum.SendMsgError);
                 Debug.Log("send msg exception:" + e.StackTrace);
             }
         }
@@ -299,10 +285,7 @@ namespace ColaFramework.NetWork
                 }
                 catch (System.Exception e)
                 {
-                    if (null != OnErrorCode)
-                    {
-                        OnErrorCode((int)NetErrorEnum.ReceiveError);
-                    }
+                    OnErrorCode?.Invoke((int)NetErrorEnum.ReceiveError);
                     clientSocket.Disconnect(true);
                     clientSocket.Shutdown(SocketShutdown.Both);
                     clientSocket.Close();
@@ -389,6 +372,7 @@ namespace ColaFramework.NetWork
             OnConnected = null;
             OnFailed = null;
             OnTimeOut = null;
+            pingServerHandler = null;
         }
     }
 }
