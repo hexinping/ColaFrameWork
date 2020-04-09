@@ -35,7 +35,7 @@ namespace ColaFramework.NetWork
         private string currIP;
         private int currPort;
         private int timeOutMilliSec = 10;
-        private float pingloopSec = 1.0f;
+        private float pingloopSec = 5.0f;
         private long pingTimerId = -1;
         private byte[] pingBytes = System.Text.Encoding.UTF8.GetBytes(AppConst.AppName);
 
@@ -66,12 +66,10 @@ namespace ColaFramework.NetWork
         public Action OnReConnected;
         public Action OnClose;
         public Action<int> OnErrorCode;
-        private Action pingServerHandler;
         #endregion
 
         private SocketManager()
         {
-            pingServerHandler = pingServer;
         }
 
         #region 对外基本方法
@@ -152,7 +150,7 @@ namespace ColaFramework.NetWork
             OnReConnected?.Invoke();
         }
 
-        private void pingServer()
+        private void StartPingServer()
         {
             //启动pingServer
             pingTimerId = Timer.RunBySeconds(pingloopSec, PingServer, null);
@@ -195,7 +193,7 @@ namespace ColaFramework.NetWork
                 isConnected = true;
                 Debug.Log("连接成功");
 
-                pingServerHandler?.Invoke();
+                ColaLoom.QueueOnMainThread(StartPingServer);
                 OnConnected?.Invoke();
             }
             catch (Exception _e)
@@ -363,6 +361,7 @@ namespace ColaFramework.NetWork
         private void PingServer()
         {
             SendMsgBase(Constants.PING_PROTO_CODE, pingBytes);
+            Debug.Log("PingServer");
         }
 
         public void Dispose()
@@ -372,7 +371,6 @@ namespace ColaFramework.NetWork
             OnConnected = null;
             OnFailed = null;
             OnTimeOut = null;
-            pingServerHandler = null;
         }
     }
 }
