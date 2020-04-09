@@ -87,10 +87,6 @@ public class GameLauncher : MonoBehaviour
 #endif
 #endif
 
-#if WETEST_SDK
-        gameObject.AddComponent<WeTest.U3DAutomation.U3DAutomationBehaviour>();
-#endif
-
 #if OUTPUT_LOG
         GameObject logHelperObj = new GameObject("LogHelperObj");
         logHelper = logHelperObj.AddComponent<LogHelper>();
