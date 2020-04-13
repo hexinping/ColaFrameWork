@@ -57,6 +57,17 @@ namespace ColaFramework.ToolKit
             AssetDatabase.Refresh();
         }
 
+        /// <summary>
+        /// 合并Lua代码，并复制到临时目录中准备打包
+        /// </summary>
+        public static void BuildLuaToTempDir()
+        {
+            FileHelper.RmDir(LuaConst.luaTempDir);
+            FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.luaTempDir);
+            FileHelper.CopyDir(LuaConst.luaDir, LuaConst.luaTempDir);
+            AssetDatabase.Refresh();
+        }
+
         public static T GetScriptableObjectAsset<T>(string path) where T : ScriptableObject
         {
             var asset = AssetDatabase.LoadAssetAtPath<T>(path);
