@@ -58,6 +58,7 @@ namespace LuaInterface
         public LuaFileUtils()
         {
             instance = this;
+            beZip = AppConst.LuaBundleMode;
         }
 
         public virtual void Dispose()
@@ -223,49 +224,77 @@ namespace LuaInterface
 
         byte[] ReadZipFile(string fileName)
         {
-            AssetBundle zipFile = null;
+            //AssetBundle zipFile = null;
             byte[] buffer = null;
-            string zipName = null;
+            //string zipName = null;
 
-            using (CString.Block())
+            //            using (CString.Block())
+            //            {
+            //                CString sb = CString.Alloc(256);
+            //                sb.Append("lua");
+            //                int pos = fileName.LastIndexOf('/');
+
+            //                if (pos > 0)
+            //                {
+            //                    sb.Append("_");
+            //                    sb.Append(fileName, 0, pos).ToLower().Replace('/', '_');
+            //                    fileName = fileName.Substring(pos + 1);
+            //                }
+
+            //                if (!fileName.EndsWith(".lua"))
+            //                {
+            //                    fileName += ".lua";
+            //                }
+
+            //#if UNITY_5 || UNITY_5_3_OR_NEWER
+            //                fileName += ".bytes";
+            //#endif
+            //                zipName = sb.ToString();
+            //                zipMap.TryGetValue(zipName, out zipFile);
+            //            }
+
+            //            if (zipFile != null)
+            //            {
+            //#if UNITY_4_6 || UNITY_4_7
+            //                TextAsset luaCode = zipFile.Load(fileName, typeof(TextAsset)) as TextAsset;
+            //#else
+            //                TextAsset luaCode = zipFile.LoadAsset<TextAsset>(fileName);
+            //#endif
+            //                if (luaCode != null)
+            //                {
+            //                    buffer = luaCode.bytes;
+            //                    Resources.UnloadAsset(luaCode);
+            //                }
+            //            }
+
+            if (!fileName.EndsWith(".lua"))
             {
-                CString sb = CString.Alloc(256);
-                sb.Append("lua");
-                int pos = fileName.LastIndexOf('/');
-
-                if (pos > 0)
-                {
-                    sb.Append("_");
-                    sb.Append(fileName, 0, pos).ToLower().Replace('/', '_');
-                    fileName = fileName.Substring(pos + 1);
-                }
-
-                if (!fileName.EndsWith(".lua"))
-                {
-                    fileName += ".lua";
-                }
+                fileName += ".lua";
+            }
 
 #if UNITY_5 || UNITY_5_3_OR_NEWER
-                fileName += ".bytes";
+            fileName += ".bytes";
 #endif
-                zipName = sb.ToString();
-                zipMap.TryGetValue(zipName, out zipFile);
-            }
-
-            if (zipFile != null)
+            foreach(var bundle in zipMap)
             {
-#if UNITY_4_6 || UNITY_4_7
-                TextAsset luaCode = zipFile.Load(fileName, typeof(TextAsset)) as TextAsset;
-#else
-                TextAsset luaCode = zipFile.LoadAsset<TextAsset>(fileName);
-#endif
-                if (luaCode != null)
+                if (bundle.Value != null)
                 {
-                    buffer = luaCode.bytes;
-                    Resources.UnloadAsset(luaCode);
+#if UNITY_4_6 || UNITY_4_7
+                    TextAsset luaCode = bundle.Value.Load(fileName, typeof(TextAsset)) as TextAsset;
+#else
+                    TextAsset luaCode = bundle.Value.LoadAsset<TextAsset>(fileName);
+#endif
+                    if(null == luaCode)
+                    {
+                        continue;
+                    }
+                    if (luaCode != null)
+                    {
+                        buffer = luaCode.bytes;
+                        Resources.UnloadAsset(luaCode);
+                    }
                 }
             }
-
             return buffer;
         }
 

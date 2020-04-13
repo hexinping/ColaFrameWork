@@ -183,31 +183,31 @@ namespace LuaInterface
             if (!LuaFileUtils.Instance.beZip)
             {
 #if UNITY_EDITOR
-                if (!AppConst.SimulateMode)
+                if (!Directory.Exists(LuaConst.luaDir))
                 {
-                    if (!Directory.Exists(LuaConst.luaDir))
-                    {
-                        string msg = string.Format("luaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.luaDir);
-                        throw new LuaException(msg);
-                    }
-
-                    if (!Directory.Exists(LuaConst.toluaDir))
-                    {
-                        string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.toluaDir);
-                        throw new LuaException(msg);
-                    }
-
-                    AddSearchPath(LuaConst.toluaDir);
-                    AddSearchPath(LuaConst.luaDir);
+                    string msg = string.Format("luaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.luaDir);
+                    throw new LuaException(msg);
                 }
+
+                if (!Directory.Exists(LuaConst.toluaDir))
+                {
+                    string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.toluaDir);
+                    throw new LuaException(msg);
+                }
+
+                AddSearchPath(LuaConst.toluaDir);
+                AddSearchPath(LuaConst.luaDir);
 #endif
                 if (LuaFileUtils.Instance.GetType() == typeof(LuaFileUtils))
                 {
-                    //先读取热更的最新代码，如果读不到再去读StreamingAsset下面的lua代码
                     AddSearchPath(LuaConst.luaResDir);
-                    AddSearchPath(LuaConst.streamingAssetLua);
                 }
             }
+        }
+
+        void InitLuaBundle()
+        {
+
         }
 
         void OpenBaseLuaLibs()
