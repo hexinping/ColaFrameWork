@@ -148,6 +148,23 @@ namespace Plugins.XAsset
             return Load(path, type, false);
         }
 
+        public static AssetBundle LoadBundle(string assetBundleName)
+        {
+            if (string.IsNullOrEmpty(assetBundleName))
+            {
+                Debug.LogError("invalid path");
+                return null;
+            }
+
+            var bundle = Bundles.Load(assetBundleName);
+            if(null != bundle)
+            {
+                return bundle.assetBundle;
+            }
+            return null;
+        }
+
+
         public static Asset LoadAsync(string path, Type type)
         {
             return Load(path, type, true);
