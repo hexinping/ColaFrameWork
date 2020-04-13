@@ -1,4 +1,9 @@
-﻿using LuaInterface;
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
+
+using LuaInterface;
 using System;
 using System.Text;
 using System.Collections;
