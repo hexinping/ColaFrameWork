@@ -31,7 +31,7 @@ namespace Plugins.XAsset.Editor
 
         private void ResetManifest()
         {
-            var manifest = BuildPlayerTool.GetManifest();
+            var manifest = ColaEditHelper.GetManifest();
             manifest.assets = new AssetData[0];
             manifest.dirs = new string[0];
             manifest.bundles = new string[0];
@@ -43,7 +43,7 @@ namespace Plugins.XAsset.Editor
         private void BuildCahe()
         {
             _lastModify = File.GetLastWriteTime(Utility.AssetsManifestAsset);
-            var manifest = BuildPlayerTool.GetManifest();
+            var manifest = ColaEditHelper.GetManifest();
             var sb = new StringBuilder(512);
 
             for (var i = 0; i < manifest.bundles.Length; i++)

@@ -3,21 +3,21 @@
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
 
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
+using System.IO;
 using UnityEditor;
-using ColaFramework;
+using System.Text;
 
 namespace ColaFramework.ToolKit
 {
     /// <summary>
     /// ColaFramework框架的打包脚本
     /// </summary>
-    public class ColaBuildTool
+    public static class ColaBuildTool
     {
 
+        #region BuildPlayer接口
         public static string BuildPlayer(BuildTarget buildTarget)
         {
             StringBuilder buildReport = new StringBuilder();
@@ -122,7 +122,14 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void BuildLua(BuildTargetGroup buildTargetGroup)
         {
-
+            if (AppConst.LuaBundleMode)
+            {
+                ColaEditHelper.BuildLuaBundle();
+            }
+            else
+            {
+                ColaEditHelper.BuildLuaFile();
+            }
         }
 
         /// <summary>
@@ -147,5 +154,7 @@ namespace ColaFramework.ToolKit
             }
             return buildTargetGroup;
         }
+
+        #endregion
     }
 }

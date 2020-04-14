@@ -66,9 +66,9 @@ namespace Plugins.XAsset.Editor
                 }
             }
             Utility.dataPath = System.Environment.CurrentDirectory;
-            Utility.downloadURL = BuildPlayerTool.GetManifest().downloadURL;
+            Utility.downloadURL = ColaEditHelper.GetManifest().downloadURL;
             Utility.assetBundleMode = AppConst.SimulateMode;
-            Utility.getPlatformDelegate = BuildPlayerTool.GetPlatformName;
+            Utility.getPlatformDelegate = ColaEditHelper.GetPlatformName;
             Utility.loadDelegate = AssetDatabase.LoadAssetAtPath;
         }
 
@@ -80,14 +80,14 @@ namespace Plugins.XAsset.Editor
         [MenuItem(COPY_TO_STREAMINGASSETS)]
         private static void CopyAssetBundles()
         {
-            BuildPlayerTool.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
+            ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
             AssetDatabase.Refresh();
         }
 
         [MenuItem(MARK_ASSET_WITH_DIR)]
         private static void MarkAssetsWithDir()
         {
-            var assetsManifest = BuildPlayerTool.GetManifest();
+            var assetsManifest = ColaEditHelper.GetManifest();
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
             for (var i = 0; i < assets.Length; i++)
             {
@@ -98,7 +98,7 @@ namespace Plugins.XAsset.Editor
                 if (EditorUtility.DisplayCancelableProgressBar(MARK_ASSETS, path, i * 1f / assets.Length))
                     break;
                 var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(path).Replace("\\", "/")) + "_g";
-                BuildPlayerTool.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
+                ColaEditHelper.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
             }
             EditorUtility.SetDirty(assetsManifest);
             AssetDatabase.SaveAssets();
@@ -108,7 +108,7 @@ namespace Plugins.XAsset.Editor
         [MenuItem(MARK_ASSET_WITH_FILE)]
         private static void MarkAssetsWithFile()
         {
-            var assetsManifest = BuildPlayerTool.GetManifest();
+            var assetsManifest = ColaEditHelper.GetManifest();
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
             for (var i = 0; i < assets.Length; i++)
             {
@@ -128,7 +128,7 @@ namespace Plugins.XAsset.Editor
                     continue;
 
                 var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name));
-                BuildPlayerTool.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
+                ColaEditHelper.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
             }
             EditorUtility.SetDirty(assetsManifest);
             AssetDatabase.SaveAssets();
@@ -139,7 +139,7 @@ namespace Plugins.XAsset.Editor
         private static void MarkAssetsWithName()
         {
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
-            var assetsManifest = BuildPlayerTool.GetManifest();
+            var assetsManifest = ColaEditHelper.GetManifest();
             for (var i = 0; i < assets.Length; i++)
             {
                 var asset = assets[i];
@@ -149,7 +149,7 @@ namespace Plugins.XAsset.Editor
                 if (EditorUtility.DisplayCancelableProgressBar(MARK_ASSETS, path, i * 1f / assets.Length))
                     break;
                 var assetBundleName = Path.GetFileNameWithoutExtension(path);
-                BuildPlayerTool.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
+                ColaEditHelper.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
             }
             EditorUtility.SetDirty(assetsManifest);
             AssetDatabase.SaveAssets();
@@ -159,26 +159,26 @@ namespace Plugins.XAsset.Editor
         [MenuItem(CLEAR_ABNAME)]
         private static void ClearAllABName()
         {
-            BuildPlayerTool.ClearAllAssetBundleName();
+            ColaEditHelper.ClearAllAssetBundleName();
         }
 
         [MenuItem(BUILD_MANIFEST)]
         private static void BuildManifest()
         {
-            BuildPlayerTool.BuildManifest();
+            ColaEditHelper.BuildManifest();
         }
 
         [MenuItem(BUILD_ASSETBUNDLES)]
         private static void BuildAssetBundles()
         {
-            BuildPlayerTool.BuildManifest();
-            BuildPlayerTool.BuildAssetBundles();
+            ColaEditHelper.BuildManifest();
+            ColaEditHelper.BuildAssetBundles();
         }
 
         [MenuItem(BUILD_PLAYER)]
         private static void BuildStandalonePlayer()
         {
-            BuildPlayerTool.BuildStandalonePlayer();
+            ColaEditHelper.BuildStandalonePlayer();
         }
 
         [MenuItem(COPY_PATH)]

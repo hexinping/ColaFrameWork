@@ -52,7 +52,7 @@ namespace Plugins.XAsset.Editor
 
             KillRunningAssetBundleServer();
 
-            BuildPlayerTool.CreateAssetBundleDirectory();
+            ColaEditHelper.CreateAssetBundleDirectory();
 
             string args = assetBundlesDirectory;
             args = string.Format("\"{0}\" {1}", args, Process.GetCurrentProcess().Id);
