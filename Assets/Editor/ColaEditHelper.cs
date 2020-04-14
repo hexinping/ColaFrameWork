@@ -46,30 +46,12 @@ namespace ColaFramework.ToolKit
                 Debug.LogError("No Directory: " + path);
                 return;
             }
+            if (!path.StartsWith("file://"))
+            {
+                path = "file://" + path;
+            }
 
-            System.Diagnostics.Process.Start("explorer.exe", path);
-        }
-
-        /// <summary>
-        /// 合并Lua代码，并复制到StreamingAsset目录中准备打包
-        /// </summary>
-        public static void BuildLuaToStreamingAsset()
-        {
-            FileHelper.RmDir(LuaConst.streamingAssetLua);
-            FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.streamingAssetLua);
-            FileHelper.CopyDir(LuaConst.luaDir, LuaConst.streamingAssetLua);
-            AssetDatabase.Refresh();
-        }
-
-        /// <summary>
-        /// 合并Lua代码，并复制到临时目录中准备打包
-        /// </summary>
-        public static void BuildLuaToTempDir()
-        {
-            FileHelper.RmDir(LuaConst.luaTempDir);
-            FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.luaTempDir);
-            FileHelper.CopyDir(LuaConst.luaDir, LuaConst.luaTempDir);
-            AssetDatabase.Refresh();
+            Application.OpenURL(path);
         }
 
         public static T GetScriptableObjectAsset<T>(string path) where T : ScriptableObject
@@ -443,11 +425,20 @@ namespace ColaFramework.ToolKit
 
         public static void BuildLuaBundle()
         {
+            //合并Lua代码，并复制到临时目录中准备打包
+            FileHelper.RmDir(LuaConst.luaTempDir);
+            FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.luaTempDir);
+            FileHelper.CopyDir(LuaConst.luaDir, LuaConst.luaTempDir);
+            AssetDatabase.Refresh();
         }
 
         public static void BuildLuaFile()
         {
-
+            //合并Lua代码，并复制到StreamingAsset目录中准备打包
+            FileHelper.RmDir(LuaConst.streamingAssetLua);
+            FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.streamingAssetLua);
+            FileHelper.CopyDir(LuaConst.luaDir, LuaConst.streamingAssetLua);
+            AssetDatabase.Refresh();
         }
 
         /// <summary>

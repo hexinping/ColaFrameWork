@@ -126,12 +126,6 @@ namespace ColaFramework.ToolKit
             GUILayout.BeginHorizontal("HelpBox");
             EditorGUILayout.LabelField("== 快捷功能 ==");
             GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Build Lua To StreamingAsset", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-            {
-                ColaEditHelper.BuildLuaToStreamingAsset();
-            }
-            GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Zip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
