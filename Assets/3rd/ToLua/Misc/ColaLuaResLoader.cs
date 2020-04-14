@@ -35,6 +35,13 @@ public class ColaLuaResLoader : LuaFileUtils
     {
         var url = Path.GetFileNameWithoutExtension(bundleName).ToLower();
         var bundle = Assets.LoadBundle(url);
-        base.AddSearchBundle(url, bundle);
+        if(null != bundle)
+        {
+            base.AddSearchBundle(url, bundle);
+        }
+        else
+        {
+            Debug.LogError(string.Format("{0} :Luabundle is load failed!",bundleName));
+        }
     }
 }
