@@ -27,7 +27,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using ColaFramework;
+using ColaFramework.ToolKit;
 
 namespace Plugins.XAsset.Editor
 {
@@ -66,9 +66,9 @@ namespace Plugins.XAsset.Editor
                 }
             }
             Utility.dataPath = System.Environment.CurrentDirectory;
-            Utility.downloadURL = BuildScript.GetManifest().downloadURL;
+            Utility.downloadURL = BuildPlayerTool.GetManifest().downloadURL;
             Utility.assetBundleMode = AppConst.SimulateMode;
-            Utility.getPlatformDelegate = BuildScript.GetPlatformName;
+            Utility.getPlatformDelegate = BuildPlayerTool.GetPlatformName;
             Utility.loadDelegate = AssetDatabase.LoadAssetAtPath;
         }
 
@@ -80,14 +80,14 @@ namespace Plugins.XAsset.Editor
         [MenuItem(COPY_TO_STREAMINGASSETS)]
         private static void CopyAssetBundles()
         {
-            BuildScript.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
+            BuildPlayerTool.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
             AssetDatabase.Refresh();
         }
 
         [MenuItem(MARK_ASSET_WITH_DIR)]
         private static void MarkAssetsWithDir()
         {
-            var assetsManifest = BuildScript.GetManifest();
+            var assetsManifest = BuildPlayerTool.GetManifest();
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
             for (var i = 0; i < assets.Length; i++)
             {
@@ -98,7 +98,7 @@ namespace Plugins.XAsset.Editor
                 if (EditorUtility.DisplayCancelableProgressBar(MARK_ASSETS, path, i * 1f / assets.Length))
                     break;
                 var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(path).Replace("\\", "/")) + "_g";
-                BuildScript.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
+                BuildPlayerTool.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
             }
             EditorUtility.SetDirty(assetsManifest);
             AssetDatabase.SaveAssets();
@@ -108,7 +108,7 @@ namespace Plugins.XAsset.Editor
         [MenuItem(MARK_ASSET_WITH_FILE)]
         private static void MarkAssetsWithFile()
         {
-            var assetsManifest = BuildScript.GetManifest();
+            var assetsManifest = BuildPlayerTool.GetManifest();
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
             for (var i = 0; i < assets.Length; i++)
             {
@@ -128,7 +128,7 @@ namespace Plugins.XAsset.Editor
                     continue;
 
                 var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name));
-                BuildScript.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
+                BuildPlayerTool.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
             }
             EditorUtility.SetDirty(assetsManifest);
             AssetDatabase.SaveAssets();
@@ -139,7 +139,7 @@ namespace Plugins.XAsset.Editor
         private static void MarkAssetsWithName()
         {
             var assets = Selection.GetFiltered<Object>(SelectionMode.DeepAssets);
-            var assetsManifest = BuildScript.GetManifest();
+            var assetsManifest = BuildPlayerTool.GetManifest();
             for (var i = 0; i < assets.Length; i++)
             {
                 var asset = assets[i];
@@ -149,7 +149,7 @@ namespace Plugins.XAsset.Editor
                 if (EditorUtility.DisplayCancelableProgressBar(MARK_ASSETS, path, i * 1f / assets.Length))
                     break;
                 var assetBundleName = Path.GetFileNameWithoutExtension(path);
-                BuildScript.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
+                BuildPlayerTool.SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
             }
             EditorUtility.SetDirty(assetsManifest);
             AssetDatabase.SaveAssets();
@@ -159,26 +159,26 @@ namespace Plugins.XAsset.Editor
         [MenuItem(CLEAR_ABNAME)]
         private static void ClearAllABName()
         {
-            BuildScript.ClearAllAssetBundleName();
+            BuildPlayerTool.ClearAllAssetBundleName();
         }
 
         [MenuItem(BUILD_MANIFEST)]
         private static void BuildManifest()
         {
-            BuildScript.BuildManifest();
+            BuildPlayerTool.BuildManifest();
         }
 
         [MenuItem(BUILD_ASSETBUNDLES)]
         private static void BuildAssetBundles()
         {
-            BuildScript.BuildManifest();
-            BuildScript.BuildAssetBundles();
+            BuildPlayerTool.BuildManifest();
+            BuildPlayerTool.BuildAssetBundles();
         }
 
         [MenuItem(BUILD_PLAYER)]
         private static void BuildStandalonePlayer()
         {
-            BuildScript.BuildStandalonePlayer();
+            BuildPlayerTool.BuildStandalonePlayer();
         }
 
         [MenuItem(COPY_PATH)]

@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using ColaFramework.ToolKit;
 
 namespace Plugins.XAsset.Editor
 {
@@ -30,7 +31,7 @@ namespace Plugins.XAsset.Editor
 
         private void ResetManifest()
         {
-            var manifest = BuildScript.GetManifest();
+            var manifest = BuildPlayerTool.GetManifest();
             manifest.assets = new AssetData[0];
             manifest.dirs = new string[0];
             manifest.bundles = new string[0];
@@ -42,7 +43,7 @@ namespace Plugins.XAsset.Editor
         private void BuildCahe()
         {
             _lastModify = File.GetLastWriteTime(Utility.AssetsManifestAsset);
-            var manifest = BuildScript.GetManifest();
+            var manifest = BuildPlayerTool.GetManifest();
             var sb = new StringBuilder(512);
 
             for (var i = 0; i < manifest.bundles.Length; i++)

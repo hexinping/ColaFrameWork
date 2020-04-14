@@ -4,6 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using ColaFramework.ToolKit;
 
 namespace Plugins.XAsset.Editor
 {
@@ -51,7 +52,7 @@ namespace Plugins.XAsset.Editor
 
             KillRunningAssetBundleServer();
 
-            BuildScript.CreateAssetBundleDirectory();
+            BuildPlayerTool.CreateAssetBundleDirectory();
 
             string args = assetBundlesDirectory;
             args = string.Format("\"{0}\" {1}", args, Process.GetCurrentProcess().Id);
