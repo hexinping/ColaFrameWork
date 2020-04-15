@@ -55,7 +55,7 @@ namespace ColaFramework.Foundation
         }
 
         /// <summary>
-        /// 获取所有子文件
+        /// 获取目录下所有文件
         /// </summary>
         /// <param name="path"></param>
         /// <param name="suffix"></param>
@@ -76,6 +76,45 @@ namespace ColaFramework.Foundation
             string[] files = Directory.GetFiles(path, strPattner, option);
 
             return files;
+        }
+
+        /// <summary>
+        /// 格式化路径为标准格式
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string FormatPath(string path)
+        {
+            string result = path.Replace('\\', '/');
+            return result.TrimEnd('/');
+        }
+
+        /// <summary>
+        /// 遍历目录及其子目录，并将结果填充到files和paths中
+        /// </summary>
+        public static void Recursive(string path, List<string> files, List<string> paths)
+        {
+            if (string.IsNullOrEmpty(path) || null == files || null == paths)
+            {
+                Debug.LogError("Recursive 传入的参数错误!");
+                return;
+            }
+            string[] names = Directory.GetFiles(path);
+            string[] dirs = Directory.GetDirectories(path);
+            foreach (string filename in names)
+            {
+                string ext = Path.GetExtension(filename);
+                if (ext.Equals(".meta")) continue;
+                files.Add(filename.Replace('\\', '/'));
+            }
+            foreach (string dir in dirs)
+            {
+                if (dir != ".idea")
+                {
+                    paths.Add(dir.Replace('\\', '/'));
+                    Recursive(dir, files, paths);
+                }
+            }
         }
 
         public static void DeleteFile(string path)

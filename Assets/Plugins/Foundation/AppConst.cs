@@ -16,10 +16,11 @@ public class AppConst
     public static bool isLocalResServer = true;
 
     public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
-    public const bool LuaBundleMode = false;                    //Lua代码AssetBundle模式
+    public static bool LuaBundleMode = false;                    //Lua代码AssetBundle模式
 
     public const string LuaBaseBundle = "lua/lua_base";         //包内的lua AssetBundle
     public const string LuaUpdateBundle = "lua/lua_update";     //热更下载的lua AseetBundle
+    public const string LuaBundlePrefix = "lua/";               //lua AssetBundle的前缀
     public static List<string> LuaBundles = new List<string>() { LuaUpdateBundle,LuaBaseBundle };
 
     public static int GameFrameRate = 30;                        //游戏帧频
