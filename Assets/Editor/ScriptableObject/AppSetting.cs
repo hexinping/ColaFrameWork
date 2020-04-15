@@ -26,6 +26,9 @@ namespace ColaFramework.ToolKit
         [OnValueChanged("OnValueChanged")]
         public int GameFrameRate;
 
+        [LabelText("是否开启Lua Bundle模式")]
+        [OnValueChanged("OnValueChanged")]
+        public bool LuaBundleMode;
 
         private void OnValueChanged()
         {
@@ -39,6 +42,7 @@ namespace ColaFramework.ToolKit
             AppConst.SimulateMode = setting.SimulateMode;
             AppConst.isLocalResServer = setting.isLocalServer;
             AppConst.GameFrameRate = setting.GameFrameRate;
+            AppConst.LuaBundleMode = setting.LuaBundleMode;
 
             AssetsMenuItem.OnInitialize();
         }
