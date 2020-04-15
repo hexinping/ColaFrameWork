@@ -128,6 +128,20 @@ namespace ColaFramework.ToolKit
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Build Lua Bundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            {
+                ColaEditHelper.BuildLuaBundle();
+            }
+            if (GUILayout.Button("Build Lua File", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            {
+                ColaEditHelper.BuildLuaFile();
+            }
+            if (GUILayout.Button("Mark Lua Bundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            {
+                ColaEditHelper.MarkAssetsToOneBundle(LuaConst.luaTempDir,AppConst.LuaBaseBundle);
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Zip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
                 var result = ZipHelper.Zip("Assets/Lua", Path.Combine(Application.dataPath, "../output/luaout.zip"));
