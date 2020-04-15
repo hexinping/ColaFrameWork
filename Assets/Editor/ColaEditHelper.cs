@@ -32,6 +32,11 @@ namespace ColaFramework.ToolKit
             get { return Path.Combine(Application.dataPath, "../ColaCache"); }
         }
 
+        public static string ProjectRoot
+        {
+            get { return Path.GetDirectoryName(Application.dataPath); }
+        }
+
         /// <summary>
         /// 打开指定文件夹(编辑器模式下)
         /// </summary>
@@ -66,6 +71,8 @@ namespace ColaFramework.ToolKit
 
             return asset;
         }
+
+
 
         #region 打包相关方法实现
 
@@ -219,6 +226,9 @@ namespace ColaFramework.ToolKit
             importer.assetBundleVariant = variant;
         }
 
+        /// <summary>
+        /// 生成asset与abpath映射Manifest
+        /// </summary>
         public static void BuildManifest()
         {
             var manifest = GetManifest();
@@ -235,9 +245,10 @@ namespace ColaFramework.ToolKit
 
             for (int i = 0; i < bundles.Length; i++)
             {
-                if (i == 27 || bundles[i].Contains("manifest.asset"))
+                if (bundles[i].StartsWith(AppConst.LuaBundlePrefix))
                 {
-
+                    //Lua AssetBundle不需要生成映射Manifest
+                    continue;
                 }
                 var paths = AssetDatabase.GetAssetPathsFromAssetBundle(bundles[i]);
                 foreach (var path in paths)
@@ -423,12 +434,42 @@ namespace ColaFramework.ToolKit
             return downloadURL;
         }
 
+        #region 处理Lua代码
         public static void BuildLuaBundle()
         {
             //合并Lua代码，并复制到临时目录中准备打包
             FileHelper.RmDir(LuaConst.luaTempDir);
-            FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.luaTempDir);
-            FileHelper.CopyDir(LuaConst.luaDir, LuaConst.luaTempDir);
+            FileHelper.EnsureParentDirExist(LuaConst.luaTempDir);
+
+            string[] srcDirs = { LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter };
+            for (int i = 0; i < srcDirs.Length; i++)
+            {
+                if (AppConst.LuaByteMode)
+                {
+                    string sourceDir = srcDirs[i];
+                    string[] files = Directory.GetFiles(sourceDir, "*.lua", SearchOption.AllDirectories);
+                    int len = sourceDir.Length;
+
+                    if (sourceDir[len - 1] == '/' || sourceDir[len - 1] == '\\')
+                    {
+                        --len;
+                    }
+                    for (int j = 0; j < files.Length; j++)
+                    {
+                        string str = files[j].Remove(0, len);
+                        string dest = LuaConst.luaTempDir + str + ".bytes";
+                        string dir = Path.GetDirectoryName(dest);
+                        Directory.CreateDirectory(dir);
+                        EncodeLuaFile(files[j], dest);
+                    }
+                }
+                else
+                {
+                    ToLuaMenu.CopyLuaBytesFiles(srcDirs[i], LuaConst.luaTempDir);
+                }
+            }
+            //标记ABName
+            MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
             AssetDatabase.Refresh();
         }
 
@@ -436,11 +477,86 @@ namespace ColaFramework.ToolKit
         {
             //合并Lua代码，并复制到StreamingAsset目录中准备打包
             FileHelper.RmDir(LuaConst.streamingAssetLua);
-            FileHelper.CopyDir(LuaConst.toluaDir, LuaConst.streamingAssetLua);
-            FileHelper.CopyDir(LuaConst.luaDir, LuaConst.streamingAssetLua);
+            FileHelper.EnsureParentDirExist(LuaConst.streamingAssetLua);
+
+            string[] luaPaths = { LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter };
+
+            var paths = new List<string>();
+            var files = new List<string>();
+
+            for (int i = 0; i < luaPaths.Length; i++)
+            {
+                paths.Clear(); files.Clear();
+                string luaDataPath = luaPaths[i].ToLower();
+                FileHelper.Recursive(luaDataPath, files, paths);
+                foreach (string f in files)
+                {
+                    if (f.EndsWith(".meta")) continue;
+                    string newfile = f.Replace(luaDataPath, "");
+                    string newpath = LuaConst.streamingAssetLuaWithSpliter + newfile;
+                    string path = Path.GetDirectoryName(newpath);
+                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+                    if (File.Exists(newpath))
+                    {
+                        File.Delete(newpath);
+                    }
+                    if (AppConst.LuaByteMode)
+                    {
+                        EncodeLuaFile(f, newpath);
+                    }
+                    else
+                    {
+                        File.Copy(f, newpath, true);
+                    }
+                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在处理第{0}Lua文件目录 {1}/{2}", i, i, luaPaths.Length), i * 1.0f / luaPaths.Length);
+                }
+            }
+            EditorUtility.ClearProgressBar();
             AssetDatabase.Refresh();
         }
 
+        public static void EncodeLuaFile(string srcFile, string outFile)
+        {
+            //if (!srcFile.ToLower().EndsWith(".lua"))
+            //{
+            //    File.Copy(srcFile, outFile, true);
+            //    return;
+            //}
+            //bool isWin = true;
+            //string luaexe = string.Empty;
+            //string args = string.Empty;
+            //string exedir = string.Empty;
+            //string currDir = Directory.GetCurrentDirectory();
+            //if (Application.platform == RuntimePlatform.WindowsEditor)
+            //{
+            //    isWin = true;
+            //    luaexe = "luajit.exe";
+            //    args = "-b -g " + srcFile + " " + outFile;
+            //    exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
+            //}
+            //else if (Application.platform == RuntimePlatform.OSXEditor)
+            //{
+            //    isWin = false;
+            //    luaexe = "./luajit";
+            //    args = "-b -g " + srcFile + " " + outFile;
+            //    exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
+            //}
+            //Directory.SetCurrentDirectory(exedir);
+            //ProcessStartInfo info = new ProcessStartInfo();
+            //info.FileName = luaexe;
+            //info.Arguments = args;
+            //info.WindowStyle = ProcessWindowStyle.Hidden;
+            //info.UseShellExecute = isWin;
+            //info.ErrorDialog = true;
+            //Util.Log(info.FileName + " " + info.Arguments);
+
+            //Process pro = Process.Start(info);
+            //pro.WaitForExit();
+            //Directory.SetCurrentDirectory(currDir);
+        }
+
+        #endregion
         /// <summary>
         /// 清除所有的AB Name
         /// </summary>
@@ -454,6 +570,29 @@ namespace ColaFramework.ToolKit
                 AssetDatabase.RemoveAssetBundleName(oldAssetBundleNames[i], true);
             }
             EditorUtility.ClearProgressBar();
+        }
+
+        /// <summary>
+        /// 标记一个文件夹下所有文件为一个BundleName
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="bundleName"></param>
+        public static void MarkAssetsToOneBundle(string path, string bundleName)
+        {
+            if (Directory.Exists(path))
+            {
+                bundleName = bundleName.ToLower();
+                var files = FileHelper.GetAllChildFiles(path);
+                var projRoot = FileHelper.FormatPath(ProjectRoot) + "/";
+                var length = files.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
+                    var assetPath = files[i].Replace(projRoot, "");
+                    SetAssetBundleNameAndVariant(assetPath, bundleName, null);
+                }
+                EditorUtility.ClearProgressBar();
+            }
         }
         #endregion
     }

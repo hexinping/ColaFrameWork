@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 using System.Text;
 
 namespace ColaFramework.ToolKit
@@ -122,6 +123,7 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void BuildLua(BuildTargetGroup buildTargetGroup)
         {
+            var beginTime = System.DateTime.Now;
             if (AppConst.LuaBundleMode)
             {
                 ColaEditHelper.BuildLuaBundle();
@@ -130,6 +132,7 @@ namespace ColaFramework.ToolKit
             {
                 ColaEditHelper.BuildLuaFile();
             }
+            Debug.Log("=================Build Lua Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }
 
         /// <summary>
