@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Collections;
 using System.Text;
+using System;
 
 namespace LuaInterface
 {
@@ -266,7 +267,7 @@ namespace LuaInterface
             //                    Resources.UnloadAsset(luaCode);
             //                }
             //            }
-
+            fileName = fileName.ToLower().Replace("/", ".");
             if (!fileName.EndsWith(".lua"))
             {
                 fileName += ".lua";
@@ -282,7 +283,15 @@ namespace LuaInterface
 #if UNITY_4_6 || UNITY_4_7
                     TextAsset luaCode = bundle.Value.Load(fileName, typeof(TextAsset)) as TextAsset;
 #else
-                    TextAsset luaCode = bundle.Value.LoadAsset<TextAsset>(fileName);
+                    TextAsset luaCode = null;
+                    try
+                    {
+                        luaCode = bundle.Value.LoadAsset<TextAsset>(fileName);
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.LogError("Try Load Lua Failed!" + e.ToString());
+                    }
 #endif
                     if(null == luaCode)
                     {
@@ -294,6 +303,10 @@ namespace LuaInterface
                         Resources.UnloadAsset(luaCode);
                     }
                 }
+            }
+            if(null == buffer)
+            {
+                Debug.LogError("Load lua file from bundle error! luafile name is:" + fileName);
             }
             return buffer;
         }

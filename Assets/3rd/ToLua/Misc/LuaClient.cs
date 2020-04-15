@@ -96,7 +96,10 @@ public class LuaClient : MonoBehaviour
     {
         if (AppConst.LuaBundleMode)
         {
-
+            foreach(var bundleName in AppConst.LuaBundles)
+            {
+                luaLoader.AddBundle(bundleName);
+            }
         }
     }
 

@@ -33,7 +33,7 @@ public class ColaLuaResLoader : LuaFileUtils
     /// <param name="bundle"></param>
     public void AddBundle(string bundleName)
     {
-        var url = Path.GetFileNameWithoutExtension(bundleName).ToLower();
+        var url = bundleName.ToLower();
         var bundle = Assets.LoadBundle(url);
         if(null != bundle)
         {

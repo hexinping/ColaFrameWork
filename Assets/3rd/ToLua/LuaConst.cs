@@ -30,6 +30,10 @@ public static class LuaConst
     public static bool openLuaDebugger = false;         //是否连接lua调试器
 
 #if UNITY_EDITOR
-    public static string luaTempDir = Application.dataPath + "/LuaTemp";
+    public static string luaTempDir = Application.dataPath + "/LuaTemp/";
+
+    public static string luaDirWithSpliter = Application.dataPath + "/Lua/";                //lua逻辑代码目录
+    public static string toluaDirWithSpliter = Application.dataPath + "/3rd/ToLua/Lua/";        //tolua lua文件目录
+    public static string streamingAssetLuaWithSpliter = Application.streamingAssetsPath + "/Lua/";  //StreamingAsset下被打进包中的Lua路径
 #endif
 }
