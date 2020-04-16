@@ -41,7 +41,7 @@ public class ColaLuaResLoader : LuaFileUtils
         }
         else
         {
-            Debug.LogError(string.Format("{0} :Luabundle is load failed!",bundleName));
+            Debug.LogError(string.Format("{0} : Luabundle is load failed!",bundleName));
         }
     }
 }

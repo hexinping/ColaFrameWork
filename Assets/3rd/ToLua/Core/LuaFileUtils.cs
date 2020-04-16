@@ -267,33 +267,31 @@ namespace LuaInterface
             //                    Resources.UnloadAsset(luaCode);
             //                }
             //            }
-            fileName = fileName.ToLower().Replace("/", ".");
-            if (!fileName.EndsWith(".lua"))
+
+            using (CString.Block())
             {
-                fileName += ".lua";
-            }
+                fileName = fileName.Replace("/", ".");
+                if (!fileName.EndsWith(".lua"))
+                {
+                    fileName += ".lua";
+                }
 
 #if UNITY_5 || UNITY_5_3_OR_NEWER
-            fileName += ".bytes";
+                fileName += ".bytes";
 #endif
-            foreach(var bundle in zipMap)
+            }
+
+            foreach (var bundleName in AppConst.LuaBundles)
             {
-                if (bundle.Value != null)
+                AssetBundle bundle = null;
+                if (zipMap.TryGetValue(bundleName, out bundle))
                 {
 #if UNITY_4_6 || UNITY_4_7
-                    TextAsset luaCode = bundle.Value.Load(fileName, typeof(TextAsset)) as TextAsset;
+                    TextAsset luaCode = bundle.Load(fileName, typeof(TextAsset)) as TextAsset;
 #else
-                    TextAsset luaCode = null;
-                    try
-                    {
-                        luaCode = bundle.Value.LoadAsset<TextAsset>(fileName);
-                    }
-                    catch(Exception e)
-                    {
-                        Debug.LogError("Try Load Lua Failed!" + e.ToString());
-                    }
+                    TextAsset luaCode = bundle.LoadAsset<TextAsset>(fileName);
 #endif
-                    if(null == luaCode)
+                    if (null == luaCode)
                     {
                         continue;
                     }
@@ -301,10 +299,11 @@ namespace LuaInterface
                     {
                         buffer = luaCode.bytes;
                         Resources.UnloadAsset(luaCode);
+                        break;
                     }
                 }
             }
-            if(null == buffer)
+            if (null == buffer)
             {
                 Debug.LogError("Load lua file from bundle error! luafile name is:" + fileName);
             }
