@@ -465,11 +465,28 @@ namespace ColaFramework.ToolKit
                 }
                 else
                 {
-                    ToLuaMenu.CopyLuaBytesFiles(srcDirs[i], LuaConst.luaTempDir);
+                    string[] files = FileHelper.GetAllChildFiles(srcDirs[i],"lua");
+
+                    foreach(var fileName in files)
+                    {
+                        var reltaFileName = fileName.Replace(srcDirs[i], "");
+                        var dirName = Path.GetDirectoryName(reltaFileName);
+                        if (!string.IsNullOrEmpty(dirName))
+                        {
+                            dirName = dirName.Replace("\\", "/");
+                            if (!dirName.EndsWith("/"))
+                            {
+                                dirName += "/";
+                            }
+                            dirName = dirName.Replace("/", ".");
+                        }
+                        var dest = LuaConst.luaTempDir +dirName+Path.GetFileName(reltaFileName) + ".bytes";
+                        File.Copy(fileName, dest, true);
+                    }
                 }
             }
             //标记ABName
-            MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
+            //MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
             AssetDatabase.Refresh();
         }
 
