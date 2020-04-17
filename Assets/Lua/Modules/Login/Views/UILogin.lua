@@ -39,7 +39,7 @@ function UILogin:onClick(name)
         self:DestroySelf()
         UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
         UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
-        SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_girl.prefab", AnimCtrlEnum.CharAnimator, true)
+        SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_Girl.prefab", AnimCtrlEnum.CharAnimator, true)
         Ctrl.Login.RequestConnectServer()
     end
 end
