@@ -35,7 +35,7 @@ function private.OnLoginServer(code, msg)
     print("------------>成功登录游戏服务器,code is:", code, "msg is:", msg)
     UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
     UIManager.Instance():Open(ECEnumType.UIEnum.WorldDialog)
-    SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_girl.prefab", AnimCtrlEnum.CharAnimator, true)
+    SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_Girl.prefab", AnimCtrlEnum.CharAnimator, true)
 end
 
 return public
