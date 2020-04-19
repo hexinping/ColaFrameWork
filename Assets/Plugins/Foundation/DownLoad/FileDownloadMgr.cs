@@ -10,7 +10,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 
-namespace ColaFramework
+namespace ColaFramework.Foundation.DownLoad
 {
 	public enum DownloadTaskStatus
 	{

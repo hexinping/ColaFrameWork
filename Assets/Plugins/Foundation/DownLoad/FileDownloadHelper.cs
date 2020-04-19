@@ -11,7 +11,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Security;
 
-namespace ColaFramework
+namespace ColaFramework.Foundation.DownLoad
 {
     /// <summary>
     /// Downloads and resumes files from HTTP, FTP, and File (file://) URLS
