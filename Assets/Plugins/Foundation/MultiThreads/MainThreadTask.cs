@@ -10,7 +10,7 @@ using System.Net;
 using System.Threading;
 using UnityEngine;
 
-namespace ColaFramework
+namespace ColaFramework.Foundation
 {
     /// <summary>
     /// 工具类，让子线程可以在主线程中调用代码

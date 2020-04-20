@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace ColaFramework
+namespace ColaFramework.Foundation
 {
     /// <summary>
     /// ColaLoom 多线程工具类，支持在Unity多线程操作
