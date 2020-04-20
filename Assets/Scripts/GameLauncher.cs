@@ -9,6 +9,7 @@ using System.IO;
 using DG.Tweening;
 using UnityEngine;
 using ColaFramework;
+using ColaFramework.Foundation;
 
 /// <summary>
 /// 游戏入口:游戏启动器类

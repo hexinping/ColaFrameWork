@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-using ColaFramework;
+using ColaFramework.Foundation;
 
 public class LoomTest : MonoBehaviour
 {

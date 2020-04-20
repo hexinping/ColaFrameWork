@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Net;
 using System;
+using ColaFramework.Foundation;
 
 
 namespace ColaFramework.NetWork

@@ -486,7 +486,7 @@ namespace ColaFramework.ToolKit
                 }
             }
             //标记ABName
-            //MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
+            MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
             AssetDatabase.Refresh();
         }
 
