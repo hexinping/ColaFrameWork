@@ -53,28 +53,28 @@ public class MainActivity extends UnityPlayerActivity {
 	}
 	
 	/**
-	 * Androidµã»÷·µ»Ø¼üÊ±µÄ¶ş´ÎÈ·ÈÏ¿ò
+	 * Androidç‚¹å‡»è¿”å›é”®æ—¶çš„äºŒæ¬¡ç¡®è®¤æ¡†
 	 */
 	public void ShowConfirmDialog(){
 		 Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("ColaÌáÊ¾");
-		 builder.setMessage("È·¶¨ÍË³öColaÓÎÏ·£¿");
+		 builder.setTitle("Colaæç¤º");
+		 builder.setMessage("ç¡®å®šé€€å‡ºColaæ¸¸æˆï¼Ÿ");
 		 
-		 //¼àÌıÀïÃæµÄ°´Å¥ÊÂ¼ş
-		 builder.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+		 //ç›‘å¬é‡Œé¢çš„æŒ‰é’®äº‹ä»¶
+		 builder.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-//				Toast.makeText(getApplicationContext(),"µã»÷ÁËÈ·¶¨",Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getApplicationContext(),"ç‚¹å‡»äº†ç¡®å®š",Toast.LENGTH_SHORT).show();
 				UnityPlayer.UnitySendMessage(receiveObj, "ApplicationQuit","0");
 			}
 		});
 		 
-		 builder.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+		 builder.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-//				Toast.makeText(getApplicationContext(),"µã»÷ÁËÈ¡Ïû",Toast.LENGTH_SHORT).show();				
+//				Toast.makeText(getApplicationContext(),"ç‚¹å‡»äº†å–æ¶ˆ",Toast.LENGTH_SHORT).show();				
 			}
 		});
 		 builder.setCancelable(true);
@@ -83,10 +83,10 @@ public class MainActivity extends UnityPlayerActivity {
 	}
 	
 	/**
-	 * ¸´ÖÆÎÄ¼ş
+	 * å¤åˆ¶æ–‡ä»¶
 	 * 
-	 * @param src Ô´ÎÄ¼ş
-	 * @param dest Ä¿±êÎÄ¼ş
+	 * @param src æºæ–‡ä»¶
+	 * @param dest ç›®æ ‡æ–‡ä»¶
 	 */
 	public void copy(Context context, String zipPath, String targetPath) {
 		if (TextUtils.isEmpty(zipPath) || TextUtils.isEmpty(targetPath)) {
@@ -119,10 +119,10 @@ public class MainActivity extends UnityPlayerActivity {
 	}
 
 	/**
-	 * ¿½±´assetsÎÄ¼şÏÂÎÄ¼şµ½Ö¸¶¨Â·¾¶
+	 * æ‹·è´assetsæ–‡ä»¶ä¸‹æ–‡ä»¶åˆ°æŒ‡å®šè·¯å¾„
 	 * 
-	 * @param assetDir  Ô´ÎÄ¼ş/ÎÄ¼ş¼Ğ
-	 * @param dir  Ä¿±êÎÄ¼ş¼Ğ
+	 * @param assetDir  æºæ–‡ä»¶/æ–‡ä»¶å¤¹
+	 * @param dir  ç›®æ ‡æ–‡ä»¶å¤¹
 	 */
 	public boolean copyAssets(String assetDir, String targetDir) {
 		if (TextUtils.isEmpty(assetDir) || TextUtils.isEmpty(targetDir)) {
@@ -132,9 +132,9 @@ public class MainActivity extends UnityPlayerActivity {
 		boolean ret = false;
 		try {
 			Context context = this.getApplicationContext();
-			// »ñÈ¡assetsÄ¿Â¼assetDirÏÂÒ»¼¶ËùÓĞÎÄ¼şÒÔ¼°ÎÄ¼ş¼Ğ
+			// è·å–assetsç›®å½•assetDirä¸‹ä¸€çº§æ‰€æœ‰æ–‡ä»¶ä»¥åŠæ–‡ä»¶å¤¹
 			String[] fileNames = context.getResources().getAssets().list(assetDir);
-			// Èç¹ûÊÇÎÄ¼ş¼Ğ(Ä¿Â¼),Ôò¼ÌĞøµİ¹é±éÀú
+			// å¦‚æœæ˜¯æ–‡ä»¶å¤¹(ç›®å½•),åˆ™ç»§ç»­é€’å½’éå†
 			if (fileNames.length > 0) {
 				File targetFile = new File(targetDir);
 				if (!targetFile.exists() && !targetFile.mkdirs()) {
@@ -143,7 +143,7 @@ public class MainActivity extends UnityPlayerActivity {
 				for (String fileName : fileNames) {
 					copyAssets(assetDir + separator + fileName, targetDir + separator + fileName);
 				}
-			} else { // ÎÄ¼ş,ÔòÖ´ĞĞ¿½±´
+			} else { // æ–‡ä»¶,åˆ™æ‰§è¡Œæ‹·è´
 				copy(context, assetDir, targetDir);
 			}
 			ret = true;
