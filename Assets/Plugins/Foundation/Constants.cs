@@ -63,3 +63,11 @@ public static class Constants
     public static readonly string ModelAnimatorPath = "Arts/Animator/";
     public static readonly string LutifyTexturePath = "Arts/Luts/";
 }
+
+public class ABFileInfo
+{
+    public string filename;
+    public string md5;
+    public float rawSize;         // 压缩前的文件大小
+    public float compressSize;		// 压缩后的文件大小
+}
