@@ -1,7 +1,7 @@
-﻿/// <summary>
-/// 网络消息处理中心
-/// 缓存消息，然后分帧泵到lua端进行处理
-/// </summary>
+﻿//----------------------------------------------
+//            ColaFramework
+// Copyright © 2018-2049 ColaFramework 马三小伙儿
+//----------------------------------------------
 
 using UnityEngine;
 using System.Collections;
@@ -16,6 +16,10 @@ namespace ColaFramework.NetWork
         public byte[] eventData;
     }
 
+    /// <summary>
+    /// 网络消息处理中心
+    /// 缓存消息，然后分帧泵到lua端进行处理
+    /// </summary>
     public class NetMessageCenter : IManager
     {
         [LuaInterface.NoToLua]
