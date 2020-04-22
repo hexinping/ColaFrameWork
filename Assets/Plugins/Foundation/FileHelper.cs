@@ -54,6 +54,11 @@ namespace ColaFramework.Foundation
             return info.Length;
         }
 
+        public static float GetFileSizeKB(string path)
+        {
+            return GetFileSize(path) / 1024f;
+        }
+
         /// <summary>
         /// 获取目录下所有文件
         /// </summary>
