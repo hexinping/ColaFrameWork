@@ -180,7 +180,7 @@ namespace ColaFramework.ToolKit
             return items.ToDictionary(item => item, item => manifest.GetAssetBundleHash(item).ToString());
         }
 
-        private static void LoadVersions(string versionsTxt, IDictionary<string, string> versions)
+        private static void LoadVersions(string versionsTxt, string path, IDictionary<string, ABFileInfo> versions)
         {
             if (versions == null)
                 throw new ArgumentNullException("versions");
@@ -195,19 +195,29 @@ namespace ColaFramework.ToolKit
                         continue;
                     var fields = line.Split(':');
                     if (fields.Length > 1)
-                        versions.Add(fields[0], fields[1]);
+                    {
+                        var abInfo = new ABFileInfo();
+                        abInfo.filename = fields[0];
+                        abInfo.md5 = fields[1];
+                        abInfo.rawSize = FileHelper.GetFileSizeKB(path + "/" + fields[0]);
+                        abInfo.compressSize = abInfo.rawSize;
+                        versions.Add(fields[0], abInfo);
+                    }
                 }
             }
         }
 
-        private static void SaveVersions(string versionsTxt, Dictionary<string, string> versions)
+        private static void SaveVersions(string versionsTxt, string path, Dictionary<string, string> versions)
         {
             if (File.Exists(versionsTxt))
                 File.Delete(versionsTxt);
             using (var s = new StreamWriter(versionsTxt))
             {
                 foreach (var item in versions)
-                    s.WriteLine(item.Key + ':' + item.Value);
+                {
+                    var fileSize = FileHelper.GetFileSizeKB(path + "/" + item.Key);
+                    s.WriteLine(item.Key + ':' + item.Value + ":" + fileSize + ":" + fileSize);
+                }
                 s.Flush();
                 s.Close();
             }
@@ -297,8 +307,8 @@ namespace ColaFramework.ToolKit
                 BuildPipeline.BuildAssetBundles(outputPath, options,
                     EditorUserBuildSettings.activeBuildTarget);
             var versionsTxt = outputPath + "/versions.txt";
-            var versions = new Dictionary<string, string>();
-            LoadVersions(versionsTxt, versions);
+            var versions = new Dictionary<string, ABFileInfo>();
+            LoadVersions(versionsTxt, outputPath, versions);
 
             var buildVersions = GetVersions(manifest);
 
@@ -306,11 +316,14 @@ namespace ColaFramework.ToolKit
 
             foreach (var item in buildVersions)
             {
-                string hash;
+                ABFileInfo abInfo;
                 var isNew = true;
-                if (versions.TryGetValue(item.Key, out hash))
+                if (versions.TryGetValue(item.Key, out abInfo))
+                {
+                    string hash = abInfo.md5;
                     if (hash.Equals(item.Value))
                         isNew = false;
+                }
                 if (isNew)
                     updates.Add(item.Key);
             }
@@ -326,7 +339,7 @@ namespace ColaFramework.ToolKit
                     s.Close();
                 }
 
-                SaveVersions(versionsTxt, buildVersions);
+                SaveVersions(versionsTxt, outputPath, buildVersions);
             }
             else
             {
@@ -465,9 +478,9 @@ namespace ColaFramework.ToolKit
                 }
                 else
                 {
-                    string[] files = FileHelper.GetAllChildFiles(srcDirs[i],"lua");
+                    string[] files = FileHelper.GetAllChildFiles(srcDirs[i], "lua");
 
-                    foreach(var fileName in files)
+                    foreach (var fileName in files)
                     {
                         var reltaFileName = fileName.Replace(srcDirs[i], "");
                         var dirName = Path.GetDirectoryName(reltaFileName);
@@ -480,7 +493,7 @@ namespace ColaFramework.ToolKit
                             }
                             dirName = dirName.Replace("/", ".");
                         }
-                        var dest = LuaConst.luaTempDir +dirName+Path.GetFileName(reltaFileName) + ".bytes";
+                        var dest = LuaConst.luaTempDir + dirName + Path.GetFileName(reltaFileName) + ".bytes";
                         File.Copy(fileName, dest, true);
                     }
                 }
