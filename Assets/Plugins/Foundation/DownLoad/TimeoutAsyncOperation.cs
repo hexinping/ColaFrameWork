@@ -7,55 +7,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeoutAsyncOperation : IEnumerator
+namespace ColaFramework.Foundation.DownLoad
 {
-    private float _beginTime;
-    private float _timeoutS;
 
-    public AsyncOperation AsyncOperation;
-    public bool IsTimeout { get; private set; }
+    public class TimeoutAsyncOperation : IEnumerator
+    {
+        private float _beginTime;
+        private float _timeoutS;
 
-    public TimeoutAsyncOperation(AsyncOperation asyncOpr, float timeoutS)
-    {
-        AsyncOperation = asyncOpr;
-        _timeoutS = timeoutS;
-        _beginTime = Time.unscaledTime;
-    }
+        public AsyncOperation AsyncOperation;
+        public bool IsTimeout { get; private set; }
 
-    public object Current
-    {
-        get
-        {
-            return null;
-        }
-    }
+        public TimeoutAsyncOperation(AsyncOperation asyncOpr, float timeoutS)
+        {
+            AsyncOperation = asyncOpr;
+            _timeoutS = timeoutS;
+            _beginTime = Time.unscaledTime;
+        }
 
-    public bool MoveNext()
-    {
-        return !IsDone();
-    }
+        public object Current
+        {
+            get
+            {
+                return null;
+            }
+        }
 
-    public void Reset()
-    {
-        
-    }
+        public bool MoveNext()
+        {
+            return !IsDone();
+        }
 
-    public bool IsDone ()
-    {
-        if (AsyncOperation.isDone)
-        {
-            IsTimeout = false;
-            return true;
-        }
-        else
-        {
-            float now = Time.unscaledTime;
-            if (now - _beginTime >= _timeoutS)
-            {
-                IsTimeout = true;
-                return true;
-            }
-            return false;
-        }
-    }
+        public void Reset()
+        {
+
+        }
+
+        public bool IsDone()
+        {
+            if (AsyncOperation.isDone)
+            {
+                IsTimeout = false;
+                return true;
+            }
+            else
+            {
+                float now = Time.unscaledTime;
+                if (now - _beginTime >= _timeoutS)
+                {
+                    IsTimeout = true;
+                    return true;
+                }
+                return false;
+            }
+        }
+    }
 }
