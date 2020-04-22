@@ -39,6 +39,13 @@ namespace ColaFramework.ToolKit
         [LabelText("推荐版本号")]
         public string RecommandVersion;
 
+        [LabelText("更新公告")]
+        [Multiline]
+        public string UpdateContent;
+
+        [LabelText("数据字典")]
+        public Dictionary<string, string> Data;
+
         public void OnValueChanged()
         {
             Version = string.Format("{0}.{1}.{2}.{3}", MainVersion, StoreVersion, HotUpdateVersion, BuildVersion);

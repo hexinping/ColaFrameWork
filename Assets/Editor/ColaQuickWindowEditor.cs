@@ -11,6 +11,8 @@ using ColaFramework;
 using System.Text;
 using ColaFramework.Foundation;
 using System.Text.RegularExpressions;
+using LitJson;
+using System.IO;
 
 namespace ColaFramework.ToolKit
 {
@@ -138,9 +140,37 @@ namespace ColaFramework.ToolKit
             }
             if (GUILayout.Button("Mark Lua Bundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
-                ColaEditHelper.MarkAssetsToOneBundle(LuaConst.luaTempDir,AppConst.LuaBaseBundle);
+                ColaEditHelper.MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
             }
             GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("导出版本Json", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            {
+                var assetPath = "Assets/Editor/Settings/AppVersion.asset";
+                var asset = AssetDatabase.LoadAssetAtPath<AppVersion>(assetPath);
+                if (null != asset)
+                {
+                    var jsonStr = JsonMapper.ToJson(asset);
+                    using (var sm = new StreamWriter("Assets/Editor/Settings/AppVersion.json", false, Encoding.UTF8))
+                    {
+                        sm.Write(jsonStr);
+                    }
+                    AssetDatabase.Refresh();
+                }
+            }
+            if(GUILayout.Button("导入Json文件", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            {
+                var jsonPath = "Assets/Editor/Settings/AppVersion.json";
+                using(var sr = new StreamReader(jsonPath))
+                {
+                    var jsonStr = sr.ReadToEnd();
+                    var asset = JsonMapper.ToObject<AppVersion>(jsonStr);
+                    Debug.Log(asset.UpdateContent);
+                }
+            }
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Zip Lua", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
