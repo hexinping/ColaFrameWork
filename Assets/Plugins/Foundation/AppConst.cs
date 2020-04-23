@@ -21,7 +21,7 @@ public class AppConst
     public const string LuaBaseBundle = "lua/lua_base";         //包内的lua AssetBundle
     public const string LuaUpdateBundle = "lua/lua_update";     //热更下载的lua AseetBundle
     public const string LuaBundlePrefix = "lua/";               //lua AssetBundle的前缀
-    public static List<string> LuaBundles = new List<string>() { LuaUpdateBundle,LuaBaseBundle };
+    public static List<string> LuaBundles = new List<string>() { LuaUpdateBundle, LuaBaseBundle };
 
     public static int GameFrameRate = 30;                        //游戏帧频
 
@@ -30,5 +30,36 @@ public class AppConst
     public const string WebUrl = "http://localhost:6688/";      //CDN地址
     public const string VersionHttpUrl = "http://xxxxxxxx/{0}/{1}?p={3}&v={4}";  //版本服务器地址
     public const string BakVersionHttpUrl = "http://xxxxxxxxbak/{0}/{1}?p={3}&v={4}"; //备用版本服务器地址
+
+    public static string AssetPath
+    {
+        get { return Application.persistentDataPath; }
+    }
+
+    private static string _cachePath;
+    public static string CachePath
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(_cachePath))
+            {
+                _cachePath = AssetPath + "/cache";
+            }
+            return _cachePath;
+        }
+    }
+
+    private static string _dataPath;
+    public static string DataPath
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(_dataPath))
+            {
+                _dataPath = AssetPath + "/data";
+            }
+            return _dataPath;
+        }
+    }
 }
 
