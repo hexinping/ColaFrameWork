@@ -27,6 +27,8 @@ public class AppConst
 
     public const string AppName = "ColaFramework";               //应用程序名称
     public const string ExtName = ".cab";                   //AssetBundle的扩展名
-    public const string WebUrl = "http://localhost:6688/";      //测试更新地址
+    public const string WebUrl = "http://localhost:6688/";      //CDN地址
+    public const string VersionHttpUrl = "http://xxxxxxxx/{0}/{1}?p={3}&v={4}";  //版本服务器地址
+    public const string BakVersionHttpUrl = "http://xxxxxxxxbak/{0}/{1}?p={3}&v={4}"; //备用版本服务器地址
 }
 
