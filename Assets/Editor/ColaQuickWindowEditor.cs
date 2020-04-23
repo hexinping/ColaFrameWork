@@ -114,11 +114,11 @@ namespace ColaFramework.ToolKit
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("打开AssetPath目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
-                ColaEditHelper.OpenDirectory(CommonHelper.AssetPath);
+                ColaEditHelper.OpenDirectory(AppConst.AssetPath);
             }
             if (GUILayout.Button("打开GameLog文件目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
-                ColaEditHelper.OpenDirectory(Path.Combine(CommonHelper.AssetPath, "logs"));
+                ColaEditHelper.OpenDirectory(Path.Combine(AppConst.AssetPath, "logs"));
             }
             GUILayout.EndHorizontal();
         }

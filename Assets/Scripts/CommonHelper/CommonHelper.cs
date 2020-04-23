@@ -25,17 +25,6 @@ public static class CommonHelper
     /// </summary>
     private static int chineseNumIndex = 1;
 
-    /// <summary>
-    /// 资源可读写路径
-    /// </summary>
-    public static string AssetPath
-    {
-        get
-        {
-            return Application.persistentDataPath;
-        }
-    }
-
     #endregion
 
     /// <summary>

@@ -400,7 +400,7 @@ public static class Common_Utils
     /// <returns></returns>
     public static string GetAssetPath()
     {
-        return CommonHelper.AssetPath;
+        return AppConst.AssetPath;
     }
 
     /// <summary>

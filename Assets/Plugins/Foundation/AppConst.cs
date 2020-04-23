@@ -31,6 +31,9 @@ public class AppConst
     public const string VersionHttpUrl = "http://xxxxxxxx/{0}/{1}?p={3}&v={4}";  //版本服务器地址
     public const string BakVersionHttpUrl = "http://xxxxxxxxbak/{0}/{1}?p={3}&v={4}"; //备用版本服务器地址
 
+    /// <summary>
+    /// 沙盒目录
+    /// </summary>
     public static string AssetPath
     {
         get { return Application.persistentDataPath; }

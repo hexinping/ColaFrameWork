@@ -159,7 +159,7 @@ public class LuaResLoader : LuaFileUtils
     /// <param name="bundle"></param>
     public void AddBundle(string bundleName)
     {
-        string url = CommonHelper.AssetPath + bundleName.ToLower();
+        string url = AppConst.AssetPath + bundleName.ToLower();
         if (File.Exists(url))
         {
             var bytes = File.ReadAllBytes(url);
