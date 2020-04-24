@@ -46,6 +46,7 @@ public class Common_UtilsWrap
 		L.RegFunction("DestroyUIBlur", DestroyUIBlur);
 		L.RegFunction("GetSceneMgr", GetSceneMgr);
 		L.RegFunction("DelayInvokeNextFrame", DelayInvokeNextFrame);
+		L.RegFunction("IsNull", IsNull);
 		L.RegFunction("SetMute", SetMute);
 		L.RegFunction("PlayBackgroundMusic", PlayBackgroundMusic);
 		L.RegFunction("PauseBackgroundMusic", PauseBackgroundMusic);
@@ -769,6 +770,23 @@ public class Common_UtilsWrap
 			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
 			Common_Utils.DelayInvokeNextFrame(arg0);
 			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int IsNull(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			object arg0 = ToLua.ToVarObject(L, 1);
+			bool o = Common_Utils.IsNull(arg0);
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
 		}
 		catch (Exception e)
 		{

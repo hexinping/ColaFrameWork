@@ -616,6 +616,23 @@ public static class Common_Utils
         GameLauncher.Instance.DelayInvokeNextFrame(action);
     }
 
+    public static bool IsNull(System.Object asset)
+    {
+        if (null == asset) { return false; }
+        if (asset is UnityEngine.Object)
+        {
+            UnityEngine.Object UnityObject = asset as UnityEngine.Object;
+            if (null == UnityObject || !UnityObject)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            throw new Exception(string.Format("InVaild Asset Type:{0}", asset.GetType()));
+        }
+        return true;
+    }
     #region 音频相关接口
     /// <summary>
     /// 静音接口
