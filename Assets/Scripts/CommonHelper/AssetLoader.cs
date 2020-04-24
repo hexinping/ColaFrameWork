@@ -76,10 +76,10 @@ namespace ColaFramework
                     return wkRef.Target as Object;
                 }
             }
-            wkRef = new WeakReference(null);
             var assetProxy = Assets.Load(path, type);
-            wkRef.Target = assetProxy.asset;
             var asset = assetProxy.asset;
+            assetProxy.ClearAsset();
+            wkRef = new WeakReference(asset);
             Asset assetRef = null;
             if (LoadedAssets.TryGetValue(path, out assetRef))
             {
@@ -90,7 +90,7 @@ namespace ColaFramework
             {
                 LoadedAssets.Add(path, assetProxy);
             }
-            assetProxy.ClearAsset();
+            AssetReferences[path] = wkRef;
             return asset;
         }
 
