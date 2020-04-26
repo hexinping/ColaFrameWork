@@ -578,6 +578,9 @@ public static class CommonHelper
         return null;
     }
 
+    /// <summary>
+    /// App的包内版本号
+    /// </summary>
     public static string PackageVersion
     {
         get
@@ -602,6 +605,9 @@ public static class CommonHelper
         }
     }
 
+    /// <summary>
+    /// App的包内版本号
+    /// </summary>
     public static int[] PackageVersionInt
     {
         get
@@ -617,6 +623,9 @@ public static class CommonHelper
         }
     }
 
+    /// <summary>
+    /// 当前APP的版本号
+    /// </summary>
     public static string HotUpdateVersion
     {
         get
@@ -634,6 +643,9 @@ public static class CommonHelper
         }
     }
 
+    /// <summary>
+    /// 当前APP的版本号
+    /// </summary>
     public static int[] HotUpdateVersionInt
     {
         get
@@ -649,6 +661,15 @@ public static class CommonHelper
         }
     }
 
+    /// <summary>
+    /// 对比版本号
+    /// 大于返回 1
+    /// 小于返回 -1
+    /// 等于返回 0
+    /// </summary>
+    /// <param name="baseV"></param>
+    /// <param name="newV"></param>
+    /// <returns></returns>
     public static int CompareVersion(string baseV, string newV)
     {
         var baseVs = baseV.Split('.');
@@ -670,6 +691,52 @@ public static class CommonHelper
         }
         if (isLittle) return 1;
         return 0;
+    }
+
+    /// <summary>
+    /// 判断值是否和缓存中的一致
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static bool IsValueEqualPrefs(string key, string value)
+    {
+        string prefVal = PlayerPrefs.GetString(key, "");
+        Debug.LogFormat("IsValueEqualPrefs, key:{0}, val:{1}, compare val:{2}", key, prefVal, value);
+        return prefVal == value;
+    }
+
+    /// <summary>
+    /// 格式化bytes为标准字符串
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <returns></returns>
+    public static string FormatByte(long bytes)
+    {
+        if (bytes < 1024)
+        {
+            return bytes.ToString() + "B";
+        }
+        long num = bytes / 1024;
+        if (num < 1024)
+        {
+            return string.Format("{0:F2}KB", bytes * 1.0f / 1024);
+        }
+        return string.Format("{0:F2}MB", bytes * 1.0f / 1048576);
+    }
+
+    /// <summary>
+    /// 格式化KB为标准字符串
+    /// </summary>
+    /// <param name="kb"></param>
+    /// <returns></returns>
+    public static string FormatKB(float kb)
+    {
+        if (kb < 1024)
+        {
+            return string.Format("{0:F2}KB", kb / 1024);
+        }
+        return string.Format("{0:F2}MB", kb / 1048576);
     }
 }
 
