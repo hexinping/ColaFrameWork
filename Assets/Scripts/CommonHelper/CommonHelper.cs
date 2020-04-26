@@ -12,6 +12,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using ColaFramework;
 using ColaAbandoned;
+using LitJson;
+using ColaFramework.Foundation;
 
 /// <summary>
 /// 通用工具类（C#端，lua端专门有Common_Util.cs供导出使用）
@@ -24,7 +26,6 @@ public static class CommonHelper
     /// 中文数字在Language表中索引的base位置
     /// </summary>
     private static int chineseNumIndex = 1;
-
     #endregion
 
     /// <summary>
@@ -575,6 +576,77 @@ public static class CommonHelper
         }
         Debug.LogWarning("Texture2D 不能为空！");
         return null;
+    }
+
+    public static string PackageVersion
+    {
+        get
+        {
+            var baseVersion = PlayerPrefs.GetString(AppConst.KEY_BASE_APK_VERSION, null);
+            if (string.IsNullOrEmpty(baseVersion))
+            {
+                var textAsset = Resources.Load<TextAsset>("app_version.json");
+                if (null != textAsset)
+                {
+                    var appVersion = JsonMapper.ToObject<AppVersion>(textAsset.text);
+                    PlayerPrefs.SetString(AppConst.KEY_BASE_APK_VERSION, appVersion.Version);
+                    baseVersion = appVersion.Version;
+                }
+                Resources.UnloadAsset(textAsset);
+            }
+            return baseVersion;
+        }
+        set
+        {
+            PlayerPrefs.SetString(AppConst.KEY_BASE_APK_VERSION, value);
+        }
+    }
+
+    public static int[] PackageVersionInt
+    {
+        get
+        {
+            var version = PackageVersion;
+            var versionStrs = version.Split('.');
+            var versionInts = new int[versionStrs.Length];
+            for (int i = 0; i < versionStrs.Length; i++)
+            {
+                versionInts[i] = Convert.ToInt32(versionStrs[i]);
+            }
+            return versionInts;
+        }
+    }
+
+    public static string HotUpdateVersion
+    {
+        get
+        {
+            var baseVersion = PlayerPrefs.GetString(AppConst.KEY_APP_CURRENT_VERSION, null);
+            if (string.IsNullOrEmpty(baseVersion))
+            {
+                baseVersion = PackageVersion;
+            }
+            return baseVersion;
+        }
+        set
+        {
+            PlayerPrefs.SetString(AppConst.KEY_APP_CURRENT_VERSION, value);
+        }
+    }
+
+    public static int[] HotUpdateVersionInt
+    {
+        get
+        {
+            var version = HotUpdateVersion;
+            var versionStrs = version.Split('.');
+            var versionInts = new int[versionStrs.Length];
+            for (int i = 0; i < versionStrs.Length; i++)
+            {
+                versionInts[i] = Convert.ToInt32(versionStrs[i]);
+            }
+            return versionInts;
+        }
     }
 }
 
