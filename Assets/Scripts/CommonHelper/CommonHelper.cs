@@ -648,5 +648,28 @@ public static class CommonHelper
             return versionInts;
         }
     }
+
+    public static int CompareVersion(string baseV, string newV)
+    {
+        var baseVs = baseV.Split('.');
+        var newVs = newV.Split('.');
+
+        bool isLittle = false;
+        for (int i = 0; i < baseVs.Length; i++)
+        {
+            var a = Convert.ToInt32(baseVs[i]);
+            var b = Convert.ToInt32(newVs[i]);
+            if (b > a)
+            {
+                return -1;
+            }
+            else if (a > b)
+            {
+                isLittle = true;
+            }
+        }
+        if (isLittle) return 1;
+        return 0;
+    }
 }
 
