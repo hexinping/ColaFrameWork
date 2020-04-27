@@ -738,5 +738,19 @@ public static class CommonHelper
         }
         return string.Format("{0:F2}MB", kb / 1048576);
     }
+
+    /// <summary>
+    /// GetSystemArchType函数的反值，用来排除热更文件用
+    /// </summary>
+    /// <returns></returns>
+    public static int GetNotSystemArchType()
+    {
+        if (Application.isMobilePlatform)
+        {
+            return System.IntPtr.Size == 8 ? 1 : 2;
+        }
+
+        return -1;
+    }
 }
 
