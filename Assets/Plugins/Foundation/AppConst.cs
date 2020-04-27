@@ -30,13 +30,13 @@ public class AppConst
     public const string VersionFileName = "version.txt";                   //版本信息文件的名称
     public static string CDNUrl = "http://localhost:6688/";      //CDN地址
     public static string BakCDNUrl = "http://localhost:6688/";      //备用CDN地址
-    public const string VersionHttpUrl = "http://xxxxxxxx/{0}/{1}?p={3}&v={4}";  //版本服务器地址
-    public const string BakVersionHttpUrl = "http://xxxxxxxxbak/{0}/{1}?p={3}&v={4}"; //备用版本服务器地址
+    public const string VersionHttpUrl = "http://xxxxxxxx/{0}/{1}?p={2}&v={3}";  //版本服务器地址
+    public const string BakVersionHttpUrl = "http://xxxxxxxxbak/{0}/{1}?p={2}&v={3}"; //备用版本服务器地址
 
     public static string KEY_BASE_APK_VERSION = "__PACKAGE_VERSION__";        // apk的版本号
     public static string KEY_APP_CURRENT_VERSION = "__CURRENT_VERSION__";       // 当前热更的版本号
     public static string KEY_CACHE_HOTFIX_VERSION = "__CACHE_HOTFIX_VERSION__";     // 热更缓存路径的版本号
-    public const int AUTO_DOWNLOAD_SIZE = 2097152; // 默认2M以内热更都用数据直接下载，不提醒
+    public const int AUTO_DOWNLOAD_SIZE = 2048; // 默认2M以内热更都用数据直接下载，不提醒
 
     /// <summary>
     /// 沙盒目录

@@ -27,6 +27,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using ColaFramework;
 using ColaFramework.ToolKit;
 
 namespace Plugins.XAsset.Editor
