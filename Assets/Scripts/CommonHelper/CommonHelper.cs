@@ -588,7 +588,7 @@ public static class CommonHelper
             var baseVersion = PlayerPrefs.GetString(AppConst.KEY_BASE_APK_VERSION, null);
             if (string.IsNullOrEmpty(baseVersion))
             {
-                var textAsset = Resources.Load<TextAsset>("app_version.json");
+                var textAsset = Resources.Load<TextAsset>("app_version");
                 if (null != textAsset)
                 {
                     var appVersion = JsonMapper.ToObject<AppVersion>(textAsset.text);
@@ -734,9 +734,9 @@ public static class CommonHelper
     {
         if (kb < 1024)
         {
-            return string.Format("{0:F2}KB", kb / 1024);
+            return string.Format("{0:F2}KB", kb);
         }
-        return string.Format("{0:F2}MB", kb / 1048576);
+        return string.Format("{0:F2}MB", kb / 1024);
     }
 
     /// <summary>
