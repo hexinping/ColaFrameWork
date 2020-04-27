@@ -23,6 +23,8 @@ namespace ColaFramework.Foundation
         /// </summary>
         private static readonly UTF8Encoding UTF8EnCode = new UTF8Encoding(false);
 
+        private const int VERSION_LENGTH = 4;
+
         /// <summary>
         /// 文件是否存在
         /// </summary>
@@ -367,77 +369,84 @@ namespace ColaFramework.Foundation
             return BitConverter.ToString(md5.ComputeHash(buffer)).Replace("-", "").ToLower();
         }
 
-        //public static string GenABFileListMd5String(List<ABFileInfo> files)
-        //{
-        //    string text = "";
-        //    for (int i = 0; i < files.Count; ++i)
-        //    {
-        //        ABFileInfo info = files[i];
-        //        text += string.Format("{0}:{1}:{2}:{3}\n", info.filename, info.md5, info.rawSize, info.compressSize);
-        //    }
+        public static string GenVersionInfoString(List<ABFileInfo> versions)
+        {
+            var sb = new StringBuilder(64);
+            for (int i = 0; i < versions.Count; ++i)
+            {
+                ABFileInfo info = versions[i];
+                sb.Append(string.Format("{0}:{1}:{2}:{3}\n", info.filename, info.md5, info.rawSize, info.compressSize));
+            }
+            return sb.ToString();
+        }
 
-        //    return text;
-        //}
-        //public static string GenABFileDicMd5String(Dictionary<string, ABFileInfo> files)
-        //{
-        //    string text = "";
-        //    foreach (var item in files)
-        //    {
-        //        ABFileInfo info = item.Value;
-        //        text += string.Format("{0}:{1}:{2}:{3}\n", info.filename, info.md5, info.rawSize, info.compressSize);
-        //    }
+        public static string GenVersionInfoString(Dictionary<string, ABFileInfo> versions)
+        {
+            var sb = new StringBuilder(64);
+            foreach (var item in versions)
+            {
+                var info = item.Value;
+                sb.Append(string.Format("{0}:{1}:{2}:{3}\n", info.filename, info.md5, info.rawSize, info.compressSize));
+            }
+            return sb.ToString();
+        }
 
-        //    return text;
-        //}
-        //public static Dictionary<string, ABFileInfo> ReadAbMD5Info(string path)
-        //{
-        //    string text = FileHelper.ReadTextFromFile(path);
-        //    return ReadABMD5FromText(text);
-        //}
+        public static Dictionary<string, ABFileInfo> ReadABVersionInfo(string path)
+        {
+            string text = ReadString(path);
+            return ReadABVersionFromText(text);
+        }
 
-        //public static Dictionary<string, ABFileInfo> ReadABMD5FromText(string text)
-        //{
-        //    Dictionary<string, ABFileInfo> datas = new Dictionary<string, ABFileInfo>();
-        //    string[] md5s = text.Split(new[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+        public static Dictionary<string, ABFileInfo> ReadABVersionFromText(string text)
+        {
+            Dictionary<string, ABFileInfo> versions = new Dictionary<string, ABFileInfo>();
+            string[] infos = text.Split(new[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
 
-        //    for (int i = 0; i < md5s.Length; ++i)
-        //    {
-        //        string[] temp = md5s[i].Split(new[] { ":" }, System.StringSplitOptions.RemoveEmptyEntries);
-        //        if (temp.Length == 4)
-        //        {
-        //            ABFileInfo abInfo = new ABFileInfo();
-        //            abInfo.filename = temp[0];
-        //            abInfo.md5 = temp[1];
-        //            abInfo.rawSize = int.Parse(temp[2]);
-        //            abInfo.compressSize = int.Parse(temp[3]);
-        //            datas.Add(temp[0], abInfo);
-        //        }
-        //    }
-        //    return datas;
-        //}
+            for (int i = 0; i < infos.Length; ++i)
+            {
+                string[] fields = infos[i].Split(new[] { ":" }, System.StringSplitOptions.RemoveEmptyEntries);
+                if (fields.Length == VERSION_LENGTH)
+                {
+                    ABFileInfo abInfo = new ABFileInfo();
+                    abInfo.filename = fields[0];
+                    abInfo.md5 = fields[1];
+                    abInfo.rawSize = float.Parse(fields[2]);
+                    abInfo.compressSize = float.Parse(fields[3]);
+                    versions.Add(fields[0], abInfo);
+                }
+            }
+            return versions;
+        }
 
-        ////读取 文件名:md5 格式md5信息列表
-        //public static Dictionary<string, string> ReadMD5Info(string path)
-        //{
-        //    string text = FileHelper.ReadTextFromFile(path);
-        //    return ReadMD5FromText(text);
-        //}
+        public static void WriteVersionInfo(string path, Dictionary<string, ABFileInfo> versions)
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+            WriteString(path, GenVersionInfoString(versions));
+        }
 
-        //public static Dictionary<string, string> ReadMD5FromText(string text)
-        //{
-        //    Dictionary<string, string> datas = new Dictionary<string, string>();
-        //    string[] md5s = text.Split(new[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+        //读取 文件名:md5 格式md5信息列表
+        public static Dictionary<string, string> ReadMD5Info(string path)
+        {
+            string text = FileHelper.ReadString(path);
+            return ReadMD5FromText(text);
+        }
 
-        //    for (int i = 0; i < md5s.Length; ++i)
-        //    {
-        //        string[] temp = md5s[i].Split(new[] { ":" }, System.StringSplitOptions.RemoveEmptyEntries);
-        //        if (temp.Length == 2)
-        //        {
-        //            datas.Add(temp[0], temp[1]);
-        //        }
-        //    }
-        //    return datas;
-        //}
+        public static Dictionary<string, string> ReadMD5FromText(string text)
+        {
+            Dictionary<string, string> datas = new Dictionary<string, string>();
+            string[] md5s = text.Split(new[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < md5s.Length; ++i)
+            {
+                string[] temp = md5s[i].Split(new[] { ":" }, System.StringSplitOptions.RemoveEmptyEntries);
+                if (temp.Length == 2)
+                {
+                    datas.Add(temp[0], temp[1]);
+                }
+            }
+            return datas;
+        }
         #endregion
     }
 }

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Plugins.XAsset;
+using System.Text;
 
 namespace ColaFramework.ToolKit
 {
@@ -180,47 +181,24 @@ namespace ColaFramework.ToolKit
             return items.ToDictionary(item => item, item => manifest.GetAssetBundleHash(item).ToString());
         }
 
-        private static void LoadVersions(string versionsTxt, string path, IDictionary<string, ABFileInfo> versions)
+        private static Dictionary<string, ABFileInfo> LoadVersions(string versionsTxt)
         {
-            if (versions == null)
-                throw new ArgumentNullException("versions");
             if (!File.Exists(versionsTxt))
-                return;
-            using (var s = new StreamReader(versionsTxt))
-            {
-                string line;
-                while ((line = s.ReadLine()) != null)
-                {
-                    if (line == string.Empty)
-                        continue;
-                    var fields = line.Split(':');
-                    if (fields.Length > 1)
-                    {
-                        var abInfo = new ABFileInfo();
-                        abInfo.filename = fields[0];
-                        abInfo.md5 = fields[1];
-                        abInfo.rawSize = FileHelper.GetFileSizeKB(path + "/" + fields[0]);
-                        abInfo.compressSize = abInfo.rawSize;
-                        versions.Add(fields[0], abInfo);
-                    }
-                }
-            }
+                return null;
+            return FileHelper.ReadABVersionInfo(versionsTxt);
         }
 
         private static void SaveVersions(string versionsTxt, string path, Dictionary<string, string> versions)
         {
             if (File.Exists(versionsTxt))
                 File.Delete(versionsTxt);
-            using (var s = new StreamWriter(versionsTxt))
+            var sb = new StringBuilder(64);
+            foreach (var item in versions)
             {
-                foreach (var item in versions)
-                {
-                    var fileSize = FileHelper.GetFileSizeKB(path + "/" + item.Key);
-                    s.WriteLine(item.Key + ':' + item.Value + ":" + fileSize + ":" + fileSize);
-                }
-                s.Flush();
-                s.Close();
+                var fileSize = FileHelper.GetFileSizeKB(path + "/" + item.Key);
+                sb.Append(string.Format("{0}:{1}:{2}:{3}\n", item.Key, item.Value, fileSize, fileSize));
             }
+            FileHelper.WriteString(versionsTxt, sb.ToString());
         }
 
         public static void RemoveUnusedAssetBundleNames()
@@ -307,8 +285,7 @@ namespace ColaFramework.ToolKit
                 BuildPipeline.BuildAssetBundles(outputPath, options,
                     EditorUserBuildSettings.activeBuildTarget);
             var versionsTxt = outputPath + "/versions.txt";
-            var versions = new Dictionary<string, ABFileInfo>();
-            LoadVersions(versionsTxt, outputPath, versions);
+            var versions = LoadVersions(versionsTxt);
 
             var buildVersions = GetVersions(manifest);
 

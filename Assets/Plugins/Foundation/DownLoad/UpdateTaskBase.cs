@@ -141,13 +141,5 @@ namespace ColaFramework.Foundation.DownLoad
             }
         }
 
-        // 判断值是否和缓存中的一致
-        protected bool IsValueEqualPrefs(string key, string value)
-        {
-            string prefVal = PlayerPrefs.GetString(key, "");
-            Debug.LogFormat("IsValueEqualPrefs, key:{0}, val:{1}, compare val:{2}", key, prefVal, value);
-            return prefVal == value;
-        }
-
     }
 }

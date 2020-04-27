@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace ColaFramework.ToolKit
+namespace ColaFramework.Foundation
 {
     [CreateAssetMenu(fileName = "AppVersion", menuName = "ColaFramework/AppVersion", order = 2)]
     public class AppVersion : SerializedScriptableObject
