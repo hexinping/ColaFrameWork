@@ -33,7 +33,8 @@ public class AppConst
     public const string VersionHttpUrl = "http://localhost:6688/{0}/{1}?p={2}&v={3}";  //版本服务器地址
     public const string BakVersionHttpUrl = "http://localhost:6688/{0}/{1}?p={2}&v={3}"; //备用版本服务器地址
 
-    public static string KEY_BASE_APK_VERSION = "__PACKAGE_VERSION__";        // apk的版本号
+    public static string KEY_BASE_APK_VERSION = "__PACKAGE_VERSION__";        // apk的版本号，每次换包以后这个值会被刷新，重新记录
+    public static string KEY_APK_BUILD_VERSION = "__PACKAGE_BUILD_VERSION__";  // apk自带的版本号，这个配置存在Resources目录下，除非换包，否则不变
     public static string KEY_APP_CURRENT_VERSION = "__CURRENT_VERSION__";       // 当前热更的版本号
     public static string KEY_CACHE_HOTFIX_VERSION = "__CACHE_HOTFIX_VERSION__";     // 热更缓存路径的版本号
     public const int AUTO_DOWNLOAD_SIZE = 2048; // 默认2M以内热更都用数据直接下载，不提醒

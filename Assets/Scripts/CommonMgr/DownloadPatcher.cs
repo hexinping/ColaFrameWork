@@ -82,11 +82,21 @@ namespace ColaFramework
         // 检查是否有更新
         public void StartUpdate(System.Action<bool> callback)
         {
+            CheckOverrideInstall();
             m_onDownPatchDone = callback;
             m_strVersionInfoUrl = AppConst.VersionHttpUrl;
             CheckNeedUpdate();
         }
 
+        private void CheckOverrideInstall()
+        {
+            var buildVersion = CommonHelper.APKBuildVersion;
+            var packageVersion = CommonHelper.PackageVersion;
+            if(buildVersion != packageVersion)
+            {
+                OverrideInstallAPP(buildVersion);
+            }
+        }
 
         private void CheckNeedUpdate()
         {
@@ -251,6 +261,20 @@ namespace ColaFramework
                 FileHelper.Mkdir(AppConst.UpdateCachePath);
                 PlayerPrefs.SetString(AppConst.KEY_CACHE_HOTFIX_VERSION, strNewVersion);
             }
+        }
+
+        /// <summary>
+        /// 重装APP后的操作,需要覆盖安装
+        /// 会清空各种沙盒缓存和注册的一些键值
+        /// </summary>
+        private void OverrideInstallAPP(string newVersion)
+        {
+            Debug.Log("** 覆盖安装App **");
+            FileHelper.RmDir(AppConst.UpdateCachePath);
+            FileHelper.RmDir(AppConst.CachePath);
+            FileHelper.RmDir(AppConst.DataPath);
+            FileHelper.RmDir(Utility.UpdatePath);
+            CommonHelper.PackageVersion = newVersion;
         }
 
         // 下载md5 文件

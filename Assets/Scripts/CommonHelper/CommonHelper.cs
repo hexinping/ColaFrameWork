@@ -662,6 +662,25 @@ public static class CommonHelper
     }
 
     /// <summary>
+    /// apk自带的Build版本号
+    /// </summary>
+    public static string APKBuildVersion
+    {
+        get
+        {
+            string baseVersion = "0.0.0.0";
+            var textAsset = Resources.Load<TextAsset>("app_version");
+            if (null != textAsset)
+            {
+                var appVersion = JsonMapper.ToObject<AppVersion>(textAsset.text);
+                baseVersion = appVersion.Version;
+            }
+            Resources.UnloadAsset(textAsset);
+            return baseVersion;
+        }
+    }
+
+    /// <summary>
     /// 对比版本号
     /// 大于返回 1
     /// 小于返回 -1
