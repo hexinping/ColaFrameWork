@@ -92,7 +92,7 @@ namespace ColaFramework
         {
             Debug.Log("开始版本检查");
 
-            string strURL = string.Format(m_strVersionInfoUrl, Utility.GetPlatform(), CommonHelper.PackageVersion, Utility.GetPlatform(), CommonHelper.PackageVersion);
+            string strURL = string.Format(m_strVersionInfoUrl, Utility.GetPlatform(), "app_version.json", Utility.GetPlatform(), CommonHelper.PackageVersion);
             Debug.LogFormat("Request Version URL:{0}", strURL);
             m_fStartDowndTime = Time.time;
             HttpDownloadMgr.DownloadText(strURL, OnDownloadVersion, checkVersionTimeOut);

@@ -86,6 +86,17 @@ public class GameLauncher : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        TaskManager.Instance.Init(this);
+        DownloadPatcher.Instance.StartUpdate(OnDownloadPathDone);
+    }
+
+    /// <summary>
+    /// needUnpack 有热更到资源的话就要解压 没有就不需要
+    /// </summary>
+    /// <param name="needUnpack"></param>
+    private void OnDownloadPathDone(bool needUnpack)
+    {
+        Debug.Log("热更完成：" + needUnpack);
         StartCoroutine(InitGameCore());
     }
 

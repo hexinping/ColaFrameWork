@@ -152,10 +152,8 @@ namespace ColaFramework.ToolKit
                 if (null != asset)
                 {
                     var jsonStr = JsonMapper.ToJson(asset);
-                    using (var sm = new StreamWriter("Assets/Editor/Settings/AppVersion.json", false, Encoding.UTF8))
-                    {
-                        sm.Write(jsonStr);
-                    }
+                    FileHelper.DeleteFile("Assets/Resources/app_version.json");
+                    FileHelper.WriteString("Assets/Resources/app_version.json", jsonStr);
                     AssetDatabase.Refresh();
                 }
             }

@@ -21,7 +21,7 @@ namespace ColaFramework.Foundation
         /// <summary>
         /// UTF8编码格式
         /// </summary>
-        private static readonly UTF8Encoding UTF8EnCode = new UTF8Encoding(false);
+        private static readonly UTF8Encoding UTF8Encode = new UTF8Encoding(false);
 
         private const int VERSION_LENGTH = 4;
 
@@ -323,7 +323,7 @@ namespace ColaFramework.Foundation
         public static void WriteString(string filePath, string content)
         {
             EnsureParentDirExist(filePath);
-            File.WriteAllText(filePath, content.Replace(Environment.NewLine, "\n"), UTF8EnCode);
+            File.WriteAllText(filePath, content.Replace(Environment.NewLine, "\n"), UTF8Encode);
         }
 
         public static void EnsureParentDirExist(string path)
