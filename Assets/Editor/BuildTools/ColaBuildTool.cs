@@ -46,7 +46,10 @@ namespace ColaFramework.ToolKit
                 //5.打Bundle
                 BuildAssetBundle(buildTargetGroup);
 
-                //6.出包
+                //6.UpLoadCDN
+                UpLoadCDN(buildTargetGroup);
+
+                //7.出包
                 InternalBuildPkg(buildTargetGroup);
             }
             catch
@@ -55,7 +58,7 @@ namespace ColaFramework.ToolKit
             }
             finally
             {
-                //6.清理工作，恢复工作区
+                //8.清理工作，恢复工作区
                 CleanUp(buildTargetGroup);
             }
 
@@ -133,6 +136,15 @@ namespace ColaFramework.ToolKit
                 ColaEditHelper.BuildLuaFile();
             }
             Debug.Log("=================Build Lua Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
+        }
+
+        /// <summary>
+        /// UpLoadCDN
+        /// </summary>
+        /// <param name="buildTargetGroup"></param>
+        private static void UpLoadCDN(BuildTargetGroup buildTargetGroup)
+        {
+
         }
 
         /// <summary>
