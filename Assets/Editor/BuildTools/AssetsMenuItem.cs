@@ -50,22 +50,6 @@ namespace Plugins.XAsset.Editor
         public static void OnInitialize()
         {
             EditorUtility.ClearProgressBar();
-            if (AppConst.isLocalResServer)
-            {
-                bool isRunning = LaunchLocalServer.IsRunning();
-                if (!isRunning)
-                {
-                    LaunchLocalServer.Run();
-                }
-            }
-            else
-            {
-                bool isRunning = LaunchLocalServer.IsRunning();
-                if (isRunning)
-                {
-                    LaunchLocalServer.KillRunningAssetBundleServer();
-                }
-            }
             Utility.dataPath = System.Environment.CurrentDirectory;
             Utility.downloadURL = ColaEditHelper.GetManifest().downloadURL;
             Utility.assetBundleMode = AppConst.SimulateMode;

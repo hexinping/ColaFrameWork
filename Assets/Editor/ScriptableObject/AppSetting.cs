@@ -18,10 +18,6 @@ namespace ColaFramework.ToolKit
         [OnValueChanged("OnValueChanged")]
         public bool SimulateMode;
 
-        [LabelText("是否使用框架自带HttpServer")]
-        [OnValueChanged("OnValueChanged")]
-        public bool isLocalServer;
-
         [LabelText("游戏帧率")]
         [OnValueChanged("OnValueChanged")]
         public int GameFrameRate;
@@ -40,7 +36,6 @@ namespace ColaFramework.ToolKit
         {
             var setting = GetSetting();
             AppConst.SimulateMode = setting.SimulateMode;
-            AppConst.isLocalResServer = setting.isLocalServer;
             AppConst.GameFrameRate = setting.GameFrameRate;
             AppConst.LuaBundleMode = setting.LuaBundleMode;
 
