@@ -13,7 +13,6 @@ using UnityEngine;
 public class AppConst
 {
     public static bool SimulateMode = false;                       //调试/模式模式-用于在编辑器上模拟手机
-    public static bool isLocalResServer = true;
 
     public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
     public static bool LuaBundleMode = true;                    //Lua代码AssetBundle模式
