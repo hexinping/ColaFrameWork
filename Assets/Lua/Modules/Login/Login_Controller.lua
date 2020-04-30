@@ -20,8 +20,9 @@ function public.OnDestroy()
 end
 
 function public.RequestConnectServer()
-    NetManager.Connect("127.0.0.1","9876",function()
+    NetManager.Connect(LuaAppConst.ServerIp, LuaAppConst.Port, function()
         print("--------------->连接成功!")
+        public.RequestLoginServer()
     end)
 end
 

@@ -30,6 +30,7 @@ end
 
 -- 界面可见性变化的时候触发
 function UILogin:OnShow(isShow)
+    Ctrl.Login.RequestConnectServer()
 end
 
 function UILogin:onClick(name)
