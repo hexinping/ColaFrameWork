@@ -51,11 +51,8 @@ namespace ColaFramework
         public static Color ColorUIMask = new Color(0 / 255.0f, 0 / 255.0f, 0 / 255.0f, 125 / 255.0f);
 
         public static readonly string UIViewTag = "UIView";
-        public static readonly string UIIngeroTag = "UIIngero";
+        public static readonly string UIIngeroTag = "UIIgnore";
         public static readonly string UIPropertyTag = "UIProperty";
-
-        public static readonly string UIExportPrefabPath = "Assets/Resources/Arts/UI/Prefabs";
-        public static readonly string UIExportCSScriptPath = "Assets/Scripts/_UIViews";
 
         public static readonly string GameAssetBasePath = "Assets/GameAssets/";
         public static readonly string RawAssetBasePath = "Assets/RawAssets/";
@@ -64,6 +61,11 @@ namespace ColaFramework
         public static readonly string ModelAnimClipsPath = "Arts/AnimationClips/";
         public static readonly string ModelAnimatorPath = "Arts/Animator/";
         public static readonly string LutifyTexturePath = "Arts/Luts/";
+
+
+        public static readonly string UIExportPrefabPath = GameAssetBasePath + "Arts/UI/Prefabs";
+        public static readonly string UIExportCSScriptPath = "Assets/Scripts/_UIViews";
+        public static readonly string UIExportLuaViewPath = "Assets/Lua/UIViewComponents";
     }
 
     public class ABFileInfo
