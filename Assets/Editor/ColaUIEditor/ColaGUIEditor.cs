@@ -52,6 +52,22 @@ namespace ColaFramework.ToolKit
             Selection.activeGameObject = view;
         }
 
+        [MenuItem("GameObject/UI/ColaUI/ExportUIView", false, 2)]
+        public static void ExportUIView()
+        {
+            var uiObj = Selection.activeGameObject;
+            ExportUIPrefab(uiObj);
+        }
+
+        private static void ExportUIPrefab(GameObject gameObject)
+        {
+            if (null == gameObject) return;
+            if (gameObject.CompareTag(Constants.UIViewTag))
+            {
+               
+            }
+
+        }
 
         /// <summary>
         /// 获取或者创建UGUIRoot（编辑器状态下）
