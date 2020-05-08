@@ -22,5 +22,17 @@ namespace UnityEngine.UI.Extensions
         {
             return components[index];
         }
+
+        [LuaInterface.NoToLua]
+        public void Clear()
+        {
+            components.Clear();
+        }
+
+        [LuaInterface.NoToLua]
+        public void Add(Component component)
+        {
+            components.Add(component);
+        }
     }
 }
