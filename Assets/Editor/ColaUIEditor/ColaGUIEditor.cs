@@ -70,11 +70,21 @@ namespace ColaFramework.ToolKit
             var uiObj = Selection.activeGameObject;
             if (null == uiObj) return;
             var UIViewName = uiObj.name;
-            UIViewName = UIViewName.Substring(0, 1).ToUpper() + UIViewName.Substring(1);  //ToUpperFirst
+            if (!UIViewName.StartsWith("UI", StringComparison.CurrentCultureIgnoreCase))
+            {
+                UIViewName = "UI" + UIViewName;
+            }
+            UIViewName = UIViewName.Substring(0, 2).ToUpper() + UIViewName.Substring(2);  //ToUpperFirst
+
+            uiObj.name = UIViewName;
             uiExportElementDic.Clear();
+            UICollection = null;
             UIComponentIndex = -1;
+
             ProcessUIPrefab(uiObj);
             GenUIViewCode(UIViewName);
+            var prefabPath = Constants.UIExportPrefabPath + UIViewName + ".prefab";
+            ColaEditHelper.CreateOrReplacePrefab(uiObj, prefabPath);
             AssetDatabase.Refresh();
         }
 
@@ -92,6 +102,7 @@ namespace ColaFramework.ToolKit
                 {
                     continue;
                 }
+                ProcessUIPrefab(transform.gameObject);
                 bool isHandled = false;
                 foreach (var type in ExportComponentTypes)
                 {
@@ -123,7 +134,7 @@ namespace ColaFramework.ToolKit
 
         private static void GenUIViewCode(string UIViewName)
         {
-            var codePath = Constants.UIExportLuaViewPath + "View_" + UIViewName + "_Component" + ".lua";
+            var codePath = Constants.UIExportLuaViewPath + UIViewName + "_BindView" + ".lua";
 
             StringBuilder sb = new StringBuilder(16);
             sb.Append("--[[Notice:This lua uiview file is auto generate by UIViewExporter，don't modify it manually! --]]\n\n");
@@ -133,13 +144,20 @@ namespace ColaFramework.ToolKit
             sb.Append("\t\tlocal collection = Panel:GetComponent(\"UIComponentCollection\")\n");
             sb.Append("\t\tif nil ~= collection then\n");
 
-            foreach (var item in uiExportElementDic)
+            if (uiExportElementDic.Count > 0)
             {
-                sb.Append("\t\t\tuiView.").Append(item.Key).Append(" = collection:Get(").Append(item.Value).Append(")\n");
+                foreach (var item in uiExportElementDic)
+                {
+                    sb.Append("\t\t\tuiView.").Append(item.Key).Append(" = collection:Get(").Append(item.Value).Append(")\n");
+                }
+            }
+            else
+            {
+                sb.Append("\t\t\t--pass\n");
             }
 
             sb.Append("\t\telse\n\t\t\terror(\"BindView Error! UIComponentCollection is nil!\")\n\t\tend\n");
-            sb.Append("\telse\n\t\terror(\"BindView Error! Panel is nil!\")\n\tend\n\n");
+            sb.Append("\telse\n\t\terror(\"BindView Error! Panel is nil!\")\n\tend\nend\n\n");
             sb.Append("return public");
 
             FileHelper.WriteString(codePath, sb.ToString());

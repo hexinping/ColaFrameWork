@@ -65,7 +65,7 @@ namespace ColaFramework
 
         public static readonly string UIExportPrefabPath = GameAssetBasePath + "Arts/UI/Prefabs/";
         public static readonly string UIExportCSScriptPath = "Assets/Scripts/_UIViews/";
-        public static readonly string UIExportLuaViewPath = "Assets/Lua/UIViewComponents/";
+        public static readonly string UIExportLuaViewPath = "Assets/Lua/UIBindViews/";
     }
 
     public class ABFileInfo
