@@ -79,6 +79,7 @@ public static class CustomSettings
         _GT(typeof(AssetLoader)).SetNameSpace(null),
         _GT(typeof(SocketManager)).SetNameSpace(null),
         _GT(typeof(NetMessageCenter)).SetNameSpace(null),
+        _GT(typeof(UIComponentCollection)).SetNameSpace(null),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),

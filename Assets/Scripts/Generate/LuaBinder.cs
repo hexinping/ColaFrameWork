@@ -28,6 +28,7 @@ public static class LuaBinder
 		ColaFramework_AssetLoaderWrap.Register(L);
 		ColaFramework_NetWork_SocketManagerWrap.Register(L);
 		ColaFramework_NetWork_NetMessageCenterWrap.Register(L);
+		UnityEngine_UI_Extensions_UIComponentCollectionWrap.Register(L);
 		LuaProfilerWrap.Register(L);
 		L.RegFunction("UIEventHandler", UIEventHandler);
 		L.RegFunction("UIDragEventHandlerDetail", UIDragEventHandlerDetail);
