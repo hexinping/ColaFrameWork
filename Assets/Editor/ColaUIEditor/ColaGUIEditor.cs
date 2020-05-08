@@ -3,10 +3,15 @@
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
 
-#if UNITY_EDITOR
 using ColaFramework;
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.UI.Extensions;
+using System;
+using UnityEngine.UI;
+using System.Text;
+using ColaFramework.Foundation;
 
 namespace ColaFramework.ToolKit
 {
@@ -17,6 +22,13 @@ namespace ColaFramework.ToolKit
     {
         private static bool editorgetGameViewSizeError = false;
         public static bool editorgameViewReflectionError = false;
+
+        private static Dictionary<string, int> uiExportElementDic = new Dictionary<string, int>();
+        private static List<Type> ExportComponentTypes = new List<Type>() { typeof(IControl),typeof(Button),typeof(InputField),typeof(Dropdown),typeof(Toggle),typeof(Slider),
+        typeof(ScrollRect),typeof(Scrollbar)};
+        private static List<Type> ExportPropertyTypes = new List<Type>() { typeof(IComponent), typeof(Image), typeof(RawImage), typeof(Text), typeof(RectTransform), typeof(Transform) };
+        private static UIComponentCollection UICollection;
+        private static int UIComponentIndex = -1;
 
         public static Camera UICamera
         {
@@ -56,17 +68,81 @@ namespace ColaFramework.ToolKit
         public static void ExportUIView()
         {
             var uiObj = Selection.activeGameObject;
-            ExportUIPrefab(uiObj);
+            if (null == uiObj) return;
+            var UIViewName = uiObj.name;
+            UIViewName = UIViewName.Substring(0, 1).ToUpper() + UIViewName.Substring(1);  //ToUpperFirst
+            uiExportElementDic.Clear();
+            UIComponentIndex = -1;
+            ProcessUIPrefab(uiObj);
+            GenUIViewCode(UIViewName);
+            AssetDatabase.Refresh();
         }
 
-        private static void ExportUIPrefab(GameObject gameObject)
+        private static void ProcessUIPrefab(GameObject gameObject)
         {
             if (null == gameObject) return;
             if (gameObject.CompareTag(Constants.UIViewTag))
             {
-               
+                UICollection = gameObject.AddSingleComponent<UIComponentCollection>();
+                UICollection.Clear();
+            }
+            foreach (Transform transform in gameObject.transform)
+            {
+                if (transform.CompareTag(Constants.UIIgnoreTag))
+                {
+                    continue;
+                }
+                bool isHandled = false;
+                foreach (var type in ExportComponentTypes)
+                {
+                    var UIComp = transform.GetComponent(type);
+                    if (null != UIComp)
+                    {
+                        UIComponentIndex++;
+                        UICollection.Add(UIComp);
+                        var componentName = "m_" + transform.name;
+                        uiExportElementDic[componentName] = UIComponentIndex;
+                        isHandled = true;
+                    }
+                }
+                if (isHandled) continue;
+                foreach (var type in ExportPropertyTypes)
+                {
+                    var UIComp = transform.GetComponent(type);
+                    if (null != UIComp && transform.CompareTag(Constants.UIPropertyTag))
+                    {
+                        UIComponentIndex++;
+                        UICollection.Add(UIComp);
+                        var componentName = "m_" + transform.name;
+                        uiExportElementDic[componentName] = UIComponentIndex;
+                        isHandled = true;
+                    }
+                }
+            }
+        }
+
+        private static void GenUIViewCode(string UIViewName)
+        {
+            var codePath = Constants.UIExportLuaViewPath + "View_" + UIViewName + "_Component" + ".lua";
+
+            StringBuilder sb = new StringBuilder(16);
+            sb.Append("--[[Notice:This lua uiview file is auto generate by UIViewExporter，don't modify it manually! --]]\n\n");
+            sb.Append("local public = {}\n\n");
+            sb.Append("function public.BindView(uiView, Panel)\n");
+            sb.Append("\tif nil ~= Panel then\n");
+            sb.Append("\t\tlocal collection = Panel:GetComponent(\"UIComponentCollection\")\n");
+            sb.Append("\t\tif nil ~= collection then\n");
+
+            foreach (var item in uiExportElementDic)
+            {
+                sb.Append("\t\t\tuiView.").Append(item.Key).Append(" = collection:Get(").Append(item.Value).Append(")\n");
             }
 
+            sb.Append("\t\telse\n\t\t\terror(\"BindView Error! UIComponentCollection is nil!\")\n\t\tend\n");
+            sb.Append("\telse\n\t\terror(\"BindView Error! Panel is nil!\")\n\tend\n\n");
+            sb.Append("return public");
+
+            FileHelper.WriteString(codePath, sb.ToString());
         }
 
         /// <summary>
@@ -117,7 +193,6 @@ namespace ColaFramework.ToolKit
                 }
             }
 #endif
-
             return dimensions;
         }
 
@@ -213,4 +288,3 @@ namespace ColaFramework.ToolKit
         }
     }
 }
-#endif
