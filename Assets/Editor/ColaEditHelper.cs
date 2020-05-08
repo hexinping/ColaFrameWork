@@ -73,7 +73,19 @@ namespace ColaFramework.ToolKit
             return asset;
         }
 
-
+        public static void CreateOrReplacePrefab(GameObject gameobject, string path, ReplacePrefabOptions options = ReplacePrefabOptions.ConnectToPrefab)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
+            if (prefab != null)
+            {
+                PrefabUtility.ReplacePrefab(gameobject, prefab, options);
+            }
+            else
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                PrefabUtility.CreatePrefab(path, gameobject, options);
+            }
+        }
 
         #region 打包相关方法实现
 
