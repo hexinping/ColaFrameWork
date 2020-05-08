@@ -3,8 +3,8 @@ local fieldIdx = {}
 fieldIdx.id = 1
 fieldIdx.path = 2
 local data = {
-{100,[[Arts/UI/Prefabs/uiLoginPanel.prefab]]},
-{101,[[Arts/UI/Prefabs/uiloading.prefab]]},
+{100,[[Arts/UI/Prefabs/UILoginPanel.prefab]]},
+{101,[[Arts/UI/Prefabs/UILoading.prefab]]},
 {102,[[Arts/UI/Prefabs/UIDebugPanel.prefab]]},
 {105,[[Arts/UI/Prefabs/UIWorldDialog.prefab]]},
 {104,[[Arts/UI/Prefabs/UIModelPanel.prefab]]},

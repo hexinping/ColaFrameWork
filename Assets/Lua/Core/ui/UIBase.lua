@@ -54,6 +54,8 @@ function UIBase:Create()
     elseif self.isShowUIMask then
         UIManager.Instance():ShowUIMask(self)
     end
+    local bindView = require("UIBindViews." .. self.PanelName .."_BindView")
+    bindView.BindView(self,self.Panel)
     self:AttachListener(self.Panel)
     self:OnCreate()
     self:RegisterEvent()
