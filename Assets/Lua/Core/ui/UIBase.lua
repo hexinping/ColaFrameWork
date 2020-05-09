@@ -54,8 +54,11 @@ function UIBase:Create()
     elseif self.isShowUIMask then
         UIManager.Instance():ShowUIMask(self)
     end
-    local bindView = require("UIBindViews." .. self.PanelName .."_BindView")
-    bindView.BindView(self,self.Panel)
+
+    local ret, bindView = pcall(require, "UIBindViews." .. self.PanelName .. "_BindView")
+    if ret then
+        bindView.BindView(self, self.Panel)
+    end
     self:AttachListener(self.Panel)
     self:OnCreate()
     self:RegisterEvent()
@@ -236,7 +239,7 @@ function UIBase:AttachListener(gameObject)
     -- BindFunction
     self.uguiMsgHandler.onClick = function(name)
         -- 添加对点击Blur的判断
-        if self.isShowUIBlur and name == "blur_".. self.PanelName then
+        if self.isShowUIBlur and name == "blur_" .. self.PanelName then
             self:Destroy()
         elseif self.isShowUIMask and name == "mask_" .. self.PanelName then
             self:Destroy()
