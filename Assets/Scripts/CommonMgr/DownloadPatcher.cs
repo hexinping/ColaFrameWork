@@ -90,7 +90,14 @@ namespace ColaFramework
             CheckOverrideInstall();
             m_onDownPatchDone = callback;
             m_strVersionInfoUrl = AppConst.VersionHttpUrl;
-            CheckNeedUpdate();
+            if (AppConst.CheckUpdate)
+            {
+                CheckNeedUpdate();
+            }
+            else
+            {
+                DoneWithNoDownload();
+            }
         }
 
         private void CheckOverrideInstall()

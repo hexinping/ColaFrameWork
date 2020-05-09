@@ -26,6 +26,10 @@ namespace ColaFramework.ToolKit
         [OnValueChanged("OnValueChanged")]
         public bool LuaBundleMode;
 
+        [LabelText("是否需要检测热更新")]
+        [OnValueChanged("OnValueChanged")]
+        public bool CheckUpdate;
+
         private void OnValueChanged()
         {
             OnInitialize();
@@ -38,6 +42,7 @@ namespace ColaFramework.ToolKit
             AppConst.SimulateMode = setting.SimulateMode;
             AppConst.GameFrameRate = setting.GameFrameRate;
             AppConst.LuaBundleMode = setting.LuaBundleMode;
+            AppConst.CheckUpdate = setting.CheckUpdate;
 
             AssetsMenuItem.OnInitialize();
         }
