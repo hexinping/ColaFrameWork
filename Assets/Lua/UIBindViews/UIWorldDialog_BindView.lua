@@ -2,6 +2,8 @@
 
 local public = {}
 
+public.viewPath = "Arts/UI/Prefabs/UIWorldDialog.prefab"
+
 function public.BindView(uiView, Panel)
 	if nil ~= Panel then
 		local collection = Panel:GetComponent("UIComponentCollection")

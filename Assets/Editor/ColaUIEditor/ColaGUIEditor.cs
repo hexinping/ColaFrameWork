@@ -139,6 +139,7 @@ namespace ColaFramework.ToolKit
             StringBuilder sb = new StringBuilder(16);
             sb.Append("--[[Notice:This lua uiview file is auto generate by UIViewExporter，don't modify it manually! --]]\n\n");
             sb.Append("local public = {}\n\n");
+            sb.Append("public.viewPath = \"" + Constants.UIExportPrefabReltaPath + UIViewName + ".prefab\"\n\n");
             sb.Append("function public.BindView(uiView, Panel)\n");
             sb.Append("\tif nil ~= Panel then\n");
             sb.Append("\t\tlocal collection = Panel:GetComponent(\"UIComponentCollection\")\n");
