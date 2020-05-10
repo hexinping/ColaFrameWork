@@ -16,9 +16,7 @@ function UILogin.Instance()
     return _instance
 end
 
--- virtual 子类可以初始化一些变量,ResId要在这里赋值
 function UILogin:InitParam()
-    self.ResId = 100
     self.uiDepthLayer = ECEnumType.UIDepth.NORMAL
     self:ShowUIMask(true)
 end

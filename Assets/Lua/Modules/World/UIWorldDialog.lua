@@ -17,9 +17,9 @@ function UIWorldDialog.Instance()
     return _instance
 end
 
--- virtual 子类可以初始化一些变量,ResId要在这里赋值
+-- virtual 子类可以初始化一些变量
 function UIWorldDialog:InitParam()
-    self.ResId = 105
+
 end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作

@@ -9,9 +9,8 @@ local UIDebugPanel = Class("UIDebugPanel", UIBase)
 
 local _instance = nil
 
--- virtual 子类可以初始化一些变量,ResId要在这里赋值
+-- virtual 子类可以初始化一些变量
 function UIDebugPanel:InitParam()
-    self.ResId = 102
     self.uiDepthLayer = ECEnumType.UIDepth.DEBUG
     self:ShowUIBlur(true)
 end

@@ -9,7 +9,7 @@ local UIBase = Class("UIBase")
 -- override 初始化各种数据
 function UIBase:initialize()
     self.Panel = nil
-    self.ResId = 0
+    self.ResPath = nil
     self.Layer = 0
     self.UILevel = 0
     self.subUIList = {}
@@ -25,7 +25,7 @@ function UIBase:initialize()
     self:InitParam()
 end
 
--- virtual 子类可以初始化一些变量,ResId要在这里赋值
+-- virtual 子类可以初始化一些变量
 function UIBase:InitParam()
 
 end
@@ -35,7 +35,17 @@ function UIBase:Create()
     if nil ~= self.Panel then
         UnityEngine.GameObject.Destroy(self.Panel)
     end
-    self.Panel = Util.LuaCommon.InstantiateGoById(self.ResId, Common_Utils.GetUIRootObj())
+
+    local ret, bindView = pcall(require, "UIBindViews." .. tostring(self) .. "_BindView")
+    if ret then
+        self.ResPath = bindView.viewPath
+    end
+    if (nil == self.ResPath) then
+        error("UIView respath is nil" .. tostring(self))
+        return
+    end
+
+    self.Panel = Common_Utils.InstantiateGoByPath(self.ResPath, Common_Utils.GetUIRootObj())
     self.PanelName = self.Panel.name
     self.Layer = self.Panel.layer
     -- 如果参与UI排序
@@ -55,7 +65,6 @@ function UIBase:Create()
         UIManager.Instance():ShowUIMask(self)
     end
 
-    local ret, bindView = pcall(require, "UIBindViews." .. self.PanelName .. "_BindView")
     if ret then
         bindView.BindView(self, self.Panel)
     end
@@ -65,7 +74,7 @@ function UIBase:Create()
     self:OnShow(self:IsVisible())
 end
 
---对外调用，用于创建UI，不走ResId加载，直接由现有gameObject创建
+--对外调用，用于创建UI，不走ResPath加载，直接由现有gameObject创建
 function UIBase:CreateWithGo(gameObejct)
     self.Panel = gameObejct
     self.PanelName = self.Panel.name
@@ -129,7 +138,7 @@ function UIBase:Destroy()
         Common_Utils.DestroyUIBlur()
     end
     if nil ~= self.Panel then
-        if 0 ~= self.ResId then
+        if 0 ~= self.ResPath then
             UnityEngine.GameObject.Destroy(self.Panel)
             self.Panel = nil
         else
