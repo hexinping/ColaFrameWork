@@ -39,9 +39,11 @@ function UIBase:Create()
     local ret, bindView = pcall(require, "UIBindViews." .. tostring(self) .. "_BindView")
     if ret then
         self.ResPath = bindView.viewPath
+    else
+        warn("UIView don't have BindView! " .. tostring(self))
     end
     if (nil == self.ResPath) then
-        error("UIView respath is nil" .. tostring(self))
+        error("UIView respath is nil " .. tostring(self))
         return
     end
 

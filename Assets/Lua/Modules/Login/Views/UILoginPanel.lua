@@ -5,33 +5,33 @@
 ---
 
 local UIBase = require("Core.ui.UIBase")
-local UILogin = Class("UILogin",UIBase)
+local UILoginPanel = Class("UILoginPanel",UIBase)
 
 local _instance = nil
 
-function UILogin.Instance()
+function UILoginPanel.Instance()
     if nil == _instance then
-        _instance = UILogin:new()
+        _instance = UILoginPanel:new()
     end
     return _instance
 end
 
-function UILogin:InitParam()
+function UILoginPanel:InitParam()
     self.uiDepthLayer = ECEnumType.UIDepth.NORMAL
     self:ShowUIMask(true)
 end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
-function UILogin:OnCreate()
-    self.m_okBtn.interactable = false
+function UILoginPanel:OnCreate()
+    --self.m_okBtn.interactable = false
 end
 
 -- 界面可见性变化的时候触发
-function UILogin:OnShow(isShow)
+function UILoginPanel:OnShow(isShow)
     Ctrl.Login.RequestConnectServer()
 end
 
-function UILogin:onClick(name)
+function UILoginPanel:onClick(name)
     if name == "cancelBtn" then
         self:DestroySelf()
     elseif name == "okBtn" then
@@ -44,8 +44,8 @@ function UILogin:onClick(name)
 end
 
 -- 界面销毁的过程中触发
-function UILogin:OnDestroy()
+function UILoginPanel:OnDestroy()
     UIBase.OnDestroy(self)
 end
 
-return UILogin
+return UILoginPanel

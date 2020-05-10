@@ -114,6 +114,7 @@ namespace ColaFramework.ToolKit
                         var componentName = "m_" + transform.name;
                         uiExportElementDic[componentName] = UIComponentIndex;
                         isHandled = true;
+                        break;
                     }
                 }
                 if (isHandled) continue;
@@ -127,6 +128,7 @@ namespace ColaFramework.ToolKit
                         var componentName = "m_" + transform.name;
                         uiExportElementDic[componentName] = UIComponentIndex;
                         isHandled = true;
+                        break;
                     }
                 }
             }
