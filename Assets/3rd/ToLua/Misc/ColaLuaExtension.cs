@@ -19,6 +19,7 @@ public static class ColaLuaExtension
     public static readonly int PrintTableDepth = 5;
     private static readonly string indentStr = "  ";
     private static readonly char shortIndentChar = ' ';
+    private static LuaState LuaVM;
 
     /// <summary>
     /// 外部调用，统一注册
@@ -26,6 +27,7 @@ public static class ColaLuaExtension
     /// <param name="L"></param>
     public static void Register(LuaState L)
     {
+        LuaVM = L;
         //内部手动管理LuaState上面的堆栈，并实现功能函数与注册
         L.BeginModule(null);
         L.RegFunction("LogFunction", LogFunction);
@@ -42,11 +44,13 @@ public static class ColaLuaExtension
     {
         try
         {
-            if (LuaDLL.lua_gettop(L) > 1)
+            if (LuaDLL.lua_gettop(L) > 2)
             {
                 var logTag = LuaDLL.lua_tointeger(L, 1);
                 LuaDLL.lua_remove(L, 1);
-                return InnerPrint(L, logTag);
+                var debugTrack = LuaDLL.lua_toboolean(L, 1);
+                LuaDLL.lua_remove(L, 1);
+                return InnerPrint(L, logTag, debugTrack);
             }
             return 1;
         }
@@ -62,7 +66,7 @@ public static class ColaLuaExtension
     /// <param name="L"></param>
     /// <param name="traceback"></param>
     /// <returns></returns>
-    private static int InnerPrint(IntPtr L, int logTag)
+    private static int InnerPrint(IntPtr L, int logTag, bool debugTrack = true)
     {
 
         int n = LuaDLL.lua_gettop(L); //返回栈顶索引（即栈长度）
@@ -110,6 +114,18 @@ public static class ColaLuaExtension
         //调用完清空lua堆栈
         LuaDLL.lua_settop(L, 0);
 
+
+        if (debugTrack)
+        {
+            LuaDLL.lua_getglobal(L, "debug");
+            LuaDLL.lua_getfield(L, -1, "traceback");
+            LuaDLL.lua_call(L, 0, 1);
+            stringBuilder.AppendLine(LuaDLL.lua_tostring(L, -1));
+        }
+
+        //调用完清空lua堆栈
+        LuaDLL.lua_settop(L, 0);
+
         switch (logTag)
         {
             case (int)LogType.Log:
@@ -136,11 +152,11 @@ public static class ColaLuaExtension
     /// <param name="L"></param>
     /// <param name="traceback"></param>
     /// <returns></returns>
-    private static int InnerPrintTable(IntPtr L,int layer,int tbIndex)
+    private static int InnerPrintTable(IntPtr L, int layer, int tbIndex)
     {
         var indent = layer > 0 ? new string(shortIndentChar, layer * 4) : string.Empty; //根据表的层，进行相应缩进
 
-        if(layer == 0)
+        if (layer == 0)
         {
             stringBuilder.AppendLine(indent).AppendLine("{");
         }
@@ -158,7 +174,7 @@ public static class ColaLuaExtension
             {
                 //值得注意：在遍历table时，除非你知道key是string类型，否则不要直接对key进行lua_tolstring操作，这是因为lua_tolstring操作可能修改指定index处的值，从而使下一次调用lua_next混淆。
                 //简言之就是：lua_tolstring可能会破坏table的原有结构，所以不要在遍历的时候对key进行lua_tolstring操作
-                stringBuilder.Append(indent).Append(shortIndentChar, 4).AppendFormat("[{0}] = ", LuaDLL.lua_tointeger(L, -2));  
+                stringBuilder.Append(indent).Append(shortIndentChar, 4).AppendFormat("[{0}] = ", LuaDLL.lua_tointeger(L, -2));
             }
             else
             {
@@ -169,7 +185,7 @@ public static class ColaLuaExtension
             {
                 stringBuilder.AppendLine();
                 //递归处理
-                InnerPrintTable(L, layer + 1, LuaDLL.lua_gettop(L) );
+                InnerPrintTable(L, layer + 1, LuaDLL.lua_gettop(L));
             }
             else
             {

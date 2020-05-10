@@ -10,26 +10,30 @@ local logHelper = {}
 
 local isLog = true  -- 是否打印日志
 local tablePritDepth = 5 --table最深的打印层次
+local logTraceTag = 3
+local debugLogTag = 3
+local warnLogTag = 2
+local errorLogTag = 0
 
 -- 普通日志
 function logHelper.debug(...)
-	if LogFunction then
-		LogFunction(3,...)
-	end
+    if LogFunction then
+        LogFunction(debugLogTag, debugLogTag <= logTraceTag, ...)
+    end
 end
 
 -- 警告
 function logHelper.warn(...)
-	if LogFunction then
-		LogFunction(2,...)
-	end
+    if LogFunction then
+        LogFunction(warnLogTag, warnLogTag <= logTraceTag, ...)
+    end
 end
 
 -- 错误
 function logHelper.error(...)
-	if LogFunction then
-		LogFunction(0,...)
-	end
+    if LogFunction then
+        LogFunction(errorLogTag, errorLogTag <= logTraceTag, ...)
+    end
 end
 
 -- 初始化
