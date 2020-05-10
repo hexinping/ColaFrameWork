@@ -45,11 +45,11 @@ function UI_Utils.GetChineseNumber(number)
 end
 
 --- 设置一个Image组件的Sprite为某个图集中的图片
---- atlasID:图集的资源ID
+--- atlasPath:图集的资源ID
 --- image:要设置的Image组件
 --- spriteName:图集中对应的Sprite的名称
 --- keepNativeSize:是否保持原始尺寸
-function UI_Utils.SetImageSpriteFromAtlas(atlasID, image, spriteName, keepNativeSize)
+function UI_Utils.SetImageSpriteFromAtlas(atlasPath, image, spriteName, keepNativeSize)
     if nil == image then
         warn("需要指定一个image")
         return
@@ -61,7 +61,7 @@ function UI_Utils.SetImageSpriteFromAtlas(atlasID, image, spriteName, keepNative
     if image.overrideSprite and image.overrideSprite.name == spriteName then
         return
     end
-    local atlasObj = Util.LuaCommon.GetResourceById(atlasID,typeof(UnityEngine.GameObject),0)
+    local atlasObj = AssetLoader.Load(atlasPath, typeof(UnityEngine.GameObject))
     if nil ~= atlasObj then
         local spriteAsset = atlasObj:GetComponent("SpriteAsset")
         if nil ~= spriteAsset then
@@ -77,12 +77,12 @@ function UI_Utils.SetImageSpriteFromAtlas(atlasID, image, spriteName, keepNative
 end
 
 --- 设置一个RawImage的Texture
-function UI_Utils.SetRawImage(rawImage, resID, keepNativeSize)
+function UI_Utils.SetRawImage(rawImage, resPath, keepNativeSize)
     if nil == rawImage then
         warn("需要指定RawImage")
         return
     end
-    local texture2D = Util.LuaCommon.GetResourceById(resID,typeof(UnityEngine.Texture2D),0)
+    local texture2D = AssetLoader.Load(resPath, typeof(UnityEngine.Texture2D))
     if nil ~= texture2D then
         rawImage.texture = texture2D
         if keepNativeSize then
@@ -106,7 +106,7 @@ function UI_Utils.SetRawImageGray(rawImage, isGray)
         return
     end
     if isGray then
-        local garyMat = Util.LuaCommon.GetResourceById(300001,typeof(UnityEngine.Material),0)
+        local garyMat = AssetLoader.Load("Arts/UI/Material/material_defaultgray.mat", typeof(UnityEngine.Material))
         rawImage.material = garyMat
         rawImage.color = COMMON_COLORS.Black
     else
