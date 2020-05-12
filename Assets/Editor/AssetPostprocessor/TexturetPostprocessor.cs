@@ -169,6 +169,8 @@ namespace ColaFramework.ToolKit
             var files = FileHelper.GetAllChildFiles(ATLAS_PATH, "png");
 
             StringBuilder sb = new StringBuilder(64);
+            sb.AppendLine("--[[Notice:This lua atlasResPathConfig file is auto generate by TexturePostprocesser，don't modify it manually! --]]");
+            sb.AppendLine();
             sb.AppendLine("local AtlasResPathCfg = {");
 
             foreach (var file in files)
@@ -185,7 +187,7 @@ namespace ColaFramework.ToolKit
                 var fileName = Path.GetFileNameWithoutExtension(file);
                 var filePath = FileHelper.FormatPath(file);
                 filePath = filePath.Replace(Constants.GameAssetBasePath, "");
-                sb.Append("\t").AppendFormat("['{0}'] = '{1}'", fileName, filePath).AppendLine();
+                sb.Append("\t").AppendFormat("['{0}'] = '{1}',", fileName, filePath).AppendLine();
             }
             sb.AppendLine("}");
             sb.AppendLine("return AtlasResPathCfg");
