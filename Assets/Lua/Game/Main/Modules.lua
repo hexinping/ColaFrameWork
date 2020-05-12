@@ -58,6 +58,8 @@ local function RegisterUtility(name)
         if utl.initialize and "function" == type(utl.initialize) then
             utl.initialize()
         end
+    else
+        print("RegisterUtility Step Failed! : ",name)
     end
 end
 
