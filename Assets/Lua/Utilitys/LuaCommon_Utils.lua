@@ -13,24 +13,4 @@ function LuaCommon_Utils.initialize()
 
 end
 
-function LuaCommon_Utils.InstantiateGoById(id, parent)
-    local resConfig = ConfigMgr.Instance():GetItem("ResPathConfig", id)
-    if resConfig and resConfig.path then
-        return Common_Utils.InstantiateGoByPath(resConfig.path, parent)
-    else
-        error("ResPathConfig表中未配置" .. id)
-        return nil
-    end
-end
-
-function LuaCommon_Utils.GetResourceById(id, type)
-    local resConfig = ConfigMgr.Instance():GetItem("ResPathConfig", id)
-    if resConfig and resConfig.path then
-        return AssetLoader.Load(resConfig.path, type)
-    else
-        error("ResPathConfig表中未配置" .. id)
-        return nil
-    end
-end
-
 return LuaCommon_Utils

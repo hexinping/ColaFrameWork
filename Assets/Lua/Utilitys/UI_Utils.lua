@@ -5,6 +5,7 @@
 ---
 
 local UI_Utils = Class("UI_Utils")
+local AtlasResPathCfg = require("Common.AtlasResPathCfg")
 
 local COMMON_COLORS = {
     Red = Color(225, 0, 0),
@@ -44,12 +45,19 @@ function UI_Utils.GetChineseNumber(number)
     end
 end
 
+function UI_Utils.GetSpriteResPath(spriteName)
+    if nil == spriteName or "" == spriteName then
+        warn("需要指定一个SpriteName")
+        return nil
+    end
+    return AtlasResPathCfg[spriteName] or nil
+end
+
 --- 设置一个Image组件的Sprite为某个图集中的图片
---- atlasPath:图集的资源ID
 --- image:要设置的Image组件
 --- spriteName:图集中对应的Sprite的名称
 --- keepNativeSize:是否保持原始尺寸
-function UI_Utils.SetImageSpriteFromAtlas(atlasPath, image, spriteName, keepNativeSize)
+function UI_Utils.SetImageSpriteFromAtlas(image, spriteName, keepNativeSize)
     if nil == image then
         warn("需要指定一个image")
         return
@@ -61,17 +69,16 @@ function UI_Utils.SetImageSpriteFromAtlas(atlasPath, image, spriteName, keepNati
     if image.overrideSprite and image.overrideSprite.name == spriteName then
         return
     end
-    local atlasObj = AssetLoader.Load(atlasPath, typeof(UnityEngine.GameObject))
-    if nil ~= atlasObj then
-        local spriteAsset = atlasObj:GetComponent("SpriteAsset")
-        if nil ~= spriteAsset then
-            local sprite = spriteAsset:GetSpriteByName(spriteName)
-            if nil ~= sprite then
-                image.overrideSprite = sprite
-                if keepNativeSize then
-                    image:SetNativeSize()
-                end
-            end
+    local atlasPath = AtlasResPathCfg[spriteName] or nil
+    if nil == atlasPath then
+        error(spriteName .. " 对应的AtlasResPath 找不到！")
+        return
+    end
+    local spriteAsset = AssetLoader.Load(atlasPath, typeof(UnityEngine.Sprite))
+    if nil ~= spriteAsset then
+        image.overrideSprite = spriteAsset
+        if keepNativeSize then
+            image:SetNativeSize()
         end
     end
 end
