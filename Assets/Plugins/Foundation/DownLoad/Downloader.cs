@@ -176,6 +176,7 @@ namespace ColaFramework.Foundation.DownLoad
 
             // 临时缓存文件，结尾添加.temp扩展名
             m_pathTemp = m_path + ".temp";
+            FileHelper.EnsureParentDirExist(m_pathTemp);
             m_stream = new FileStream(m_pathTemp, FileMode.OpenOrCreate);
 
             m_downedLength = (int)m_stream.Length;

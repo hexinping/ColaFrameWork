@@ -104,7 +104,7 @@ namespace ColaFramework
         {
             var buildVersion = CommonHelper.APKBuildVersion;
             var packageVersion = CommonHelper.PackageVersion;
-            if(buildVersion != packageVersion)
+            if (buildVersion != packageVersion)
             {
                 OverrideInstallAPP(buildVersion);
             }
@@ -349,7 +349,7 @@ namespace ColaFramework
             }
             else
             {
-                localVersionFilePath = AppConst.VersionFileName;
+                localVersionFilePath = Path.GetFileNameWithoutExtension(AppConst.VersionFileName);
                 var textAsset = Resources.Load<TextAsset>(localVersionFilePath);
                 m_dicLocalVersions = FileHelper.ReadABVersionFromText(textAsset.text);
                 Resources.UnloadAsset(textAsset);
@@ -361,7 +361,9 @@ namespace ColaFramework
                 ABFileInfo svrInfo = pair.Value;
                 ABFileInfo localInfo = null;
                 m_dicLocalVersions.TryGetValue(svrInfo.filename, out localInfo);
-                if (localInfo == null || localInfo.md5 != svrInfo.md5)
+                //排除和母包中md5一样的热更列表
+                bool isNeedDownLoad = localInfo == null || localInfo.md5 != svrInfo.md5;
+                if (isNeedDownLoad)
                 {
                     // 如果有差异，先删除本地文件
                     if (localInfo != null)
@@ -369,16 +371,11 @@ namespace ColaFramework
                         string localFilePath = Utility.UpdatePath + localInfo.filename;
                         FileHelper.DeleteFile(localFilePath);
                     }
-                    //排除和母包中md5一样的热更列表
-                    bool isNeedDownLoad = localInfo.md5 != svrInfo.md5;
-                    if (isNeedDownLoad)
+                    string strCachePath = AppConst.UpdateCachePath + "/" + svrInfo.filename;
+                    if (!FileHelper.IsFileExist(strCachePath))
                     {
-                        string strCachePath = AppConst.UpdateCachePath + "/" + svrInfo.filename;
-                        if (!FileHelper.IsFileExist(strCachePath))
-                        {
-                            m_totalSize += svrInfo.compressSize;
-                            m_lstDiffVersions.Add(svrInfo);
-                        }
+                        m_totalSize += svrInfo.compressSize;
+                        m_lstDiffVersions.Add(svrInfo);
                     }
                 }
             }
@@ -541,7 +538,7 @@ namespace ColaFramework
         {
             CommonHelper.HotUpdateVersion = m_strNewVersion;
             FileHelper.WriteVersionInfo(AppConst.DataPath + "/" + AppConst.VersionFileName, m_dicSvrVersions);
-            Debug.LogFormat("WriteVersion:{0}, strNewFileINfo:{1}", m_strNewVersion);
+            Debug.LogFormat("WriteVersion strNewFileInfo:{0}", m_strNewVersion);
             PlayerPrefs.Save();
             m_dicSvrVersions.Clear();
             m_dicLocalVersions.Clear();
