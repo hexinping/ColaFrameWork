@@ -44,10 +44,10 @@ namespace ColaFramework.ToolKit
         [LabelWidth(200)]
         private string CSSymbolDefine;
 
-        [Button("一键打包",ButtonSizes.Large,ButtonStyle.Box)]
+        [Button("一键打包", ButtonSizes.Large, ButtonStyle.Box)]
         private void BuildPlayer()
         {
-
+            ColaBuildTool.BuildPlayer(BuildTarget.Android);
         }
 
         private void Init()

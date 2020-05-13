@@ -92,7 +92,9 @@ namespace ColaFramework.ToolKit
         public static void CopyAssetBundlesTo(string outputPath)
         {
             if (!Directory.Exists(outputPath))
+            {
                 Directory.CreateDirectory(outputPath);
+            }
             var source = Path.Combine(Environment.CurrentDirectory, Utility.AssetBundles, GetPlatformName());
             if (!Directory.Exists(source))
                 Debug.Log("No assetBundle output folder, try to build the assetBundles first.");
@@ -145,9 +147,12 @@ namespace ColaFramework.ToolKit
             return Path.Combine(relativeAssetBundlesOutputPathForPlatform, GetPlatformName()) + ".manifest";
         }
 
-        public static void BuildStandalonePlayer()
+        public static void BuildStandalonePlayer(string outputPath = "")
         {
-            var outputPath = EditorUtility.SaveFolderPanel("Choose Location of the Built Game", "", "");
+            if (string.IsNullOrEmpty(outputPath))
+            {
+                outputPath = EditorUtility.SaveFolderPanel("Choose Location of the Built Game", "", "");
+            }
             if (outputPath.Length == 0)
                 return;
 
@@ -307,7 +312,7 @@ namespace ColaFramework.ToolKit
             {
                 ABFileInfo abInfo;
                 var isNew = true;
-                if (versions.TryGetValue(item.Key, out abInfo))
+                if (null != versions && versions.TryGetValue(item.Key, out abInfo))
                 {
                     string hash = abInfo.md5;
                     if (hash.Equals(item.Value))
@@ -358,16 +363,18 @@ namespace ColaFramework.ToolKit
 
         private static string GetBuildTargetName(BuildTarget target)
         {
-            var name = PlayerSettings.productName + "_" + PlayerSettings.bundleVersion;
+            var timeNow = DateTime.Now;
+            var timeNowStr = string.Format("{0:d4}{1:d2}{2:d2}_{3:d2}{4:d2}{5:d2}", timeNow.Year, timeNow.Month, timeNow.Day, timeNow.Hour, timeNow.Minute, timeNow.Second);
+            var name = PlayerSettings.productName + "_" + timeNowStr;
             // ReSharper disable once SwitchStatementMissingSomeCases
             switch (target)
             {
                 case BuildTarget.Android:
-                    return "/" + name + PlayerSettings.Android.bundleVersionCode + ".apk";
+                    return "/" + name + ".apk";
 
                 case BuildTarget.StandaloneWindows:
                 case BuildTarget.StandaloneWindows64:
-                    return "/" + name + PlayerSettings.Android.bundleVersionCode + ".exe";
+                    return "/" + name + ".exe";
 
 #if UNITY_2017_3_OR_NEWER
                 case BuildTarget.StandaloneOSX:
@@ -383,7 +390,7 @@ namespace ColaFramework.ToolKit
 
                 case BuildTarget.WebGL:
                 case BuildTarget.iOS:
-                    return "";
+                    return "/" + name + ".ipa";
                 // Add more build targets for your own.
                 default:
                     Debug.Log("Target not implemented.");
@@ -442,6 +449,7 @@ namespace ColaFramework.ToolKit
             //合并Lua代码，并复制到临时目录中准备打包
             FileHelper.RmDir(LuaConst.luaTempDir);
             FileHelper.EnsureParentDirExist(LuaConst.luaTempDir);
+            AssetDatabase.Refresh();
 
             string[] srcDirs = { LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter };
             for (int i = 0; i < srcDirs.Length; i++)
@@ -487,6 +495,7 @@ namespace ColaFramework.ToolKit
                     }
                 }
             }
+            AssetDatabase.Refresh();
             //标记ABName
             MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
             AssetDatabase.Refresh();

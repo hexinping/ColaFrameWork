@@ -9,6 +9,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using System.Text;
+using Plugins.XAsset;
 
 namespace ColaFramework.ToolKit
 {
@@ -108,7 +109,7 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void InternalBuildPkg(BuildTargetGroup buildTargetGroup)
         {
-
+            ColaEditHelper.BuildStandalonePlayer(ColaEditHelper.ProjectRoot + "/Build");
         }
 
         /// <summary>
@@ -117,7 +118,11 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void BuildAssetBundle(BuildTargetGroup buildTargetGroup)
         {
+            ColaEditHelper.BuildManifest();
+            ColaEditHelper.BuildAssetBundles();
 
+            ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
