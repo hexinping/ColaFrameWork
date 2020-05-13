@@ -293,8 +293,8 @@ namespace ColaFramework
         private void DowndLoadMd5File()
         {
             m_fStartDowndTime = Time.time;
-            Debug.LogFormat("---DowndLoadMd5File,  url:{0}", m_strDownloadUrl);
             string strMd5URL = m_strDownloadUrl + AppConst.VersionFileName;
+            Debug.LogFormat("---DowndLoadMd5File,  url:{0}", strMd5URL);
             HttpDownloadMgr.DownloadText(strMd5URL, OnDownloadMd5File);
         }
 

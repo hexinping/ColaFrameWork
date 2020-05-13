@@ -24,7 +24,7 @@ namespace ColaFramework.Foundation.DownLoad
 
         static IEnumerator StartWebGet(string url, CompletedTextHandler onComplete, float timeout = 10)
         {
-            
+
             UnityWebRequest request = UnityWebRequest.Get(url);
             // 设置10s超时
             TimeoutAsyncOperation asynOpr = new TimeoutAsyncOperation(request.Send(), timeout);
@@ -35,7 +35,7 @@ namespace ColaFramework.Foundation.DownLoad
             {
                 // Debug.Log("WebGet,超时，尝试重新获取，超时时间：{0},url:{1}",timeout, url);
                 // TaskManager.Instance.Create(StartWebGet(url, onComplete,timeout));
-                onComplete(ErrorCode.TIME_OUT, null, "");
+                onComplete(ErrorCode.TIME_OUT, string.Format("WebGet, 超时，尝试重新获取，超时时间：{0},url: {1}", timeout, url), "");
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿//----------------------------------------------
+//----------------------------------------------
 //            ColaFramework
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
@@ -27,7 +27,7 @@ public class AppConst
 
     public const string AppName = "ColaFramework";               //应用程序名称
     public const string ExtName = ".cab";                   //AssetBundle的扩展名
-    public const string VersionFileName = "version.txt";                   //版本信息文件的名称
+    public const string VersionFileName = "versions.txt";                   //版本信息文件的名称
     public static string CDNUrl = "http://localhost:6688/";      //CDN地址
     public static string BakCDNUrl = "http://localhost:6688/";      //备用CDN地址
     public const string VersionHttpUrl = "http://localhost:6688/{0}/{1}?p={2}&v={3}";  //版本服务器地址
