@@ -18,6 +18,13 @@ namespace ColaFramework.ToolKit
     /// </summary>
     public static class ColaBuildTool
     {
+        public enum EnvOption
+        {
+            MOTHER_PKG,
+            HOT_UPDATE_BUILD,
+        }
+
+        private static Dictionary<EnvOption, string> internalEnvMap = new Dictionary<EnvOption, string>();
 
         #region BuildPlayer接口
         public static string BuildPlayer(BuildTarget buildTarget)
@@ -109,7 +116,10 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void InternalBuildPkg(BuildTargetGroup buildTargetGroup)
         {
-            ColaEditHelper.BuildStandalonePlayer(ColaEditHelper.ProjectRoot + "/Build");
+            if (!ContiansEnvOption(EnvOption.HOT_UPDATE_BUILD))
+            {
+                ColaEditHelper.BuildStandalonePlayer(ColaEditHelper.ProjectRoot + "/Build");
+            }
         }
 
         /// <summary>
@@ -174,7 +184,44 @@ namespace ColaFramework.ToolKit
             }
             return buildTargetGroup;
         }
+        #endregion
 
+        #region 环境变量
+        public static string GetEnvironmentVariable(EnvOption envOption)
+        {
+            return internalEnvMap.ContainsKey(envOption) ? internalEnvMap[envOption] : Environment.GetEnvironmentVariable(envOption.ToString()) ?? string.Empty;
+        }
+
+        public static void SetEnvironmentVariable(EnvOption envOption, string value, bool isAppend)
+        {
+            string oldValue = GetEnvironmentVariable(envOption);
+            if (!isAppend)
+            {
+                oldValue = value;
+            }
+            else
+            {
+                oldValue = string.IsNullOrEmpty(oldValue) ? value : (oldValue + ";" + value);
+            }
+            if (!internalEnvMap.ContainsKey(envOption))
+            {
+                internalEnvMap.Add(envOption, oldValue);
+            }
+            else
+            {
+                internalEnvMap[envOption] = oldValue;
+            }
+        }
+
+        public static bool ContiansEnvOption(EnvOption envOption)
+        {
+            string envVar = GetEnvironmentVariable(envOption);
+            if (string.IsNullOrEmpty(envVar) || "false" == envVar)
+            {
+                return false;
+            }
+            return true;
+        }
         #endregion
     }
 }

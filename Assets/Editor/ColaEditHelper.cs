@@ -444,7 +444,7 @@ namespace ColaFramework.ToolKit
         }
 
         #region 处理Lua代码
-        public static void BuildLuaBundle()
+        public static void BuildLuaBundle(bool isMotherPkg = false, bool isHotUpdateBuild = false)
         {
             //合并Lua代码，并复制到临时目录中准备打包
             FileHelper.RmDir(LuaConst.luaTempDir);
@@ -501,7 +501,7 @@ namespace ColaFramework.ToolKit
             AssetDatabase.Refresh();
         }
 
-        public static void BuildLuaFile()
+        public static void BuildLuaFile(bool isMotherPkg = false, bool isHotUpdateBuild = false)
         {
             //合并Lua代码，并复制到StreamingAsset目录中准备打包
             FileHelper.RmDir(LuaConst.streamingAssetLua);
