@@ -47,12 +47,14 @@ namespace ColaFramework.ToolKit
         [Button("一键打包", ButtonSizes.Large, ButtonStyle.Box)]
         private void BuildPlayer()
         {
+            ColaBuildTool.SetEnvironmentVariable(EnvOption.MOTHER_PKG, isMotherPkg.ToString(), false);
+            ColaBuildTool.SetEnvironmentVariable(EnvOption.HOT_UPDATE_BUILD, isHotUpdate.ToString(), false);
             ColaBuildTool.BuildPlayer(BuildTarget.Android);
         }
 
         private void Init()
         {
-
+            ColaBuildTool.ClearEnvironmentVariable();
         }
 
         [MenuItem("Build/快速打包窗口")]

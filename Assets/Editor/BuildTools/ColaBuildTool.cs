@@ -13,16 +13,17 @@ using Plugins.XAsset;
 
 namespace ColaFramework.ToolKit
 {
+    public enum EnvOption
+    {
+        MOTHER_PKG,
+        HOT_UPDATE_BUILD,
+    }
+
     /// <summary>
     /// ColaFramework框架的打包脚本
     /// </summary>
     public static class ColaBuildTool
     {
-        public enum EnvOption
-        {
-            MOTHER_PKG,
-            HOT_UPDATE_BUILD,
-        }
 
         private static Dictionary<EnvOption, string> internalEnvMap = new Dictionary<EnvOption, string>();
 
@@ -116,7 +117,7 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void InternalBuildPkg(BuildTargetGroup buildTargetGroup)
         {
-            if (!ContiansEnvOption(EnvOption.HOT_UPDATE_BUILD))
+            if (!ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD))
             {
                 ColaEditHelper.BuildStandalonePlayer(ColaEditHelper.ProjectRoot + "/Build");
             }
@@ -142,13 +143,15 @@ namespace ColaFramework.ToolKit
         private static void BuildLua(BuildTargetGroup buildTargetGroup)
         {
             var beginTime = System.DateTime.Now;
+            var isMotherPkg = ContainsEnvOption(EnvOption.MOTHER_PKG);
+            var isHotUpdateBuild = ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD);
             if (AppConst.LuaBundleMode)
             {
-                ColaEditHelper.BuildLuaBundle();
+                ColaEditHelper.BuildLuaBundle(isMotherPkg, isHotUpdateBuild);
             }
             else
             {
-                ColaEditHelper.BuildLuaFile();
+                ColaEditHelper.BuildLuaFile(isMotherPkg, isHotUpdateBuild);
             }
             Debug.Log("=================Build Lua Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }
@@ -213,14 +216,19 @@ namespace ColaFramework.ToolKit
             }
         }
 
-        public static bool ContiansEnvOption(EnvOption envOption)
+        public static bool ContainsEnvOption(EnvOption envOption)
         {
             string envVar = GetEnvironmentVariable(envOption);
-            if (string.IsNullOrEmpty(envVar) || "false" == envVar)
+            if (string.IsNullOrEmpty(envVar) || 0 == string.Compare(envVar, "false", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
             return true;
+        }
+
+        public static void ClearEnvironmentVariable()
+        {
+            internalEnvMap.Clear();
         }
         #endregion
     }

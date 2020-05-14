@@ -446,12 +446,52 @@ namespace ColaFramework.ToolKit
         #region 处理Lua代码
         public static void BuildLuaBundle(bool isMotherPkg = false, bool isHotUpdateBuild = false)
         {
+            var md5Dic = new Dictionary<string, string>();
+            var luaMd5FilePath = ColaEditHelper.TempCachePath + "/LuaMD5.txt";
+            bool needDiff = isMotherPkg || isHotUpdateBuild;
+            var basePath = isHotUpdateBuild ? LuaConst.luaUpdateTempDir : LuaConst.luaBaseTempDir;
+
+            if (needDiff)
+            {
+                Debug.Log("=================Need Diff Lua================");
+                if (File.Exists(luaMd5FilePath))
+                {
+                    using (var sm = new StreamReader(luaMd5FilePath, Encoding.UTF8))
+                    {
+                        var fileLines = sm.ReadToEnd().Split('\n');
+                        foreach (var item in fileLines)
+                        {
+                            if (string.IsNullOrEmpty(item))
+                            {
+                                continue;
+                            }
+                            var lineContent = item.Split('|');
+                            if (lineContent.Length == 2)
+                            {
+                                md5Dic[lineContent[0]] = lineContent[1];
+                            }
+                            else
+                            {
+                                Debug.LogError("LuaMD5.txt格式错误！内容为: " + lineContent);
+                            }
+                        }
+                    }
+                }
+            }
+
             //合并Lua代码，并复制到临时目录中准备打包
-            FileHelper.RmDir(LuaConst.luaTempDir);
-            FileHelper.EnsureParentDirExist(LuaConst.luaTempDir);
+            if (!isHotUpdateBuild)
+            {
+                FileHelper.RmDir(LuaConst.luaBaseTempDir);
+            }
+            FileHelper.EnsureParentDirExist(LuaConst.luaBaseTempDir);
+            FileHelper.RmDir(LuaConst.luaUpdateTempDir);
+            FileHelper.EnsureParentDirExist(LuaConst.luaUpdateTempDir);
             AssetDatabase.Refresh();
 
             string[] srcDirs = { LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter };
+            int diffCnt = 0;
+
             for (int i = 0; i < srcDirs.Length; i++)
             {
                 if (AppConst.LuaByteMode)
@@ -467,7 +507,7 @@ namespace ColaFramework.ToolKit
                     for (int j = 0; j < files.Length; j++)
                     {
                         string str = files[j].Remove(0, len);
-                        string dest = LuaConst.luaTempDir + str + ".bytes";
+                        string dest = LuaConst.luaBaseTempDir + str + ".bytes";
                         string dir = Path.GetDirectoryName(dest);
                         Directory.CreateDirectory(dir);
                         EncodeLuaFile(files[j], dest);
@@ -479,6 +519,23 @@ namespace ColaFramework.ToolKit
 
                     foreach (var fileName in files)
                     {
+                        if (needDiff)
+                        {
+                            string curMd5 = FileHelper.GetMD5Hash(fileName);
+                            if (isHotUpdateBuild && md5Dic.ContainsKey(fileName) && curMd5 == md5Dic[fileName])
+                            {
+                                continue;
+                            }
+                            if (isMotherPkg)
+                            {
+                                md5Dic[fileName] = curMd5;
+                            }
+                            if (isHotUpdateBuild)
+                            {
+                                diffCnt++;
+                            }
+                        }
+
                         var reltaFileName = fileName.Replace(srcDirs[i], "");
                         var dirName = Path.GetDirectoryName(reltaFileName);
                         if (!string.IsNullOrEmpty(dirName))
@@ -490,14 +547,30 @@ namespace ColaFramework.ToolKit
                             }
                             dirName = dirName.Replace("/", ".");
                         }
-                        var dest = LuaConst.luaTempDir + dirName + Path.GetFileName(reltaFileName) + ".bytes";
+                        var dest = basePath + dirName + Path.GetFileName(reltaFileName) + ".bytes";
                         File.Copy(fileName, dest, true);
                     }
                 }
             }
+
+            if (isMotherPkg)
+            {
+                var sb = new StringBuilder();
+                foreach (var item in md5Dic)
+                {
+                    sb.AppendFormat("{0}|{1}", item.Key, item.Value).AppendLine();
+                }
+                FileHelper.WriteString(luaMd5FilePath, sb.ToString());
+            }
+            if (isHotUpdateBuild)
+            {
+                Debug.LogFormat("Lua差异化分析完毕！共有{0}个差异化文件！", diffCnt);
+            }
+
             AssetDatabase.Refresh();
             //标记ABName
-            MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
+            var LuaBundleName = isHotUpdateBuild ? AppConst.LuaUpdateBundle : AppConst.LuaBaseBundle;
+            MarkAssetsToOneBundle(basePath, LuaBundleName);
             AssetDatabase.Refresh();
         }
 
@@ -610,7 +683,7 @@ namespace ColaFramework.ToolKit
             if (Directory.Exists(path))
             {
                 bundleName = bundleName.ToLower();
-                var files = FileHelper.GetAllChildFiles(path);
+                var files = FileHelper.GetAllChildFiles(path, "lua");
                 var projRoot = FileHelper.FormatPath(ProjectRoot) + "/";
                 var length = files.Length;
                 for (int i = 0; i < length; i++)

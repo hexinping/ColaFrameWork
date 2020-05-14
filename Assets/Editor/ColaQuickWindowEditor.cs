@@ -140,7 +140,7 @@ namespace ColaFramework.ToolKit
             }
             if (GUILayout.Button("Mark Lua Bundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
-                ColaEditHelper.MarkAssetsToOneBundle(LuaConst.luaTempDir, AppConst.LuaBaseBundle);
+                ColaEditHelper.MarkAssetsToOneBundle(LuaConst.luaBaseTempDir, AppConst.LuaBaseBundle);
             }
             GUILayout.EndHorizontal();
 
