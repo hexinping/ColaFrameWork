@@ -272,7 +272,7 @@ namespace ColaFramework.Foundation
         /// <param name="isOverwrite"></param>
         public static void CopyFile(string orginPath, string destPath, bool isOverwrite)
         {
-            Mkdir(destPath);
+            EnsureParentDirExist(destPath);
             File.Copy(orginPath, destPath, isOverwrite);
         }
 

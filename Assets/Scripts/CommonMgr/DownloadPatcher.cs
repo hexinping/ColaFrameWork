@@ -510,21 +510,21 @@ namespace ColaFramework
         /// </summary>
         private void MoveFileToABPath()
         {
-
+            if (!FileHelper.IsDirectoryExist(AppConst.UpdateCachePath))
+            {
+                return;
+            }
+            FileHelper.CopyDir(AppConst.UpdateCachePath, Utility.UpdatePath);
         }
 
         // 删除Update目录下无用的热更文件
         private void RemoveUselessFile()
         {
-            if (!FileHelper.IsDirectoryExist(AppConst.UpdateCachePath))
-            {
-                return;
-            }
-            string[] arrOldFiles = FileHelper.GetAllChildFiles(AppConst.UpdateCachePath);
+            string[] arrOldFiles = FileHelper.GetAllChildFiles(Utility.UpdatePath);
             for (int i = 0; i < arrOldFiles.Length; i++)
             {
                 string strFullFileName = arrOldFiles[i];
-                string strFileName = Path.GetFileName(strFullFileName);
+                string strFileName = FileHelper.FormatPath(strFullFileName.Replace(Utility.UpdatePath, ""));
                 if (!m_dicSvrVersions.ContainsKey(strFileName))
                 {
                     Debug.LogFormat("***RemoveUselessFile: {0}", strFullFileName);
