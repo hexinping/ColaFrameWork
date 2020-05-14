@@ -29,6 +29,7 @@ using UnityEditor;
 using UnityEngine;
 using ColaFramework;
 using ColaFramework.ToolKit;
+using ColaFramework.Foundation;
 
 namespace Plugins.XAsset.Editor
 {
@@ -40,10 +41,7 @@ namespace Plugins.XAsset.Editor
         private const string CLEAR_ABNAME = "Assets/AssetBundles/清除所有AssetBundle的标记";
         private const string BUILD_MANIFEST = "Assets/AssetBundles/生成配置";
         private const string BUILD_ASSETBUNDLES = "Assets/AssetBundles/生成资源包";
-        private const string BUILD_PLAYER = "Assets/AssetBundles/生成播放器";
-        private const string COPY_PATH = "Assets/复制路径";
         private const string MARK_ASSETS = "正在标记资源";
-        private const string COPY_TO_STREAMINGASSETS = "Assets/AssetBundles/拷贝到StreamingAssets";
         private const string CLEAR_SANDBOX = "Assets/AssetBundles/清除沙盒目录下的内容";
 
         [InitializeOnLoadMethod]
@@ -60,13 +58,6 @@ namespace Plugins.XAsset.Editor
         public static string TrimedAssetBundleName(string assetBundleName)
         {
             return assetBundleName.Replace(Constants.GameAssetBasePath, "");
-        }
-
-        [MenuItem(COPY_TO_STREAMINGASSETS)]
-        private static void CopyAssetBundles()
-        {
-            ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
-            AssetDatabase.Refresh();
         }
 
         [MenuItem(MARK_ASSET_WITH_DIR)]
@@ -160,28 +151,12 @@ namespace Plugins.XAsset.Editor
             ColaEditHelper.BuildAssetBundles();
         }
 
-        [MenuItem(BUILD_PLAYER)]
-        private static void BuildStandalonePlayer()
-        {
-            ColaEditHelper.BuildStandalonePlayer();
-        }
-
-        [MenuItem(COPY_PATH)]
-        private static void CopyPath()
-        {
-            var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
-            EditorGUIUtility.systemCopyBuffer = assetPath;
-            Debug.Log(assetPath);
-        }
-
         [MenuItem(CLEAR_SANDBOX)]
         private static void ClearSandBox()
         {
-            var dir = Path.GetDirectoryName(Utility.UpdatePath);
-            if (Directory.Exists(dir))
-            {
-                Directory.Delete(dir, true);             
-            }
+            FileHelper.RmDir(Utility.UpdatePath);
+            FileHelper.RmDir(AppConst.DataPath);
+            FileHelper.RmDir(AppConst.UpdateCachePath);
         }
     }
 }
