@@ -10,6 +10,8 @@ using UnityEditor;
 using UnityEngine;
 using System.Text;
 using Plugins.XAsset;
+using ColaFramework.Foundation;
+using LitJson;
 
 namespace ColaFramework.ToolKit
 {
@@ -24,7 +26,9 @@ namespace ColaFramework.ToolKit
     /// </summary>
     public static class ColaBuildTool
     {
-
+        private const string AppVersionPath = "Assets/Editor/Settings/AppVersion.asset";
+        private const string Resource_AppVersionPath = "Assets/Resources/app_version.json";
+        private const string Resource_VersionPath = "Assets/Resources/versions.txt";
         private static Dictionary<EnvOption, string> internalEnvMap = new Dictionary<EnvOption, string>();
 
         #region BuildPlayer接口
@@ -55,10 +59,13 @@ namespace ColaFramework.ToolKit
                 //5.打Bundle
                 BuildAssetBundle(buildTargetGroup);
 
-                //6.UpLoadCDN
+                //6.自动处理AppVersion
+                BuildAppVersion();
+
+                //7.UpLoadCDN
                 UpLoadCDN(buildTargetGroup);
 
-                //7.出包
+                //8.出包
                 InternalBuildPkg(buildTargetGroup);
             }
             catch
@@ -163,6 +170,49 @@ namespace ColaFramework.ToolKit
         private static void UpLoadCDN(BuildTargetGroup buildTargetGroup)
         {
 
+        }
+
+        /// <summary>
+        /// 自动处理AppVersion
+        /// </summary>
+        private static void BuildAppVersion()
+        {
+            var isMotherPkg = ContainsEnvOption(EnvOption.MOTHER_PKG);
+            var isHotUpdateBuild = ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD);
+
+            var appAsset = ColaEditHelper.GetScriptableObjectAsset<AppVersion>(AppVersionPath);
+            if (isHotUpdateBuild)
+            {
+                appAsset.HotUpdateVersion += 1;
+            }
+            else if (isMotherPkg)
+            {
+                appAsset.HotUpdateVersion = 0;
+                appAsset.StoreVersion += 1;
+                appAsset.BuildVersion = 0;
+            }
+            if (!isMotherPkg)
+            {
+                appAsset.BuildVersion += 1;
+            }
+            appAsset.OnValueChanged();
+            EditorUtility.SetDirty(appAsset);
+            AssetDatabase.SaveAssets();
+
+            if (null != appAsset)
+            {
+                var jsonStr = JsonMapper.ToJson(appAsset);
+                FileHelper.DeleteFile(Resource_AppVersionPath);
+                FileHelper.WriteString(Resource_AppVersionPath, jsonStr);
+                AssetDatabase.Refresh();
+            }
+
+            FileHelper.DeleteFile(Resource_VersionPath);
+            var outputPath = ColaEditHelper.CreateAssetBundleDirectory();
+            var versionsTxt = outputPath + "/versions.txt";
+            FileHelper.CopyFile(versionsTxt, Resource_VersionPath, true);
+
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
