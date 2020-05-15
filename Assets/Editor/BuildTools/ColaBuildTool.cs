@@ -124,10 +124,12 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void InternalBuildPkg(BuildTargetGroup buildTargetGroup)
         {
+            var beginTime = System.DateTime.Now;
             if (!ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD))
             {
                 ColaEditHelper.BuildStandalonePlayer(ColaEditHelper.ProjectRoot + "/Build");
             }
+            Debug.Log("=================Build Pkg Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }
 
         /// <summary>
@@ -136,11 +138,13 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void BuildAssetBundle(BuildTargetGroup buildTargetGroup)
         {
+            var beginTime = System.DateTime.Now;
             ColaEditHelper.BuildManifest();
             ColaEditHelper.BuildAssetBundles();
 
             ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
             AssetDatabase.Refresh();
+            Debug.Log("=================Build BuildAssetBundle Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }
 
         /// <summary>
