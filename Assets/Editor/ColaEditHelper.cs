@@ -683,14 +683,18 @@ namespace ColaFramework.ToolKit
             if (Directory.Exists(path))
             {
                 bundleName = bundleName.ToLower();
-                var files = FileHelper.GetAllChildFiles(path, "lua");
+                var files = FileHelper.GetAllChildFiles(path);
                 var projRoot = FileHelper.FormatPath(ProjectRoot) + "/";
                 var length = files.Length;
                 for (int i = 0; i < length; i++)
                 {
-                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
-                    var assetPath = files[i].Replace(projRoot, "");
-                    SetAssetBundleNameAndVariant(assetPath, bundleName, null);
+                    var fileName = files[i];
+                    if (!fileName.EndsWith(".meta", StringComparison.Ordinal))
+                    {
+                        EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
+                        var assetPath = files[i].Replace(projRoot, "");
+                        SetAssetBundleNameAndVariant(assetPath, bundleName, null);
+                    }
                 }
                 EditorUtility.ClearProgressBar();
             }
