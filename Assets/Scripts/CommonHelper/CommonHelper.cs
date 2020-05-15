@@ -694,7 +694,6 @@ public static class CommonHelper
         var baseVs = baseV.Split('.');
         var newVs = newV.Split('.');
 
-        bool isLittle = false;
         for (int i = 0; i < baseVs.Length; i++)
         {
             var a = Convert.ToInt32(baseVs[i]);
@@ -705,10 +704,9 @@ public static class CommonHelper
             }
             else if (a > b)
             {
-                isLittle = true;
+                return 1;
             }
         }
-        if (isLittle) return 1;
         return 0;
     }
 
