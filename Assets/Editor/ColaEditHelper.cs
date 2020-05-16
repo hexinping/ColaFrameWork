@@ -560,6 +560,7 @@ namespace ColaFramework.ToolKit
                 {
                     sb.AppendFormat("{0}|{1}", item.Key, item.Value).AppendLine();
                 }
+                FileHelper.EnsureParentDirExist(luaMd5FilePath);
                 FileHelper.WriteString(luaMd5FilePath, sb.ToString());
             }
             if (isHotUpdateBuild)
