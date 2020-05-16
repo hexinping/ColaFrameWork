@@ -29,6 +29,9 @@ namespace ColaFramework.ToolKit
         private const string AppVersionPath = "Assets/Editor/Settings/AppVersion.asset";
         private const string Resource_AppVersionPath = "Assets/Resources/app_version.json";
         private const string Resource_VersionPath = "Assets/Resources/versions.txt";
+        private const string CDNVersionControlUrl = "CDN/versioncontrol/{0}/{1}";
+        private const string CDNResourceUrl = "CDN/cdn/";
+
         private static Dictionary<EnvOption, string> internalEnvMap = new Dictionary<EnvOption, string>();
 
         #region BuildPlayer接口
@@ -173,7 +176,19 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void UpLoadCDN(BuildTargetGroup buildTargetGroup)
         {
+            var beginTime = System.DateTime.Now;
+            var isMotherPkg = ContainsEnvOption(EnvOption.MOTHER_PKG);
+            var isHotUpdateBuild = ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD);
 
+            if(isHotUpdateBuild || isMotherPkg)
+            {
+                //upload appversion.json
+                var CDN_AppVersionPath = string.Format(CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
+                FileHelper.CopyFile(Resource_AppVersionPath, CDN_AppVersionPath, true);
+
+                //upload version.txt and assets
+            }
+            Debug.Log("=================UpLoadCDN Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }
 
         /// <summary>
