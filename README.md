@@ -3,7 +3,7 @@
 ### ColaFrameWork 自研测试性Unity客户端框架  
 
 ### 框架简介  
-ColaFramework 一款简洁的MVC架构的测试性Unity客户端框架。目前已经接入了Tolua，进行Lua层的开发工作。暂时还不支持热更，下一步准备完善这方面的内容。    
+ColaFramework 一款简洁的MVC架构的测试性Unity客户端框架。支持Lua和资源热更，自带版本管理。      
 ### 开发计划  
 马三把近一个月内要开发的任务都放在本项目的敏捷开发面板中了。可以直接按照下面的方式查看看板中的开发计划与进度。
 ![](./Doc/image/codePlan.png)  
