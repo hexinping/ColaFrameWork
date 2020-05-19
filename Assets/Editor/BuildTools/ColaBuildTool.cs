@@ -180,13 +180,27 @@ namespace ColaFramework.ToolKit
             var isMotherPkg = ContainsEnvOption(EnvOption.MOTHER_PKG);
             var isHotUpdateBuild = ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD);
 
-            if(isHotUpdateBuild || isMotherPkg)
+            if (isHotUpdateBuild || isMotherPkg)
             {
                 //upload appversion.json
                 var CDN_AppVersionPath = string.Format(CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
                 FileHelper.CopyFile(Resource_AppVersionPath, CDN_AppVersionPath, true);
 
                 //upload version.txt and assets
+                var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
+                var updateFilePath = reltaRoot + "/updates.txt";
+                using (var sr = new StreamReader(updateFilePath))
+                {
+                    var content = sr.ReadLine();
+                    while (null != content)
+                    {
+                        var reltaPath = reltaRoot + "/" + content;
+                        var destPath = CDNResourceUrl + content;
+                        FileHelper.CopyFile(reltaPath, destPath, true);
+                        content = sr.ReadLine();
+                    }
+                }
+                FileHelper.CopyFile(reltaRoot + "/versions.txt", CDNResourceUrl + "versions.txt", true);
             }
             Debug.Log("=================UpLoadCDN Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }

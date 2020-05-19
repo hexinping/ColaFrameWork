@@ -324,9 +324,9 @@ namespace ColaFramework.ToolKit
 
             if (updates.Count > 0)
             {
-                using (var s = new StreamWriter(File.Open(outputPath + "/updates.txt", FileMode.Append)))
+                using (var s = new StreamWriter(File.Open(outputPath + "/updates.txt", FileMode.Create)))
                 {
-                    s.WriteLine(DateTime.Now.ToFileTime() + ":");
+                    //s.WriteLine(DateTime.Now.ToFileTime() + ":");
                     foreach (var item in updates)
                         s.WriteLine(item);
                     s.Flush();
