@@ -34,14 +34,8 @@ public class InputMgr : MonoBehaviour
     /// </summary>
     public void ConfirmQuit()
     {
+        Application.Quit();
 #if UNITY_ANDROID && !UNITY_EDITOR
-        using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            using (AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity"))
-            {
-                activity.Call("ShowConfirmDialog");
-            }
-        }
 #endif
     }
 
