@@ -57,7 +57,7 @@ namespace ColaFramework.ToolKit
             ColaBuildTool.ClearEnvironmentVariable();
         }
 
-        [MenuItem("Build/快速打包窗口")]
+        [MenuItem("Build/快速打包窗口", priority = 1)]
         public static void PopUp()
         {
             window = GetWindow<ColaBuildWindow>("快速打包窗口");
