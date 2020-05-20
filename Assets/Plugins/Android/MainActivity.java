@@ -32,55 +32,6 @@ public class MainActivity extends UnityPlayerActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-	/**
-	 * Android点击返回键时的二次确认框
-	 */
-	public void ShowConfirmDialog(){
-		 Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Cola提示");
-		 builder.setMessage("确定退出Cola游戏？");
-		 
-		 //监听里面的按钮事件
-		 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-//				Toast.makeText(getApplicationContext(),"点击了确定",Toast.LENGTH_SHORT).show();
-				UnityPlayer.UnitySendMessage(receiveObj, "ApplicationQuit","0");
-			}
-		});
-		 
-		 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-//				Toast.makeText(getApplicationContext(),"点击了取消",Toast.LENGTH_SHORT).show();				
-			}
-		});
-		 builder.setCancelable(true);
-		 AlertDialog dialog = builder.create();
-		 dialog.show();
-	}
 	
 	/**
 	 * 复制文件
