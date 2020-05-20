@@ -24,6 +24,8 @@ namespace ColaFramework.ToolKit
     public class ColaEditHelper
     {
         public static string overloadedDevelopmentServerURL = "";
+        public static string m_projectRoot;
+        public static string m_projectRootWithSplit;
 
         /// <summary>
         /// 编辑器会用到的一些临时目录
@@ -35,7 +37,26 @@ namespace ColaFramework.ToolKit
 
         public static string ProjectRoot
         {
-            get { return Path.GetDirectoryName(Application.dataPath); }
+            get
+            {
+                if (string.IsNullOrEmpty(m_projectRoot))
+                {
+                    m_projectRoot = FileHelper.FormatPath(Path.GetDirectoryName(Application.dataPath));
+                }
+                return m_projectRoot;
+            }
+        }
+
+        public static string ProjectRootWithSplit
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(m_projectRootWithSplit))
+                {
+                    m_projectRootWithSplit = ProjectRoot + "/";
+                }
+                return m_projectRootWithSplit;
+            }
         }
 
         /// <summary>
@@ -674,6 +695,11 @@ namespace ColaFramework.ToolKit
             EditorUtility.ClearProgressBar();
         }
 
+        public static string TrimedAssetBundleName(string assetBundleName)
+        {
+            return assetBundleName.Replace(Constants.GameAssetBasePath, "");
+        }
+
         /// <summary>
         /// 标记一个文件夹下所有文件为一个BundleName
         /// </summary>
@@ -685,20 +711,104 @@ namespace ColaFramework.ToolKit
             {
                 bundleName = bundleName.ToLower();
                 var files = FileHelper.GetAllChildFiles(path);
-                var projRoot = FileHelper.FormatPath(ProjectRoot) + "/";
                 var length = files.Length;
                 for (int i = 0; i < length; i++)
                 {
                     var fileName = files[i];
-                    if (!fileName.EndsWith(".meta", StringComparison.Ordinal))
+                    if (fileName.EndsWith(".meta", StringComparison.Ordinal) || fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
                     {
-                        EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
-                        var assetPath = files[i].Replace(projRoot, "");
-                        SetAssetBundleNameAndVariant(assetPath, bundleName, null);
+                        continue;
                     }
+                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
+                    var assetPath = files[i].Replace(ProjectRootWithSplit, "");
+                    SetAssetBundleNameAndVariant(assetPath, bundleName, null);
                 }
                 EditorUtility.ClearProgressBar();
             }
+        }
+
+        /// <summary>
+        /// 按文件夹进行标记AssetBundleName
+        /// </summary>
+        /// <param name="path"></param>
+        public static void MarkAssetsWithDir(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Debug.LogError("MarkAssetsWithDir Error! Path: " + path + "is not exist!");
+                return;
+            }
+            var files = FileHelper.GetAllChildFiles(path);
+            var length = files.Length;
+            for (var i = 0; i < files.Length; i++)
+            {
+                var fileName = files[i];
+                if (fileName.EndsWith(".meta", StringComparison.Ordinal) || fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                {
+                    continue;
+                }
+                EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
+                var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(fileName).Replace("\\", "/")) + "_g";
+                var assetPath = fileName.Replace(ProjectRootWithSplit, "");
+                SetAssetBundleNameAndVariant(assetPath, assetBundleName.ToLower(), null);
+
+            }
+            EditorUtility.ClearProgressBar();
+        }
+
+        /// <summary>
+        /// 按文件进行标记AssetBundleName
+        /// </summary>
+        /// <param name="path"></param>
+        public static void MarkAssetsWithFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                if (path.EndsWith(".meta", StringComparison.Ordinal) || path.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                {
+                    return;
+                }
+                var dir = Path.GetDirectoryName(path);
+                var name = Path.GetFileNameWithoutExtension(path);
+                if (dir == null)
+                    return;
+                if (name == null)
+                    return;
+                dir = dir.Replace("\\", "/") + "/";
+                var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name));
+                SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
+            }
+            else if (Directory.Exists(path))
+            {
+                var files = FileHelper.GetAllChildFiles(path);
+                var length = files.Length;
+                for (var i = 0; i < files.Length; i++)
+                {
+                    var fileName = files[i];
+                    if (fileName.EndsWith(".meta", StringComparison.Ordinal) || fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                    {
+                        continue;
+                    }
+                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
+
+                    var dir = Path.GetDirectoryName(path);
+                    var name = Path.GetFileNameWithoutExtension(path);
+                    if (dir == null)
+                        return;
+                    if (name == null)
+                        return;
+                    dir = dir.Replace("\\", "/") + "/";
+                    var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name));
+                    var assetPath = fileName.Replace(ProjectRootWithSplit, "");
+                    SetAssetBundleNameAndVariant(assetPath, assetBundleName.ToLower(), null);
+                }
+            }
+            else
+            {
+                Debug.LogError("MarkAssetsWithFile Error! Path: " + path + "is not exist!");
+                return;
+            }
+            EditorUtility.ClearProgressBar();
         }
         #endregion
     }

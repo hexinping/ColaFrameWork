@@ -145,6 +145,17 @@ namespace ColaFramework.ToolKit
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Mark Sprite Bundle", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            {
+                ColaEditHelper.MarkAssetsWithDir("Assets/GameAssets/Arts/UI/Atlas/");
+            }
+            if (GUILayout.Button("MarkAssetsWithFile", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            {
+                ColaEditHelper.MarkAssetsWithFile("Assets/GameAssets/Arts/UI/Prefabs/UGUIRoot.prefab");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("导出版本Json", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
                 var assetPath = "Assets/Editor/Settings/AppVersion.asset";
@@ -157,10 +168,10 @@ namespace ColaFramework.ToolKit
                     AssetDatabase.Refresh();
                 }
             }
-            if(GUILayout.Button("导入Json文件", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
+            if (GUILayout.Button("导入Json文件", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
                 var jsonPath = "Assets/Editor/Settings/AppVersion.json";
-                using(var sr = new StreamReader(jsonPath))
+                using (var sr = new StreamReader(jsonPath))
                 {
                     var jsonStr = sr.ReadToEnd();
                     var asset = JsonMapper.ToObject<AppVersion>(jsonStr);
