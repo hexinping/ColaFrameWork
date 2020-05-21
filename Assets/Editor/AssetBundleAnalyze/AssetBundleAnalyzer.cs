@@ -9,19 +9,21 @@ using System.Collections;
 using System.IO;
 using UnityEditor;
 using System.Collections.Generic;
+using System;
 
 namespace ColaFramework.ToolKit
 {
     public class AssetBundleAnalyzer
     {
-
+        private const string BUILD_RULES_PATH = "Assets/Editor/Settings/BuildRules.asset";
         private static Dictionary<string, AssetInfo> assetInfoDict = new Dictionary<string, AssetInfo>();
         private const int PIECE_THRESHOLD = 2;  //颗粒度，当一个资源大于这个数目被引用时，会抽取为单独的公共Bundle
         private static string curRootAsset = string.Empty;
         private static float curProgress = 0f;
+        private static BuildRules buildRules;
 
 
-        [MenuItem("Build/AssetBundleAnalyzer/SetAssetbundleName")]
+        [MenuItem("Build/AssetBundleAnalyzer/AnalyzeAssetbundleName")]
         static void SetABNames()
         {
             string path = GetSelectedAssetPath();
@@ -30,7 +32,7 @@ namespace ColaFramework.ToolKit
                 Debug.LogWarning("请先选择目标文件夹");
                 return;
             }
-            AssetBundleAnalyzer.GetAllAssets(path);
+            GetAllAssets(path);
 
         }
         [MenuItem("Build/AssetBundleAnalyzer/ClearAllAssetbundelname")]
@@ -45,6 +47,7 @@ namespace ColaFramework.ToolKit
             DirectoryInfo dirinfo = new DirectoryInfo(rootDir);
             FileInfo[] fs = dirinfo.GetFiles("*.*", SearchOption.AllDirectories);
             int ind = 0;
+            buildRules = ColaEditHelper.GetScriptableObjectAsset<BuildRules>(BUILD_RULES_PATH);
             foreach (var f in fs)
             {
                 curProgress = (float)ind / (float)fs.Length;
@@ -55,18 +58,26 @@ namespace ColaFramework.ToolKit
                 if (index != -1)
                 {
                     string assetPath = f.FullName.Substring(index);
-                    Object asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
+                    if (assetPath.EndsWith(".meta", StringComparison.Ordinal) || assetPath.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                    {
+                        continue;
+                    }
+                    UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
                     string upath = AssetDatabase.GetAssetPath(asset);
+                    if (buildRules.IsInBuildRules(upath))
+                    {
+                        EditorUtility.UnloadUnusedAssetsImmediate();
+                        continue;
+                    }
                     if (assetInfoDict.ContainsKey(assetPath) == false
                         && assetPath.StartsWith("Assets")
-                        && !(asset is MonoScript)
                         && !(asset is LightingDataAsset)
                         && asset != null
                         )
                     {
-                        AssetInfo info = new AssetInfo(upath, true);
-                        //标记一下是文件夹下根资源
-                        CreateDeps(info);
+                        //AssetInfo info = new AssetInfo(upath, true);
+                        ////标记一下是文件夹下根资源
+                        //CreateDeps(info);
                     }
                     EditorUtility.UnloadUnusedAssetsImmediate();
                 }
@@ -75,13 +86,13 @@ namespace ColaFramework.ToolKit
             EditorUtility.ClearProgressBar();
 
             int setIndex = 0;
-            foreach (KeyValuePair<string, AssetInfo> kv in assetInfoDict)
-            {
-                EditorUtility.DisplayProgressBar("正在设置AssetBundleName: ", kv.Key, (float)setIndex / (float)assetInfoDict.Count);
-                setIndex++;
-                AssetInfo a = kv.Value;
-                a.SetAssetBundleName(PIECE_THRESHOLD);
-            }
+            //foreach (KeyValuePair<string, AssetInfo> kv in assetInfoDict)
+            //{
+            //    EditorUtility.DisplayProgressBar("正在设置AssetBundleName: ", kv.Key, (float)setIndex / (float)assetInfoDict.Count);
+            //    setIndex++;
+            //    AssetInfo a = kv.Value;
+            //    a.SetAssetBundleName(PIECE_THRESHOLD);
+            //}
             EditorUtility.ClearProgressBar();
             EditorUtility.UnloadUnusedAssetsImmediate();
             AssetDatabase.SaveAssets();
@@ -101,10 +112,10 @@ namespace ColaFramework.ToolKit
             }
             self.AddParent(parent);
 
-            Object[] deps = EditorUtility.CollectDependencies(new Object[] { self.GetAsset() });
+            UnityEngine.Object[] deps = EditorUtility.CollectDependencies(new UnityEngine.Object[] { self.GetAsset() });
             for (int i = 0; i < deps.Length; i++)
             {
-                Object o = deps[i];
+                UnityEngine.Object o = deps[i];
                 if (o is MonoScript || o is LightingDataAsset)
                     continue;
                 string path = AssetDatabase.GetAssetPath(o);
@@ -112,6 +123,10 @@ namespace ColaFramework.ToolKit
                     continue;
                 if (path.StartsWith("Assets") == false)
                     continue;
+                if (buildRules.IsInBuildRules(path))
+                {
+                    continue;
+                }
                 AssetInfo info = null;
                 if (assetInfoDict.ContainsKey(path))
                 {

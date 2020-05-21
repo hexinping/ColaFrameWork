@@ -45,6 +45,7 @@ namespace ColaFramework.ToolKit
             parent.RemoveRepeatChildDep(this);
             RemoveRepeatParentDep(parent);
         }
+
         /// <summary>
         /// 清除我父节点对我子节点的重复引用，保证树形结构
         /// </summary>
@@ -81,12 +82,12 @@ namespace ColaFramework.ToolKit
             childSet.Remove(targetChild);
             targetChild.parentSet.Remove(this);
         }
+
         private void RemoveParent(AssetInfo parent)
         {
             parent.childSet.Remove(this);
             parentSet.Remove(parent);
         }
-
 
         private void AddChild(AssetInfo child)
         {
@@ -114,37 +115,46 @@ namespace ColaFramework.ToolKit
             }
             return false;
         }
+
         public bool HasParent(AssetInfo p)
         {
             if (parentSet.Contains(p))
                 return true;
             return false;
         }
+
         /// <summary>
         /// 打包碎片粒度
         /// </summary>
         /// <param name="pieceThreshold"></param>
         public void SetAssetBundleName(int pieceThreshold)
         {
-            var abName = assetPath.ToLower();
-            //不是图集，而且大于阀值
+            var abName = TrimedAssetBundleName(assetPath);
+            //大于阀值
             if (this.parentSet.Count >= pieceThreshold)
             {
-                ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, abName, string.Empty);
+                ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, abName, null);
                 Debug.Log("<color=#6501AB>" + "设置ab，有多个引用: " + this.assetPath + "</color>");
             }
             //根节点
             else if (this.parentSet.Count == 0 || this.isRootAsset)
             {
-                ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, abName, string.Empty);
+                ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, abName, null);
                 Debug.Log("<color=#025082>" + "设置ab，根资源ab: " + this.assetPath + "</color>");
             }
             else
             {
                 //其余的子资源
-                ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, string.Empty, string.Empty);
+                ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, string.Empty, null);
                 Debug.Log("<color=#DBAF00>" + "清除ab， 仅有1个引用: " + this.assetPath + "</color>");
             }
+        }
+
+        private string TrimedAssetBundleName(string assetBundleName)
+        {
+            assetBundleName = assetBundleName.Replace(Constants.GameAssetBasePath, "");
+            assetBundleName = assetBundleName.Replace(Constants.AssetRoot, "");
+            return assetBundleName.ToLower();
         }
     }
 }
