@@ -419,22 +419,9 @@ namespace ColaFramework.ToolKit
             }
         }
 
-        private static T GetAsset<T>(string path) where T : ScriptableObject
-        {
-            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
-            if (asset == null)
-            {
-                asset = ScriptableObject.CreateInstance<T>();
-                AssetDatabase.CreateAsset(asset, path);
-                AssetDatabase.SaveAssets();
-            }
-
-            return asset;
-        }
-
         public static AssetsManifest GetManifest()
         {
-            return GetAsset<AssetsManifest>(Utility.AssetsManifestAsset);
+            return GetScriptableObjectAsset<AssetsManifest>(Utility.AssetsManifestAsset);
         }
 
         public static string GetServerURL()

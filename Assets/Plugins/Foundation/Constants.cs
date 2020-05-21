@@ -54,6 +54,7 @@ namespace ColaFramework
         public static readonly string UIIgnoreTag = "UIIgnore";
         public static readonly string UIPropertyTag = "UIProperty";
 
+        public static readonly string AssetRoot = "Assets/";
         public static readonly string GameAssetBasePath = "Assets/GameAssets/";
         public static readonly string RawAssetBasePath = "Assets/RawAssets/";
         public static readonly string AppearanceDataPath = "AppearanceData/";
