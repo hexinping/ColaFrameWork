@@ -142,6 +142,10 @@ namespace ColaFramework.ToolKit
         private static void BuildAssetBundle(BuildTargetGroup buildTargetGroup)
         {
             var beginTime = System.DateTime.Now;
+            AssetBundleAnalyzer.AutoAnalyzeAssetBundleName();
+            Debug.Log("=================Build AutoAnalyzeAssetBundleName Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
+
+            beginTime = System.DateTime.Now;
             ColaEditHelper.BuildManifest();
             ColaEditHelper.BuildAssetBundles();
 
