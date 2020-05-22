@@ -124,7 +124,7 @@ namespace ColaFramework.ToolKit
         }
 
         /// <summary>
-        /// 打包碎片粒度
+        /// 按打包碎片粒SetAssetBundleName
         /// </summary>
         /// <param name="pieceThreshold"></param>
         public void SetAssetBundleName(int pieceThreshold)
@@ -134,19 +134,19 @@ namespace ColaFramework.ToolKit
             if (this.parentSet.Count >= pieceThreshold)
             {
                 ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, abName, null);
-                Debug.Log("<color=#6501AB>" + "设置ab，有多个引用: " + this.assetPath + "</color>");
+                //Debug.Log("<color=#6501AB>" + "设置ab，有多个引用: " + this.assetPath + "</color>");
             }
             //根节点
             else if (this.parentSet.Count == 0 || this.isRootAsset)
             {
                 ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, abName, null);
-                Debug.Log("<color=#025082>" + "设置ab，根资源ab: " + this.assetPath + "</color>");
+                //Debug.Log("<color=#025082>" + "设置ab，根资源ab: " + this.assetPath + "</color>");
             }
             else
             {
                 //其余的子资源
                 ColaEditHelper.SetAssetBundleNameAndVariant(assetPath, string.Empty, null);
-                Debug.Log("<color=#DBAF00>" + "清除ab， 仅有1个引用: " + this.assetPath + "</color>");
+                //Debug.Log("<color=#DBAF00>" + "清除ab， 仅有1个引用: " + this.assetPath + "</color>");
             }
         }
 

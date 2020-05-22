@@ -41,6 +41,45 @@ namespace ColaFramework.ToolKit
             ColaEditHelper.ClearAllAssetBundleName();
         }
 
+        public static void AutoAnalyzeAssetBundleName()
+        {
+            GetAllAssets(Constants.GameAssetBasePath);
+
+            //按文件夹标记
+            var markDirList = buildRules.MarkWithDirList;
+            if (null != markDirList)
+            {
+                foreach (var item in markDirList)
+                {
+                    ColaEditHelper.MarkAssetsWithDir(item);
+                }
+            }
+
+            //标记为一个bundle
+            var markOneBundleList = buildRules.MarkWithOneBundleList;
+            if (null != markOneBundleList)
+            {
+                foreach (var item in markOneBundleList)
+                {
+                    var bundleName = item.TrimEnd('/');
+                    var index = bundleName.LastIndexOf('/');
+                    bundleName = bundleName.Substring(index);
+                    bundleName = bundleName.TrimStart('/');
+                    ColaEditHelper.MarkAssetsToOneBundle(item, bundleName);
+                }
+            }
+
+            //按文件标记
+            var markFileList = buildRules.MarkWithFileList;
+            if(null != markFileList)
+            {
+                foreach(var item in markFileList)
+                {
+                    ColaEditHelper.MarkAssetsWithFile(item);
+                }
+            }
+        }
+
         public static void GetAllAssets(string rootDir)
         {
             assetInfoDict.Clear();
@@ -75,9 +114,9 @@ namespace ColaFramework.ToolKit
                         && asset != null
                         )
                     {
-                        //AssetInfo info = new AssetInfo(upath, true);
-                        ////标记一下是文件夹下根资源
-                        //CreateDeps(info);
+                        AssetInfo info = new AssetInfo(upath, true);
+                        //标记一下是文件夹下根资源
+                        CreateDeps(info);
                     }
                     EditorUtility.UnloadUnusedAssetsImmediate();
                 }
@@ -86,13 +125,13 @@ namespace ColaFramework.ToolKit
             EditorUtility.ClearProgressBar();
 
             int setIndex = 0;
-            //foreach (KeyValuePair<string, AssetInfo> kv in assetInfoDict)
-            //{
-            //    EditorUtility.DisplayProgressBar("正在设置AssetBundleName: ", kv.Key, (float)setIndex / (float)assetInfoDict.Count);
-            //    setIndex++;
-            //    AssetInfo a = kv.Value;
-            //    a.SetAssetBundleName(PIECE_THRESHOLD);
-            //}
+            foreach (KeyValuePair<string, AssetInfo> kv in assetInfoDict)
+            {
+                EditorUtility.DisplayProgressBar("正在设置AssetBundleName: ", kv.Key, (float)setIndex / (float)assetInfoDict.Count);
+                setIndex++;
+                AssetInfo a = kv.Value;
+                a.SetAssetBundleName(PIECE_THRESHOLD);
+            }
             EditorUtility.ClearProgressBar();
             EditorUtility.UnloadUnusedAssetsImmediate();
             AssetDatabase.SaveAssets();
