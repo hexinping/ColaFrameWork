@@ -8,5 +8,9 @@ local AtlasResPathCfg = {
 	['button_bg'] = 'Arts/UI/Atlas/CommonAtlas1/button_bg.png',
 	['button_bg_pressed'] = 'Arts/UI/Atlas/CommonAtlas1/button_bg_pressed.png',
 	['button_disable_bg'] = 'Arts/UI/Atlas/CommonAtlas1/button_disable_bg.png',
+	['close'] = 'Arts/UI/Atlas/CommonAtlas2/close.png',
+	['close_music'] = 'Arts/UI/Atlas/CommonAtlas2/close_music.png',
+	['close_pressed'] = 'Arts/UI/Atlas/CommonAtlas2/close_pressed.png',
+	['coin'] = 'Arts/UI/Atlas/CommonAtlas2/coin.png',
 }
 return AtlasResPathCfg
