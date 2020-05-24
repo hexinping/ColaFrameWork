@@ -18,8 +18,8 @@ public class AppConst
     public static bool LuaBundleMode = true;                    //Lua代码AssetBundle模式
     public static bool CheckUpdate = true;                      //是否需要检测热更新
 
-    public const string LuaBaseBundle = "lua/lua_base";         //包内的lua AssetBundle
-    public const string LuaUpdateBundle = "lua/lua_update";     //热更下载的lua AseetBundle
+    public const string LuaBaseBundle = "lua/lua_base" + ExtName;         //包内的lua AssetBundle
+    public const string LuaUpdateBundle = "lua/lua_update" + ExtName;     //热更下载的lua AseetBundle
     public const string LuaBundlePrefix = "lua/";               //lua AssetBundle的前缀
     public static List<string> LuaBundles = new List<string>() { LuaUpdateBundle, LuaBaseBundle };
 
@@ -28,10 +28,10 @@ public class AppConst
     public const string AppName = "ColaFramework";               //应用程序名称
     public const string ExtName = ".cab";                   //AssetBundle的扩展名
     public const string VersionFileName = "versions.txt";                   //版本信息文件的名称
-    public static string CDNUrl = "http://localhost:6688/cdn/";      //CDN地址
-    public static string BakCDNUrl = "http://localhost:6688/cdn/";      //备用CDN地址
-    public const string VersionHttpUrl = "http://localhost:6688/versioncontrol/{0}/{1}?p={2}&v={3}";  //版本服务器地址
-    public const string BakVersionHttpUrl = "http://localhost:6688/versioncontrol/{0}/{1}?p={2}&v={3}"; //备用版本服务器地址
+    public static string CDNUrl = "http://10.5.102.167:6688/cdn/";      //CDN地址
+    public static string BakCDNUrl = "http://10.5.102.167:6688/cdn/";      //备用CDN地址
+    public const string VersionHttpUrl = "http://10.5.102.167:6688/versioncontrol/{0}/{1}?p={2}&v={3}";  //版本服务器地址
+    public const string BakVersionHttpUrl = "http://10.5.102.167:6688/versioncontrol/{0}/{1}?p={2}&v={3}"; //备用版本服务器地址
 
     public static string KEY_BASE_APK_VERSION = "__PACKAGE_VERSION__";        // apk的版本号，每次换包以后这个值会被刷新，重新记录
     public static string KEY_APK_BUILD_VERSION = "__PACKAGE_BUILD_VERSION__";  // apk自带的版本号，这个配置存在Resources目录下，除非换包，否则不变
