@@ -65,15 +65,16 @@ namespace ColaFramework.ToolKit
                     var index = bundleName.LastIndexOf('/');
                     bundleName = bundleName.Substring(index);
                     bundleName = bundleName.TrimStart('/');
+                    bundleName += AppConst.ExtName;
                     ColaEditHelper.MarkAssetsToOneBundle(item, bundleName);
                 }
             }
 
             //按文件标记
             var markFileList = buildRules.MarkWithFileList;
-            if(null != markFileList)
+            if (null != markFileList)
             {
-                foreach(var item in markFileList)
+                foreach (var item in markFileList)
                 {
                     ColaEditHelper.MarkAssetsWithFile(item);
                 }

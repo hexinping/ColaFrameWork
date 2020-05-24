@@ -1,4 +1,4 @@
-﻿//----------------------------------------------
+//----------------------------------------------
 //            ColaFramework
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
@@ -259,8 +259,9 @@ namespace ColaFramework.ToolKit
         {
             var manifest = GetManifest();
 
-            var assetPath = TrimedAssetDirName(AssetDatabase.GetAssetPath(manifest));
+            var assetPath = AssetDatabase.GetAssetPath(manifest);
             var bundleName = Path.GetFileNameWithoutExtension(assetPath).ToLower();
+            bundleName += AppConst.ExtName;
             SetAssetBundleNameAndVariant(assetPath, bundleName, null);
 
             AssetDatabase.RemoveUnusedAssetBundleNames();
@@ -735,7 +736,7 @@ namespace ColaFramework.ToolKit
                     continue;
                 }
                 EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
-                var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(fileName).Replace("\\", "/")) + "_g";
+                var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(fileName).Replace("\\", "/")) + "_g" + AppConst.ExtName;
                 var assetPath = fileName.Replace(ProjectRootWithSplit, "");
                 SetAssetBundleNameAndVariant(assetPath, assetBundleName.ToLower(), null);
 
@@ -762,7 +763,7 @@ namespace ColaFramework.ToolKit
                 if (name == null)
                     return;
                 dir = dir.Replace("\\", "/") + "/";
-                var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name));
+                var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name)) + AppConst.ExtName;
                 SetAssetBundleNameAndVariant(path, assetBundleName.ToLower(), null);
             }
             else if (Directory.Exists(path))
@@ -785,7 +786,7 @@ namespace ColaFramework.ToolKit
                     if (name == null)
                         return;
                     dir = dir.Replace("\\", "/") + "/";
-                    var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name));
+                    var assetBundleName = TrimedAssetBundleName(Path.Combine(dir, name)) + AppConst.ExtName;
                     var assetPath = fileName.Replace(ProjectRootWithSplit, "");
                     SetAssetBundleNameAndVariant(assetPath, assetBundleName.ToLower(), null);
                 }

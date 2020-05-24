@@ -149,10 +149,6 @@ namespace ColaFramework.ToolKit
             {
                 ColaEditHelper.MarkAssetsWithDir("Assets/GameAssets/Arts/UI/Atlas/");
             }
-            if (GUILayout.Button("MarkAssetsWithFile", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-            {
-                ColaEditHelper.MarkAssetsWithFile("Assets/GameAssets/Arts/UI/Prefabs/UGUIRoot.prefab");
-            }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();

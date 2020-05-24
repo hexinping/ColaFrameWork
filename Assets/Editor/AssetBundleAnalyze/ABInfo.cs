@@ -129,7 +129,7 @@ namespace ColaFramework.ToolKit
         /// <param name="pieceThreshold"></param>
         public void SetAssetBundleName(int pieceThreshold)
         {
-            var abName = TrimedAssetBundleName(assetPath);
+            var abName = TrimedAssetBundleName(assetPath) + AppConst.ExtName;
             //大于阀值
             if (this.parentSet.Count >= pieceThreshold)
             {
