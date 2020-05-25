@@ -3,7 +3,7 @@
 ### ColaFrameWork 自研测试性Unity客户端框架  
 
 ### 框架简介  
-ColaFramework 一款简洁的MVC架构的测试性Unity客户端框架。支持Lua和资源热更，自带版本管理。      
+ColaFramework 一款简洁的MVC架构的测试性Unity客户端框架。支持Lua开发和资源热更新，自带版本管理和简易服务器。      
 ### 开发计划  
 马三把近一个月内要开发的任务都放在本项目的敏捷开发面板中了。可以直接按照下面的方式查看看板中的开发计划与进度。
 ![](./Doc/image/codePlan.png)  
@@ -11,7 +11,7 @@ ColaFramework 一款简洁的MVC架构的测试性Unity客户端框架。支持L
 * Unity2018.2.3  
 * VS2017  
 * C# & Lua    
-* 项目依赖Odin插件，出于版权原因，Odin并未集成进项目内，需要自行下载Odin并导入  
+* **项目依赖Odin插件，出于版权原因，Odin并未集成进项目内，需要自行下载Odin并导入**  
 
 ### 安装集成  
 可以选择以下安装方式集成本框架：
@@ -59,8 +59,7 @@ Module的基类为ModuleBase，游戏内所有的系统的业务逻辑层均继�
 本框架支持将Excel表格转为csv和lua原生格式的配置数据文件，详见[Execl策划表格规范与转表Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/Execl%E7%AD%96%E5%88%92%E8%A1%A8%E6%A0%BC%E8%A7%84%E8%8C%83%E4%B8%8E%E8%BD%AC%E8%A1%A8)  
 
 #### 资源管理  
-
-资源管理这部分准备用一套成熟的第三方框架代替自研。    
+基于[xasset]()改造了一套弱引用+引用计数原理的资源管理层     
 
 #### 资源引用查找与依赖关系分析插件  
 简介  
@@ -71,10 +70,7 @@ Module的基类为ModuleBase，游戏内所有的系统的业务逻辑层均继�
 详情请点击 [ReferenceFinder Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/%E8%B5%84%E6%BA%90%E5%BC%95%E7%94%A8%E6%9F%A5%E6%89%BE%E4%B8%8E%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E5%88%86%E6%9E%90%E6%8F%92%E4%BB%B6)  
 #### 编辑器拓展与工具  
 可视化的EditorWindow应继承自 `EditorWindowBase` 基类，Inspector编辑拓展应继承自 `InspectorBase` 基类  
-
-#### 游戏自动化测试  
-框架中集成了WETEST_SDK，通过使用[GAutomator](https://github.com/Tencent/GAutomator)实现Unity手游的UI自动化测试。  
-TODO:对网易的自动化测试解决方案做一些调研[传送门](http://airtest.netease.com/index.html)  
+也可以直接使用继承自Odin的编辑器类进行拓展，这样会更方便一些  
 
 #### DebugLog与日志  
 ColaFramework中的Debuglog与日志相关内容请查看[Debuglog与日志Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/DebugLog%E4%B8%8E%E6%97%A5%E5%BF%97)  
@@ -108,6 +104,7 @@ ColaFramework中框架级的Core源码都从属于ColaFramework命名空间，�
 
 #### 友情链接  
 * [IFramework](https://github.com/OnClick9927/IFramework)  
+* [xasset 一个简易轻量的Unity资源管理框架](https://github.com/xasset/xasset)  
 
 
 
