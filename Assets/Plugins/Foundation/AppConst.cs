@@ -39,6 +39,9 @@ public class AppConst
     public static string KEY_CACHE_HOTFIX_VERSION = "__CACHE_HOTFIX_VERSION__";     // 热更缓存路径的版本号
     public const int AUTO_DOWNLOAD_SIZE = 2048; // 默认2M以内热更都用数据直接下载，不提醒
 
+    public const string SplashVideoName = "splash_video.mp4";
+    public const string StoryVideoName = "story_video.mp4";
+
     /// <summary>
     /// 沙盒目录
     /// </summary>
