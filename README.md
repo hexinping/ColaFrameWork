@@ -106,6 +106,9 @@ ColaFramework中框架级的Core源码都从属于ColaFramework命名空间，�
 * QQ群：421527940  
 ![](./Doc/image/ColaFramework交流群群二维码.png)  
 
+#### 友情链接  
+* [IFramework](https://github.com/OnClick9927/IFramework)  
+
 
 
 
