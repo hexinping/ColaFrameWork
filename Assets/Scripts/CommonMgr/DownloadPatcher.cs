@@ -10,6 +10,9 @@ using ColaFramework.Foundation;
 using Plugins.XAsset;
 using ColaFramework.Foundation.DownLoad;
 using LitJson;
+using UnityEngine.UI;
+using UnityEngine.Events;
+using DG.Tweening;
 
 namespace ColaFramework
 {
@@ -63,6 +66,17 @@ namespace ColaFramework
         float m_fStartDowndTime = 0;
         private float checkVersionTimeOut = 3f;
 
+        #region UI控制
+        private const string HotPatchUIRootPath = "UI/UIRoot";
+        private GameObject UIRoot;
+        private Text TipsText;
+        private GameObject ConfirmTipsPanel;
+        private Button ConfirmTipsBtn;
+        private Text ConfirmTipsText;
+        private Text ConfirmBtnText;
+        private Slider Slider;
+        #endregion
+
         public override void Reset()
         {
             m_haveDownedSize = 0;
@@ -87,6 +101,16 @@ namespace ColaFramework
         // 检查是否有更新
         public void StartUpdate(System.Action<bool> callback)
         {
+            var prefab = Resources.Load<GameObject>(HotPatchUIRootPath);
+            UIRoot = CommonHelper.InstantiateGoByPrefab(prefab, null);
+            TipsText = UIRoot.GetComponentByPath<Text>("Canvas/UIHotPatchDialog/Text");
+            ConfirmTipsPanel = UIRoot.FindChildByPath("Canvas/UIHotPatchDialog/ConfirmTipsPanel");
+            ConfirmTipsBtn = ConfirmTipsPanel.GetComponentByPath<Button>("LeftButton");
+            ConfirmTipsText = ConfirmTipsPanel.GetComponentByPath<Text>("Text");
+            ConfirmBtnText = ConfirmTipsPanel.GetComponentByPath<Text>("LeftButton/Text");
+            Slider = UIRoot.GetComponentByPath<Slider>("Canvas/UIHotPatchDialog/Slider");
+            Slider.gameObject.SetActive(false);
+
             CheckOverrideInstall();
             m_onDownPatchDone = callback;
             m_strVersionInfoUrl = AppConst.VersionHttpUrl;
@@ -113,6 +137,7 @@ namespace ColaFramework
         private void CheckNeedUpdate()
         {
             Debug.Log("开始版本检查");
+            SetTipText("正在进行版本检查...");
 
             string strURL = string.Format(m_strVersionInfoUrl, Utility.GetPlatform(), "app_version.json", Utility.GetPlatform(), CommonHelper.PackageVersion);
             Debug.LogFormat("Request Version URL:{0}", strURL);
@@ -124,6 +149,8 @@ namespace ColaFramework
         private void OnDownloadVersion(ErrorCode code, string msg, string strContent)
         {
             Debug.Log("下载版本信息文件");
+            SetTipText("下载版本信息文件");
+
             if (code != ErrorCode.SUCCESS)  //失败的情况
             {
                 if (code == ErrorCode.TIME_OUT)
@@ -153,12 +180,11 @@ namespace ColaFramework
                     }
                 }
 
-                //string strTips = "获取最新版本信息失败，请检查网络后重试。";
-                //string strBtn = "重试";
-                //EventMgr.onLaunchConfirmTips(strTips, strBtn, () =>
-                //{
-                //    CheckNeedUpdate();
-                //}, true);
+                SetConfirmTips("获取最新版本信息失败，请检查网络后重试", "重试", () =>
+                {
+                    CheckNeedUpdate();
+                    SetConfirmTipsPanelVisable(false);
+                });
             }
             else // 成功的情况
             {
@@ -240,27 +266,25 @@ namespace ColaFramework
         // 强更提醒 有配置就用配置，没配置就用默认提醒
         private void NoticeForceUpdate(string strUpdateNotice, bool canSkip, string CurrentVersion)
         {
-            System.Action onSkip = null;
-            if (canSkip)
+            Debug.LogFormat("强更提醒,canSkip:{0}, notice:{1}", canSkip, strUpdateNotice);
+            SetConfirmTips(strUpdateNotice, "大版本更新", () =>
             {
-                onSkip = () =>
+                if (canSkip)
                 {
                     DealWithHotFixStep(CurrentVersion);
-                };
-            }
-
-            Debug.LogFormat("强更提醒,canSkip:{0}, notice:{1}", canSkip, strUpdateNotice);
-            // string strTitle = "更新公告";
-            // EventMgr.onUpdateNotice(strTitle, strUpdateNotice, ()=>{
-            //     NoticeForceUpdate(strUpdateNotice, canSkip);
-            //     // GameHelper.ToAppStore();
-            // }, onSkip);
+                }
+                else
+                {
+                    Debug.Log("需要去应用商店更新新版本！");
+                }
+            });
         }
 
         private void DoneWithNoDownload()
         {
+            OnProgress(1f);
+            OnDestory();
             m_onDownPatchDone(false);
-            // EventMgr.onProgressChange.Invoke(1);
         }
 
         // 重新设置一下缓存路径
@@ -295,13 +319,14 @@ namespace ColaFramework
             m_fStartDowndTime = Time.time;
             string strMd5URL = m_strDownloadUrl + AppConst.VersionFileName;
             Debug.LogFormat("---DowndLoadMd5File,  url:{0}", strMd5URL);
+            SetTipText("正在下载差异化文件...");
+            OnProgress(0.05f);
             HttpDownloadMgr.DownloadText(strMd5URL, OnDownloadMd5File);
         }
 
         // 下载md5文件
         public void OnDownloadMd5File(ErrorCode code, string msg, string strText)
         {
-            //EventMgr.onProgressChange.Invoke(0.5f);
             if (code != ErrorCode.SUCCESS)  //失败的情况
             {
                 // 首次失败 尝试使用备用地址下载
@@ -326,6 +351,7 @@ namespace ColaFramework
             else    // 成功的情况
             {
                 Debug.Log("下载MD5文件成功。");
+                TweenProgress(0.05f, 1f, 0.3f); ;
                 m_dicSvrVersions = FileHelper.ReadABVersionFromText(strText);
 
                 //在这一步可以排除掉不需要更新的文件，比如32bit和64bit的LuaJit文件
@@ -337,6 +363,8 @@ namespace ColaFramework
         // 计算差异文件并开始下载
         private void CalDiffToDownload()
         {
+            SetTipText("对比差异文件中...");
+
             m_lstDiffVersions = m_lstDiffVersions == null ? new List<ABFileInfo>() : m_lstDiffVersions;
             m_lstDiffVersions.Clear();
             m_totalSize = 0;
@@ -380,8 +408,9 @@ namespace ColaFramework
                 }
             }
 
-
-            Debug.LogFormat("需要下载的更新大小：{0}, 差异文件数量：{1}", m_totalSize, m_lstDiffVersions.Count);
+            var tips = string.Format("需要下载的更新大小：{0}, 差异文件数量：{1}", m_totalSize, m_lstDiffVersions.Count);
+            Debug.Log(tips);
+            SetTipText(tips);
             if (m_totalSize > 0)
             {
                 //wifi或者数据下载量小于设定值，直接下载
@@ -391,13 +420,17 @@ namespace ColaFramework
                 }
                 else
                 {
-                    string strTips = string.Format("是否确定使用手机流量下载[{0}]的游戏资源？", CommonHelper.FormatKB(m_totalSize));
-                    string strBtn = "继续";
-                    //EventMgr.onLaunchConfirmTips(strTips, strBtn, RealDownloadPatch, false);
+                    SetConfirmTips(string.Format("是否确定使用手机流量下载[{0}]的游戏资源？", CommonHelper.FormatKB(m_totalSize)), "继续", () =>
+                    {
+                        RealDownloadPatch();
+                        SetConfirmTipsPanelVisable(false);
+                    });
                 }
             }
             else
             {
+                OnProgress(1f);
+                OnDestory();
                 m_onDownPatchDone(true);
             }
         }
@@ -412,36 +445,44 @@ namespace ColaFramework
             if (diskSize < needSize)
             {
                 float diff = needSize - diskSize;
-                string strTips = string.Format("手机存储空间不足，还缺: {0},请释放手机内存后重试", CommonHelper.FormatKB(diff));
-                string strBtn = "更新";
-                //EventMgr.onLaunchConfirmTips(strTips, strBtn, RealDownloadPatch, false);
+                SetConfirmTips(string.Format("手机存储空间不足，还缺: {0},请释放手机内存后重试", CommonHelper.FormatKB(diff)), "更新", () =>
+                 {
+                     RealDownloadPatch();
+                     SetConfirmTipsPanelVisable(false);
+                 });
                 return;
             }
-            Debug.LogFormat("确定下载补丁包,数量：{0}", m_lstDiffVersions.Count);
-            ResetWorks();
-            if (m_lockProgress == null)
+
+            var tips = string.Format("确定下载补丁包？数量：{0}", m_lstDiffVersions.Count);
+            SetConfirmTips(tips, "确定", () =>
             {
-                m_lockProgress = new Object();
-                m_lockMsg = new Object();
-            }
+                ResetWorks();
+                if (m_lockProgress == null)
+                {
+                    m_lockProgress = new Object();
+                    m_lockMsg = new Object();
+                }
 
-            m_strErrMsg = "";
-            m_haveDownedSize = 0;
+                m_strErrMsg = "";
+                m_haveDownedSize = 0;
 
-            string strDownTips = "资源更新中";
-            strDownTips = strDownTips + "(" + CommonHelper.FormatKB(m_totalSize) + ")";
-            //EventMgr.onProgressTips.Invoke(strDownTips, true);
+                string strDownTips = "资源更新中";
+                strDownTips = strDownTips + "(" + CommonHelper.FormatKB(m_totalSize) + ")";
+                SetTipText(strDownTips);
+                var length = m_lstDiffVersions.Count;
+                FileHelper.Mkdir(AppConst.UpdateCachePath);
+                for (int i = 0; i < m_lstDiffVersions.Count; i++)
+                {
+                    ABFileInfo versionInfo = m_lstDiffVersions[i];
+                    string strURL = m_strDownloadUrl + versionInfo.filename;
+                    string strPath = AppConst.UpdateCachePath + "/" + versionInfo.filename;
+                    Debug.Log("添加任务，下载文件到：" + strPath);
+                    AddWork(new Downloader(strURL, strPath, OnDownloadFileProgress, OnDownloadFileEnd));
+                }
+                StartWork();
+                SetConfirmTipsPanelVisable(false);
+            });
 
-            FileHelper.Mkdir(AppConst.UpdateCachePath);
-            for (int i = 0; i < m_lstDiffVersions.Count; i++)
-            {
-                ABFileInfo versionInfo = m_lstDiffVersions[i];
-                string strURL = m_strDownloadUrl + versionInfo.filename;
-                string strPath = AppConst.UpdateCachePath + "/" + versionInfo.filename;
-                Debug.Log("添加任务，下载文件到：" + strPath);
-                AddWork(new Downloader(strURL, strPath, OnDownloadFileProgress, OnDownloadFileEnd));
-            }
-            StartWork();
         }
 
         // 下载
@@ -478,7 +519,7 @@ namespace ColaFramework
             m_lastDownedSize = m_haveDownedSize;
             float totalProgress = m_haveDownedSize * 1.0f / m_totalSize;
 
-            //EventMgr.onProgressChange.Invoke(totalProgress);
+            OnProgress(totalProgress);
         }
 
         protected override void OnWorkDone()
@@ -487,22 +528,22 @@ namespace ColaFramework
             {
                 Debug.LogFormat("下载热更新资源失败，已下载:{0}，未下载:{1}, msg:{2}", CommonHelper.FormatKB(m_haveDownedSize), CommonHelper.FormatKB(m_totalSize), m_strErrMsg);
                 float lackSize = m_totalSize - m_haveDownedSize;
-                string strTips = string.Format("还有[{0}]资源未下载完成，请检查网络后继续下载", CommonHelper.FormatKB(lackSize));
-                string strBtn = "继续";
-                //EventMgr.onLaunchConfirmTips(strTips, strBtn, () =>
-                //{
-                //    // 重新计算差异再下载
-                //    CalDiffToDownload();
-                //}, false);
+
+                SetConfirmTips(string.Format("还有[{0}]资源未下载完成，请检查网络后继续下载", CommonHelper.FormatKB(lackSize)), "继续", () =>
+                {
+                    // 重新计算差异再下载
+                    CalDiffToDownload();
+                });
             }
             else
             {
                 MoveFileToABPath();
                 RemoveUselessFile();
                 WriteVersion();
+                OnProgress(1.0f);
+                OnDestory();
                 m_onDownPatchDone(true);
             }
-            //EventMgr.onProgressEnd.Invoke();
         }
 
         /// <summary>
@@ -543,6 +584,74 @@ namespace ColaFramework
             m_dicSvrVersions.Clear();
             m_dicLocalVersions.Clear();
             m_lstDiffVersions.Clear();
+        }
+
+        private void SetTipText(string content)
+        {
+            if (null != TipsText)
+            {
+                TipsText.text = content;
+            }
+        }
+
+        private void SetConfirmTips(string tips, string btnText, UnityAction action)
+        {
+            if (null != Slider)
+            {
+                Slider.gameObject.SetActive(false);
+            }
+            if (null != ConfirmTipsText)
+            {
+                ConfirmTipsText.text = tips;
+            }
+            if (null != ConfirmTipsBtn)
+            {
+                ConfirmTipsBtn.onClick.RemoveAllListeners();
+                ConfirmTipsBtn.onClick.AddListener(action);
+            }
+            if (null != ConfirmBtnText)
+            {
+                ConfirmBtnText.text = btnText;
+            }
+
+            SetTipText(string.Empty);
+            SetConfirmTipsPanelVisable(true);
+        }
+
+        private void SetConfirmTipsPanelVisable(bool isShow)
+        {
+            if (null != ConfirmTipsPanel)
+            {
+                ConfirmTipsPanel.SetActive(isShow);
+            }
+        }
+
+        private void OnProgress(float value)
+        {
+            if (null != Slider)
+            {
+                Slider.gameObject.SetActive(true);
+                Slider.value = value;
+            }
+        }
+
+        private void TweenProgress(float begin, float end, float duration)
+        {
+            DOTween.To(() => begin, (value) =>
+            {
+                begin = value;
+                OnProgress(value);
+            }, end, duration);
+        }
+
+        private void OnDestory()
+        {
+            if (null != UIRoot)
+            {
+                GameObject.Destroy(UIRoot);
+            }
+            UIRoot = null;
+            TipsText = null;
         }
     }
 }
