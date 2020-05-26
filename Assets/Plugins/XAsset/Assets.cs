@@ -157,7 +157,7 @@ namespace Plugins.XAsset
             }
 
             var bundle = Bundles.Load(assetBundleName);
-            if(null != bundle)
+            if (null != bundle)
             {
                 return bundle.assetBundle;
             }
@@ -264,7 +264,7 @@ namespace Plugins.XAsset
         {
             if (path.Equals(Utility.ManifestAsset))
             {
-                assetBundleName = Path.GetFileNameWithoutExtension(path).ToLower();
+                assetBundleName = Path.GetFileNameWithoutExtension(path).ToLower() + AppConst.ExtName;
                 return true;
             }
 

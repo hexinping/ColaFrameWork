@@ -45,7 +45,7 @@ android {
     }
 
     aaptOptions {
-        noCompress '.unity3d', '.ress', '.resource', '.obb', '.cab'
+        noCompress '.unity3d', '.ress', '.resource', '.obb', '.cab', ".mp4"
     }**SIGN**
 
     buildTypes {
