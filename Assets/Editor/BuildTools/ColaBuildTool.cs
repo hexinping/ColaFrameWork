@@ -151,7 +151,19 @@ namespace ColaFramework.ToolKit
 
             ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
             AssetDatabase.Refresh();
+
+            BuildVideoFiles();
             Debug.Log("=================Build BuildAssetBundle Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
+        }
+
+        /// <summary>
+        /// 处理视频文件
+        /// </summary>
+        [MenuItem("Build/BuildVideoFiles")]
+        private static void BuildVideoFiles()
+        {
+            FileHelper.CopyDir("Assets/RawAssets/Videos/", Application.streamingAssetsPath + "/Videos/");
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
@@ -228,7 +240,7 @@ namespace ColaFramework.ToolKit
                 appAsset.StoreVersion += 1;
                 appAsset.BuildVersion = 0;
             }
-            if (!isMotherPkg)
+            if (!isMotherPkg && !isHotUpdateBuild)
             {
                 appAsset.BuildVersion += 1;
             }
