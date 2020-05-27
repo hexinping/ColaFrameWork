@@ -28,6 +28,7 @@ namespace ColaFramework.ToolKit
     {
         private const string AppVersionPath = "Assets/Editor/Settings/AppVersion.asset";
         private const string Resource_AppVersionPath = "Assets/Resources/app_version.json";
+        private const string AppVersionFileName = "app_version.json";
         private const string Resource_VersionPath = "Assets/Resources/versions.txt";
         private const string CDNVersionControlUrl = "CDN/versioncontrol/{0}/{1}";
         private const string CDNResourceUrl = "CDN/cdn/";
@@ -149,10 +150,14 @@ namespace ColaFramework.ToolKit
             ColaEditHelper.BuildManifest();
             ColaEditHelper.BuildAssetBundles();
 
-            ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
-            AssetDatabase.Refresh();
+            var isHotUpdateBuild = ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD);
+            if (!isHotUpdateBuild)
+            {
+                ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
+                AssetDatabase.Refresh();
 
-            BuildVideoFiles();
+                BuildVideoFiles();
+            }
             Debug.Log("=================Build BuildAssetBundle Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }
 
@@ -199,8 +204,9 @@ namespace ColaFramework.ToolKit
             if (isHotUpdateBuild || isMotherPkg)
             {
                 //upload appversion.json
+                var cachePath = ColaEditHelper.TempCachePath + "/" + AppVersionFileName;
                 var CDN_AppVersionPath = string.Format(CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
-                FileHelper.CopyFile(Resource_AppVersionPath, CDN_AppVersionPath, true);
+                FileHelper.CopyFile(cachePath, CDN_AppVersionPath, true);
 
                 //upload version.txt and assets
                 var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
@@ -251,15 +257,22 @@ namespace ColaFramework.ToolKit
             if (null != appAsset)
             {
                 var jsonStr = JsonMapper.ToJson(appAsset);
-                FileHelper.DeleteFile(Resource_AppVersionPath);
-                FileHelper.WriteString(Resource_AppVersionPath, jsonStr);
-                AssetDatabase.Refresh();
+                var cachePath = ColaEditHelper.TempCachePath + "/" + AppVersionFileName;
+                FileHelper.DeleteFile(cachePath);
+                FileHelper.WriteString(cachePath, jsonStr);
+                if (!isHotUpdateBuild)
+                {
+                    FileHelper.CopyFile(cachePath, Resource_VersionPath, true);
+                }
             }
 
-            FileHelper.DeleteFile(Resource_VersionPath);
-            var outputPath = ColaEditHelper.CreateAssetBundleDirectory();
-            var versionsTxt = outputPath + "/versions.txt";
-            FileHelper.CopyFile(versionsTxt, Resource_VersionPath, true);
+            if (!isHotUpdateBuild)
+            {
+                FileHelper.DeleteFile(Resource_VersionPath);
+                var outputPath = ColaEditHelper.CreateAssetBundleDirectory();
+                var versionsTxt = outputPath + "/versions.txt";
+                FileHelper.CopyFile(versionsTxt, Resource_VersionPath, true);
+            }
 
             AssetDatabase.Refresh();
         }
