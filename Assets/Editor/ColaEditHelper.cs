@@ -249,7 +249,10 @@ namespace ColaFramework.ToolKit
             var importer = AssetImporter.GetAtPath(assetPath);
             if (importer == null) return;
             importer.assetBundleName = bundleName;
-            importer.assetBundleVariant = variant;
+            if (!string.IsNullOrEmpty(variant))
+            {
+                importer.assetBundleVariant = variant;
+            }
         }
 
         /// <summary>

@@ -164,7 +164,6 @@ namespace ColaFramework.ToolKit
         /// <summary>
         /// 处理视频文件
         /// </summary>
-        [MenuItem("Build/BuildVideoFiles")]
         private static void BuildVideoFiles()
         {
             FileHelper.CopyDir("Assets/RawAssets/Videos/", Application.streamingAssetsPath + "/Videos/");
