@@ -24,6 +24,7 @@ namespace ColaFramework
 
         void Awake()
         {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
 #if UNITY_EDITOR
             videoPath = Application.dataPath + "/RawAssets/Videos/";
 #else
@@ -62,7 +63,7 @@ namespace ColaFramework
             }
             else if (player.url == GetFilePath(AppConst.StoryVideoName))
             {
-
+                onPlayEnd();
             }
             else
             {
