@@ -44,6 +44,29 @@ namespace ColaFramework.ToolKit
         [LabelWidth(200)]
         private string CSSymbolDefine;
 
+        [LabelText("是否上传远端CDN")]
+        [SerializeField]
+        [LabelWidth(200)]
+        private bool isUpLoadRemoteCDN;
+
+        [LabelText("远端CDN地址")]
+        [SerializeField]
+        [LabelWidth(200)]
+        [ShowIf("isUpLoadRemoteCDN")]
+        private string CDNURL;
+
+        [LabelText("远端CDN用户名")]
+        [SerializeField]
+        [LabelWidth(200)]
+        [ShowIf("isUpLoadRemoteCDN")]
+        private string CDNUserName;
+
+        [LabelText("远端CDN密码")]
+        [SerializeField]
+        [LabelWidth(200)]
+        [ShowIf("isUpLoadRemoteCDN")]
+        private string CDNPassword;
+
         [Button("一键打包", ButtonSizes.Large, ButtonStyle.Box)]
         private void BuildPlayer()
         {
