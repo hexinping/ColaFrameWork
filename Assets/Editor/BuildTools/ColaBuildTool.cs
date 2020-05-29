@@ -266,7 +266,7 @@ namespace ColaFramework.ToolKit
                 FileHelper.WriteString(cachePath, jsonStr);
                 if (!isHotUpdateBuild)
                 {
-                    FileHelper.CopyFile(cachePath, Resource_VersionPath, true);
+                    FileHelper.CopyFile(cachePath, Resource_AppVersionPath, true);
                 }
             }
 
