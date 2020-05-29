@@ -37,7 +37,7 @@ namespace ColaFramework.ToolKit
         [LabelText("是否是Development Debug包")]
         [LabelWidth(200)]
         [SerializeField]
-        private bool isDebug = false;
+        private bool isDevelopment = false;
 
         [LabelText("是Mono包还是il2cpp包")]
         [LabelWidth(200)]
@@ -91,6 +91,9 @@ namespace ColaFramework.ToolKit
 
             ColaBuildTool.SetEnvironmentVariable(EnvOption.MOTHER_PKG, isMotherPkg.ToString(), false);
             ColaBuildTool.SetEnvironmentVariable(EnvOption.HOT_UPDATE_BUILD, isHotUpdate.ToString(), false);
+            ColaBuildTool.SetEnvironmentVariable(EnvOption.CS_DEF_SYMBOL, CSSymbolDefine, false);
+            ColaBuildTool.SetEnvironmentVariable(EnvOption.DEVLOPMENT, isDevelopment.ToString(), false);
+            ColaBuildTool.SetEnvironmentVariable(EnvOption.IS_MONO, isMono.ToString(), false);
 
             ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_URL, CDNURL, false);
             ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_USERNAME, CDNUserName, false);

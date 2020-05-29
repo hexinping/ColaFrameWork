@@ -157,52 +157,6 @@ namespace ColaFramework.ToolKit
             }
         }
 
-        private static string[] GetLevelsFromBuildSettings()
-        {
-            return EditorBuildSettings.scenes.Select(scene => scene.path).ToArray();
-        }
-
-        private static string GetAssetBundleManifestFilePath()
-        {
-            var relativeAssetBundlesOutputPathForPlatform = Path.Combine(Utility.AssetBundles, GetPlatformName());
-            return Path.Combine(relativeAssetBundlesOutputPathForPlatform, GetPlatformName()) + ".manifest";
-        }
-
-        public static void BuildStandalonePlayer(string outputPath = "")
-        {
-            if (string.IsNullOrEmpty(outputPath))
-            {
-                outputPath = EditorUtility.SaveFolderPanel("Choose Location of the Built Game", "", "");
-            }
-            if (outputPath.Length == 0)
-                return;
-
-            var levels = GetLevelsFromBuildSettings();
-            if (levels.Length == 0)
-            {
-                Debug.Log("Nothing to build.");
-                return;
-            }
-
-            var targetName = GetBuildTargetName(EditorUserBuildSettings.activeBuildTarget);
-            if (targetName == null)
-                return;
-#if UNITY_5_4 || UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0
-			BuildOptions option = EditorUserBuildSettings.development ? BuildOptions.Development : BuildOptions.None;
-			BuildPipeline.BuildPlayer(levels, outputPath + targetName, EditorUserBuildSettings.activeBuildTarget, option);
-#else
-            var buildPlayerOptions = new BuildPlayerOptions
-            {
-                scenes = levels,
-                locationPathName = outputPath + targetName,
-                assetBundleManifestPath = GetAssetBundleManifestFilePath(),
-                target = EditorUserBuildSettings.activeBuildTarget,
-                options = EditorUserBuildSettings.development ? BuildOptions.Development : BuildOptions.None
-            };
-            BuildPipeline.BuildPlayer(buildPlayerOptions);
-#endif
-        }
-
         public static string CreateAssetBundleDirectory()
         {
             // Choose the output path according to the build target.
@@ -384,43 +338,6 @@ namespace ColaFramework.ToolKit
             }
 
             deletes.Clear();
-        }
-
-        private static string GetBuildTargetName(BuildTarget target)
-        {
-            var timeNow = DateTime.Now;
-            var timeNowStr = string.Format("{0:d4}{1:d2}{2:d2}_{3:d2}{4:d2}{5:d2}", timeNow.Year, timeNow.Month, timeNow.Day, timeNow.Hour, timeNow.Minute, timeNow.Second);
-            var name = PlayerSettings.productName + "_" + timeNowStr;
-            // ReSharper disable once SwitchStatementMissingSomeCases
-            switch (target)
-            {
-                case BuildTarget.Android:
-                    return "/" + name + ".apk";
-
-                case BuildTarget.StandaloneWindows:
-                case BuildTarget.StandaloneWindows64:
-                    return "/" + name + ".exe";
-
-#if UNITY_2017_3_OR_NEWER
-                case BuildTarget.StandaloneOSX:
-                    return "/" + name + ".app";
-
-#else
-                    case BuildTarget.StandaloneOSXIntel:
-                    case BuildTarget.StandaloneOSXIntel64:
-                    case BuildTarget.StandaloneOSX:
-                                        return "/" + name + ".app";
-
-#endif
-
-                case BuildTarget.WebGL:
-                case BuildTarget.iOS:
-                    return "/" + name + ".ipa";
-                // Add more build targets for your own.
-                default:
-                    Debug.Log("Target not implemented.");
-                    return null;
-            }
         }
 
         public static AssetsManifest GetManifest()

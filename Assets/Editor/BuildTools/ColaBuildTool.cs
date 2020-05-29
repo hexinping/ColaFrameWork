@@ -17,6 +17,10 @@ namespace ColaFramework.ToolKit
 {
     public enum EnvOption
     {
+        CS_DEF_SYMBOL,
+        DEVLOPMENT,
+        IS_MONO,
+
         MOTHER_PKG,
         HOT_UPDATE_BUILD,
 
@@ -115,7 +119,14 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void SetBuildParams(BuildTargetGroup buildTargetGroup)
         {
-
+            var CS_DefineSymbol = GetEnvironmentVariable(EnvOption.CS_DEF_SYMBOL);
+            if (!string.IsNullOrEmpty(CS_DefineSymbol))
+            {
+                var oldSymbol = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+                oldSymbol = oldSymbol + ";" + oldSymbol;
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, oldSymbol);
+                AssetDatabase.SaveAssets();
+            }
         }
 
         /// <summary>
@@ -136,7 +147,49 @@ namespace ColaFramework.ToolKit
             var beginTime = System.DateTime.Now;
             if (!ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD))
             {
-                ColaEditHelper.BuildStandalonePlayer(ColaEditHelper.ProjectRoot + "/Build");
+                var outputPath = ColaEditHelper.ProjectRoot + "/Build";
+                if (string.IsNullOrEmpty(outputPath))
+                {
+                    outputPath = EditorUtility.SaveFolderPanel("Choose Location of the Built Game", "", "");
+                }
+                if (outputPath.Length == 0)
+                    return;
+
+                var levels = EditorBuildSettingsScene.GetActiveSceneList(EditorBuildSettings.scenes);
+                if (levels.Length == 0)
+                {
+                    Debug.Log("Nothing to build.");
+                    return;
+                }
+
+                var targetName = GetBuildTargetName(EditorUserBuildSettings.activeBuildTarget);
+                if (targetName == null)
+                    return;
+#if UNITY_5_4 || UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0
+			BuildOptions option = EditorUserBuildSettings.development ? BuildOptions.Development : BuildOptions.None;
+			BuildPipeline.BuildPlayer(levels, outputPath + targetName, EditorUserBuildSettings.activeBuildTarget, option);
+#else
+                var buildPlayerOptions = new BuildPlayerOptions
+                {
+                    scenes = levels,
+                    locationPathName = outputPath + targetName,
+                    assetBundleManifestPath = GetAssetBundleManifestFilePath(),
+                    target = EditorUserBuildSettings.activeBuildTarget,
+                };
+                if (ContainsEnvOption(EnvOption.DEVLOPMENT))
+                {
+                    buildPlayerOptions.options |= BuildOptions.Development;
+                    buildPlayerOptions.options |= BuildOptions.AllowDebugging;
+                    buildPlayerOptions.options |= BuildOptions.ConnectWithProfiler;
+                }
+                if (ContainsEnvOption(EnvOption.IS_MONO))
+                {
+                    PlayerSettings.SetScriptingBackend(buildTargetGroup, ScriptingImplementation.Mono2x);
+                }
+
+                AssetDatabase.SaveAssets();
+                var buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
+#endif
             }
             Debug.Log("=================Build Pkg Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
         }
@@ -267,6 +320,8 @@ namespace ColaFramework.ToolKit
                 if (!isHotUpdateBuild)
                 {
                     FileHelper.CopyFile(cachePath, Resource_AppVersionPath, true);
+
+                    PlayerSettings.bundleVersion = appAsset.Version;
                 }
             }
 
@@ -279,6 +334,7 @@ namespace ColaFramework.ToolKit
             }
 
             AssetDatabase.Refresh();
+            AssetDatabase.SaveAssets();
         }
 
         /// <summary>
@@ -302,6 +358,49 @@ namespace ColaFramework.ToolKit
                 buildTargetGroup = BuildTargetGroup.Standalone;
             }
             return buildTargetGroup;
+        }
+
+        private static string GetBuildTargetName(BuildTarget target)
+        {
+            var timeNow = DateTime.Now;
+            var timeNowStr = string.Format("{0:d4}{1:d2}{2:d2}_{3:d2}{4:d2}{5:d2}", timeNow.Year, timeNow.Month, timeNow.Day, timeNow.Hour, timeNow.Minute, timeNow.Second);
+            var name = PlayerSettings.productName + "_" + timeNowStr;
+
+            switch (target)
+            {
+                case BuildTarget.Android:
+                    return "/" + name + ".apk";
+
+                case BuildTarget.StandaloneWindows:
+                case BuildTarget.StandaloneWindows64:
+                    return "/" + name + ".exe";
+
+#if UNITY_2017_3_OR_NEWER
+                case BuildTarget.StandaloneOSX:
+                    return "/" + name + ".app";
+
+#else
+                    case BuildTarget.StandaloneOSXIntel:
+                    case BuildTarget.StandaloneOSXIntel64:
+                    case BuildTarget.StandaloneOSX:
+                                        return "/" + name + ".app";
+
+#endif
+
+                case BuildTarget.WebGL:
+                case BuildTarget.iOS:
+                    return "/" + name + ".ipa";
+                // Add more build targets for your own.
+                default:
+                    Debug.Log("Target not implemented.");
+                    return null;
+            }
+        }
+
+        private static string GetAssetBundleManifestFilePath()
+        {
+            var relativeAssetBundlesOutputPathForPlatform = Path.Combine(Utility.AssetBundles, ColaEditHelper.GetPlatformName());
+            return Path.Combine(relativeAssetBundlesOutputPathForPlatform, ColaEditHelper.GetPlatformName()) + ".manifest";
         }
         #endregion
 
