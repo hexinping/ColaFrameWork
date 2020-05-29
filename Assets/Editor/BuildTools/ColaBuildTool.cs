@@ -19,6 +19,11 @@ namespace ColaFramework.ToolKit
     {
         MOTHER_PKG,
         HOT_UPDATE_BUILD,
+
+        //CDN相关
+        CDN_URL,
+        CDN_USERNAME,
+        CDN_PASSWORD,
     }
 
     /// <summary>
