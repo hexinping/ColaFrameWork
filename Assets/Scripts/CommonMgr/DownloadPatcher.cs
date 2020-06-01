@@ -276,6 +276,7 @@ namespace ColaFramework
                 else
                 {
                     Debug.Log("需要去应用商店更新新版本！");
+                    Application.OpenURL(AppConst.CDNUrl);
                 }
             });
         }
@@ -339,14 +340,11 @@ namespace ColaFramework
                 }
 
                 // 还是失败，弹提示，玩家自己控制重试，这个时候会切回使用主下载地址
-                Debug.LogErrorFormat("Download version file fail, error:{0}", msg);
-                string strTips = "下载更新文件失败，请重试";
-                string strBtn = "重试";
-                //EventMgr.onLaunchConfirmTips(strTips, strBtn, () =>
-                //{
-                //    m_strDownloadUrl = m_strMainDownloadUrl;
-                //    DowndLoadMd5File();
-                //}, true);
+                SetConfirmTips("下载更新文件失败，请重试", "重试", () =>
+                 {
+                     m_strDownloadUrl = AppConst.CDNUrl;
+                     DowndLoadMd5File();
+                 });
             }
             else    // 成功的情况
             {
@@ -652,6 +650,11 @@ namespace ColaFramework
             }
             UIRoot = null;
             TipsText = null;
+            ConfirmTipsPanel = null;
+            ConfirmTipsBtn = null;
+            ConfirmTipsText = null;
+            ConfirmBtnText = null;
+            Slider = null;
         }
     }
 }
