@@ -28,6 +28,7 @@ namespace ColaFramework.ToolKit
         CDN_URL,
         CDN_USERNAME,
         CDN_PASSWORD,
+        REMOTE_CDN,
     }
 
     /// <summary>
@@ -260,28 +261,104 @@ namespace ColaFramework.ToolKit
 
             if (isHotUpdateBuild || isMotherPkg)
             {
-                //upload appversion.json
-                var cachePath = ColaEditHelper.TempCachePath + "/" + AppVersionFileName;
-                var CDN_AppVersionPath = string.Format(CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
-                FileHelper.CopyFile(cachePath, CDN_AppVersionPath, true);
-
-                //upload version.txt and assets
-                var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
-                var updateFilePath = reltaRoot + "/updates.txt";
-                using (var sr = new StreamReader(updateFilePath))
+                //上传远端CDN
+                if (ContainsEnvOption(EnvOption.REMOTE_CDN))
                 {
-                    var content = sr.ReadLine();
-                    while (null != content)
+                    var host = GetEnvironmentVariable(EnvOption.CDN_URL);
+                    var userName = GetEnvironmentVariable(EnvOption.CDN_USERNAME);
+                    var password = GetEnvironmentVariable(EnvOption.CDN_PASSWORD);
+                    var ftpUtil = new FTPUtil(host, userName, password);
+                    //upload appversion.json
+                    var cachePath = ColaEditHelper.TempCachePath + "/" + AppVersionFileName;
+                    var CDN_AppVersionPath = string.Format(CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
+                    try
                     {
-                        var reltaPath = reltaRoot + "/" + content;
-                        var destPath = CDNResourceUrl + content;
-                        FileHelper.CopyFile(reltaPath, destPath, true);
-                        content = sr.ReadLine();
+                        EnsureParentDirExist(ftpUtil, CDN_AppVersionPath);
                     }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError("Make remote CDN dir failed!" + ex.Message);
+                    }
+                    try
+                    {
+                        if (ftpUtil.CheckFileExist(CDN_AppVersionPath))
+                        {
+                            ftpUtil.DeleteFile(CDN_AppVersionPath);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError("Delete Appversion file to CDN Failed! " + ex.Message);
+                    }
+                    ftpUtil.Upload(cachePath, CDN_AppVersionPath);
+
+                    //upload version.txt and assets
+                    var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
+                    var updateFilePath = reltaRoot + "/updates.txt";
+                    using (var sr = new StreamReader(updateFilePath))
+                    {
+                        var content = sr.ReadLine();
+                        while (null != content)
+                        {
+                            var reltaPath = reltaRoot + "/" + content;
+                            var destPath = CDNResourceUrl + content;
+                            try
+                            {
+                                if (ftpUtil.CheckFileExist(destPath))
+                                {
+                                    ftpUtil.DeleteFile(destPath);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogError("Delete remote CDN file failed!" + ex.Message);
+                            }
+                            try
+                            {
+                                EnsureParentDirExist(ftpUtil, destPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogError("Make remote CDN dir failed!" + ex.Message);
+                            }
+                            ftpUtil.Upload(reltaPath, destPath);
+                            content = sr.ReadLine();
+                        }
+                    }
+                    ftpUtil.Upload(reltaRoot + "/versions.txt", CDNResourceUrl + "versions.txt");
                 }
-                FileHelper.CopyFile(reltaRoot + "/versions.txt", CDNResourceUrl + "versions.txt", true);
+                //上传本地CDN，打包机和CDN是同一台机器
+                else
+                {
+                    //upload appversion.json
+                    var cachePath = ColaEditHelper.TempCachePath + "/" + AppVersionFileName;
+                    var CDN_AppVersionPath = string.Format(CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
+                    FileHelper.CopyFile(cachePath, CDN_AppVersionPath, true);
+
+                    //upload version.txt and assets
+                    var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
+                    var updateFilePath = reltaRoot + "/updates.txt";
+                    using (var sr = new StreamReader(updateFilePath))
+                    {
+                        var content = sr.ReadLine();
+                        while (null != content)
+                        {
+                            var reltaPath = reltaRoot + "/" + content;
+                            var destPath = CDNResourceUrl + content;
+                            FileHelper.CopyFile(reltaPath, destPath, true);
+                            content = sr.ReadLine();
+                        }
+                    }
+                    FileHelper.CopyFile(reltaRoot + "/versions.txt", CDNResourceUrl + "versions.txt", true);
+                }
+
             }
             Debug.Log("=================UpLoadCDN Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
+        }
+
+        public static void UploadCDNTest()
+        {
+            UpLoadCDN(BuildTargetGroup.Android);
         }
 
         /// <summary>
@@ -401,6 +478,36 @@ namespace ColaFramework.ToolKit
         {
             var relativeAssetBundlesOutputPathForPlatform = Path.Combine(Utility.AssetBundles, ColaEditHelper.GetPlatformName());
             return Path.Combine(relativeAssetBundlesOutputPathForPlatform, ColaEditHelper.GetPlatformName()) + ".manifest";
+        }
+
+        public static void EnsureParentDirExist(FTPUtil ftpUtil, string path)
+        {
+            var dir = Path.GetDirectoryName(path);
+            var parents = new Queue<string>();
+            while (!string.IsNullOrEmpty(dir))
+            {
+                parents.Enqueue(dir);
+                dir = Path.GetDirectoryName(dir);
+            }
+            while (parents.Count > 0)
+            {
+                if (null != ftpUtil)
+                {
+                    try
+                    {
+                        ftpUtil.MakeDirectory(parents.Dequeue());
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                else
+                {
+                    Debug.LogError("EnsureParentDirExist throw exception! FTPUtil is null!");
+                }
+
+            }
         }
         #endregion
 
