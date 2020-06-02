@@ -276,7 +276,7 @@ namespace ColaFramework
                 else
                 {
                     Debug.Log("需要去应用商店更新新版本！");
-                    Application.OpenURL(AppConst.CDNUrl);
+                    Application.OpenURL(AppConst.AppDownloadUrl);
                 }
             });
         }
