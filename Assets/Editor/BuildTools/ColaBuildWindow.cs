@@ -103,17 +103,6 @@ namespace ColaFramework.ToolKit
             ColaBuildTool.BuildPlayer(BuildTarget.Android);
         }
 
-        //[Button("上传CDN测试", ButtonSizes.Large, ButtonStyle.Box)]
-        //private void UploadCDN()
-        //{
-        //    ColaBuildTool.SetEnvironmentVariable(EnvOption.HOT_UPDATE_BUILD, isHotUpdate.ToString(), false);
-        //    ColaBuildTool.SetEnvironmentVariable(EnvOption.REMOTE_CDN, isUpLoadRemoteCDN.ToString(), false);
-        //    ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_URL, CDNURL, false);
-        //    ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_USERNAME, CDNUserName, false);
-        //    ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_PASSWORD, CDNPassword, false);
-        //    ColaBuildTool.UploadCDNTest();
-        //}
-
         private void Init()
         {
             ColaBuildTool.ClearEnvironmentVariable();
