@@ -268,29 +268,15 @@ namespace ColaFramework.ToolKit
                     var userName = GetEnvironmentVariable(EnvOption.CDN_USERNAME);
                     var password = GetEnvironmentVariable(EnvOption.CDN_PASSWORD);
                     var ftpUtil = new FTPUtil(host, userName, password);
+
+                    //复制到本地目录以后打成zip，然后把zip上传到CDN
                     //upload appversion.json
+                    var tempCDNRoot = "ColaCache/CDN";
+                    FileHelper.RmDir(tempCDNRoot);
+
                     var cachePath = ColaEditHelper.TempCachePath + "/" + AppVersionFileName;
-                    var CDN_AppVersionPath = string.Format(CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
-                    try
-                    {
-                        EnsureParentDirExist(ftpUtil, CDN_AppVersionPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError("Make remote CDN dir failed!" + ex.Message);
-                    }
-                    try
-                    {
-                        if (ftpUtil.CheckFileExist(CDN_AppVersionPath))
-                        {
-                            ftpUtil.DeleteFile(CDN_AppVersionPath);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError("Delete Appversion file to CDN Failed! " + ex.Message);
-                    }
-                    ftpUtil.Upload(cachePath, CDN_AppVersionPath);
+                    var CDN_AppVersionPath = string.Format(ColaEditHelper.TempCachePath + "/" + CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
+                    FileHelper.CopyFile(cachePath, CDN_AppVersionPath, true);
 
                     //upload version.txt and assets
                     var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
@@ -301,31 +287,25 @@ namespace ColaFramework.ToolKit
                         while (null != content)
                         {
                             var reltaPath = reltaRoot + "/" + content;
-                            var destPath = CDNResourceUrl + content;
-                            try
-                            {
-                                if (ftpUtil.CheckFileExist(destPath))
-                                {
-                                    ftpUtil.DeleteFile(destPath);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Debug.LogError("Delete remote CDN file failed!" + ex.Message);
-                            }
-                            try
-                            {
-                                EnsureParentDirExist(ftpUtil, destPath);
-                            }
-                            catch (Exception ex)
-                            {
-                                Debug.LogError("Make remote CDN dir failed!" + ex.Message);
-                            }
-                            ftpUtil.Upload(reltaPath, destPath);
+                            var destPath = ColaEditHelper.TempCachePath + "/" + CDNResourceUrl + content;
+                            FileHelper.CopyFile(reltaPath, destPath, true);
                             content = sr.ReadLine();
                         }
                     }
-                    ftpUtil.Upload(reltaRoot + "/versions.txt", CDNResourceUrl + "versions.txt");
+                    FileHelper.CopyFile(reltaRoot + "/versions.txt", ColaEditHelper.TempCachePath + "/" + CDNResourceUrl + "versions.txt", true);
+
+                    //ZIP
+                    var zipPath = "ColaCache/hotupdate.zip";
+                    FileHelper.DeleteFile(zipPath);
+                    var result = ZipHelper.Zip(tempCDNRoot, zipPath);
+                    if (result)
+                    {
+                        ftpUtil.Upload(zipPath, "Upload/hotupdae.zip");
+                    }
+                    else
+                    {
+                        Debug.LogError("Zip并上传CDN过程中出现错误！");
+                    }
                 }
                 //上传本地CDN，打包机和CDN是同一台机器
                 else
