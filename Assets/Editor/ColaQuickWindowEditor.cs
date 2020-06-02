@@ -36,8 +36,6 @@ namespace ColaFramework.ToolKit
         {
             DrawColaFrameworkUI();
             GUILayout.Space(20);
-            DrawAssetBundleUI();
-            GUILayout.Space(20);
             DrawMiscUI();
             GUILayout.Space(20);
             DrawAssetUI();
@@ -69,39 +67,6 @@ namespace ColaFramework.ToolKit
             if (GUILayout.Button("创建C#版Templates(UIView和Module)", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
                 CreateScriptsEditor.CreateCSharpModule();
-            }
-            GUILayout.EndHorizontal();
-        }
-
-        public void DrawAssetBundleUI()
-        {
-            GUILayout.BeginHorizontal("HelpBox");
-            EditorGUILayout.LabelField("== Assetbundle相关 ==");
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("打包Assetbundle（增量）", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-            {
-            }
-            if (GUILayout.Button("重新打包Assetbundle（先删除再重打）", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-            {
-            }
-            GUILayout.EndHorizontal();
-
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("为所有资源设置Assetbundle name", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-            {
-            }
-            if (GUILayout.Button("清除所有资源的Assetbundle name", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-            {
-            }
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("AssetBundle Browser", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
-            {
-                //AssetBundleBrowser.AssetBundleBrowserMain.ShowWindow();
-                this.Close();
             }
             GUILayout.EndHorizontal();
         }
