@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ColaFramework;
+using Sirenix.OdinInspector;
 
 namespace UnityEngine.UI.Extensions
 {
@@ -29,11 +30,11 @@ namespace UnityEngine.UI.Extensions
     }
 
     /// <summary>
-    /// 高度定制可重用Tableview组件
+    /// 高度定制可重用Cell的无限滚动UITableview组件
     /// </summary>
     public class UITableView : MonoBehaviour, IControl
     {
-
+        #region 内部字段
         private ScrollRect scroll;
         private bool isHorizontal;
         private Vector3 scaleFactor;
@@ -61,7 +62,9 @@ namespace UnityEngine.UI.Extensions
         private float scrollMinRate = 0;//根据滑动不刷新最小距离计算的 min scroll rate
         private float viewStartPos = 0;
         private float viewEndPos = 0f;
+
         [SerializeField]
+        [LabelText("是否循环")]
         private bool loop;
 
         private List<UITableViewCell> reUseCells = new List<UITableViewCell>();
@@ -70,21 +73,18 @@ namespace UnityEngine.UI.Extensions
 
         private List<int> reUseTags = new List<int>();
         private List<int> newInUseTags = new List<int>();
+        #endregion
 
-        /// <summary>
-        /// 设置cell数量，抛到外部执行
-        /// </summary>
-        /// <returns></returns>
-        public delegate int GetTotalCell();
-        public GetTotalCell totalCellCallback;
+        #region 属性
+        [LabelText("Cell数量")]
+        public int CellCount;
 
-        /// <summary>
-        /// 创建cell，抛到外部执行
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public delegate UITableViewCell GetCellByIndex(int index);
-        public GetCellByIndex cellByIndexCallback;
+        [LabelText("TableviewCell")]
+        [SerializeField]
+        private GameObject CellPrefab;
+
+        public delegate void OnCellInitEvent(UITableView tableView, UITableViewCell cell);
+        public OnCellInitEvent onCellInit;
 
         /// <summary>
         /// 当滚动停止的时候，返回当前cell对应的索引
@@ -106,6 +106,7 @@ namespace UnityEngine.UI.Extensions
             get { return this.loop; }
             set { this.loop = value; }
         }
+        #endregion
 
         public void Init()
         {
@@ -129,6 +130,7 @@ namespace UnityEngine.UI.Extensions
             this.cellTotal = 0;
             this.curVisibleRange = new VisibleRange() { from = 0, to = -1 };
             this.newVisibleRange = new VisibleRange() { from = 0, to = -1 };
+            this.CellPrefab.SetActive(false);
             this.isInited = true;
         }
 
@@ -138,6 +140,10 @@ namespace UnityEngine.UI.Extensions
 
             if (this.scroll != null)
                 this.scroll.onValueChanged.RemoveListener(OnScrolling);
+
+            onScrollCompleted = null;
+            onTableScrolling = null;
+            onCellInit = null;
         }
 
         /// <summary>
@@ -147,16 +153,6 @@ namespace UnityEngine.UI.Extensions
         public void SetScrollMinDis(float minDis)
         {
             this.scrollMinDis = minDis;
-        }
-
-        public void SetTotalCellCallback(GetTotalCell callback)
-        {
-            this.totalCellCallback = callback;
-        }
-
-        public void SetCellByIndexCallback(GetCellByIndex callback)
-        {
-            this.cellByIndexCallback = callback;
         }
 
         /// <summary>
@@ -272,8 +268,7 @@ namespace UnityEngine.UI.Extensions
         private void InitTableData()
         {
             Reset();
-            if (this.totalCellCallback != null)
-                this.cellTotal = this.totalCellCallback();
+            this.cellTotal = CellCount;
             if (this.numPerRowOrCol == 0)
             {
                 this.numPerRowOrCol = 1;
@@ -370,7 +365,7 @@ namespace UnityEngine.UI.Extensions
 
         void ShowNewCells(List<int> newUseTag)
         {
-            if (this.cellByIndexCallback == null)
+            if (CellPrefab == null)
                 return;
             if (this.isOnShowing) return;
             for (int i = 0; i < newUseTag.Count; i++)
@@ -380,9 +375,26 @@ namespace UnityEngine.UI.Extensions
             }
         }
 
+        private UITableViewCell GetOneTableviewCell(int index)
+        {
+            UITableViewCell cell = GetReUseCell();
+            if (cell == null)
+            {
+                GameObject go = Instantiate(CellPrefab) as GameObject;
+                cell = go.AddSingleComponent<UITableViewCell>();
+                if (!go.activeSelf)
+                {
+                    go.SetActive(true);
+                }
+            }
+            cell.index = index;
+            cell.tableView = this;
+            return cell;
+        }
+
         void ShowCellByTag(int tag)
         {
-            UITableViewCell cell = this.cellByIndexCallback(tag);
+            UITableViewCell cell = GetOneTableviewCell(tag);
 
             if (cell != null)
             {
@@ -410,6 +422,10 @@ namespace UnityEngine.UI.Extensions
                     this.inUseCells.Add(cell);
                 }
 
+                if (null != onCellInit)
+                {
+                    onCellInit(this, cell);
+                }
             }
             else
             {

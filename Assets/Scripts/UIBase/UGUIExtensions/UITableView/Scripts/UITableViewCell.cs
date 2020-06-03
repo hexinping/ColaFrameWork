@@ -7,36 +7,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UITableViewCell : MonoBehaviour
+namespace UnityEngine.UI.Extensions
 {
-
-    [HideInInspector]
-    public int index;
-    [HideInInspector]
-    public RectTransform cacheTransform;
-    [HideInInspector]
-    public GameObject gameObject;
-    [HideInInspector]
-    public Dictionary<string, Component> extenParams;
-
-    void Awake()
+    public class UITableViewCell : MonoBehaviour
     {
-        cacheTransform = transform as RectTransform;
-        extenParams = new Dictionary<string, Component>();
-        Debug.Assert(cacheTransform != null, "transform should be RectTransform");
-    }
 
-    void OnDestroy()
-    {
-        index = -1;
-        cacheTransform = null;
-        if (null != extenParams)
+        [HideInInspector]
+        public int index;
+        [HideInInspector]
+        public RectTransform cacheTransform;
+        [HideInInspector]
+        public GameObject cacheGameObject;
+
+        internal UITableView tableView;
+
+        void Awake()
         {
-            extenParams.Clear();
+            cacheTransform = transform as RectTransform;
+            cacheGameObject = this.gameObject;
+            Debug.Assert(cacheTransform != null, "transform should be RectTransform");
         }
-        extenParams = null;
-        gameObject = null;
+
+        void OnDestroy()
+        {
+            index = -1;
+            cacheTransform = null;
+            cacheGameObject = null;
+        }
     }
-
-
 }
