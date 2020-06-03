@@ -81,9 +81,9 @@ namespace UnityEngine.UI.Extensions
         /// <summary>
         /// 创建cell，抛到外部执行
         /// </summary>
-        /// <param name="tag"></param>
+        /// <param name="index"></param>
         /// <returns></returns>
-        public delegate UITableViewCell GetCellByIndex(int tag);
+        public delegate UITableViewCell GetCellByIndex(int index);
         public GetCellByIndex cellByIndexCallback;
 
         /// <summary>
