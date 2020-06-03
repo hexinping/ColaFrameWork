@@ -38,6 +38,9 @@ public class DelegateFactory
 		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
 		dict.Add(typeof(System.Action<UnityEngine.Object>), factory.System_Action_UnityEngine_Object);
 		dict.Add(typeof(ColaFramework.NetWork.NetMessageCenter.NetMessageAction), factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
+		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnCellInitEvent), factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
+		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnScrollCompleted), factory.UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
+		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnTableScrolling), factory.UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.Application.AdvertisingIdentifierCallback), factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		dict.Add(typeof(UnityEngine.Application.LowMemoryCallback), factory.UnityEngine_Application_LowMemoryCallback);
@@ -70,6 +73,9 @@ public class DelegateFactory
 		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
 		DelegateTraits<System.Action<UnityEngine.Object>>.Init(factory.System_Action_UnityEngine_Object);
 		DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
+		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
+		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
+		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
 		DelegateTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.UnityEngine_Application_AdvertisingIdentifierCallback);
 		DelegateTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.UnityEngine_Application_LowMemoryCallback);
@@ -102,6 +108,9 @@ public class DelegateFactory
 		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
 		TypeTraits<System.Action<UnityEngine.Object>>.Init(factory.Check_System_Action_UnityEngine_Object);
 		TypeTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.Check_ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
+		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
+		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
+		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
 		TypeTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Init(factory.Check_UnityEngine_Application_AdvertisingIdentifierCallback);
 		TypeTraits<UnityEngine.Application.LowMemoryCallback>.Init(factory.Check_UnityEngine_Application_LowMemoryCallback);
@@ -134,6 +143,9 @@ public class DelegateFactory
 		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
 		StackTraits<System.Action<UnityEngine.Object>>.Push = factory.Push_System_Action_UnityEngine_Object;
 		StackTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Push = factory.Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction;
+		StackTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent;
+		StackTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted;
+		StackTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnTableScrolling;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
 		StackTraits<UnityEngine.Application.AdvertisingIdentifierCallback>.Push = factory.Push_UnityEngine_Application_AdvertisingIdentifierCallback;
 		StackTraits<UnityEngine.Application.LowMemoryCallback>.Push = factory.Push_UnityEngine_Application_LowMemoryCallback;
@@ -1470,6 +1482,181 @@ public class DelegateFactory
 	}
 
 	void Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction(IntPtr L, ColaFramework.NetWork.NetMessageCenter.NetMessageAction o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event : LuaDelegate
+	{
+		public UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(LuaFunction func) : base(func) { }
+		public UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public UnityEngine.UI.Extensions.UITableView.OnCellInitEvent UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent fn = delegate(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event target = new UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(func);
+			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event target = new UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(func, self);
+			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(UnityEngine.UI.Extensions.UITableView.OnCellInitEvent), L, pos);
+	}
+
+	void Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnCellInitEvent o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class UnityEngine_UI_Extensions_UITableView_OnScrollCompleted_Event : LuaDelegate
+	{
+		public UnityEngine_UI_Extensions_UITableView_OnScrollCompleted_Event(LuaFunction func) : base(func) { }
+		public UnityEngine_UI_Extensions_UITableView_OnScrollCompleted_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.UI.Extensions.UITableView param0, int param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.UI.Extensions.UITableView param0, int param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public UnityEngine.UI.Extensions.UITableView.OnScrollCompleted UnityEngine_UI_Extensions_UITableView_OnScrollCompleted(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			UnityEngine.UI.Extensions.UITableView.OnScrollCompleted fn = delegate(UnityEngine.UI.Extensions.UITableView param0, int param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			UnityEngine_UI_Extensions_UITableView_OnScrollCompleted_Event target = new UnityEngine_UI_Extensions_UITableView_OnScrollCompleted_Event(func);
+			UnityEngine.UI.Extensions.UITableView.OnScrollCompleted d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			UnityEngine_UI_Extensions_UITableView_OnScrollCompleted_Event target = new UnityEngine_UI_Extensions_UITableView_OnScrollCompleted_Event(func, self);
+			UnityEngine.UI.Extensions.UITableView.OnScrollCompleted d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(UnityEngine.UI.Extensions.UITableView.OnScrollCompleted), L, pos);
+	}
+
+	void Push_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnScrollCompleted o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class UnityEngine_UI_Extensions_UITableView_OnTableScrolling_Event : LuaDelegate
+	{
+		public UnityEngine_UI_Extensions_UITableView_OnTableScrolling_Event(LuaFunction func) : base(func) { }
+		public UnityEngine_UI_Extensions_UITableView_OnTableScrolling_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(float param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(float param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public UnityEngine.UI.Extensions.UITableView.OnTableScrolling UnityEngine_UI_Extensions_UITableView_OnTableScrolling(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			UnityEngine.UI.Extensions.UITableView.OnTableScrolling fn = delegate(float param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			UnityEngine_UI_Extensions_UITableView_OnTableScrolling_Event target = new UnityEngine_UI_Extensions_UITableView_OnTableScrolling_Event(func);
+			UnityEngine.UI.Extensions.UITableView.OnTableScrolling d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			UnityEngine_UI_Extensions_UITableView_OnTableScrolling_Event target = new UnityEngine_UI_Extensions_UITableView_OnTableScrolling_Event(func, self);
+			UnityEngine.UI.Extensions.UITableView.OnTableScrolling d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_UnityEngine_UI_Extensions_UITableView_OnTableScrolling(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(UnityEngine.UI.Extensions.UITableView.OnTableScrolling), L, pos);
+	}
+
+	void Push_UnityEngine_UI_Extensions_UITableView_OnTableScrolling(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnTableScrolling o)
 	{
 		ToLua.Push(L, o);
 	}

@@ -159,7 +159,7 @@ namespace UnityEngine.UI.Extensions
         /// 从可复用列表里取cell,没有就创建新的cell
         /// </summary>
         /// <returns></returns>
-        public UITableViewCell GetReUseCell()
+        private UITableViewCell GetReUseCell()
         {
             if (reUseCells.Count == 0) return null;
             UITableViewCell cell = reUseCells[0];
@@ -216,7 +216,7 @@ namespace UnityEngine.UI.Extensions
         }
 
 
-        public void SetToBot()
+        public void SetToBottom()
         {
             Vector2 pos = this.contentRT.anchoredPosition;
             if (this.isHorizontal)
@@ -300,7 +300,6 @@ namespace UnityEngine.UI.Extensions
                 cell.cacheTransform.anchoredPosition = new Vector2(1000, 1000);
         }
 
-
         void LateUpdate()
         {
             if (this.isOnShowing) return;
@@ -347,7 +346,6 @@ namespace UnityEngine.UI.Extensions
             this.curVisibleRange.to = this.newVisibleRange.to;
 
         }
-
 
         void CollectReUseCells(List<int> _reUseTags)
         {

@@ -81,6 +81,8 @@ public static class CustomSettings
         _GT(typeof(NetMessageCenter)).SetNameSpace(null),
         _GT(typeof(UIComponentCollection)).SetNameSpace(null),
         _GT(typeof(DropdownControl)).SetNameSpace(null),
+        _GT(typeof(UITableView)).SetNameSpace(null),
+        _GT(typeof(UITableViewCell)).SetNameSpace(null),
 
 #if USING_DOTWEENING
         _GT(typeof(DG.Tweening.DOTween)),
