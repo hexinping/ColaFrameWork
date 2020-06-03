@@ -24,6 +24,12 @@ end
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
 function UILoginPanel:OnCreate()
     Util.UI.SetImageSpriteFromAtlas(self.m_okBtn.image,"bt_buy")
+
+    self.m_Dropdown:SetCaptionText("动态更改Caption")
+    self.m_Dropdown:AddDropdownItem("选项1")
+    self.m_Dropdown:AddDropdownItem("选项2")
+    self.m_Dropdown:AddDropdownItem("选项3")
+    self.m_Dropdown:RefreshShownValue()
 end
 
 -- 界面可见性变化的时候触发

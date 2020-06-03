@@ -71,8 +71,8 @@ function UIBase:Create()
         bindView.BindView(self, self.Panel)
     end
     self:AttachListener(self.Panel)
-    self:OnCreate()
     self:RegisterEvent()
+    self:OnCreate()
     self:OnShow(self:IsVisible())
 end
 
@@ -97,8 +97,8 @@ function UIBase:CreateWithGo(gameObejct)
         UIManager.Instance():ShowUIMask(self)
     end
     self:AttachListener(self.Panel)
-    self:OnCreate()
     self:RegisterEvent()
+    self:OnCreate()
     self:OnShow(self:IsVisible())
 end
 
@@ -266,6 +266,9 @@ function UIBase:AttachListener(gameObject)
     self.uguiMsgHandler.onFloatValueChange = function(name, value)
         self:onFloatValueChange(name, value)
     end
+    self.uguiMsgHandler.onIntValueChange = function(name, value)
+        self:onIntValueChange(name, value)
+    end
     self.uguiMsgHandler.onStrValueChange = function(name, text)
         self:onStrValueChange(name, text)
     end
@@ -329,6 +332,10 @@ function UIBase:onEvent(eventName)
 end
 
 function UIBase:onFloatValueChange(name, value)
+
+end
+
+function UIBase:onIntValueChange(name, index)
 
 end
 

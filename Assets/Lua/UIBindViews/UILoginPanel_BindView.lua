@@ -13,6 +13,9 @@ function public.BindView(uiView, Panel)
 			uiView.m_bg = collection:Get(2)
 			uiView.m_cancelBtn = collection:Get(3)
 			uiView.m_okBtn = collection:Get(4)
+			uiView.m_Item = collection:Get(5)
+			uiView.m_Template = collection:Get(6)
+			uiView.m_Dropdown = collection:Get(7)
 		else
 			error("BindView Error! UIComponentCollection is nil!")
 		end
