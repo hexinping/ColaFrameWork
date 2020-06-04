@@ -30,11 +30,20 @@ namespace ColaFramework.ToolKit
         private static UIComponentCollection UICollection;
         private static int UIComponentIndex = -1;
 
+        private class ExportInfo
+        {
+            public string name;
+            public Dictionary<string, int> uiExportElementDic = new Dictionary<string, int>();
+            public UIComponentCollection uicollection;
+            public int index = -1;
+        }
+
+        private static List<ExportInfo> nestExportInfoList = new List<ExportInfo>(2);
+
         public static Camera UICamera
         {
             get { return GetOrCreateUICamera(); }
         }
-
 
         /// <summary>
         /// 快速创建UI模版
@@ -78,6 +87,7 @@ namespace ColaFramework.ToolKit
 
             uiObj.name = UIViewName;
             uiExportElementDic.Clear();
+            nestExportInfoList.Clear();
             UICollection = null;
             UIComponentIndex = -1;
 
@@ -102,7 +112,24 @@ namespace ColaFramework.ToolKit
                 {
                     continue;
                 }
-                ProcessUIPrefab(transform.gameObject);
+
+                //处理UITableview
+
+                if (transform.GetComponent<UITableViewCell>() != null)
+                {
+                    var info = new ExportInfo();
+                    nestExportInfoList.Add(info);
+                    info.name = "m_" + transform.name;
+                    var collection = transform.gameObject.AddSingleComponent<UIComponentCollection>();
+                    collection.Clear();
+                    info.uicollection = collection;
+                    ProceseUITableview(transform.gameObject, info);
+                }
+                else
+                {
+                    ProcessUIPrefab(transform.gameObject);
+                }
+
                 bool isHandled = false;
                 foreach (var type in ExportComponentTypes)
                 {
@@ -127,6 +154,52 @@ namespace ColaFramework.ToolKit
                         UICollection.Add(UIComp);
                         var componentName = "m_" + transform.name;
                         uiExportElementDic[componentName] = UIComponentIndex;
+                        isHandled = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static void ProceseUITableview(GameObject root, ExportInfo exportInfo)
+        {
+            if (null == root || null == exportInfo)
+            {
+                return;
+            }
+
+            foreach (Transform transform in root.transform)
+            {
+                if (transform.CompareTag(Constants.UIIgnoreTag))
+                {
+                    continue;
+                }
+                ProceseUITableview(transform.gameObject, exportInfo);
+
+                bool isHandled = false;
+                foreach (var type in ExportComponentTypes)
+                {
+                    var UIComp = transform.GetComponent(type);
+                    if (null != UIComp)
+                    {
+                        exportInfo.index++;
+                        exportInfo.uicollection.Add(UIComp);
+                        var componentName = "m_" + transform.name;
+                        exportInfo.uiExportElementDic[componentName] = exportInfo.index++;
+                        isHandled = true;
+                        break;
+                    }
+                }
+                if (isHandled) continue;
+                foreach (var type in ExportPropertyTypes)
+                {
+                    var UIComp = transform.GetComponent(type);
+                    if (null != UIComp && transform.CompareTag(Constants.UIPropertyTag))
+                    {
+                        exportInfo.index++;
+                        exportInfo.uicollection.Add(UIComp);
+                        var componentName = "m_" + transform.name;
+                        exportInfo.uiExportElementDic[componentName] = exportInfo.index++;
                         isHandled = true;
                         break;
                     }
