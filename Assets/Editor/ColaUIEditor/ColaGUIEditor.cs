@@ -119,7 +119,8 @@ namespace ColaFramework.ToolKit
                 {
                     var info = new ExportInfo();
                     nestExportInfoList.Add(info);
-                    info.name = "m_" + transform.name;
+                    var uiTableview = transform.gameObject.GetComponentInParent<UITableView>();
+                    info.name = "m_" + uiTableview.transform.name;
                     var collection = transform.gameObject.AddSingleComponent<UIComponentCollection>();
                     collection.Clear();
                     info.uicollection = collection;
@@ -213,9 +214,13 @@ namespace ColaFramework.ToolKit
 
             StringBuilder sb = new StringBuilder(16);
             sb.Append("--[[Notice:This lua uiview file is auto generate by UIViewExporter，don't modify it manually! --]]\n\n");
-            sb.Append("local public = {}\n\n");
+            sb.Append("local public = {}\n");
+            sb.Append("local cachedViews = nil\n\n");
             sb.Append("public.viewPath = \"" + Constants.UIExportPrefabReltaPath + UIViewName + ".prefab\"\n\n");
+
+            //BindView
             sb.Append("function public.BindView(uiView, Panel)\n");
+            sb.Append("\tcachedViews = {}\n");
             sb.Append("\tif nil ~= Panel then\n");
             sb.Append("\t\tlocal collection = Panel:GetComponent(\"UIComponentCollection\")\n");
             sb.Append("\t\tif nil ~= collection then\n");
@@ -234,6 +239,42 @@ namespace ColaFramework.ToolKit
 
             sb.Append("\t\telse\n\t\t\terror(\"BindView Error! UIComponentCollection is nil!\")\n\t\tend\n");
             sb.Append("\telse\n\t\terror(\"BindView Error! Panel is nil!\")\n\tend\nend\n\n");
+
+            //UnBindView
+            sb.Append("function public.UnBindView(uiView)\n");
+            sb.Append("\tcachedViews = nil\n");
+            if (uiExportElementDic.Count > 0)
+            {
+                foreach (var item in uiExportElementDic)
+                {
+                    sb.Append("\tuiView.").Append(item.Key).Append(" = nil\n");
+                }
+            }
+            else
+            {
+                sb.Append("\t\t\t--pass\n");
+            }
+            sb.Append("end\n\n");
+
+            //UITableview
+            if (nestExportInfoList.Count > 0)
+            {
+                sb.Append("function public.GetCellView(uiView,tableview, cell)\n");
+                sb.Append("\tlocal cellView = cachedViews[cell]\n");
+                sb.Append("\tif nil == cellView then\n\t\tcellView = {}\n");
+                foreach (var item in nestExportInfoList)
+                {
+                    sb.Append("\t\tif tableview == ").Append("uiView.").Append(item.name).Append(" then\n");
+                    sb.Append("\t\t\tlocal collection = cell:GetComponent(\"UIComponentCollection\")\n");
+                    foreach (var element in item.uiExportElementDic)
+                    {
+                        sb.Append("\t\t\tcellView.").Append(element.Key).Append(" = collection:Get(").Append(element.Value).Append(")\n");
+                    }
+                    sb.Append("\t\tend\n\t\tcachedViews[cell] = cellView\n");
+                }
+                sb.Append("\tend\n\treturn cellView\nend\n\n");
+            }
+
             sb.Append("return public");
 
             FileHelper.WriteString(codePath, sb.ToString());
