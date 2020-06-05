@@ -542,8 +542,6 @@ namespace ColaFramework
             otherlistenner.togglevalueChangeAction += onBoolValueChange;
             otherlistenner.slidervalueChangeAction += onFloatValueChange;
             otherlistenner.scrollbarvalueChangeAction += onFloatValueChange;
-            otherlistenner.scrollrectvalueChangeAction += onRectValueChange;
-            otherlistenner.dropdownvalueChangeAction += onIntValueChange;
             otherlistenner.onEvent += onEvent;
         }
 
@@ -553,8 +551,6 @@ namespace ColaFramework
             OtherEventListenner otherlistenner = rect.gameObject.GetComponent<OtherEventListenner>();
             if (otherlistenner == null)
                 otherlistenner = rect.gameObject.AddComponent<OtherEventListenner>();
-            rect.onValueChanged.AddListener(otherlistenner.scrollrectValueChangeHandler());
-            otherlistenner.scrollrectvalueChangeAction += onRectValueChange;
             otherlistenner.onEvent += onEvent;
         }
 
@@ -606,8 +602,6 @@ namespace ColaFramework
                 otherlistenner.togglevalueChangeAction -= onBoolValueChange;
                 otherlistenner.slidervalueChangeAction -= onFloatValueChange;
                 otherlistenner.scrollbarvalueChangeAction -= onFloatValueChange;
-                otherlistenner.scrollrectvalueChangeAction -= onRectValueChange;
-                otherlistenner.dropdownvalueChangeAction -= onIntValueChange;
                 otherlistenner.onEvent -= onEvent;
             }
         }

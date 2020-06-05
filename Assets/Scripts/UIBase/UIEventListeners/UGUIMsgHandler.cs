@@ -6,6 +6,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
 {
@@ -15,15 +16,20 @@ public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
     /// <param name="obj"></param>
     public void AttachListener(GameObject obj)
     {
-        ScrollRect[] rects = obj.GetComponentsInChildren<ScrollRect>(true);
-        for (int i = 0; i < rects.Length; i++)
+        var tableviews = obj.GetComponentsInChildren<UITableView>(true);
+        foreach (var table in tableviews)
         {
-            AddOtherEventListenner(rects[i]);
+            AddOtherEventListener(table);
         }
+
         Selectable[] selectable = obj.GetComponentsInChildren<Selectable>(true);
 
         foreach (Selectable st in selectable)
         {
+            if (st.GetComponentInParent<UITableViewCell>() != null)
+            {
+                continue;
+            }
             AddEventaHandler(st);
         }
     }
@@ -114,20 +120,17 @@ public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
         otherlistenner.togglevalueChangeAction += onBoolValueChange;
         otherlistenner.slidervalueChangeAction += onFloatValueChange;
         otherlistenner.scrollbarvalueChangeAction += onFloatValueChange;
-        otherlistenner.scrollrectvalueChangeAction += onRectValueChange;
-        otherlistenner.dropdownvalueChangeAction += onIntValueChange;
         otherlistenner.onEvent += onEvent;
     }
 
-    void AddOtherEventListenner(ScrollRect rect)
+    void AddOtherEventListener(UITableView tableView)
     {
+        tableView.onCellInit = onTableviewCellInit;
+    }
 
-        OtherEventListenner otherlistenner = rect.gameObject.GetComponent<OtherEventListenner>();
-        if (otherlistenner == null)
-            otherlistenner = rect.gameObject.AddComponent<OtherEventListenner>();
-        rect.onValueChanged.AddListener(otherlistenner.scrollrectValueChangeHandler());
-        otherlistenner.scrollrectvalueChangeAction += onRectValueChange;
-        otherlistenner.onEvent += onEvent;
+    void RemoveOtherEventListener(UITableView tableView)
+    {
+        tableView.onCellInit = null;
     }
 
     /// <summary>
@@ -136,6 +139,12 @@ public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
     /// <param name="obj"></param>
     public void UnAttachListener(GameObject obj)
     {
+        var tableviews = obj.GetComponentsInChildren<UITableView>(true);
+        foreach (var table in tableviews)
+        {
+            RemoveOtherEventListener(table);
+        }
+
         Selectable[] selectable = obj.GetComponentsInChildren<Selectable>(true);
 
         foreach (Selectable st in selectable)
@@ -178,8 +187,6 @@ public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
             otherlistenner.togglevalueChangeAction -= onBoolValueChange;
             otherlistenner.slidervalueChangeAction -= onFloatValueChange;
             otherlistenner.scrollbarvalueChangeAction -= onFloatValueChange;
-            otherlistenner.scrollrectvalueChangeAction -= onRectValueChange;
-            otherlistenner.dropdownvalueChangeAction -= onIntValueChange;
             otherlistenner.onEvent -= onEvent;
         }
     }
@@ -212,6 +219,7 @@ public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
     public UIEventHandler onInitializePotentialDrag;
     public UIDragEventHandlerDetail onUpDetail;
     public UIDragEventHandlerDetail onDownDetail;
+    public UITableView.OnCellInitEvent onTableviewCellInit;
 
     /// <summary>
     /// 触发UI事件时会触发onEvent方法(在需要的事件里面添加即可)

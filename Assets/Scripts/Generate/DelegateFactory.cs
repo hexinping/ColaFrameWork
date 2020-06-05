@@ -33,12 +33,12 @@ public class DelegateFactory
 		dict.Add(typeof(RectValueChangeAction), factory.RectValueChangeAction);
 		dict.Add(typeof(FloatValueChangeAction), factory.FloatValueChangeAction);
 		dict.Add(typeof(BoolValueChangeAction), factory.BoolValueChangeAction);
+		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnCellInitEvent), factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
 		dict.Add(typeof(System.Action<string>), factory.System_Action_string);
 		dict.Add(typeof(OnSceneNameChanged), factory.OnSceneNameChanged);
 		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
 		dict.Add(typeof(System.Action<UnityEngine.Object>), factory.System_Action_UnityEngine_Object);
 		dict.Add(typeof(ColaFramework.NetWork.NetMessageCenter.NetMessageAction), factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
-		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnCellInitEvent), factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
 		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnScrollCompleted), factory.UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
 		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnTableScrolling), factory.UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), factory.UnityEngine_Camera_CameraCallback);
@@ -68,12 +68,12 @@ public class DelegateFactory
 		DelegateTraits<RectValueChangeAction>.Init(factory.RectValueChangeAction);
 		DelegateTraits<FloatValueChangeAction>.Init(factory.FloatValueChangeAction);
 		DelegateTraits<BoolValueChangeAction>.Init(factory.BoolValueChangeAction);
+		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
 		DelegateTraits<System.Action<string>>.Init(factory.System_Action_string);
 		DelegateTraits<OnSceneNameChanged>.Init(factory.OnSceneNameChanged);
 		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
 		DelegateTraits<System.Action<UnityEngine.Object>>.Init(factory.System_Action_UnityEngine_Object);
 		DelegateTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
-		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
 		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
 		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		DelegateTraits<UnityEngine.Camera.CameraCallback>.Init(factory.UnityEngine_Camera_CameraCallback);
@@ -103,12 +103,12 @@ public class DelegateFactory
 		TypeTraits<RectValueChangeAction>.Init(factory.Check_RectValueChangeAction);
 		TypeTraits<FloatValueChangeAction>.Init(factory.Check_FloatValueChangeAction);
 		TypeTraits<BoolValueChangeAction>.Init(factory.Check_BoolValueChangeAction);
+		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
 		TypeTraits<System.Action<string>>.Init(factory.Check_System_Action_string);
 		TypeTraits<OnSceneNameChanged>.Init(factory.Check_OnSceneNameChanged);
 		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
 		TypeTraits<System.Action<UnityEngine.Object>>.Init(factory.Check_System_Action_UnityEngine_Object);
 		TypeTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Init(factory.Check_ColaFramework_NetWork_NetMessageCenter_NetMessageAction);
-		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
 		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
 		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		TypeTraits<UnityEngine.Camera.CameraCallback>.Init(factory.Check_UnityEngine_Camera_CameraCallback);
@@ -138,12 +138,12 @@ public class DelegateFactory
 		StackTraits<RectValueChangeAction>.Push = factory.Push_RectValueChangeAction;
 		StackTraits<FloatValueChangeAction>.Push = factory.Push_FloatValueChangeAction;
 		StackTraits<BoolValueChangeAction>.Push = factory.Push_BoolValueChangeAction;
+		StackTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent;
 		StackTraits<System.Action<string>>.Push = factory.Push_System_Action_string;
 		StackTraits<OnSceneNameChanged>.Push = factory.Push_OnSceneNameChanged;
 		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
 		StackTraits<System.Action<UnityEngine.Object>>.Push = factory.Push_System_Action_UnityEngine_Object;
 		StackTraits<ColaFramework.NetWork.NetMessageCenter.NetMessageAction>.Push = factory.Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction;
-		StackTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent;
 		StackTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnScrollCompleted;
 		StackTraits<UnityEngine.UI.Extensions.UITableView.OnTableScrolling>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnTableScrolling;
 		StackTraits<UnityEngine.Camera.CameraCallback>.Push = factory.Push_UnityEngine_Camera_CameraCallback;
@@ -1199,6 +1199,65 @@ public class DelegateFactory
 		ToLua.Push(L, o);
 	}
 
+	class UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event : LuaDelegate
+	{
+		public UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(LuaFunction func) : base(func) { }
+		public UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.Push(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public UnityEngine.UI.Extensions.UITableView.OnCellInitEvent UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent fn = delegate(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event target = new UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(func);
+			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event target = new UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(func, self);
+			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(UnityEngine.UI.Extensions.UITableView.OnCellInitEvent), L, pos);
+	}
+
+	void Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnCellInitEvent o)
+	{
+		ToLua.Push(L, o);
+	}
+
 	class System_Action_string_Event : LuaDelegate
 	{
 		public System_Action_string_Event(LuaFunction func) : base(func) { }
@@ -1482,65 +1541,6 @@ public class DelegateFactory
 	}
 
 	void Push_ColaFramework_NetWork_NetMessageCenter_NetMessageAction(IntPtr L, ColaFramework.NetWork.NetMessageCenter.NetMessageAction o)
-	{
-		ToLua.Push(L, o);
-	}
-
-	class UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event : LuaDelegate
-	{
-		public UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(LuaFunction func) : base(func) { }
-		public UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(LuaFunction func, LuaTable self) : base(func, self) { }
-
-		public void Call(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1)
-		{
-			func.BeginPCall();
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-
-		public void CallWithSelf(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1)
-		{
-			func.BeginPCall();
-			func.Push(self);
-			func.Push(param0);
-			func.Push(param1);
-			func.PCall();
-			func.EndPCall();
-		}
-	}
-
-	public UnityEngine.UI.Extensions.UITableView.OnCellInitEvent UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(LuaFunction func, LuaTable self, bool flag)
-	{
-		if (func == null)
-		{
-			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent fn = delegate(UnityEngine.UI.Extensions.UITableView param0, UnityEngine.UI.Extensions.UITableViewCell param1) { };
-			return fn;
-		}
-
-		if(!flag)
-		{
-			UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event target = new UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(func);
-			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent d = target.Call;
-			target.method = d.Method;
-			return d;
-		}
-		else
-		{
-			UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event target = new UnityEngine_UI_Extensions_UITableView_OnCellInitEvent_Event(func, self);
-			UnityEngine.UI.Extensions.UITableView.OnCellInitEvent d = target.CallWithSelf;
-			target.method = d.Method;
-			return d;
-		}
-	}
-
-	bool Check_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(IntPtr L, int pos)
-	{
-		return TypeChecker.CheckDelegateType(typeof(UnityEngine.UI.Extensions.UITableView.OnCellInitEvent), L, pos);
-	}
-
-	void Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnCellInitEvent o)
 	{
 		ToLua.Push(L, o);
 	}
