@@ -22,6 +22,7 @@ function UIBase:initialize()
     self.isExist = false
     self.isShowUIBlur = false
     self.isShowUIMask = false
+    self.bindView = nil
     self:InitParam()
 end
 
@@ -38,6 +39,7 @@ function UIBase:Create()
 
     local ret, bindView = pcall(require, "UIBindViews." .. tostring(self) .. "_BindView")
     if ret then
+        self.bindView = bindView
         self.ResPath = bindView.viewPath
     else
         warn("UIView don't have BindView! " .. tostring(self))
@@ -136,6 +138,9 @@ function UIBase:Destroy()
     self:DestroySubPanels()
     self:UnRegisterEvent()
     self:UnAttachListener(self.Panel)
+    if nil ~= self.bindView then
+        self.bindView.UnBindView(self)
+    end
     if self.isShowUIBlur then
         Common_Utils.DestroyUIBlur()
     end
@@ -236,6 +241,14 @@ function UIBase:SetOutTouchDisappear()
     UIManager.Instance():SetOutTouchDisappear(self)
 end
 
+-- 获取UITableviewCell
+function UIBase:GetCellView(tableview, cell)
+    if nil ~= self.bindView then
+        return self.bindView.GetCellView(self, tableview, cell)
+    end
+    return nil
+end
+
 -- 注册UIEventListener
 function UIBase:AttachListener(gameObject)
     if nil == gameObject then
@@ -281,6 +294,9 @@ function UIBase:AttachListener(gameObject)
     self.uguiMsgHandler.onEndDrag = function(name, deltaPos, curToucPosition)
         self:onEndDrag(name, deltaPos, curToucPosition)
     end
+    self.uguiMsgHandler.onTableviewCellInit = function(tableview, cell)
+        self:onTableviewCellInit(tableview,cell)
+    end
 
     self.uguiMsgHandler:AttachListener(gameObject)
 end
@@ -301,6 +317,7 @@ function UIBase:UnAttachListener(gameObject)
     self.uguiMsgHandler.onDrag = nil
     self.uguiMsgHandler.onBeginDrag = nil
     self.uguiMsgHandler.onEndDrag = nil
+    self.uguiMsgHandler.onTableviewCellInit = nil
 
     self.uguiMsgHandler = nil
 
@@ -352,6 +369,10 @@ function UIBase:onBeginDrag(name, deltaPos, curToucPosition)
 end
 
 function UIBase:onEndDrag(name, deltaPos, curToucPosition)
+
+end
+
+function UIBase:onTableviewCellInit(tableview, cell)
 
 end
 ---------------------- UI事件回调 --------------------------

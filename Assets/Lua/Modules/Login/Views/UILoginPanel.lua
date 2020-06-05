@@ -35,6 +35,7 @@ end
 -- 界面可见性变化的时候触发
 function UILoginPanel:OnShow(isShow)
     Ctrl.Login.RequestConnectServer()
+    self.m_vertical_tableview:Reload(true)
 end
 
 function UILoginPanel:onClick(name)
@@ -47,6 +48,11 @@ function UILoginPanel:onClick(name)
         SceneCharacter.CreateSceneCharacterInf("Arts/Avatar/Blade_Girl.prefab", AnimCtrlEnum.CharAnimator, true)
         Ctrl.Login.RequestConnectServer()
     end
+end
+
+function UILoginPanel:onTableviewCellInit(tableview,cell)
+    local cellView = self:GetCellView(tableview,cell)
+    cellView.m_Text.text = "哈哈" .. cell.index
 end
 
 -- 界面销毁的过程中触发
