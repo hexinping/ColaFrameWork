@@ -18,7 +18,7 @@ end
 
 function UILoginPanel:InitParam()
     self.uiDepthLayer = ECEnumType.UIDepth.NORMAL
-    self:ShowUIMask(true)
+    self:ShowUIMask(false)
 end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
@@ -35,7 +35,11 @@ end
 -- 界面可见性变化的时候触发
 function UILoginPanel:OnShow(isShow)
     Ctrl.Login.RequestConnectServer()
+    self.m_vertical_tableview.CellCount = 20
     self.m_vertical_tableview:Reload(true)
+
+    Common_Utils.PlaySingleSound("Audio/welcome.mp3")
+    Common_Utils.PlayBackgroundMusic("Audio/MainTheme.mp3")
 end
 
 function UILoginPanel:onClick(name)
