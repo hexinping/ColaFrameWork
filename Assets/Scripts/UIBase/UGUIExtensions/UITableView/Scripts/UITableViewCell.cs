@@ -9,9 +9,8 @@ using UnityEngine;
 
 namespace UnityEngine.UI.Extensions
 {
-    public class UITableViewCell : MonoBehaviour
+    public class UITableViewCell : UITableViewCellEventer
     {
-
         [HideInInspector]
         public int index;
         [HideInInspector]
