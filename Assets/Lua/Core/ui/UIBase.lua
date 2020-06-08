@@ -159,6 +159,7 @@ end
 -- 界面销毁的过程中触发
 function UIBase:OnDestroy()
     self.Panel = nil
+    self.bindView = nil
     self.Layer = 0
     self.uiCanvas = nil
     self.sorterTag = nil
