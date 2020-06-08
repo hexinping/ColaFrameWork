@@ -14,6 +14,7 @@ public class UnityEngine_UI_Extensions_DropdownControlWrap
 		L.RegFunction("AddDropdownItem", AddDropdownItem);
 		L.RegFunction("ClearDropdownItem", ClearDropdownItem);
 		L.RegFunction("Show", Show);
+		L.RegFunction("OnPointerClick", OnPointerClick);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("onValueChanged", get_onValueChanged, set_onValueChanged);
@@ -144,6 +145,23 @@ public class UnityEngine_UI_Extensions_DropdownControlWrap
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.UI.Extensions.DropdownControl obj = (UnityEngine.UI.Extensions.DropdownControl)ToLua.CheckObject<UnityEngine.UI.Extensions.DropdownControl>(L, 1);
 			obj.Show();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int OnPointerClick(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.UI.Extensions.DropdownControl obj = (UnityEngine.UI.Extensions.DropdownControl)ToLua.CheckObject<UnityEngine.UI.Extensions.DropdownControl>(L, 1);
+			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject<UnityEngine.EventSystems.PointerEventData>(L, 2);
+			obj.OnPointerClick(arg0);
 			return 0;
 		}
 		catch (Exception e)

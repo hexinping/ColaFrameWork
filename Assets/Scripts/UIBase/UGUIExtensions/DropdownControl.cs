@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI.Extensions
 {
-    public class DropdownControl : MonoBehaviour, IControl/*, IPointerClickHandler*/
+    public class DropdownControl : MonoBehaviour, IControl, IPointerClickHandler
     {
         private Dropdown dropdown;
         public Action<int> onValueChanged;
@@ -21,11 +21,11 @@ namespace UnityEngine.UI.Extensions
         void Start()
         {
             InitDropdown();
-            //if (null != dropdown)
-            //{
-            //    dropdown.onValueChanged.RemoveAllListeners();
-            //    dropdown.onValueChanged.AddListener(OnValueChanged);
-            //}
+            if (null != dropdown)
+            {
+                dropdown.onValueChanged.RemoveAllListeners();
+                dropdown.onValueChanged.AddListener(OnValueChanged);
+            }
         }
 
         private void OnValueChanged(int index)
@@ -90,6 +90,10 @@ namespace UnityEngine.UI.Extensions
 
         void OnDestroy()
         {
+            if (null != dropdown)
+            {
+                dropdown.onValueChanged.RemoveAllListeners();
+            }
             onValueChanged = null;
         }
 
@@ -101,8 +105,8 @@ namespace UnityEngine.UI.Extensions
             }
         }
 
-        //public void OnPointerClick(PointerEventData eventData)
-        //{
-        //}
+        public void OnPointerClick(PointerEventData eventData)
+        {
+        }
     }
 }

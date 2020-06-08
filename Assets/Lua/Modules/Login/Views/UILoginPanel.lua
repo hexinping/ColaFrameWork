@@ -29,6 +29,9 @@ function UILoginPanel:OnCreate()
     self.m_Dropdown:AddDropdownItem("选项1")
     self.m_Dropdown:AddDropdownItem("选项2")
     self.m_Dropdown:AddDropdownItem("选项3")
+    self.m_Dropdown.onValueChanged = function(index)
+        print("------------->选中了第"..index.."个选项")
+    end
     self.m_Dropdown:RefreshShownValue()
 end
 
