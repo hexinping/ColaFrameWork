@@ -186,7 +186,7 @@ namespace ColaFramework.ToolKit
                         exportInfo.index++;
                         exportInfo.uicollection.Add(UIComp);
                         var componentName = "m_" + transform.name;
-                        exportInfo.uiExportElementDic[componentName] = exportInfo.index++;
+                        exportInfo.uiExportElementDic[componentName] = exportInfo.index;
                         isHandled = true;
                         break;
                     }
@@ -200,7 +200,7 @@ namespace ColaFramework.ToolKit
                         exportInfo.index++;
                         exportInfo.uicollection.Add(UIComp);
                         var componentName = "m_" + transform.name;
-                        exportInfo.uiExportElementDic[componentName] = exportInfo.index++;
+                        exportInfo.uiExportElementDic[componentName] = exportInfo.index;
                         isHandled = true;
                         break;
                     }
