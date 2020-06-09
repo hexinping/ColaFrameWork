@@ -39,6 +39,8 @@ public class UGUIMsgHandlerWrap
 		L.RegVar("onUpDetail", get_onUpDetail, set_onUpDetail);
 		L.RegVar("onDownDetail", get_onDownDetail, set_onDownDetail);
 		L.RegVar("onTableviewCellInit", get_onTableviewCellInit, set_onTableviewCellInit);
+		L.RegVar("onTableviewClick", get_onTableviewClick, set_onTableviewClick);
+		L.RegVar("onTableviewPress", get_onTableviewPress, set_onTableviewPress);
 		L.RegVar("onEvent", get_onEvent, set_onEvent);
 		L.EndClass();
 	}
@@ -626,6 +628,44 @@ public class UGUIMsgHandlerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_onTableviewClick(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UGUIMsgHandler obj = (UGUIMsgHandler)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessClick ret = obj.onTableviewClick;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onTableviewClick on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_onTableviewPress(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UGUIMsgHandler obj = (UGUIMsgHandler)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessPress ret = obj.onTableviewPress;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onTableviewPress on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_onEvent(IntPtr L)
 	{
 		object o = null;
@@ -1154,6 +1194,44 @@ public class UGUIMsgHandlerWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onTableviewCellInit on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_onTableviewClick(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UGUIMsgHandler obj = (UGUIMsgHandler)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessClick arg0 = (UnityEngine.UI.Extensions.UITableView.OnProcessClick)ToLua.CheckDelegate<UnityEngine.UI.Extensions.UITableView.OnProcessClick>(L, 2);
+			obj.onTableviewClick = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onTableviewClick on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_onTableviewPress(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UGUIMsgHandler obj = (UGUIMsgHandler)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessPress arg0 = (UnityEngine.UI.Extensions.UITableView.OnProcessPress)ToLua.CheckDelegate<UnityEngine.UI.Extensions.UITableView.OnProcessPress>(L, 2);
+			obj.onTableviewPress = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onTableviewPress on a nil value");
 		}
 	}
 

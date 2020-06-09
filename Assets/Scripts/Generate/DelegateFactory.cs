@@ -34,6 +34,8 @@ public class DelegateFactory
 		dict.Add(typeof(FloatValueChangeAction), factory.FloatValueChangeAction);
 		dict.Add(typeof(BoolValueChangeAction), factory.BoolValueChangeAction);
 		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnCellInitEvent), factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
+		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnProcessClick), factory.UnityEngine_UI_Extensions_UITableView_OnProcessClick);
+		dict.Add(typeof(UnityEngine.UI.Extensions.UITableView.OnProcessPress), factory.UnityEngine_UI_Extensions_UITableView_OnProcessPress);
 		dict.Add(typeof(System.Action<string>), factory.System_Action_string);
 		dict.Add(typeof(OnSceneNameChanged), factory.OnSceneNameChanged);
 		dict.Add(typeof(OnSceneIndexChanged), factory.OnSceneIndexChanged);
@@ -69,6 +71,8 @@ public class DelegateFactory
 		DelegateTraits<FloatValueChangeAction>.Init(factory.FloatValueChangeAction);
 		DelegateTraits<BoolValueChangeAction>.Init(factory.BoolValueChangeAction);
 		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
+		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessClick>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnProcessClick);
+		DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessPress>.Init(factory.UnityEngine_UI_Extensions_UITableView_OnProcessPress);
 		DelegateTraits<System.Action<string>>.Init(factory.System_Action_string);
 		DelegateTraits<OnSceneNameChanged>.Init(factory.OnSceneNameChanged);
 		DelegateTraits<OnSceneIndexChanged>.Init(factory.OnSceneIndexChanged);
@@ -104,6 +108,8 @@ public class DelegateFactory
 		TypeTraits<FloatValueChangeAction>.Init(factory.Check_FloatValueChangeAction);
 		TypeTraits<BoolValueChangeAction>.Init(factory.Check_BoolValueChangeAction);
 		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
+		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnProcessClick>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnProcessClick);
+		TypeTraits<UnityEngine.UI.Extensions.UITableView.OnProcessPress>.Init(factory.Check_UnityEngine_UI_Extensions_UITableView_OnProcessPress);
 		TypeTraits<System.Action<string>>.Init(factory.Check_System_Action_string);
 		TypeTraits<OnSceneNameChanged>.Init(factory.Check_OnSceneNameChanged);
 		TypeTraits<OnSceneIndexChanged>.Init(factory.Check_OnSceneIndexChanged);
@@ -139,6 +145,8 @@ public class DelegateFactory
 		StackTraits<FloatValueChangeAction>.Push = factory.Push_FloatValueChangeAction;
 		StackTraits<BoolValueChangeAction>.Push = factory.Push_BoolValueChangeAction;
 		StackTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent;
+		StackTraits<UnityEngine.UI.Extensions.UITableView.OnProcessClick>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnProcessClick;
+		StackTraits<UnityEngine.UI.Extensions.UITableView.OnProcessPress>.Push = factory.Push_UnityEngine_UI_Extensions_UITableView_OnProcessPress;
 		StackTraits<System.Action<string>>.Push = factory.Push_System_Action_string;
 		StackTraits<OnSceneNameChanged>.Push = factory.Push_OnSceneNameChanged;
 		StackTraits<OnSceneIndexChanged>.Push = factory.Push_OnSceneIndexChanged;
@@ -1254,6 +1262,126 @@ public class DelegateFactory
 	}
 
 	void Push_UnityEngine_UI_Extensions_UITableView_OnCellInitEvent(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnCellInitEvent o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class UnityEngine_UI_Extensions_UITableView_OnProcessClick_Event : LuaDelegate
+	{
+		public UnityEngine_UI_Extensions_UITableView_OnProcessClick_Event(LuaFunction func) : base(func) { }
+		public UnityEngine_UI_Extensions_UITableView_OnProcessClick_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.UI.Extensions.UITableViewCell param0, UnityEngine.GameObject param1)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PushSealed(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.UI.Extensions.UITableViewCell param0, UnityEngine.GameObject param1)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PushSealed(param1);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public UnityEngine.UI.Extensions.UITableView.OnProcessClick UnityEngine_UI_Extensions_UITableView_OnProcessClick(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			UnityEngine.UI.Extensions.UITableView.OnProcessClick fn = delegate(UnityEngine.UI.Extensions.UITableViewCell param0, UnityEngine.GameObject param1) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			UnityEngine_UI_Extensions_UITableView_OnProcessClick_Event target = new UnityEngine_UI_Extensions_UITableView_OnProcessClick_Event(func);
+			UnityEngine.UI.Extensions.UITableView.OnProcessClick d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			UnityEngine_UI_Extensions_UITableView_OnProcessClick_Event target = new UnityEngine_UI_Extensions_UITableView_OnProcessClick_Event(func, self);
+			UnityEngine.UI.Extensions.UITableView.OnProcessClick d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_UnityEngine_UI_Extensions_UITableView_OnProcessClick(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(UnityEngine.UI.Extensions.UITableView.OnProcessClick), L, pos);
+	}
+
+	void Push_UnityEngine_UI_Extensions_UITableView_OnProcessClick(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnProcessClick o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class UnityEngine_UI_Extensions_UITableView_OnProcessPress_Event : LuaDelegate
+	{
+		public UnityEngine_UI_Extensions_UITableView_OnProcessPress_Event(LuaFunction func) : base(func) { }
+		public UnityEngine_UI_Extensions_UITableView_OnProcessPress_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(bool param0, UnityEngine.UI.Extensions.UITableViewCell param1, UnityEngine.GameObject param2)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.Push(param1);
+			func.PushSealed(param2);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(bool param0, UnityEngine.UI.Extensions.UITableViewCell param1, UnityEngine.GameObject param2)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.Push(param1);
+			func.PushSealed(param2);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public UnityEngine.UI.Extensions.UITableView.OnProcessPress UnityEngine_UI_Extensions_UITableView_OnProcessPress(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			UnityEngine.UI.Extensions.UITableView.OnProcessPress fn = delegate(bool param0, UnityEngine.UI.Extensions.UITableViewCell param1, UnityEngine.GameObject param2) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			UnityEngine_UI_Extensions_UITableView_OnProcessPress_Event target = new UnityEngine_UI_Extensions_UITableView_OnProcessPress_Event(func);
+			UnityEngine.UI.Extensions.UITableView.OnProcessPress d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			UnityEngine_UI_Extensions_UITableView_OnProcessPress_Event target = new UnityEngine_UI_Extensions_UITableView_OnProcessPress_Event(func, self);
+			UnityEngine.UI.Extensions.UITableView.OnProcessPress d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_UnityEngine_UI_Extensions_UITableView_OnProcessPress(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(UnityEngine.UI.Extensions.UITableView.OnProcessPress), L, pos);
+	}
+
+	void Push_UnityEngine_UI_Extensions_UITableView_OnProcessPress(IntPtr L, UnityEngine.UI.Extensions.UITableView.OnProcessPress o)
 	{
 		ToLua.Push(L, o);
 	}

@@ -18,11 +18,15 @@ public class UnityEngine_UI_Extensions_UITableViewWrap
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("CellCount", get_CellCount, set_CellCount);
 		L.RegVar("onCellInit", get_onCellInit, set_onCellInit);
+		L.RegVar("onProcessClick", get_onProcessClick, set_onProcessClick);
+		L.RegVar("onProcessPress", get_onProcessPress, set_onProcessPress);
 		L.RegVar("onScrollCompleted", get_onScrollCompleted, set_onScrollCompleted);
 		L.RegVar("onTableScrolling", get_onTableScrolling, set_onTableScrolling);
 		L.RegVar("Loop", get_Loop, set_Loop);
 		L.RegFunction("OnTableScrolling", UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		L.RegFunction("OnScrollCompleted", UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
+		L.RegFunction("OnProcessPress", UnityEngine_UI_Extensions_UITableView_OnProcessPress);
+		L.RegFunction("OnProcessClick", UnityEngine_UI_Extensions_UITableView_OnProcessClick);
 		L.RegFunction("OnCellInitEvent", UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
 		L.EndClass();
 	}
@@ -230,6 +234,44 @@ public class UnityEngine_UI_Extensions_UITableViewWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_onProcessClick(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.UI.Extensions.UITableView obj = (UnityEngine.UI.Extensions.UITableView)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessClick ret = obj.onProcessClick;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onProcessClick on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_onProcessPress(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.UI.Extensions.UITableView obj = (UnityEngine.UI.Extensions.UITableView)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessPress ret = obj.onProcessPress;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onProcessPress on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_onScrollCompleted(IntPtr L)
 	{
 		object o = null;
@@ -321,6 +363,44 @@ public class UnityEngine_UI_Extensions_UITableViewWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onCellInit on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_onProcessClick(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.UI.Extensions.UITableView obj = (UnityEngine.UI.Extensions.UITableView)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessClick arg0 = (UnityEngine.UI.Extensions.UITableView.OnProcessClick)ToLua.CheckDelegate<UnityEngine.UI.Extensions.UITableView.OnProcessClick>(L, 2);
+			obj.onProcessClick = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onProcessClick on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_onProcessPress(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.UI.Extensions.UITableView obj = (UnityEngine.UI.Extensions.UITableView)o;
+			UnityEngine.UI.Extensions.UITableView.OnProcessPress arg0 = (UnityEngine.UI.Extensions.UITableView.OnProcessPress)ToLua.CheckDelegate<UnityEngine.UI.Extensions.UITableView.OnProcessPress>(L, 2);
+			obj.onProcessPress = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index onProcessPress on a nil value");
 		}
 	}
 
@@ -425,6 +505,60 @@ public class UnityEngine_UI_Extensions_UITableViewWrap
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnScrollCompleted>.Create(func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnityEngine_UI_Extensions_UITableView_OnProcessPress(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessPress>.Create(func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessPress>.Create(func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnityEngine_UI_Extensions_UITableView_OnProcessClick(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessClick>.Create(func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessClick>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

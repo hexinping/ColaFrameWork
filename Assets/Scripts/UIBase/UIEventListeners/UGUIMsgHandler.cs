@@ -126,6 +126,8 @@ public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
     void AddOtherEventListener(UITableView tableView)
     {
         tableView.onCellInit = onTableviewCellInit;
+        tableView.onProcessClick = onTableviewClick;
+        tableView.onProcessPress = onTableviewPress;
     }
 
     void RemoveOtherEventListener(UITableView tableView)
@@ -220,6 +222,8 @@ public class UGUIMsgHandler : MonoBehaviour, IUGUIEventHandler
     public UIDragEventHandlerDetail onUpDetail;
     public UIDragEventHandlerDetail onDownDetail;
     public UITableView.OnCellInitEvent onTableviewCellInit;
+    public UITableView.OnProcessClick onTableviewClick;
+    public UITableView.OnProcessPress onTableviewPress;
 
     /// <summary>
     /// 触发UI事件时会触发onEvent方法(在需要的事件里面添加即可)

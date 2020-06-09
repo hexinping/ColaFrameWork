@@ -6,7 +6,7 @@ public class UnityEngine_UI_Extensions_UITableViewCellWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginClass(typeof(UnityEngine.UI.Extensions.UITableViewCell), typeof(UnityEngine.MonoBehaviour));
+		L.BeginClass(typeof(UnityEngine.UI.Extensions.UITableViewCell), typeof(UnityEngine.UI.Extensions.UITableViewCellEventHandler));
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("index", get_index, set_index);

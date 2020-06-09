@@ -5,7 +5,7 @@
 ---
 
 local UIBase = require("Core.ui.UIBase")
-local UILoginPanel = Class("UILoginPanel",UIBase)
+local UILoginPanel = Class("UILoginPanel", UIBase)
 
 local _instance = nil
 
@@ -23,14 +23,14 @@ end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
 function UILoginPanel:OnCreate()
-    Util.UI.SetImageSpriteFromAtlas(self.m_okBtn.image,"bt_buy")
+    Util.UI.SetImageSpriteFromAtlas(self.m_okBtn.image, "bt_buy")
 
     self.m_Dropdown:SetCaptionText("动态更改Caption")
     self.m_Dropdown:AddDropdownItem("选项1")
     self.m_Dropdown:AddDropdownItem("选项2")
     self.m_Dropdown:AddDropdownItem("选项3")
     self.m_Dropdown.onValueChanged = function(index)
-        print("------------->选中了第"..index.."个选项")
+        print("------------->选中了第" .. index .. "个选项")
     end
     self.m_Dropdown:RefreshShownValue()
 end
@@ -57,9 +57,17 @@ function UILoginPanel:onClick(name)
     end
 end
 
-function UILoginPanel:onTableviewCellInit(tableview,cell)
-    local cellView = self:GetCellView(tableview,cell)
+function UILoginPanel:onTableviewCellInit(tableview, cell)
+    local cellView = self:GetCellView(tableview, cell)
     cellView.m_Text.text = "哈哈" .. cell.index
+end
+
+function UILoginPanel:onTableviewClick(tableview, target)
+    print("---------->点击了Cell" .. target.name)
+end
+
+function UILoginPanel:onTableviewPress(isPressDown, tableview, target)
+    print("--------->按下了Cell" .. target.name)
 end
 
 -- 界面销毁的过程中触发

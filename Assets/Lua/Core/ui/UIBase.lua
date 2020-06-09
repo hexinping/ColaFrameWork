@@ -296,7 +296,13 @@ function UIBase:AttachListener(gameObject)
         self:onEndDrag(name, deltaPos, curToucPosition)
     end
     self.uguiMsgHandler.onTableviewCellInit = function(tableview, cell)
-        self:onTableviewCellInit(tableview,cell)
+        self:onTableviewCellInit(tableview, cell)
+    end
+    self.uguiMsgHandler.onTableviewClick = function(tableview, target)
+        self:onTableviewClick(tableview, target)
+    end
+    self.uguiMsgHandler.onTableviewPress = function(isPressDown, tableview, target)
+        self:onTableviewPress(isPressDown, tableview, target)
     end
 
     self.uguiMsgHandler:AttachListener(gameObject)
@@ -319,6 +325,8 @@ function UIBase:UnAttachListener(gameObject)
     self.uguiMsgHandler.onBeginDrag = nil
     self.uguiMsgHandler.onEndDrag = nil
     self.uguiMsgHandler.onTableviewCellInit = nil
+    self.uguiMsgHandler.onTableviewClick = nil
+    self.uguiMsgHandler.onTableviewPress = nil
 
     self.uguiMsgHandler = nil
 
@@ -374,6 +382,14 @@ function UIBase:onEndDrag(name, deltaPos, curToucPosition)
 end
 
 function UIBase:onTableviewCellInit(tableview, cell)
+
+end
+
+function UIBase:onTableviewClick(tableview, target)
+
+end
+
+function UIBase:onTableviewPress(isPressDown, tableview, target)
 
 end
 ---------------------- UI事件回调 --------------------------

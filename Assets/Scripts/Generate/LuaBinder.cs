@@ -96,8 +96,11 @@ public static class LuaBinder
 		UnityEngine_UI_GraphicWrap.Register(L);
 		UnityEngine_UI_SelectableWrap.Register(L);
 		L.BeginModule("Extensions");
+		UnityEngine_UI_Extensions_UITableViewCellEventHandlerWrap.Register(L);
 		L.BeginModule("UITableView");
 		L.RegFunction("OnCellInitEvent", UnityEngine_UI_Extensions_UITableView_OnCellInitEvent);
+		L.RegFunction("OnProcessClick", UnityEngine_UI_Extensions_UITableView_OnProcessClick);
+		L.RegFunction("OnProcessPress", UnityEngine_UI_Extensions_UITableView_OnProcessPress);
 		L.RegFunction("OnScrollCompleted", UnityEngine_UI_Extensions_UITableView_OnScrollCompleted);
 		L.RegFunction("OnTableScrolling", UnityEngine_UI_Extensions_UITableView_OnTableScrolling);
 		L.EndModule();
@@ -428,6 +431,60 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnCellInitEvent>.Create(func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnityEngine_UI_Extensions_UITableView_OnProcessClick(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessClick>.Create(func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessClick>.Create(func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnityEngine_UI_Extensions_UITableView_OnProcessPress(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessPress>.Create(func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateTraits<UnityEngine.UI.Extensions.UITableView.OnProcessPress>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;
