@@ -6,10 +6,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI.Extensions
 {
-    public class UITableViewCell : UITableViewCellEventer
+    public class UITableViewCell : UITableViewCellEventHandler
     {
         [HideInInspector]
         public int index;
@@ -25,6 +26,18 @@ namespace UnityEngine.UI.Extensions
             cacheTransform = transform as RectTransform;
             cacheGameObject = this.gameObject;
             Debug.Assert(cacheTransform != null, "transform should be RectTransform");
+            BindView();
+        }
+
+        private void BindView()
+        {
+            var selectables = GetComponentsInChildren<Selectable>(true);
+            foreach (var item in selectables)
+            {
+                var evenHandler = item.gameObject.AddSingleComponent<UITableViewCellEventHandler>();
+                evenHandler.targetObj = item.gameObject;
+                evenHandler.tableViewCell = this;
+            }
         }
 
         void OnDestroy()
