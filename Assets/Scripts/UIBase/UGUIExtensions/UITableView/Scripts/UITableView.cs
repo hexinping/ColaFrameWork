@@ -86,6 +86,12 @@ namespace UnityEngine.UI.Extensions
         public delegate void OnCellInitEvent(UITableView tableView, UITableViewCell cell);
         public OnCellInitEvent onCellInit;
 
+        public delegate void OnProcessClick(UITableViewCell tableViewCell, GameObject gameObject);
+        public OnProcessClick onProcessClick;
+
+        public delegate void OnProcessPress(bool isPressDown, UITableViewCell tableViewCell, GameObject gameObject);
+        public OnProcessPress onProcessPress;
+
         /// <summary>
         /// 当滚动停止的时候，返回当前cell对应的索引
         /// </summary>
@@ -227,6 +233,22 @@ namespace UnityEngine.UI.Extensions
             this.isIncreased = true;
             this.CalcViewRectPos();
             this.isDirty = true;
+        }
+
+        internal void ProcessClick(UITableViewCell tableViewCell, GameObject targetObj)
+        {
+            if (null != onProcessClick)
+            {
+                onProcessClick(tableViewCell, targetObj);
+            }
+        }
+
+        internal void ProcessPress(bool isPressDown, UITableViewCell tableViewCell, GameObject targetObj)
+        {
+            if (null != onProcessPress)
+            {
+                onProcessPress(isPressDown, tableViewCell, targetObj);
+            }
         }
 
         private void Clear()
