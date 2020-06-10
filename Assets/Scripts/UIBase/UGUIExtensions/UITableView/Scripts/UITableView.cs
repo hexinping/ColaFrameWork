@@ -409,6 +409,7 @@ namespace UnityEngine.UI.Extensions
             }
             cell.index = index;
             cell.tableView = this;
+            cell.tableViewCell = cell;
             return cell;
         }
 
