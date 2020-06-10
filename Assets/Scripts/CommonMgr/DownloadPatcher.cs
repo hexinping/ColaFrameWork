@@ -349,12 +349,14 @@ namespace ColaFramework
             else    // 成功的情况
             {
                 Debug.Log("下载MD5文件成功。");
-                TweenProgress(0.05f, 1f, 0.3f); ;
-                m_dicSvrVersions = FileHelper.ReadABVersionFromText(strText);
+                TweenProgress(0.05f, 1f, 0.3f, () =>
+                {
+                    m_dicSvrVersions = FileHelper.ReadABVersionFromText(strText);
 
-                //在这一步可以排除掉不需要更新的文件，比如32bit和64bit的LuaJit文件
+                    //在这一步可以排除掉不需要更新的文件，比如32bit和64bit的LuaJit文件
 
-                CalDiffToDownload();
+                    CalDiffToDownload();
+                });
             }
         }
 
@@ -633,13 +635,19 @@ namespace ColaFramework
             }
         }
 
-        private void TweenProgress(float begin, float end, float duration)
+        private void TweenProgress(float begin, float end, float duration, System.Action callback = null)
         {
             DOTween.To(() => begin, (value) =>
             {
                 begin = value;
                 OnProgress(value);
-            }, end, duration);
+            }, end, duration).OnComplete(() =>
+            {
+                if (null != callback)
+                {
+                    callback();
+                }
+            });
         }
 
         private void OnDestory()

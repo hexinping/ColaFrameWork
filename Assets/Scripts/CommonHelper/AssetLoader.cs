@@ -20,7 +20,7 @@ namespace ColaFramework
     /// </summary>
     public static class AssetLoader
     {
-        private const int CHECK_INTERVAL = 1;
+        private const int CHECK_INTERVAL = 10;
         private static float time = 0f;
         private static Dictionary<string, WeakReference> AssetReferences = new Dictionary<string, WeakReference>(32);
         private static Dictionary<string, Asset> LoadedAssets = new Dictionary<string, Asset>(32);
