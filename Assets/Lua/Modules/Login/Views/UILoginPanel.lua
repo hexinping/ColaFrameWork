@@ -66,10 +66,6 @@ function UILoginPanel:onTableviewClick(tableview, target)
     print("---------->点击了Cell" .. target.name)
 end
 
-function UILoginPanel:onTableviewPress(isPressDown, tableview, target)
-    print("--------->按下了Cell" .. target.name)
-end
-
 -- 界面销毁的过程中触发
 function UILoginPanel:OnDestroy()
     UIBase.OnDestroy(self)

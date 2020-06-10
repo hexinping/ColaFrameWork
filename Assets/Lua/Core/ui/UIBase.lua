@@ -301,9 +301,6 @@ function UIBase:AttachListener(gameObject)
     self.uguiMsgHandler.onTableviewClick = function(tableview, target)
         self:onTableviewClick(tableview, target)
     end
-    self.uguiMsgHandler.onTableviewPress = function(isPressDown, tableview, target)
-        self:onTableviewPress(isPressDown, tableview, target)
-    end
 
     self.uguiMsgHandler:AttachListener(gameObject)
 end
@@ -386,10 +383,6 @@ function UIBase:onTableviewCellInit(tableview, cell)
 end
 
 function UIBase:onTableviewClick(tableview, target)
-
-end
-
-function UIBase:onTableviewPress(isPressDown, tableview, target)
 
 end
 ---------------------- UI事件回调 --------------------------
