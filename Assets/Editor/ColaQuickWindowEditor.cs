@@ -76,6 +76,10 @@ namespace ColaFramework.ToolKit
             GUILayout.BeginHorizontal("HelpBox");
             EditorGUILayout.LabelField("== 快捷功能 ==");
             GUILayout.EndHorizontal();
+            if (GUILayout.Button("GC"))
+            {
+                CommonHelper.ClearMemory();
+            }
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("打开AssetPath目录", GUILayout.ExpandWidth(true), GUILayout.MaxHeight(30)))
             {
