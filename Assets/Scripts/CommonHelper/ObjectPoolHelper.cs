@@ -16,7 +16,7 @@ namespace ColaFramework
     /// <typeparam name="T"></typeparam>
     public class ObjectPool<T> where T : class
     {
-        private const int RESERVED_SIZE = 0;
+        private const int RESERVED_SIZE = 4;
         private const int CAPCITY_SIZE = 16;
 
         /// <summary>
