@@ -25,7 +25,6 @@ public static class LuaBinder
 		AnimCurveNamesWrap.Register(L);
 		TouchHelperWrap.Register(L);
 		ColaFramework_NetWork_ByteBufferWrap.Register(L);
-		ColaFramework_AssetLoaderWrap.Register(L);
 		ColaFramework_NetWork_SocketManagerWrap.Register(L);
 		ColaFramework_NetWork_NetMessageCenterWrap.Register(L);
 		UnityEngine_UI_Extensions_UIComponentCollectionWrap.Register(L);
@@ -142,7 +141,6 @@ public static class LuaBinder
 		L.RegFunction("Action_float", System_Action_float);
 		L.RegFunction("Action_bool", System_Action_bool);
 		L.RegFunction("Action_string", System_Action_string);
-		L.RegFunction("Action_UnityEngine_Object", System_Action_UnityEngine_Object);
 		L.RegFunction("Func_bool", System_Func_bool);
 		L.RegFunction("Action_UnityEngine_AsyncOperation", System_Action_UnityEngine_AsyncOperation);
 		L.EndModule();
@@ -1025,33 +1023,6 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateTraits<System.Action<string>>.Create(func, self);
-				ToLua.Push(L, arg1);
-			}
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int System_Action_UnityEngine_Object(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
-
-			if (count == 1)
-			{
-				Delegate arg1 = DelegateTraits<System.Action<UnityEngine.Object>>.Create(func);
-				ToLua.Push(L, arg1);
-			}
-			else
-			{
-				LuaTable self = ToLua.CheckLuaTable(L, 2);
-				Delegate arg1 = DelegateTraits<System.Action<UnityEngine.Object>>.Create(func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;
