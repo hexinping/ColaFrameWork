@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ColaFramework.NetWork;
+using ColaFramework.Foundation;
 
 namespace ColaFramework
 {

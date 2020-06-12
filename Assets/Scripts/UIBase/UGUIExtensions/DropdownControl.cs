@@ -10,6 +10,7 @@ using UnityEngine;
 using ColaFramework;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using ColaFramework.Foundation;
 
 namespace UnityEngine.UI.Extensions
 {

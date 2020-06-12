@@ -14,8 +14,11 @@ namespace ColaFramework
     /// 对象池类(单独存储某一类物件的对象池)
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ObjectPool<T> where T : UnityEngine.Object
+    public class ObjectPool<T> where T : class
     {
+        private const int RESERVED_SIZE = 0;
+        private const int CAPCITY_SIZE = 16;
+
         /// <summary>
         /// 存储堆栈
         /// </summary>
@@ -33,12 +36,25 @@ namespace ColaFramework
         /// </summary>
         private Action<T> releaseAction;
 
-        public ObjectPool(Func<T> createAction, Action<T> getAction, Action<T> relaseAction)
+        private int capcity;
+
+        public ObjectPool(Func<T> createAction, Action<T> getAction, Action<T> relaseAction, int reservedSize = RESERVED_SIZE, int capcity = CAPCITY_SIZE)
         {
             stack = new Stack<T>();
             this.createAction = createAction;
             this.getAction = getAction;
             this.releaseAction = relaseAction;
+            this.capcity = capcity;
+
+            //可以提前申请出一些Object，提升之后的加载速度
+            if (null != createAction)
+            {
+                for (int i = 0; i < reservedSize && i < capcity; i++)
+                {
+                    var element = createAction();
+                    Release(element);
+                }
+            }
         }
 
         /// <summary>
@@ -92,7 +108,10 @@ namespace ColaFramework
             {
                 releaseAction(obj);
             }
-            stack.Push(obj);
+            if (stack.Count < capcity)
+            {
+                stack.Push(obj);
+            }
         }
 
         /// <summary>

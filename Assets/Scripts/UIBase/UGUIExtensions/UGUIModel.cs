@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using ColaFramework;
+using ColaFramework.Foundation;
 #if UNITY_EDITOR
 using UnityEditor;
 using System.IO;

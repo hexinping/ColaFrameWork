@@ -13,7 +13,7 @@ using UnityEngine;
 using Plugins.XAsset;
 using Object = UnityEngine.Object;
 
-namespace ColaFramework
+namespace ColaFramework.Foundation
 {
     /// <summary>
     /// 资源加载的对外接口，封装平台和细节，可对Lua导出

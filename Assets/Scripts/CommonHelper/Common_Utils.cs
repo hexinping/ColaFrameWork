@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using ColaFramework;
+using ColaFramework.Foundation;
 
 /// <summary>
 /// 通用工具类，为导出lua接口调用准备
