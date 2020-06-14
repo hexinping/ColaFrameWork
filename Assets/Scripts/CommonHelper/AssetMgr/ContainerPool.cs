@@ -110,7 +110,7 @@ namespace ColaFramework.Foundation
                 }
                 else
                 {
-                    Debug.LogWarning("the asset has been dispose but not be removed from pool");
+                    Debug.LogWarning("the asset has been dispose but not be removed from container pool");
                 }
             }
             disposeTimeTicker = DisposeTime;
@@ -119,7 +119,14 @@ namespace ColaFramework.Foundation
 
         public void ReturnObject(Object target)
         {
-
+            if (null == hardRef)
+            {
+                hardRef = target;
+            }
+            else
+            {
+                Debug.AssertFormat(target == hardRef, "hard ref:{0},target{1},the container is different", hardRef.name, target.name);
+            }
         }
 
         public static void Dispose(AssetContainer container)
