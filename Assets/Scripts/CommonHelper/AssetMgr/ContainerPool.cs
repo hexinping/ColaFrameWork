@@ -127,6 +127,11 @@ namespace ColaFramework.Foundation
             {
                 Debug.AssertFormat(target == hardRef, "hard ref:{0},target{1},the container is different", hardRef.name, target.name);
             }
+            if(null != weakRef)
+            {
+                weakRef.Target = null;
+            }
+            disposeTimeTicker = DisposeTime;
         }
 
         public static void Dispose(AssetContainer container)
