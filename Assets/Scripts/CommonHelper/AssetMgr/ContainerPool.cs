@@ -86,12 +86,40 @@ namespace ColaFramework.Foundation
                     hardRef = null;
                 }
                 return true;
-
             }
             else
             {
                 return null != weakRef && null != weakRef.Target;
             }
+        }
+
+        public Object GetObject()
+        {
+            Object obj = null;
+            if (null != hardRef)
+            {
+                obj = hardRef;
+            }
+            else
+            {
+                if (null != weakRef)
+                {
+                    hardRef = weakRef.Target as Object;
+                    weakRef.Target = null;
+                    obj = hardRef;
+                }
+                else
+                {
+                    Debug.LogWarning("the asset has been dispose but not be removed from pool");
+                }
+            }
+            disposeTimeTicker = DisposeTime;
+            return obj;
+        }
+
+        public void ReturnObject(Object target)
+        {
+
         }
 
         public static void Dispose(AssetContainer container)
