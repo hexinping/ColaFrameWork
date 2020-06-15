@@ -51,6 +51,7 @@ namespace ColaFramework.Foundation
         #endregion
     }
 
+    #region Container implement
     public class AssetContainer
     {
         private Object hardRef;
@@ -125,33 +126,179 @@ namespace ColaFramework.Foundation
             }
             else
             {
-                Debug.AssertFormat(target == hardRef, "hard ref:{0},target{1},the container is different", hardRef.name, target.name);
+                Debug.AssertFormat(target == hardRef, "hard ref:{0},target:{1},the container is repeat contain asset!", hardRef.name, target.name);
             }
-            if(null != weakRef)
+            if (null != weakRef)
             {
                 weakRef.Target = null;
             }
             disposeTimeTicker = DisposeTime;
         }
 
+        public void Release()
+        {
+            hardRef = null;
+            disposeTimeTicker = 0;
+        }
+
         public static void Dispose(AssetContainer container)
         {
-
+            container.Release();
+            if (null != container.weakRef)
+            {
+                container.weakRef.Target = null;
+            }
+            container.DisposeTime = AssetTrackMgr.DISPOSE_TIME_VALUE;
         }
     }
 
     public class GameObjectContainer
     {
+        private GameObject prefab;
+        private AssetTrackMgr assetTrackMgr;
+        private int containerSize;
+        private string path;
+        private float disposeTimeTicker;
+        private float sleepTimerTicker;
+        private int refCount;
+
+        private LinkedList<GameObject> objectList = new LinkedList<GameObject>();
+
+        public int DisposeTime { get; set; }
+        public int Capcaity { get; set; }
+
         public static GameObjectContainer Process(AssetTrackMgr assetTrackMgr, GameObjectContainer container, string path, GameObject prefab, int disposeTime, int capcity)
         {
+            container.assetTrackMgr = assetTrackMgr;
+            container.path = path;
+            container.prefab = prefab;
+            container.DisposeTime = disposeTime;
+            container.Capcaity = capcity;
             return container;
+        }
+
+        public bool IsAlive(float dt)
+        {
+            if (sleepTimerTicker > 0)
+            {
+                sleepTimerTicker -= dt;
+                return true;
+            }
+            if (objectList.Count > 0)
+            {
+                if (disposeTimeTicker > 0)
+                {
+                    disposeTimeTicker -= dt;
+                }
+                else
+                {
+                    var gameobject = objectList.Last.Value;
+                    objectList.RemoveLast();
+                    Discard(gameobject);
+                }
+                return true;
+            }
+            else if (refCount > 0)
+            {
+                return true;
+            }
+            else
+            {
+                if (null != prefab)
+                {
+                    if (disposeTimeTicker > 0)
+                    {
+                        disposeTimeTicker -= dt;
+                        return true;
+                    }
+                    else
+                    {
+                        prefab = null;
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public GameObject GetObject(Transform parent)
+        {
+            sleepTimerTicker = DisposeTime;
+            disposeTimeTicker = AssetTrackMgr.DISPOSE_CHECK_INTERVAL;
+
+            if (objectList.Count > 0)
+            {
+                var gameObject = objectList.Last.Value;
+                objectList.RemoveLast();
+                gameObject.SetActive(true);
+                if (null != parent)
+                    gameObject.transform.SetParent(parent, false);
+                return gameObject;
+            }
+            else
+            {
+                var gameObject = assetTrackMgr.instantiateAction(prefab) as GameObject;
+                gameObject.name = path;
+                if (null != parent)
+                    gameObject.transform.SetParent(parent, false);
+                refCount++;
+                return gameObject;
+            }
+        }
+
+        public void ReturnObject(GameObject gameObject)
+        {
+            if (null == gameObject) return;
+            if (objectList.Count < Capcaity)
+            {
+                sleepTimerTicker = DisposeTime;
+                disposeTimeTicker = AssetTrackMgr.DISPOSE_CHECK_INTERVAL;
+
+                gameObject.name = path;
+                gameObject.transform.SetParent(assetTrackMgr.rootTF, false);
+                gameObject.SetActive(false);
+                objectList.AddFirst(gameObject);
+            }
+            else
+            {
+                Discard(gameObject);
+            }
+        }
+
+        public void Discard(GameObject gameObject)
+        {
+            GameObject.Destroy(gameObject);
+            refCount--;
+            disposeTimeTicker = refCount < 0 ? DisposeTime : AssetTrackMgr.DISPOSE_CHECK_INTERVAL;
+        }
+
+        public void Release()
+        {
+            foreach (var gameObject in objectList)
+            {
+                GameObject.Destroy(gameObject);
+                refCount--;
+            }
+            objectList.Clear();
+            sleepTimerTicker = 0;
+            disposeTimeTicker = 0;
         }
 
         public static void Dispose(GameObjectContainer container)
         {
-
+            container.Release();
+            container.path = null;
+            container.prefab = null;
+            container.assetTrackMgr = null;
+            container.refCount = 0;
+            container.Capcaity = AssetTrackMgr.CAPCITY_SIZE;
+            container.DisposeTime = AssetTrackMgr.DISPOSE_TIME_VALUE;
         }
     }
+    #endregion
 }
 
 
