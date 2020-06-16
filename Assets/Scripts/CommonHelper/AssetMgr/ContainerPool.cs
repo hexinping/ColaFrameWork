@@ -118,7 +118,7 @@ namespace ColaFramework.Foundation
             return obj;
         }
 
-        public void ReturnObject(Object target)
+        public void MarkObject(Object target)
         {
             if (null == hardRef)
             {

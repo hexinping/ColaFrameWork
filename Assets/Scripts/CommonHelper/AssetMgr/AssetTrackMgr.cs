@@ -48,6 +48,8 @@ namespace ColaFramework.Foundation
         public Transform rootTF { get; private set; }
         public InstantiateAction instantiateAction { get; private set; }
 
+        private ContainerPool containerPool;
+
         private Dictionary<string, AssetContainer> assetContainerMap = new Dictionary<string, AssetContainer>();
         private Dictionary<string, GameObjectContainer> gameObjectContainerMap = new Dictionary<string, GameObjectContainer>();
 
@@ -58,31 +60,90 @@ namespace ColaFramework.Foundation
         private int G_DisposeTime = ILLEGAL_VALUE;
         #endregion
 
+        #region public interface implements
         public AssetTrackMgr(Transform rootTransform = null, InstantiateAction action = null)
         {
             rootTF = null == rootTransform ? new GameObject("AssetTrackRoot").transform : rootTransform;
             instantiateAction = null == action ? GameObject.Instantiate : action;
             GameObject.DontDestroyOnLoad(rootTF.gameObject);
-
+            containerPool = new ContainerPool();
         }
 
         public void DiscardGameObject(string path, GameObject gameObject)
         {
+            GameObjectContainer container = null;
+            if (gameObjectContainerMap.TryGetValue(path, out container))
+            {
+                container.Discard(gameObject);
+            }
+            else
+            {
+                Debug.LogError("AssetTrackMgr gameobject is not created by container pool,just destory it! " + path);
+                GameObject.Destroy(gameObject);
+            }
         }
 
         public T GetAsset<T>(string path) where T : Object
         {
-            return null;
+            return GetAsset(path, typeof(T)) as T;
         }
 
         public Object GetAsset(string path, Type type)
         {
-            return null;
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("AssetTrackMgr GetAsset param path is null or empty!");
+                return null;
+            }
+
+            Object obj = null;
+            AssetContainer container;
+            if (assetContainerMap.TryGetValue(path, out container))
+            {
+                obj = container.GetObject();
+            }
+            else
+            {
+                container = containerPool.GetAssetContainer(CalcDisposeTime(path));
+                assetContainerMap.Add(path, container);
+            }
+            if (null == obj)
+            {
+                obj = AssetLoader.Load(path, type);
+                container.MarkObject(obj);
+            }
+            return obj;
         }
 
         public GameObject GetGameObject(string path, Transform parent)
         {
-            return null;
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("AssetTrackMgr GetGameObject param path is null or empty!");
+                return null;
+            }
+
+            GameObject gameObject = null;
+            GameObjectContainer container;
+            if (gameObjectContainerMap.TryGetValue(path, out container))
+            {
+                gameObject = container.GetObject(parent);
+            }
+            else
+            {
+                var prefab = AssetLoader.Load<GameObject>(path);
+                if (null != prefab)
+                {
+                    container = containerPool.GetGameObjectContainer(this, path, prefab, CalcDisposeTime(path), CalcCapcitySize(path));
+                    gameObjectContainerMap.Add(path, container);
+                    gameObject = container.GetObject(parent);
+                }
+                else
+                {
+                    Debug.LogError("AssetTrackMgr GetGameObject load prefab failed!The path is:" + path);
+                }
+            }
+            return gameObject;
         }
 
         public void Release()
@@ -99,10 +160,65 @@ namespace ColaFramework.Foundation
 
         public void ReleaseGameObject(string path, GameObject gameObject)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("AssetTrackMgr ReleaseGameObject param path is null or empty!");
+                return;
+            }
+            if (null == gameObject)
+            {
+                Debug.LogError("AssetTrackMgr ReleaseGameObject param Obj is null! " + path);
+                return;
+            }
+            if (false == gameObject.scene.IsValid())
+            {
+                throw new Exception("AssetTrackMgr ReleaseGameObject param obj is a scene gameoject: " + path);
+            }
+            GameObjectContainer container;
+            if (gameObjectContainerMap.TryGetValue(path, out container))
+            {
+                container.ReturnObject(gameObject);
+            }
+            else
+            {
+                Debug.LogError("AssetTrackMgr ReleaseGameObject param obj is not created by container pool! " + path);
+                GameObject.Destroy(gameObject);
+            }
         }
 
         public void ReleaseAsset(string path, Object obj)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("AssetTrackMgr ReleaseAsset param path is null or empty!");
+                return;
+            }
+            if (null == obj)
+            {
+                Debug.LogError("AssetTrackMgr ReleaseAsset param Obj is null! " + path);
+                return;
+            }
+            if (obj is GameObject)
+            {
+                var gameobject = obj as GameObject;
+                if (false == gameobject.scene.IsValid())
+                {
+                    throw new Exception("AssetTrackMgr ReleaseAsset param obj is a scene gameoject: " + path);
+                }
+            }
+
+            AssetContainer container;
+            if (assetContainerMap.TryGetValue(path, out container))
+            {
+                container.MarkObject(obj);
+            }
+            else
+            {
+                Debug.LogError("AssetTrackMgr ReleaseAsset param obj is not created by container pool! " + path);
+                container = containerPool.GetAssetContainer(CalcDisposeTime(path));
+                container.MarkObject(obj);
+                assetContainerMap.Add(path, container);
+            }
         }
 
         public void SetCapcitySize(string group, int capcity)
@@ -170,6 +286,7 @@ namespace ColaFramework.Foundation
                 item.Value.DisposeTime = CalcDisposeTime(item.Key);
             }
         }
+        #endregion
 
         #region private
         private int CalcCapcitySize(string assetPath)
