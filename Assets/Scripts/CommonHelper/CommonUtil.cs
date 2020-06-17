@@ -14,13 +14,32 @@ using ColaFramework.Foundation;
 /// <summary>
 /// 通用工具类，为导出lua接口调用准备
 /// </summary>
-public static class Common_Utils
+public static class CommonUtil
 {
     /// <summary>
     /// 设置共用的临时变量，避免频繁创建
     /// </summary>
     private static Vector3 vec3Tmp = Vector3.zero;
     private static Vector2 vec2Tmp = Vector2.zero;
+
+    [LuaInterface.NoToLua]
+    public static IAssetTrackMgr AssetTrackMgr { get; private set; }
+
+    public static void Initialize()
+    {
+        if (null == AssetTrackMgr)
+        {
+            AssetTrackMgr = new AssetTrackMgr();
+        }
+    }
+
+    public static void Dispose()
+    {
+        if (null != AssetTrackMgr)
+        {
+            AssetTrackMgr.Release();
+        }
+    }
 
     /// <summary>
     /// 网络可用
@@ -63,51 +82,6 @@ public static class Common_Utils
     {
         CommonHelper.RemoveBtnMsg(go, callback);
     }
-
-    #region 资源管理相关
-    /// <summary>
-    /// 根据路径实例化一个Prefab(同步方法)
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public static GameObject InstantiateGoByPath(string path, GameObject parent)
-    {
-        GameObject prefab = AssetLoader.Load<GameObject>(path);
-        return CommonHelper.InstantiateGoByPrefab(prefab, parent);
-    }
-
-
-    /// <summary>
-    /// 根据路径实例化一个Prefab(异步方法)
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public static void InstantiateGoByPathAsync(string path, GameObject parent, Action<GameObject> callback)
-    {
-        AssetLoader.LoadAsync<GameObject>(path, (obj) =>
-        {
-            var go = InstantiateGoByPrefab(obj as GameObject, parent);
-            if (null != callback)
-            {
-                callback(go);
-            }
-        });
-    }
-
-    /// <summary>
-    /// 根据一个预制实例化一个Prefab
-    /// </summary>
-    /// <param name="prefab"></param>
-    /// <param name="parent"></param>
-    /// <returns></returns>
-    public static GameObject InstantiateGoByPrefab(GameObject prefab, GameObject parent)
-    {
-        return CommonHelper.InstantiateGoByPrefab(prefab, parent);
-    }
-    #endregion
-
 
     /// <summary>
     /// 给物体添加一个单一组件
@@ -634,6 +608,71 @@ public static class Common_Utils
         }
         return true;
     }
+
+    #region 资源管理相关接口
+    public static GameObject InstantiatePrefab(string path, Transform parent)
+    {
+        return AssetTrackMgr.GetGameObject(path, parent);
+    }
+
+    public static void SetCapcitySize(string group, int capcity)
+    {
+        AssetTrackMgr.SetCapcitySize(group, capcity);
+    }
+
+    public static void SetDisposeInterval(string group, int disposeTimeInterval)
+    {
+        AssetTrackMgr.SetDisposeInterval(group, disposeTimeInterval);
+    }
+
+    public static GameObject GetGameObject(string path, Transform parent)
+    {
+        return AssetTrackMgr.GetGameObject(path, parent);
+    }
+
+    public static void ReleaseGameObject(string path, GameObject gameObject)
+    {
+        AssetTrackMgr.ReleaseGameObject(path, gameObject);
+    }
+
+    public static void DiscardGameObject(string path, GameObject gameObject)
+    {
+        AssetTrackMgr.DiscardGameObject(path, gameObject);
+    }
+
+    public static UnityEngine.Object GetAsset(string path, Type type)
+    {
+        return AssetTrackMgr.GetAsset(path, type);
+    }
+
+    public static void ReleaseAsset(string path, UnityEngine.Object obj)
+    {
+        AssetTrackMgr.ReleaseAsset(path, obj);
+    }
+
+    [LuaInterface.LuaByteBuffer]
+    public static byte[] LoadTextWithBytes(string path)
+    {
+        TextAsset textAsset = AssetTrackMgr.GetAsset<TextAsset>(path);
+        if (null != textAsset)
+        {
+            return textAsset.bytes;
+        }
+        return null;
+    }
+
+    public static string LoadTextWithString(string path)
+    {
+        TextAsset textAsset = AssetTrackMgr.GetAsset<TextAsset>(path);
+        if (null != textAsset)
+        {
+            return textAsset.text;
+        }
+        return null;
+    }
+
+    #endregion
+
     #region 音频相关接口
     /// <summary>
     /// 静音接口
@@ -648,7 +687,7 @@ public static class Common_Utils
     /// </summary>
     public static void PlayBackgroundMusic(string audioName, bool isLoop = true, float speed = 1)
     {
-        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        var audioClip = AssetTrackMgr.GetAsset<AudioClip>(audioName);
         AudioManager.Instance.PlayBackgroundMusic(audioClip, isLoop, speed);
     }
 
@@ -681,7 +720,7 @@ public static class Common_Utils
     /// </summary>
     public static void PlaySingleSound(string audioName, bool isLoop = false, float speed = 1)
     {
-        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        var audioClip = AssetTrackMgr.GetAsset<AudioClip>(audioName);
         AudioManager.Instance.PlaySingleSound(audioClip, isLoop, speed);
     }
 
@@ -714,7 +753,7 @@ public static class Common_Utils
     /// </summary>
     public static void PlayMultipleSound(string audioName, bool isLoop = false, float speed = 1)
     {
-        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        var audioClip = AssetTrackMgr.GetAsset<AudioClip>(audioName);
         AudioManager.Instance.PlayMultipleSound(audioClip, isLoop, speed);
     }
 
@@ -723,7 +762,7 @@ public static class Common_Utils
     /// </summary>
     public static void StopMultipleSound(string audioName)
     {
-        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        var audioClip = AssetTrackMgr.GetAsset<AudioClip>(audioName);
         AudioManager.Instance.StopMultipleSound(audioClip);
     }
 
@@ -748,7 +787,7 @@ public static class Common_Utils
     /// </summary>
     public static void PlayWorldSound(GameObject attachTarget, string audioName, bool isLoop = false, float speed = 1)
     {
-        var audioClip = AssetLoader.Load<AudioClip>(audioName);
+        var audioClip = AssetTrackMgr.GetAsset<AudioClip>(audioName);
         AudioManager.Instance.PlayWorldSound(attachTarget, audioClip, isLoop, speed);
     }
 

@@ -158,32 +158,6 @@ namespace ColaFramework.Foundation
             };
         }
 
-        /// <summary>
-        /// 以字符串的形式加载文本
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string LoadTextWithString(string path)
-        {
-            TextAsset textAsset = Load<TextAsset>(path);
-            if (null != textAsset)
-            {
-                return textAsset.text;
-            }
-            return null;
-        }
-
-        [LuaInterface.LuaByteBuffer]
-        public static byte[] LoadTextWithBytes(string path)
-        {
-            TextAsset textAsset = Load<TextAsset>(path);
-            if (null != textAsset)
-            {
-                return textAsset.bytes;
-            }
-            return null;
-        }
-
 #if UNITY_EDITOR
         [LuaInterface.NoToLua]
         public static void LoadAllAssetsAtPath(string path, out Object[] objects)

@@ -244,6 +244,9 @@ namespace ColaFramework.Foundation
                 gameObject.name = path;
                 if (null != parent)
                     gameObject.transform.SetParent(parent, false);
+                gameObject.transform.localPosition = prefab.transform.localPosition;
+                gameObject.transform.localRotation = prefab.transform.localRotation;
+                gameObject.transform.localScale = prefab.transform.localScale;
                 refCount++;
                 return gameObject;
             }
