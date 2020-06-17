@@ -101,7 +101,7 @@ namespace ColaAbandoned
                 {
                     while (enumerator.MoveNext())
                     {
-                        var content = AssetLoader.LoadTextWithString(GetFilePath(enumerator.Current.Key));
+                        var content = CommonUtil.LoadTextWithString(GetFilePath(enumerator.Current.Key));
                         TextLoadCallBack(enumerator.Current.Key, content);
                     }
                 }
@@ -272,7 +272,7 @@ namespace ColaAbandoned
         /// <param name="callback"></param>
         private void LoadConfigByName(string fileName)
         {
-            var content = AssetLoader.LoadTextWithString(GetFilePath(fileName));
+            var content = CommonUtil.LoadTextWithString(GetFilePath(fileName));
             TextLoadCallBack(fileName, content);
         }
     }

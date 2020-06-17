@@ -22,7 +22,7 @@ namespace ColaFramework
         public CharAnimatorCtrl(GameObject entity)
         {
             animator = entity.AddSingleComponent<Animator>();
-            animator.runtimeAnimatorController = AssetLoader.Load<RuntimeAnimatorController>(Constants.ModelAnimatorPath + entity.name + ".controller");
+            animator.runtimeAnimatorController = CommonUtil.AssetTrackMgr.GetAsset<RuntimeAnimatorController>(Constants.ModelAnimatorPath + entity.name + ".controller");
             animator.updateMode = AnimatorUpdateMode.Normal;
             animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
         }

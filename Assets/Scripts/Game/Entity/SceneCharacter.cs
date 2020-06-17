@@ -125,8 +125,7 @@ namespace ColaFramework
         /// <returns></returns>
         public static SceneCharacter CreateSceneCharacter(string path, AnimCtrlEnum animCtrlEnum, bool isMainPlayer)
         {
-            GameObject prefab = AssetLoader.Load<GameObject>(path);
-            GameObject Entity = CommonHelper.InstantiateGoByPrefab(prefab, null);
+            GameObject Entity = CommonUtil.AssetTrackMgr.GetGameObject(path, null);
             return new SceneCharacter(Entity, animCtrlEnum, isMainPlayer);
         }
 

@@ -374,7 +374,7 @@ namespace UnityEngine.UI.Extensions
             }
             else
             {
-                var modelData = AssetLoader.Load<UIModelSettingData>(path);
+                var modelData = CommonUtil.AssetTrackMgr.GetAsset<UIModelSettingData>(path);
                 if (null == modelData)
                 {
                     DefaultSetting();

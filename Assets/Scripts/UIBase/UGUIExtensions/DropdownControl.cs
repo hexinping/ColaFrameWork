@@ -68,7 +68,7 @@ namespace UnityEngine.UI.Extensions
             data.text = text;
             if (!string.IsNullOrEmpty(imagePath))
             {
-                var sprite = AssetLoader.Load<Sprite>(imagePath);
+                var sprite = CommonUtil.AssetTrackMgr.GetAsset<Sprite>(imagePath);
                 if (null != sprite)
                 {
                     data.image = sprite;

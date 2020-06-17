@@ -414,7 +414,7 @@ namespace ColaFramework
             if (m_totalSize > 0)
             {
                 //wifi或者数据下载量小于设定值，直接下载
-                if (Common_Utils.IsWifi || m_totalSize < AppConst.AUTO_DOWNLOAD_SIZE)
+                if (CommonUtil.IsWifi || m_totalSize < AppConst.AUTO_DOWNLOAD_SIZE)
                 {
                     RealDownloadPatch();
                 }
