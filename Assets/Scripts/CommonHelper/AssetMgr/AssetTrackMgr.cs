@@ -65,8 +65,9 @@ namespace ColaFramework.Foundation
         {
             rootTF = null == rootTransform ? new GameObject("AssetTrackRoot").transform : rootTransform;
             instantiateAction = null == action ? GameObject.Instantiate : action;
-            GameObject.DontDestroyOnLoad(rootTF.gameObject);
             containerPool = new ContainerPool();
+            GameObject.DontDestroyOnLoad(rootTF.gameObject);
+            rootTF.gameObject.AddSingleComponent<ContainerMapChecker>().assetTrackMgr = this;
         }
 
         public void DiscardGameObject(string path, GameObject gameObject)
@@ -325,6 +326,81 @@ namespace ColaFramework.Foundation
                 return G_DisposeTime;
             }
             return DISPOSE_TIME_VALUE;
+        }
+
+        private class ContainerMapChecker : MonoBehaviour
+        {
+            public AssetTrackMgr assetTrackMgr;
+
+            private const float CHECK_INTERVAL = 1f;
+            private float lastCheckTime;
+            private List<string> removeKeyList = new List<string>();
+
+            // Use this for initialization
+            void Start()
+            {
+                lastCheckTime = Time.realtimeSinceStartup;
+            }
+
+            private void CheckAssetContainerMap(float dt)
+            {
+                removeKeyList.Clear();
+                foreach (var element in assetTrackMgr.assetContainerMap)
+                {
+                    if (false == element.Value.IsAlive(dt))
+                    {
+                        removeKeyList.Add(element.Key);
+                    }
+                }
+                if (removeKeyList.Count > 0)
+                {
+                    var assetContainerMap = assetTrackMgr.assetContainerMap;
+                    var containerPool = assetTrackMgr.containerPool;
+                    foreach (var k in removeKeyList)
+                    {
+                        var container = assetContainerMap[k];
+                        assetContainerMap.Remove(k);
+                        containerPool.ReleaseAssetContainer(container);
+                    }
+                    removeKeyList.Clear();
+                }
+            }
+
+            private void CheckGameObjectContainerMap(float dt)
+            {
+                removeKeyList.Clear();
+                foreach (var element in assetTrackMgr.gameObjectContainerMap)
+                {
+                    if (false == element.Value.IsAlive(dt))
+                    {
+                        removeKeyList.Add(element.Key);
+                    }
+                }
+                if (removeKeyList.Count > 0)
+                {
+                    var gameObjectContainerMap = assetTrackMgr.gameObjectContainerMap;
+                    var containerPool = assetTrackMgr.containerPool;
+                    foreach (var k in removeKeyList)
+                    {
+                        var container = gameObjectContainerMap[k];
+                        gameObjectContainerMap.Remove(k);
+                        containerPool.ReleaseGameObjectContainer(container);
+                    }
+                    removeKeyList.Clear();
+                }
+            }
+
+            // Update is called once per frame
+            void Update()
+            {
+                var dt = Time.realtimeSinceStartup - lastCheckTime;
+                if (dt > CHECK_INTERVAL)
+                {
+                    CheckAssetContainerMap(dt);
+                    CheckGameObjectContainerMap(dt);
+                    lastCheckTime = Time.realtimeSinceStartup;
+                }
+            }
         }
         #endregion
     }
