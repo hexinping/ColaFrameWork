@@ -2,16 +2,15 @@
 using System;
 using LuaInterface;
 
-public class Common_UtilsWrap
+public class CommonUtilWrap
 {
 	public static void Register(LuaState L)
 	{
-		L.BeginStaticLibs("Common_Utils");
+		L.BeginStaticLibs("CommonUtil");
+		L.RegFunction("Initialize", Initialize);
+		L.RegFunction("Dispose", Dispose);
 		L.RegFunction("AddBtnMsg", AddBtnMsg);
 		L.RegFunction("RemoveBtnMsg", RemoveBtnMsg);
-		L.RegFunction("InstantiateGoByPath", InstantiateGoByPath);
-		L.RegFunction("InstantiateGoByPathAsync", InstantiateGoByPathAsync);
-		L.RegFunction("InstantiateGoByPrefab", InstantiateGoByPrefab);
 		L.RegFunction("AddSingleComponent", AddSingleComponent);
 		L.RegFunction("AddCustomComponent", AddCustomComponent);
 		L.RegFunction("GetGameObjectByName", GetGameObjectByName);
@@ -47,6 +46,16 @@ public class Common_UtilsWrap
 		L.RegFunction("GetSceneMgr", GetSceneMgr);
 		L.RegFunction("DelayInvokeNextFrame", DelayInvokeNextFrame);
 		L.RegFunction("IsNull", IsNull);
+		L.RegFunction("InstantiatePrefab", InstantiatePrefab);
+		L.RegFunction("SetCapcitySize", SetCapcitySize);
+		L.RegFunction("SetDisposeInterval", SetDisposeInterval);
+		L.RegFunction("GetGameObject", GetGameObject);
+		L.RegFunction("ReleaseGameObject", ReleaseGameObject);
+		L.RegFunction("DiscardGameObject", DiscardGameObject);
+		L.RegFunction("GetAsset", GetAsset);
+		L.RegFunction("ReleaseAsset", ReleaseAsset);
+		L.RegFunction("LoadTextWithBytes", LoadTextWithBytes);
+		L.RegFunction("LoadTextWithString", LoadTextWithString);
 		L.RegFunction("SetMute", SetMute);
 		L.RegFunction("PlayBackgroundMusic", PlayBackgroundMusic);
 		L.RegFunction("PauseBackgroundMusic", PauseBackgroundMusic);
@@ -72,6 +81,36 @@ public class Common_UtilsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Initialize(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			CommonUtil.Initialize();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Dispose(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			CommonUtil.Dispose();
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int AddBtnMsg(IntPtr L)
 	{
 		try
@@ -79,7 +118,7 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			System.Action<UnityEngine.GameObject> arg1 = (System.Action<UnityEngine.GameObject>)ToLua.CheckDelegate<System.Action<UnityEngine.GameObject>>(L, 2);
-			Common_Utils.AddBtnMsg(arg0, arg1);
+			CommonUtil.AddBtnMsg(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)
@@ -96,62 +135,8 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			System.Action<UnityEngine.GameObject> arg1 = (System.Action<UnityEngine.GameObject>)ToLua.CheckDelegate<System.Action<UnityEngine.GameObject>>(L, 2);
-			Common_Utils.RemoveBtnMsg(arg0, arg1);
+			CommonUtil.RemoveBtnMsg(arg0, arg1);
 			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int InstantiateGoByPath(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			string arg0 = ToLua.CheckString(L, 1);
-			UnityEngine.GameObject arg1 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
-			UnityEngine.GameObject o = Common_Utils.InstantiateGoByPath(arg0, arg1);
-			ToLua.PushSealed(L, o);
-			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int InstantiateGoByPathAsync(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 3);
-			string arg0 = ToLua.CheckString(L, 1);
-			UnityEngine.GameObject arg1 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
-			System.Action<UnityEngine.GameObject> arg2 = (System.Action<UnityEngine.GameObject>)ToLua.CheckDelegate<System.Action<UnityEngine.GameObject>>(L, 3);
-			Common_Utils.InstantiateGoByPathAsync(arg0, arg1, arg2);
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int InstantiateGoByPrefab(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
-			UnityEngine.GameObject arg1 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
-			UnityEngine.GameObject o = Common_Utils.InstantiateGoByPrefab(arg0, arg1);
-			ToLua.PushSealed(L, o);
-			return 1;
 		}
 		catch (Exception e)
 		{
@@ -170,7 +155,7 @@ public class Common_UtilsWrap
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				System.Type arg1 = (System.Type)ToLua.ToObject(L, 2);
-				UnityEngine.Component o = Common_Utils.AddSingleComponent(arg0, arg1);
+				UnityEngine.Component o = CommonUtil.AddSingleComponent(arg0, arg1);
 				ToLua.Push(L, o);
 				return 1;
 			}
@@ -178,13 +163,13 @@ public class Common_UtilsWrap
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				string arg1 = ToLua.ToString(L, 2);
-				UnityEngine.Component o = Common_Utils.AddSingleComponent(arg0, arg1);
+				UnityEngine.Component o = CommonUtil.AddSingleComponent(arg0, arg1);
 				ToLua.Push(L, o);
 				return 1;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.AddSingleComponent");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.AddSingleComponent");
 			}
 		}
 		catch (Exception e)
@@ -201,7 +186,7 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			string arg1 = ToLua.CheckString(L, 2);
-			UnityEngine.Component o = Common_Utils.AddCustomComponent(arg0, arg1);
+			UnityEngine.Component o = CommonUtil.AddCustomComponent(arg0, arg1);
 			ToLua.Push(L, o);
 			return 1;
 		}
@@ -219,7 +204,7 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			string arg1 = ToLua.CheckString(L, 2);
-			UnityEngine.GameObject o = Common_Utils.GetGameObjectByName(arg0, arg1);
+			UnityEngine.GameObject o = CommonUtil.GetGameObjectByName(arg0, arg1);
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -237,7 +222,7 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			string arg1 = ToLua.CheckString(L, 2);
-			UnityEngine.GameObject o = Common_Utils.FindChildByPath(arg0, arg1);
+			UnityEngine.GameObject o = CommonUtil.FindChildByPath(arg0, arg1);
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -256,7 +241,7 @@ public class Common_UtilsWrap
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			string arg1 = ToLua.CheckString(L, 2);
 			string arg2 = ToLua.CheckString(L, 3);
-			UnityEngine.Component o = Common_Utils.GetComponentByPath(arg0, arg1, arg2);
+			UnityEngine.Component o = CommonUtil.GetComponentByPath(arg0, arg1, arg2);
 			ToLua.Push(L, o);
 			return 1;
 		}
@@ -272,7 +257,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			string o = Common_Utils.GetDeviceInfo();
+			string o = CommonUtil.GetDeviceInfo();
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
 		}
@@ -288,7 +273,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.GameObject o = Common_Utils.GetUIRootObj();
+			UnityEngine.GameObject o = CommonUtil.GetUIRootObj();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -304,7 +289,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.GameObject o = Common_Utils.GetUICameraObj();
+			UnityEngine.GameObject o = CommonUtil.GetUICameraObj();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -320,7 +305,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.Canvas o = Common_Utils.GetUIRoot();
+			UnityEngine.Canvas o = CommonUtil.GetUIRoot();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -336,7 +321,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.Camera o = Common_Utils.GetUICamera();
+			UnityEngine.Camera o = CommonUtil.GetUICamera();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -352,7 +337,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.Camera o = Common_Utils.GetMainCamera();
+			UnityEngine.Camera o = CommonUtil.GetMainCamera();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -368,7 +353,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.GameObject o = Common_Utils.GetMainGameObj();
+			UnityEngine.GameObject o = CommonUtil.GetMainGameObj();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -384,7 +369,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.GameObject o = Common_Utils.GetEffectCameraObj();
+			UnityEngine.GameObject o = CommonUtil.GetEffectCameraObj();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -400,7 +385,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			UnityEngine.Camera o = Common_Utils.GetEffectCamera();
+			UnityEngine.Camera o = CommonUtil.GetEffectCamera();
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -416,7 +401,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			float o = Common_Utils.GetBatteryLevel();
+			float o = CommonUtil.GetBatteryLevel();
 			LuaDLL.lua_pushnumber(L, o);
 			return 1;
 		}
@@ -432,7 +417,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			int o = Common_Utils.GetBatteryStatus();
+			int o = CommonUtil.GetBatteryStatus();
 			LuaDLL.lua_pushinteger(L, o);
 			return 1;
 		}
@@ -448,7 +433,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			int o = Common_Utils.GetNetworkStatus();
+			int o = CommonUtil.GetNetworkStatus();
 			LuaDLL.lua_pushinteger(L, o);
 			return 1;
 		}
@@ -467,7 +452,7 @@ public class Common_UtilsWrap
 			UnityEngine.Camera arg0 = (UnityEngine.Camera)ToLua.CheckObject(L, 1, typeof(UnityEngine.Camera));
 			UnityEngine.Canvas arg1 = (UnityEngine.Canvas)ToLua.CheckObject(L, 2, typeof(UnityEngine.Canvas));
 			UnityEngine.Vector3 arg2 = ToLua.ToVector3(L, 3);
-			UnityEngine.Vector2 o = Common_Utils.WorldToUIPoint(arg0, arg1, arg2);
+			UnityEngine.Vector2 o = CommonUtil.WorldToUIPoint(arg0, arg1, arg2);
 			ToLua.Push(L, o);
 			return 1;
 		}
@@ -484,7 +469,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 1);
-			int o = Common_Utils.ActivedChildCount(arg0);
+			int o = CommonUtil.ActivedChildCount(arg0);
 			LuaDLL.lua_pushinteger(L, o);
 			return 1;
 		}
@@ -500,7 +485,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			string o = Common_Utils.GetAssetPath();
+			string o = CommonUtil.GetAssetPath();
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
 		}
@@ -516,7 +501,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			string o = Common_Utils.GetHostIp();
+			string o = CommonUtil.GetHostIp();
 			LuaDLL.lua_pushstring(L, o);
 			return 1;
 		}
@@ -533,7 +518,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
-			int o = Common_Utils.ChildCount(arg0);
+			int o = CommonUtil.ChildCount(arg0);
 			LuaDLL.lua_pushinteger(L, o);
 			return 1;
 		}
@@ -551,7 +536,7 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
-			UnityEngine.GameObject o = Common_Utils.GetChild(arg0, arg1);
+			UnityEngine.GameObject o = CommonUtil.GetChild(arg0, arg1);
 			ToLua.PushSealed(L, o);
 			return 1;
 		}
@@ -568,7 +553,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			string arg0 = ToLua.CheckString(L, 1);
-			bool o = Common_Utils.CheckLocalFileExist(arg0);
+			bool o = CommonUtil.CheckLocalFileExist(arg0);
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
@@ -589,7 +574,7 @@ public class Common_UtilsWrap
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				string arg1 = ToLua.CheckString(L, 2);
-				UnityEngine.Component[] o = Common_Utils.GetComponentsInChildren(arg0, arg1);
+				UnityEngine.Component[] o = CommonUtil.GetComponentsInChildren(arg0, arg1);
 				ToLua.Push(L, o);
 				return 1;
 			}
@@ -598,13 +583,13 @@ public class Common_UtilsWrap
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				string arg1 = ToLua.CheckString(L, 2);
 				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
-				UnityEngine.Component[] o = Common_Utils.GetComponentsInChildren(arg0, arg1, arg2);
+				UnityEngine.Component[] o = CommonUtil.GetComponentsInChildren(arg0, arg1, arg2);
 				ToLua.Push(L, o);
 				return 1;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.GetComponentsInChildren");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.GetComponentsInChildren");
 			}
 		}
 		catch (Exception e)
@@ -620,7 +605,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.UI.Text arg0 = (UnityEngine.UI.Text)ToLua.CheckObject<UnityEngine.UI.Text>(L, 1);
-			Common_Utils.AttachScreenText(arg0);
+			CommonUtil.AttachScreenText(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -635,7 +620,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.UnAttachScreenText();
+			CommonUtil.UnAttachScreenText();
 			return 0;
 		}
 		catch (Exception e)
@@ -650,7 +635,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.ClearSreenLog();
+			CommonUtil.ClearSreenLog();
 			return 0;
 		}
 		catch (Exception e)
@@ -671,7 +656,7 @@ public class Common_UtilsWrap
 				float arg0 = (float)LuaDLL.luaL_checknumber(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-				float o = Common_Utils.GetTerrainHeight(arg0, arg1, arg2);
+				float o = CommonUtil.GetTerrainHeight(arg0, arg1, arg2);
 				LuaDLL.lua_pushnumber(L, o);
 				return 1;
 			}
@@ -681,13 +666,13 @@ public class Common_UtilsWrap
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
 				float arg3 = (float)LuaDLL.luaL_checknumber(L, 4);
-				float o = Common_Utils.GetTerrainHeight(arg0, arg1, arg2, arg3);
+				float o = CommonUtil.GetTerrainHeight(arg0, arg1, arg2, arg3);
 				LuaDLL.lua_pushnumber(L, o);
 				return 1;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.GetTerrainHeight");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.GetTerrainHeight");
 			}
 		}
 		catch (Exception e)
@@ -704,7 +689,7 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			string arg1 = ToLua.CheckString(L, 2);
-			Common_Utils.ShowUIBlur(arg0, arg1);
+			CommonUtil.ShowUIBlur(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)
@@ -721,7 +706,7 @@ public class Common_UtilsWrap
 			ToLua.CheckArgsCount(L, 2);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			string arg1 = ToLua.CheckString(L, 2);
-			Common_Utils.ShowUIMask(arg0, arg1);
+			CommonUtil.ShowUIMask(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)
@@ -736,7 +721,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.DestroyUIBlur();
+			CommonUtil.DestroyUIBlur();
 			return 0;
 		}
 		catch (Exception e)
@@ -751,7 +736,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			SceneMgr o = Common_Utils.GetSceneMgr();
+			SceneMgr o = CommonUtil.GetSceneMgr();
 			ToLua.Push(L, o);
 			return 1;
 		}
@@ -768,7 +753,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			System.Action arg0 = (System.Action)ToLua.CheckDelegate<System.Action>(L, 1);
-			Common_Utils.DelayInvokeNextFrame(arg0);
+			CommonUtil.DelayInvokeNextFrame(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -784,8 +769,181 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			object arg0 = ToLua.ToVarObject(L, 1);
-			bool o = Common_Utils.IsNull(arg0);
+			bool o = CommonUtil.IsNull(arg0);
 			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int InstantiatePrefab(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			UnityEngine.Transform arg1 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 2);
+			UnityEngine.GameObject o = CommonUtil.InstantiatePrefab(arg0, arg1);
+			ToLua.PushSealed(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetCapcitySize(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
+			CommonUtil.SetCapcitySize(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetDisposeInterval(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
+			CommonUtil.SetDisposeInterval(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetGameObject(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			UnityEngine.Transform arg1 = (UnityEngine.Transform)ToLua.CheckObject<UnityEngine.Transform>(L, 2);
+			UnityEngine.GameObject o = CommonUtil.GetGameObject(arg0, arg1);
+			ToLua.PushSealed(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReleaseGameObject(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			UnityEngine.GameObject arg1 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
+			CommonUtil.ReleaseGameObject(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int DiscardGameObject(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			UnityEngine.GameObject arg1 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
+			CommonUtil.DiscardGameObject(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetAsset(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			System.Type arg1 = ToLua.CheckMonoType(L, 2);
+			UnityEngine.Object o = CommonUtil.GetAsset(arg0, arg1);
+			ToLua.Push(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ReleaseAsset(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			UnityEngine.Object arg1 = (UnityEngine.Object)ToLua.CheckObject<UnityEngine.Object>(L, 2);
+			CommonUtil.ReleaseAsset(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadTextWithBytes(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			byte[] o = CommonUtil.LoadTextWithBytes(arg0);
+			LuaDLL.tolua_pushlstring(L, o, o.Length);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int LoadTextWithString(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			string o = CommonUtil.LoadTextWithString(arg0);
+			LuaDLL.lua_pushstring(L, o);
 			return 1;
 		}
 		catch (Exception e)
@@ -801,7 +959,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
-			Common_Utils.SetMute(arg0);
+			CommonUtil.SetMute(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -820,14 +978,14 @@ public class Common_UtilsWrap
 			if (count == 1)
 			{
 				string arg0 = ToLua.CheckString(L, 1);
-				Common_Utils.PlayBackgroundMusic(arg0);
+				CommonUtil.PlayBackgroundMusic(arg0);
 				return 0;
 			}
 			else if (count == 2)
 			{
 				string arg0 = ToLua.CheckString(L, 1);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
-				Common_Utils.PlayBackgroundMusic(arg0, arg1);
+				CommonUtil.PlayBackgroundMusic(arg0, arg1);
 				return 0;
 			}
 			else if (count == 3)
@@ -835,12 +993,12 @@ public class Common_UtilsWrap
 				string arg0 = ToLua.CheckString(L, 1);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-				Common_Utils.PlayBackgroundMusic(arg0, arg1, arg2);
+				CommonUtil.PlayBackgroundMusic(arg0, arg1, arg2);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlayBackgroundMusic");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.PlayBackgroundMusic");
 			}
 		}
 		catch (Exception e)
@@ -858,18 +1016,18 @@ public class Common_UtilsWrap
 
 			if (count == 0)
 			{
-				Common_Utils.PauseBackgroundMusic();
+				CommonUtil.PauseBackgroundMusic();
 				return 0;
 			}
 			else if (count == 1)
 			{
 				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
-				Common_Utils.PauseBackgroundMusic(arg0);
+				CommonUtil.PauseBackgroundMusic(arg0);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PauseBackgroundMusic");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.PauseBackgroundMusic");
 			}
 		}
 		catch (Exception e)
@@ -887,18 +1045,18 @@ public class Common_UtilsWrap
 
 			if (count == 0)
 			{
-				Common_Utils.UnPauseBackgroundMusic();
+				CommonUtil.UnPauseBackgroundMusic();
 				return 0;
 			}
 			else if (count == 1)
 			{
 				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
-				Common_Utils.UnPauseBackgroundMusic(arg0);
+				CommonUtil.UnPauseBackgroundMusic(arg0);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.UnPauseBackgroundMusic");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.UnPauseBackgroundMusic");
 			}
 		}
 		catch (Exception e)
@@ -913,7 +1071,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.StopBackgroundMusic();
+			CommonUtil.StopBackgroundMusic();
 			return 0;
 		}
 		catch (Exception e)
@@ -932,14 +1090,14 @@ public class Common_UtilsWrap
 			if (count == 1)
 			{
 				string arg0 = ToLua.CheckString(L, 1);
-				Common_Utils.PlaySingleSound(arg0);
+				CommonUtil.PlaySingleSound(arg0);
 				return 0;
 			}
 			else if (count == 2)
 			{
 				string arg0 = ToLua.CheckString(L, 1);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
-				Common_Utils.PlaySingleSound(arg0, arg1);
+				CommonUtil.PlaySingleSound(arg0, arg1);
 				return 0;
 			}
 			else if (count == 3)
@@ -947,12 +1105,12 @@ public class Common_UtilsWrap
 				string arg0 = ToLua.CheckString(L, 1);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-				Common_Utils.PlaySingleSound(arg0, arg1, arg2);
+				CommonUtil.PlaySingleSound(arg0, arg1, arg2);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlaySingleSound");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.PlaySingleSound");
 			}
 		}
 		catch (Exception e)
@@ -970,18 +1128,18 @@ public class Common_UtilsWrap
 
 			if (count == 0)
 			{
-				Common_Utils.PauseSingleSound();
+				CommonUtil.PauseSingleSound();
 				return 0;
 			}
 			else if (count == 1)
 			{
 				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
-				Common_Utils.PauseSingleSound(arg0);
+				CommonUtil.PauseSingleSound(arg0);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PauseSingleSound");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.PauseSingleSound");
 			}
 		}
 		catch (Exception e)
@@ -999,18 +1157,18 @@ public class Common_UtilsWrap
 
 			if (count == 0)
 			{
-				Common_Utils.UnPauseSingleSound();
+				CommonUtil.UnPauseSingleSound();
 				return 0;
 			}
 			else if (count == 1)
 			{
 				bool arg0 = LuaDLL.luaL_checkboolean(L, 1);
-				Common_Utils.UnPauseSingleSound(arg0);
+				CommonUtil.UnPauseSingleSound(arg0);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.UnPauseSingleSound");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.UnPauseSingleSound");
 			}
 		}
 		catch (Exception e)
@@ -1025,7 +1183,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.StopSingleSound();
+			CommonUtil.StopSingleSound();
 			return 0;
 		}
 		catch (Exception e)
@@ -1044,14 +1202,14 @@ public class Common_UtilsWrap
 			if (count == 1)
 			{
 				string arg0 = ToLua.CheckString(L, 1);
-				Common_Utils.PlayMultipleSound(arg0);
+				CommonUtil.PlayMultipleSound(arg0);
 				return 0;
 			}
 			else if (count == 2)
 			{
 				string arg0 = ToLua.CheckString(L, 1);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
-				Common_Utils.PlayMultipleSound(arg0, arg1);
+				CommonUtil.PlayMultipleSound(arg0, arg1);
 				return 0;
 			}
 			else if (count == 3)
@@ -1059,12 +1217,12 @@ public class Common_UtilsWrap
 				string arg0 = ToLua.CheckString(L, 1);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-				Common_Utils.PlayMultipleSound(arg0, arg1, arg2);
+				CommonUtil.PlayMultipleSound(arg0, arg1, arg2);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlayMultipleSound");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.PlayMultipleSound");
 			}
 		}
 		catch (Exception e)
@@ -1080,7 +1238,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			string arg0 = ToLua.CheckString(L, 1);
-			Common_Utils.StopMultipleSound(arg0);
+			CommonUtil.StopMultipleSound(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -1095,7 +1253,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.StopAllMultipleSound();
+			CommonUtil.StopAllMultipleSound();
 			return 0;
 		}
 		catch (Exception e)
@@ -1110,7 +1268,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.ClearIdleMultipleAudioSource();
+			CommonUtil.ClearIdleMultipleAudioSource();
 			return 0;
 		}
 		catch (Exception e)
@@ -1130,7 +1288,7 @@ public class Common_UtilsWrap
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				string arg1 = ToLua.CheckString(L, 2);
-				Common_Utils.PlayWorldSound(arg0, arg1);
+				CommonUtil.PlayWorldSound(arg0, arg1);
 				return 0;
 			}
 			else if (count == 3)
@@ -1138,7 +1296,7 @@ public class Common_UtilsWrap
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				string arg1 = ToLua.CheckString(L, 2);
 				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
-				Common_Utils.PlayWorldSound(arg0, arg1, arg2);
+				CommonUtil.PlayWorldSound(arg0, arg1, arg2);
 				return 0;
 			}
 			else if (count == 4)
@@ -1147,12 +1305,12 @@ public class Common_UtilsWrap
 				string arg1 = ToLua.CheckString(L, 2);
 				bool arg2 = LuaDLL.luaL_checkboolean(L, 3);
 				float arg3 = (float)LuaDLL.luaL_checknumber(L, 4);
-				Common_Utils.PlayWorldSound(arg0, arg1, arg2, arg3);
+				CommonUtil.PlayWorldSound(arg0, arg1, arg2, arg3);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PlayWorldSound");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.PlayWorldSound");
 			}
 		}
 		catch (Exception e)
@@ -1171,19 +1329,19 @@ public class Common_UtilsWrap
 			if (count == 1)
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
-				Common_Utils.PauseWorldSound(arg0);
+				CommonUtil.PauseWorldSound(arg0);
 				return 0;
 			}
 			else if (count == 2)
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
-				Common_Utils.PauseWorldSound(arg0, arg1);
+				CommonUtil.PauseWorldSound(arg0, arg1);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.PauseWorldSound");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.PauseWorldSound");
 			}
 		}
 		catch (Exception e)
@@ -1202,19 +1360,19 @@ public class Common_UtilsWrap
 			if (count == 1)
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
-				Common_Utils.UnPauseWorldSound(arg0);
+				CommonUtil.UnPauseWorldSound(arg0);
 				return 0;
 			}
 			else if (count == 2)
 			{
 				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
-				Common_Utils.UnPauseWorldSound(arg0, arg1);
+				CommonUtil.UnPauseWorldSound(arg0, arg1);
 				return 0;
 			}
 			else
 			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: Common_Utils.UnPauseWorldSound");
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: CommonUtil.UnPauseWorldSound");
 			}
 		}
 		catch (Exception e)
@@ -1229,7 +1387,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.StopAllWorldSound();
+			CommonUtil.StopAllWorldSound();
 			return 0;
 		}
 		catch (Exception e)
@@ -1244,7 +1402,7 @@ public class Common_UtilsWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 0);
-			Common_Utils.ClearIdleWorldAudioSource();
+			CommonUtil.ClearIdleWorldAudioSource();
 			return 0;
 		}
 		catch (Exception e)
@@ -1260,7 +1418,7 @@ public class Common_UtilsWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
-			Common_Utils.HandleMainCameraEvent(arg0);
+			CommonUtil.HandleMainCameraEvent(arg0);
 			return 0;
 		}
 		catch (Exception e)
@@ -1274,7 +1432,7 @@ public class Common_UtilsWrap
 	{
 		try
 		{
-			LuaDLL.lua_pushboolean(L, Common_Utils.NetAvailable);
+			LuaDLL.lua_pushboolean(L, CommonUtil.NetAvailable);
 			return 1;
 		}
 		catch (Exception e)
@@ -1288,7 +1446,7 @@ public class Common_UtilsWrap
 	{
 		try
 		{
-			LuaDLL.lua_pushboolean(L, Common_Utils.IsWifi);
+			LuaDLL.lua_pushboolean(L, CommonUtil.IsWifi);
 			return 1;
 		}
 		catch (Exception e)
