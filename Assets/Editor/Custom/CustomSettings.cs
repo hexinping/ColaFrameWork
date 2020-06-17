@@ -60,7 +60,7 @@ public static class CustomSettings
         //_GT(typeof(TestExport)),
         //_GT(typeof(TestExport.Space)),
         //-------------------------------------------------------------------        
-        _GT(typeof(Common_Utils)).SetNameSpace(null),
+        _GT(typeof(CommonUtil)).SetNameSpace(null),
         _GT(typeof(SorterTag)).SetNameSpace(null),
         _GT(typeof(ParticleOrderAutoSorter)).SetNameSpace(null),
         _GT(typeof(Debugger)).SetNameSpace(null),
@@ -103,8 +103,8 @@ public static class CustomSettings
         //_GT(typeof(TrailRenderer)).AddExtendType(typeof(DG.Tweening.ShortcutExtensions)),    
 #else
 
-    _GT(typeof(Component)).AddExtendType(typeof(Common_Utils)),
-        _GT(typeof(Transform)).AddExtendType(typeof(Common_Utils)),
+    _GT(typeof(Component)).AddExtendType(typeof(CommonUtil)),
+        _GT(typeof(Transform)).AddExtendType(typeof(CommonUtil)),
         _GT(typeof(Material)),
         _GT(typeof(Light)),
         _GT(typeof(Rigidbody)),
@@ -116,7 +116,7 @@ public static class CustomSettings
       
         _GT(typeof(Behaviour)),
         _GT(typeof(MonoBehaviour)),
-        _GT(typeof(GameObject)).AddExtendType(typeof(Common_Utils)),
+        _GT(typeof(GameObject)).AddExtendType(typeof(CommonUtil)),
         _GT(typeof(TrackedReference)),
         _GT(typeof(Application)),
         _GT(typeof(Physics)),
