@@ -215,15 +215,6 @@ public static class CommonHelper
     }
 
     /// <summary>
-    /// 获取系统管理器
-    /// </summary>
-    /// <returns></returns>
-    public static ModuleMgr GetModuleMgr()
-    {
-        return GameManager.Instance.GetModuleMgr();
-    }
-
-    /// <summary>
     /// 获取UI管理器
     /// </summary>
     /// <returns></returns>

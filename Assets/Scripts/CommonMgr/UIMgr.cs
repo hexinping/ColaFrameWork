@@ -14,6 +14,7 @@ namespace ColaFramework
     /// <summary>
     /// UI统一管理器
     /// </summary>
+    [Obsolete]
     public class UIMgr : IViewManager, IEventHandler
     {
         private static UIMgr instance;

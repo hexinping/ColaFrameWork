@@ -26,11 +26,6 @@ namespace ColaFramework
         private GameObject gameLauncherObj;
 
         /// <summary>
-        /// 系统管理器
-        /// </summary>
-        private ModuleMgr moduleMgr;
-
-        /// <summary>
         /// 场景/关卡管理器
         /// </summary>
         private SceneMgr sceneMgr;
@@ -156,20 +151,6 @@ namespace ColaFramework
         public void OnApplicationFocus(bool focus)
         {
 
-        }
-
-        /// <summary>
-        /// 获取系统管理器
-        /// </summary>
-        /// <returns></returns>
-        public ModuleMgr GetModuleMgr()
-        {
-            if (null != moduleMgr)
-            {
-                return moduleMgr;
-            }
-            Debug.LogWarning("subSysMgr构造异常");
-            return null;
         }
 
         /// <summary>

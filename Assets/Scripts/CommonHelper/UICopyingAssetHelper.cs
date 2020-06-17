@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace ColaFramework
 {
+    [System.Obsolete]
     public class UICopyingAssetHelper : UIBase
     {
         /// <summary>

@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ColaFramework;
 
+[System.Obsolete]
 public class UILoading :UIBase
 {
     private Text progressText;

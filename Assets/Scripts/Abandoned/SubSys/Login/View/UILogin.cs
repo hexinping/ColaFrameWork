@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ColaFramework;
 
+[Obsolete]
 public class UILogin : UIBase
 {
     [AutoInject("cancelBtn")]
