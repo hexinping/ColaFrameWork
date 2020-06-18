@@ -183,12 +183,12 @@ end
 
 -- 显示UI背景模糊
 function UIManager:ShowUIBlur(ui)
-    Common_Utils.ShowUIBlur(ui.Panel, ui.PanelName)
+    CommonUtil.ShowUIBlur(ui.Panel, ui.PanelName)
 end
 
 -- 显示UI背景遮罩
 function UIManager:ShowUIMask(ui)
-    Common_Utils.ShowUIMask(ui.Panel, ui.PanelName)
+    CommonUtil.ShowUIMask(ui.Panel, ui.PanelName)
 end
 
 --  获取UI排序管理器

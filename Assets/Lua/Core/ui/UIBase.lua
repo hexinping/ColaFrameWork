@@ -34,7 +34,7 @@ end
 -- 对外调用，用于创建UI
 function UIBase:Create()
     if nil ~= self.Panel then
-        UnityEngine.GameObject.Destroy(self.Panel)
+        CommonUtil.DiscardGameObject(self.ResPath, self.Panel)
     end
 
     local ret, bindView = pcall(require, "UIBindViews." .. tostring(self) .. "_BindView")
@@ -49,7 +49,7 @@ function UIBase:Create()
         return
     end
 
-    self.Panel = Common_Utils.InstantiateGoByPath(self.ResPath, Common_Utils.GetUIRootObj())
+    self.Panel = CommonUtil.InstantiatePrefab(self.ResPath, CommonUtil.GetUIRootTransform())
     self.PanelName = self.Panel.name
     self.Layer = self.Panel.layer
     -- 如果参与UI排序
@@ -142,11 +142,11 @@ function UIBase:Destroy()
         self.bindView.UnBindView(self)
     end
     if self.isShowUIBlur then
-        Common_Utils.DestroyUIBlur()
+        CommonUtil.DestroyUIBlur()
     end
     if nil ~= self.Panel then
         if 0 ~= self.ResPath then
-            UnityEngine.GameObject.Destroy(self.Panel)
+            CommonUtil.DiscardGameObject(self.ResPath, self.Panel)
             self.Panel = nil
         else
             self:SetVisible(false)
@@ -154,6 +154,7 @@ function UIBase:Destroy()
     end
     self.isExist = false
     self:OnDestroy()
+    collectgarbage("collect")
 end
 
 -- 界面销毁的过程中触发

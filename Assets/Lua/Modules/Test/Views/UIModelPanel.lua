@@ -91,7 +91,7 @@ function UIModelPanel:onClick(name)
     elseif name == "Btn_Close" then
         self:DestroySelf()
     elseif name == "Btn_Switch" then
-        Common_Utils.GetSceneMgr():UnloadSceneAsync("xinshoucun",nil)
+        CommonUtil.GetSceneMgr():UnloadSceneAsync("xinshoucun",nil)
     elseif name == "Btn_AnimBefore" then
         if nil ~= self.curChar then
             self.animIndex = self.animIndex -1

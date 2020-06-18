@@ -59,8 +59,9 @@ function Main()
     initParam()
     initialize()
 
+
     UIManager.Instance():Open(ECEnumType.UIEnum.Loading)
-    Common_Utils.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun", function(sceneName)
+    CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun", function(sceneName)
         EventMgr.Instance():DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
         UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
     end)

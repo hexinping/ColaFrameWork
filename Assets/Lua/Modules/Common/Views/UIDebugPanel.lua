@@ -26,9 +26,9 @@ end
 function UIDebugPanel:OnCreate()
     --self.DebugText = self.Panel:FindChildByPath("ScrollView/Viewport/Text"):GetComponent("UnityEngine.UI.Text")
     --if self.DebugText then
-    --    Common_Utils.AttachScreenText(self.DebugText)
+    --    CommonUtils.AttachScreenText(self.DebugText)
     --end
-    Common_Utils.AttachScreenText(self.m_Text)
+    CommonUtil.AttachScreenText(self.m_Text)
 end
 
 -- 界面可见性变化的时候触发
@@ -55,10 +55,10 @@ end
 ------------------- UI事件回调 --------------------------
 function UIDebugPanel:onClick(name)
     if name == "BtnClose" then
-        Common_Utils.UnAttachScreenText()
+        CommonUtil.UnAttachScreenText()
         self:DestroySelf()
     elseif name == "BtnClear" then
-        Common_Utils.ClearSreenLog()
+        CommonUtil.ClearSreenLog()
     end
 end
 

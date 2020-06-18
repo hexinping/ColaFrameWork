@@ -74,7 +74,7 @@ function UI_Utils.SetImageSpriteFromAtlas(image, spriteName, keepNativeSize)
         error(spriteName .. " 对应的AtlasResPath 找不到！")
         return
     end
-    local spriteAsset = AssetLoader.Load(atlasPath, typeof(UnityEngine.Sprite))
+    local spriteAsset = CommonUtil.GetAsset(atlasPath, typeof(UnityEngine.Sprite))
     if nil ~= spriteAsset then
         image.overrideSprite = spriteAsset
         if keepNativeSize then
@@ -89,7 +89,7 @@ function UI_Utils.SetRawImage(rawImage, resPath, keepNativeSize)
         warn("需要指定RawImage")
         return
     end
-    local texture2D = AssetLoader.Load(resPath, typeof(UnityEngine.Texture2D))
+    local texture2D = CommonUtil.GetAsset(resPath, typeof(UnityEngine.Texture2D))
     if nil ~= texture2D then
         rawImage.texture = texture2D
         if keepNativeSize then
@@ -113,7 +113,7 @@ function UI_Utils.SetRawImageGray(rawImage, isGray)
         return
     end
     if isGray then
-        local garyMat = AssetLoader.Load("Arts/UI/Material/material_defaultgray.mat", typeof(UnityEngine.Material))
+        local garyMat = CommonUtil.GetAsset("Arts/UI/Material/material_defaultgray.mat", typeof(UnityEngine.Material))
         rawImage.material = garyMat
         rawImage.color = COMMON_COLORS.Black
     else
