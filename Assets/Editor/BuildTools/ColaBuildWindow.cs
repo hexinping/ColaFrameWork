@@ -72,6 +72,11 @@ namespace ColaFramework.ToolKit
         [ShowIf("isUpLoadRemoteCDN")]
         private string CDNPassword;
 
+        [LabelText("是否分析Bundle")]
+        [SerializeField]
+        [LabelWidth(200)]
+        private bool AnalyzeBundle = true;
+
         [Button("一键打包", ButtonSizes.Large, ButtonStyle.Box)]
         private void BuildPlayer()
         {
@@ -99,6 +104,8 @@ namespace ColaFramework.ToolKit
             ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_URL, CDNURL, false);
             ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_USERNAME, CDNUserName, false);
             ColaBuildTool.SetEnvironmentVariable(EnvOption.CDN_PASSWORD, CDNPassword, false);
+
+            ColaBuildTool.SetEnvironmentVariable(EnvOption.ANALYZE_BUNDLE, AnalyzeBundle.ToString(), false);
 
             ColaBuildTool.BuildPlayer(BuildTarget.Android);
         }

@@ -29,6 +29,8 @@ namespace ColaFramework.ToolKit
         CDN_USERNAME,
         CDN_PASSWORD,
         REMOTE_CDN,
+
+        ANALYZE_BUNDLE,
     }
 
     /// <summary>
@@ -201,15 +203,19 @@ namespace ColaFramework.ToolKit
         /// <param name="buildTargetGroup"></param>
         private static void BuildAssetBundle(BuildTargetGroup buildTargetGroup)
         {
+            var isHotUpdateBuild = ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD);
+
             var beginTime = System.DateTime.Now;
-            AssetBundleAnalyzer.AutoAnalyzeAssetBundleName();
+            if (!isHotUpdateBuild || (isHotUpdateBuild && ContainsEnvOption(EnvOption.ANALYZE_BUNDLE)))
+            {
+                AssetBundleAnalyzer.AutoAnalyzeAssetBundleName();
+            }
             Debug.Log("=================Build AutoAnalyzeAssetBundleName Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
 
             beginTime = System.DateTime.Now;
             ColaEditHelper.BuildManifest();
             ColaEditHelper.BuildAssetBundles();
 
-            var isHotUpdateBuild = ContainsEnvOption(EnvOption.HOT_UPDATE_BUILD);
             if (!isHotUpdateBuild)
             {
                 ColaEditHelper.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundles));
