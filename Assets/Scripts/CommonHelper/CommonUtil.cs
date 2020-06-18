@@ -256,6 +256,11 @@ public static class CommonUtil
         return GUIHelper.GetUIRootObj();
     }
 
+    public static Transform GetUIRootTransform()
+    {
+        return GUIHelper.GetUIRootObj().transform;
+    }
+
     /// <summary>
     /// 返回UI相机节点
     /// </summary>

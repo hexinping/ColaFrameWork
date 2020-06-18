@@ -18,6 +18,7 @@ public class CommonUtilWrap
 		L.RegFunction("GetComponentByPath", GetComponentByPath);
 		L.RegFunction("GetDeviceInfo", GetDeviceInfo);
 		L.RegFunction("GetUIRootObj", GetUIRootObj);
+		L.RegFunction("GetUIRootTransform", GetUIRootTransform);
 		L.RegFunction("GetUICameraObj", GetUICameraObj);
 		L.RegFunction("GetUIRoot", GetUIRoot);
 		L.RegFunction("GetUICamera", GetUICamera);
@@ -275,6 +276,22 @@ public class CommonUtilWrap
 			ToLua.CheckArgsCount(L, 0);
 			UnityEngine.GameObject o = CommonUtil.GetUIRootObj();
 			ToLua.PushSealed(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetUIRootTransform(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 0);
+			UnityEngine.Transform o = CommonUtil.GetUIRootTransform();
+			ToLua.Push(L, o);
 			return 1;
 		}
 		catch (Exception e)

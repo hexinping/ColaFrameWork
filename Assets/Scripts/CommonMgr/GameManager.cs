@@ -87,6 +87,7 @@ namespace ColaFramework
                 inputMgr = gameLauncherObj.AddComponent<InputMgr>();
                 netMessageCenter = NetMessageCenter.Instance;
 
+                CommonUtil.Initialize();
                 GameStart();
             }, (error) => { Debug.Log(error); });
 
