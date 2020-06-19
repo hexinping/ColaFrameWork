@@ -46,6 +46,11 @@ namespace ColaFramework
         private NetMessageCenter netMessageCenter;
 
         /// <summary>
+        /// 定时GC与垃圾回收策略管理器
+        /// </summary>
+        private AutoResGCMgr autoResGCMgr;
+
+        /// <summary>
         /// UI管理器
         /// </summary>
         private UIMgr uiMgr;
@@ -86,6 +91,7 @@ namespace ColaFramework
                 timerManager = TimerManager.Instance;
                 inputMgr = gameLauncherObj.AddComponent<InputMgr>();
                 netMessageCenter = NetMessageCenter.Instance;
+                autoResGCMgr = AutoResGCMgr.Instance;
 
                 CommonUtil.Initialize();
                 GameStart();
@@ -119,6 +125,7 @@ namespace ColaFramework
             AssetLoader.Update(deltaTime);
             audioManager.Update(deltaTime);
             netMessageCenter.Update(deltaTime);
+            autoResGCMgr.Update(deltaTime);
         }
 
         /// <summary>
