@@ -241,7 +241,8 @@ namespace ColaFramework.Foundation
             else
             {
                 var gameObject = assetTrackMgr.instantiateAction(prefab) as GameObject;
-                gameObject.name = path;
+                //gameObject.name = path;
+                gameObject.name = prefab.name;
                 if (null != parent)
                     gameObject.transform.SetParent(parent, false);
                 gameObject.transform.localPosition = prefab.transform.localPosition;
@@ -260,7 +261,7 @@ namespace ColaFramework.Foundation
                 sleepTimerTicker = DisposeTime;
                 disposeTimeTicker = AssetTrackMgr.DISPOSE_CHECK_INTERVAL;
 
-                gameObject.name = path;
+                //gameObject.name = path;
                 gameObject.transform.SetParent(assetTrackMgr.rootTF, false);
                 gameObject.SetActive(false);
                 objectList.AddFirst(gameObject);
