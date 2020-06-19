@@ -523,6 +523,7 @@ public static class CommonHelper
     /// </summary>
     public static void ClearMemory()
     {
+        GameManager.Instance.GetLuaClient().LuaGC();
         Resources.UnloadUnusedAssets();
         GC.Collect();
     }
