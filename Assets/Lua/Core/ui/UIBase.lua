@@ -154,7 +154,6 @@ function UIBase:Destroy()
     end
     self.isExist = false
     self:OnDestroy()
-    collectgarbage("collect")
 end
 
 -- 界面销毁的过程中触发
