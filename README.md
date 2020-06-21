@@ -59,7 +59,9 @@ Module的基类为ModuleBase，游戏内所有的系统的业务逻辑层均继�
 本框架支持将Excel表格转为csv和lua原生格式的配置数据文件，详见[Execl策划表格规范与转表Wiki页面](https://github.com/XINCGer/ColaFrameWork/wiki/Execl%E7%AD%96%E5%88%92%E8%A1%A8%E6%A0%BC%E8%A7%84%E8%8C%83%E4%B8%8E%E8%BD%AC%E8%A1%A8)  
 
 #### 资源管理  
-基于[xasset]()改造了一套弱引用+引用计数原理的资源管理层     
+AssetBundle的加载与管理是基于[xasset](https://github.com/xasset/xasset)  
+在上层是AssetTrackMgr和ContainerPool，内存池和资源跟踪层，它一套弱引用+引用计数原理的资源管理层  
+Lua层和C#业务逻辑层统一都通过AssetTrackMgr这个内存池和资源跟踪层去获取和归还对象  
 
 #### 资源引用查找与依赖关系分析插件  
 简介  
