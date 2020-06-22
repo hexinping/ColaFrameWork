@@ -109,6 +109,7 @@ public sealed class AudioManager : IManager
             if (!_singleAudio.isPlaying)
             {
                 _singleSoundPlayDetector = false;
+                _singleAudio.clip = null;
                 if (null != SingleSoundEndOfPlayEvent)
                 {
                     SingleSoundEndOfPlayEvent.Invoke();
