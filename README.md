@@ -107,6 +107,7 @@ ColaFramework中框架级的Core源码都从属于ColaFramework命名空间，�
 #### 友情链接  
 * [IFramework](https://github.com/OnClick9927/IFramework)  
 * [xasset 一个简易轻量的Unity资源管理框架](https://github.com/xasset/xasset)  
+* [anything_about_game(夜莺人行自走库)](https://github.com/killop/anything_about_game)  
 
 
 
