@@ -272,11 +272,6 @@ namespace UnityEngine.UI.Extensions
             base.OnDestroy();
             if (null != root)
             {
-                modelCamera = null;
-                modelRoot = null;
-                model = null;
-                rectTransform = null;
-                uiCamera = null;
                 Array.Clear(hitInfos, 0, hitInfos.Length);
                 hitInfos = null;
                 for (int i = 0; i < modelList.Count; i++)
@@ -294,6 +289,12 @@ namespace UnityEngine.UI.Extensions
                 Destroy(root);
                 root = null;
             }
+            modelCamera = null;
+            modelRoot = null;
+            model = null;
+            rectTransform = null;
+            uiCamera = null;
+            onModelClick = null;
         }
 
         public void SetCameraEffect(bool isEnable)

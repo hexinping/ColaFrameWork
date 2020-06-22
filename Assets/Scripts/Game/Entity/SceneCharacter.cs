@@ -31,6 +31,8 @@ namespace ColaFramework
 
         public Transform transform { get; set; }
 
+        public string PrefabPath { get; private set; }
+
         public Vector3 Position
         {
             get { return transform.position; }
@@ -62,8 +64,9 @@ namespace ColaFramework
         /// <summary>
         /// 构造函数私有化，外部只能使用工厂方法接口创建
         /// </summary>
-        private SceneCharacter(GameObject entity, AnimCtrlEnum animCtrlEnum, bool isMainPlayer)
+        private SceneCharacter(string path, GameObject entity, AnimCtrlEnum animCtrlEnum, bool isMainPlayer)
         {
+            PrefabPath = path;
             gameObject = entity;
             transform = entity.transform;
             this.animCtrlEnum = animCtrlEnum;
@@ -126,7 +129,7 @@ namespace ColaFramework
         public static SceneCharacter CreateSceneCharacter(string path, AnimCtrlEnum animCtrlEnum, bool isMainPlayer)
         {
             GameObject Entity = CommonUtil.AssetTrackMgr.GetGameObject(path, null);
-            return new SceneCharacter(Entity, animCtrlEnum, isMainPlayer);
+            return new SceneCharacter(path, Entity, animCtrlEnum, isMainPlayer);
         }
 
         void ISceneCharacter.SetPosition2D(float x, float z)
@@ -148,7 +151,7 @@ namespace ColaFramework
             transform = null;
             animCtrl.Release();
 
-            GameObject.Destroy(gameObject);
+            CommonUtil.AssetTrackMgr.ReleaseGameObject(PrefabPath, gameObject);
             gameObject = null;
         }
 

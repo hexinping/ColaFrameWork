@@ -66,8 +66,10 @@ end
 -- 界面销毁的过程中触发
 function UIModelPanel:OnDestroy()
     UIBase.OnDestroy(self)
-    self.uiModel = nil
-    self.uiModel2 = nil
+    --self.uiModel.onModelClick = nil
+    --self.uiModel2.onModelClick = nil
+    --self.uiModel = nil
+    --self.uiModel2 = nil
     self.animIndex = -1;
     self.curChar = nil
 end
