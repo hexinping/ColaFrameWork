@@ -828,11 +828,11 @@ public static class CommonUtil
         AudioManager.Instance.ClearIdleWorldAudioSource();
     }
 
+    #endregion
     public static void HandleMainCameraEvent(GameObject fullMask)
     {
         TouchHelper.AddDragListener(fullMask, GUIHelper.MainCameraOnDrag);
         TouchHelper.AddEndDragListener(fullMask, GUIHelper.MainCameraOnEndDrag);
     }
-    #endregion
 }
 
