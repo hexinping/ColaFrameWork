@@ -41,9 +41,9 @@ function UILoginPanel:OnShow(isShow)
     self.m_vertical_tableview.CellCount = 20
     self.m_vertical_tableview:Reload(true)
 
-    CommonUtil.PlaySingleSound("Audio/welcome.mp3")
-    CommonUtil.PlayMultipleSound("Audio/chat_01.mp3")
-    CommonUtil.PlayBackgroundMusic("Audio/MainTheme.mp3")
+    CommonUtil.PlayMultipleSound("Audio/2d/welcome.mp3")
+    CommonUtil.PlayMultipleSound("Audio/2d/chat_01.mp3")
+    CommonUtil.PlayBackgroundMusic("Audio/2d/MainTheme.mp3")
 end
 
 function UILoginPanel:onClick(name)
