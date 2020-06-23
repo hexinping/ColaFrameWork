@@ -767,8 +767,7 @@ public static class CommonUtil
     /// </summary>
     public static void StopMultipleSound(string audioName)
     {
-        var audioClip = AssetTrackMgr.GetAsset<AudioClip>(audioName);
-        AudioManager.Instance.StopMultipleSound(audioClip);
+        AudioManager.Instance.StopMultipleSound(audioName);
     }
 
     /// <summary>

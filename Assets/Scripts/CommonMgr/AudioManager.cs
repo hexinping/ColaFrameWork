@@ -429,23 +429,6 @@ namespace ColaFramework
         /// <summary>
         /// 停止播放指定的多通道音效
         /// </summary>
-        public void StopMultipleSound(AudioClip clip)
-        {
-            for (int i = 0; i < _multipleAudio.Count; i++)
-            {
-                if (_multipleAudio[i].isPlaying)
-                {
-                    if (_multipleAudio[i].isSameClip(clip))
-                    {
-                        _multipleAudio[i].Stop();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 停止播放指定的多通道音效
-        /// </summary>
         public void StopMultipleSound(string name)
         {
             for (int i = 0; i < _multipleAudio.Count; i++)
