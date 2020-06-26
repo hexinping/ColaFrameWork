@@ -65,6 +65,8 @@ namespace ColaFramework
         string m_strVersionInfoUrl;     //下载版本信息URL
         float m_fStartDowndTime = 0;
         private float checkVersionTimeOut = 3f;
+        private const int TIMEOUT_RETRY_LIMIT = 3; //超时重试限制次数
+        private int retryCount = 0;
 
         #region UI控制
         private const string HotPatchUIRootPath = "UI/UIRoot";
@@ -80,6 +82,7 @@ namespace ColaFramework
         public override void Reset()
         {
             m_haveDownedSize = 0;
+            retryCount = 0;
             m_onDownPatchDone = null;
             m_strErrMsg = "";
             if (m_dicSvrVersions != null)
@@ -114,6 +117,7 @@ namespace ColaFramework
             CheckOverrideInstall();
             m_onDownPatchDone = callback;
             m_strVersionInfoUrl = AppConst.VersionHttpUrl;
+            retryCount = 0;
             if (AppConst.CheckUpdate)
             {
                 CheckNeedUpdate();
@@ -163,6 +167,17 @@ namespace ColaFramework
                     else
                     {
                         m_strVersionInfoUrl = AppConst.BakVersionHttpUrl;
+                    }
+                    retryCount++;
+                    if (retryCount > TIMEOUT_RETRY_LIMIT)
+                    {
+                        SetConfirmTips("获取最新版本信息失败，请检查网络后重试", "重试", () =>
+                        {
+                            retryCount = 0;
+                            CheckNeedUpdate();
+                            SetConfirmTipsPanelVisable(false);
+                        });
+                        return;
                     }
                     Debug.LogFormat("超时，切换地址重试，url:{0}", m_strVersionInfoUrl);
                     CheckNeedUpdate();
