@@ -19,6 +19,7 @@ ColaFramework 一款简洁的MVC架构的Unity客户端框架。支持Lua开发�
 
 ### 配套视频教程  
 * [ColaFramework框架教程之UI创建与导出](https://www.bilibili.com/video/BV11t4y197hx)  
+* [ColaFramework框架教程之UIView控制脚本创建与UI业务逻辑开发](https://www.bilibili.com/video/BV1Ci4y1G78Q)  
 
 ### 项目手册  
 
