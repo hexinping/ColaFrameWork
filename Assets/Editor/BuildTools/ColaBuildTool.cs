@@ -306,7 +306,7 @@ namespace ColaFramework.ToolKit
                     var result = ZipHelper.Zip(tempCDNRoot, zipPath);
                     if (result)
                     {
-                        ftpUtil.Upload(zipPath, "Upload/hotupdae.zip");
+                        ftpUtil.Upload(zipPath, "Upload/hotupdate.zip");
                     }
                     else
                     {
