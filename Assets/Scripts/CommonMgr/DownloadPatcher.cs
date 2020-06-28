@@ -435,7 +435,7 @@ namespace ColaFramework
                 }
                 else
                 {
-                    SetConfirmTips(string.Format("是否确定使用手机流量下载[{0}]的游戏资源？", CommonHelper.FormatKB(m_totalSize)), "继续", () =>
+                    SetConfirmTips(string.Format("是否确定使用手机流量下载[{0}KB]的游戏资源？", CommonHelper.FormatKB(m_totalSize)), "继续", () =>
                     {
                         RealDownloadPatch();
                         SetConfirmTipsPanelVisable(false);
