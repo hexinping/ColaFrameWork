@@ -73,9 +73,11 @@ namespace ColaFramework
         private GameObject UIRoot;
         private Text TipsText;
         private GameObject ConfirmTipsPanel;
-        private Button ConfirmTipsBtn;
+        private Button leftBtn;
+        private Button rightBtn;
         private Text ConfirmTipsText;
-        private Text ConfirmBtnText;
+        private Text leftBtnText;
+        private Text rightBtnText;
         private Slider Slider;
         #endregion
 
@@ -108,9 +110,11 @@ namespace ColaFramework
             UIRoot = CommonHelper.InstantiateGoByPrefab(prefab, null);
             TipsText = UIRoot.GetComponentByPath<Text>("Canvas/UIHotPatchDialog/Text");
             ConfirmTipsPanel = UIRoot.FindChildByPath("Canvas/UIHotPatchDialog/ConfirmTipsPanel");
-            ConfirmTipsBtn = ConfirmTipsPanel.GetComponentByPath<Button>("LeftButton");
+            leftBtn = ConfirmTipsPanel.GetComponentByPath<Button>("ButtonGroup/LeftButton");
+            rightBtn = ConfirmTipsPanel.GetComponentByPath<Button>("ButtonGroup/RightButton");
             ConfirmTipsText = ConfirmTipsPanel.GetComponentByPath<Text>("Text");
-            ConfirmBtnText = ConfirmTipsPanel.GetComponentByPath<Text>("LeftButton/Text");
+            leftBtnText = ConfirmTipsPanel.GetComponentByPath<Text>("ButtonGroup/LeftButton/Text");
+            rightBtnText = ConfirmTipsPanel.GetComponentByPath<Text>("ButtonGroup/RightButton/Text");
             Slider = UIRoot.GetComponentByPath<Slider>("Canvas/UIHotPatchDialog/Slider");
             Slider.gameObject.SetActive(false);
 
@@ -282,18 +286,27 @@ namespace ColaFramework
         private void NoticeForceUpdate(string strUpdateNotice, bool canSkip, string CurrentVersion)
         {
             Debug.LogFormat("强更提醒,canSkip:{0}, notice:{1}", canSkip, strUpdateNotice);
-            SetConfirmTips(strUpdateNotice, "大版本更新", () =>
+            var leftBtnText = "去下载安装包";
+            var rightBtnText = "跳过";
+            if (canSkip)
             {
-                if (canSkip)
-                {
-                    DealWithHotFixStep(CurrentVersion);
-                }
-                else
+                SetConfirmTips(strUpdateNotice, leftBtnText, () =>
                 {
                     Debug.Log("需要去应用商店更新新版本！");
                     Application.OpenURL(AppConst.AppDownloadUrl);
-                }
-            });
+                }, rightBtnText, () =>
+                {
+                    DealWithHotFixStep(CurrentVersion);
+                });
+            }
+            else
+            {
+                SetConfirmTips(strUpdateNotice, leftBtnText, () =>
+                {
+                    Debug.Log("需要去应用商店更新新版本！");
+                    Application.OpenURL(AppConst.AppDownloadUrl);
+                });
+            }
         }
 
         private void DoneWithNoDownload()
@@ -609,7 +622,7 @@ namespace ColaFramework
             }
         }
 
-        private void SetConfirmTips(string tips, string btnText, UnityAction action)
+        private void SetConfirmTips(string tips, string leftBtnText, UnityAction leftAction, string rightBtnText = null, UnityAction rightAction = null)
         {
             if (null != Slider)
             {
@@ -619,14 +632,34 @@ namespace ColaFramework
             {
                 ConfirmTipsText.text = tips;
             }
-            if (null != ConfirmTipsBtn)
+            if (null != leftBtn)
             {
-                ConfirmTipsBtn.onClick.RemoveAllListeners();
-                ConfirmTipsBtn.onClick.AddListener(action);
+                leftBtn.onClick.RemoveAllListeners();
+                leftBtn.onClick.AddListener(leftAction);
             }
-            if (null != ConfirmBtnText)
+
+            if (null != rightBtn)
             {
-                ConfirmBtnText.text = btnText;
+                if (!string.IsNullOrEmpty(rightBtnText) && null != rightAction)
+                {
+                    rightBtn.gameObject.SetActive(true);
+                    rightBtn.onClick.RemoveAllListeners();
+                    rightBtn.onClick.AddListener(rightAction);
+                }
+                else
+                {
+                    rightBtn.gameObject.SetActive(false);
+                }
+            }
+
+            if (null != this.leftBtnText)
+            {
+                this.leftBtnText.text = leftBtnText;
+            }
+
+            if (null != this.rightBtnText)
+            {
+                this.rightBtnText.text = rightBtnText;
             }
 
             SetTipText(string.Empty);
@@ -674,9 +707,11 @@ namespace ColaFramework
             UIRoot = null;
             TipsText = null;
             ConfirmTipsPanel = null;
-            ConfirmTipsBtn = null;
+            leftBtn = null;
+            rightBtn = null;
             ConfirmTipsText = null;
-            ConfirmBtnText = null;
+            leftBtnText = null;
+            rightBtnText = null;
             Slider = null;
         }
     }
