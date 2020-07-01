@@ -77,6 +77,7 @@ public class CommonUtilWrap
 		L.RegFunction("ClearIdleWorldAudioSource", ClearIdleWorldAudioSource);
 		L.RegFunction("HandleMainCameraEvent", HandleMainCameraEvent);
 		L.RegFunction("DownloadText", DownloadText);
+		L.RegFunction("DownLoadServerList", DownLoadServerList);
 		L.RegVar("NetAvailable", get_NetAvailable, null);
 		L.RegVar("IsWifi", get_IsWifi, null);
 		L.EndStaticLibs();
@@ -1454,6 +1455,22 @@ public class CommonUtilWrap
 			string arg0 = ToLua.CheckString(L, 1);
 			System.Action<int,string> arg1 = (System.Action<int,string>)ToLua.CheckDelegate<System.Action<int,string>>(L, 2);
 			CommonUtil.DownloadText(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int DownLoadServerList(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			System.Action<int,string> arg0 = (System.Action<int,string>)ToLua.CheckDelegate<System.Action<int,string>>(L, 1);
+			CommonUtil.DownLoadServerList(arg0);
 			return 0;
 		}
 		catch (Exception e)

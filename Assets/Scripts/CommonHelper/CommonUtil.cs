@@ -851,5 +851,10 @@ public static class CommonUtil
             Debug.LogErrorFormat("DownloadText 参数错误!");
         }
     }
+
+    public static void DownLoadServerList(Action<int, string> onComplete)
+    {
+        DownloadText(AppConst.ServerListUrl, onComplete);
+    }
 }
 
