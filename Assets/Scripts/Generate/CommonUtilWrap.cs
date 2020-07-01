@@ -76,6 +76,7 @@ public class CommonUtilWrap
 		L.RegFunction("StopAllWorldSound", StopAllWorldSound);
 		L.RegFunction("ClearIdleWorldAudioSource", ClearIdleWorldAudioSource);
 		L.RegFunction("HandleMainCameraEvent", HandleMainCameraEvent);
+		L.RegFunction("DownloadText", DownloadText);
 		L.RegVar("NetAvailable", get_NetAvailable, null);
 		L.RegVar("IsWifi", get_IsWifi, null);
 		L.EndStaticLibs();
@@ -1436,6 +1437,23 @@ public class CommonUtilWrap
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
 			CommonUtil.HandleMainCameraEvent(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int DownloadText(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			string arg0 = ToLua.CheckString(L, 1);
+			System.Action<int,string> arg1 = (System.Action<int,string>)ToLua.CheckDelegate<System.Action<int,string>>(L, 2);
+			CommonUtil.DownloadText(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)

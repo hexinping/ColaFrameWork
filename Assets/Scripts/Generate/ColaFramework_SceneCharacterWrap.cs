@@ -14,6 +14,7 @@ public class ColaFramework_SceneCharacterWrap
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("gameObject", get_gameObject, set_gameObject);
 		L.RegVar("transform", get_transform, set_transform);
+		L.RegVar("PrefabPath", get_PrefabPath, null);
 		L.RegVar("Position", get_Position, set_Position);
 		L.RegVar("Rotation", get_Rotation, set_Rotation);
 		L.RegVar("Direction", get_Direction, set_Direction);
@@ -158,6 +159,25 @@ public class ColaFramework_SceneCharacterWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index transform on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_PrefabPath(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ColaFramework.SceneCharacter obj = (ColaFramework.SceneCharacter)o;
+			string ret = obj.PrefabPath;
+			LuaDLL.lua_pushstring(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index PrefabPath on a nil value");
 		}
 	}
 

@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using ColaFramework;
 using ColaFramework.Foundation;
+using ColaFramework.Foundation.DownLoad;
 
 /// <summary>
 /// 通用工具类，为导出lua接口调用准备
@@ -21,6 +22,8 @@ public static class CommonUtil
     /// </summary>
     private static Vector3 vec3Tmp = Vector3.zero;
     private static Vector2 vec2Tmp = Vector2.zero;
+
+    private const float downloadTimeout = 3;
 
     [LuaInterface.NoToLua]
     public static IAssetTrackMgr AssetTrackMgr { get; private set; }
@@ -832,6 +835,21 @@ public static class CommonUtil
     {
         TouchHelper.AddDragListener(fullMask, GUIHelper.MainCameraOnDrag);
         TouchHelper.AddEndDragListener(fullMask, GUIHelper.MainCameraOnEndDrag);
+    }
+
+    public static void DownloadText(string strURL, Action<int, string> onComplete)
+    {
+        if (null != onComplete && !string.IsNullOrEmpty(strURL))
+        {
+            HttpDownloadMgr.DownloadText(strURL, (ErrorCode code, string msg, string text) =>
+            {
+                onComplete((int)code, msg);
+            }, downloadTimeout);
+        }
+        else
+        {
+            Debug.LogErrorFormat("DownloadText 参数错误!");
+        }
     }
 }
 
