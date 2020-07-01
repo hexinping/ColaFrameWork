@@ -11,6 +11,7 @@ using UnityEngine.UI.Extensions;
 using ColaFramework;
 using ColaFramework.Foundation;
 using ColaFramework.Foundation.DownLoad;
+using Plugins.XAsset;
 
 /// <summary>
 /// 通用工具类，为导出lua接口调用准备
@@ -854,7 +855,8 @@ public static class CommonUtil
 
     public static void DownLoadServerList(Action<int, string> onComplete)
     {
-        DownloadText(AppConst.ServerListUrl, onComplete);
+        string strURL = string.Format(AppConst.ServerListUrl, Utility.GetPlatform(), "app_version.json", Utility.GetPlatform(), CommonHelper.PackageVersion);
+        DownloadText(strURL, onComplete);
     }
 }
 

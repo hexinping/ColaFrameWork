@@ -54,7 +54,11 @@ function UILoginPanel:OnShow(isShow)
     print(data["age"]);
     --打印数组中的第一个值(lua默认是从0开始计数)
     print(data["testArray"]["array"][1]);
-    
+
+    CommonUtil.DownLoadServerList(function (ErrorCode,msg)
+        print(ErrorCode,msg)
+    end)
+
 end
 
 function UILoginPanel:onClick(name)
