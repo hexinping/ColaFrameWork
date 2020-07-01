@@ -33,6 +33,7 @@ public class AppConst
     public const string VersionHttpUrl = "http://10.5.102.167:6688/versioncontrol/{0}/{1}?p={2}&v={3}";  //版本服务器地址
     public const string BakVersionHttpUrl = "http://10.5.102.167:6688/versioncontrol/{0}/{1}?p={2}&v={3}"; //备用版本服务器地址
     public const string AppDownloadUrl = "http://10.5.102.167:6688/Applications";  //App的下载地址
+    public const string ServerListUrl = "http://10.5.102.167:6688/serverlist/{0}/{1}?p={2}&v={3}";  //下载ServerList的地址
 
     public static string KEY_BASE_APK_VERSION = "__PACKAGE_VERSION__";        // apk的版本号，每次换包以后这个值会被刷新，重新记录
     public static string KEY_APK_BUILD_VERSION = "__PACKAGE_BUILD_VERSION__";  // apk自带的版本号，这个配置存在Resources目录下，除非换包，否则不变

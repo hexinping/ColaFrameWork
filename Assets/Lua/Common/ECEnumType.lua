@@ -35,4 +35,10 @@ ECEnumType.UIDepth = {
     DEBUG = 6, -- 用于调试的层级
 }
 
+ECEnumType.DownErrorCode = {
+    SUCCESS = 0,
+    ERROR = 1,
+    TIME_OUT = 2,
+}
+
 return ECEnumType
