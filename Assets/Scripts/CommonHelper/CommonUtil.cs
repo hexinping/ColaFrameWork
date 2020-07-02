@@ -844,7 +844,7 @@ public static class CommonUtil
         {
             HttpDownloadMgr.DownloadText(strURL, (ErrorCode code, string msg, string text) =>
             {
-                onComplete((int)code, msg);
+                onComplete((int)code, text);
             }, downloadTimeout);
         }
         else
@@ -855,7 +855,7 @@ public static class CommonUtil
 
     public static void DownLoadServerList(Action<int, string> onComplete)
     {
-        string strURL = string.Format(AppConst.ServerListUrl, Utility.GetPlatform(), "app_version.json", Utility.GetPlatform(), CommonHelper.PackageVersion);
+        string strURL = string.Format(AppConst.ServerListUrl, Utility.GetPlatform(), "serverlist.json", Utility.GetPlatform(), CommonHelper.PackageVersion);
         DownloadText(strURL, onComplete);
     }
 }
