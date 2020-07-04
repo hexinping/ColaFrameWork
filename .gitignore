@@ -300,3 +300,8 @@ Temp/
 /*.csproj
 Sirenix/
 Sirenix.meta
+CDN/
+StreamingAssets/
+Build/
+AssetBundles/
+ColaCache/
