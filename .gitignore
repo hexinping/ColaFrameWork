@@ -302,6 +302,7 @@ Sirenix/
 Sirenix.meta
 CDN/
 StreamingAssets/
+StreamingAssets.meta
 Build/
 AssetBundles/
 ColaCache/
