@@ -298,6 +298,8 @@ Library/
 Temp/
 /*.sln
 /*.csproj
+
+# ColaFramework AutoBuild
 Sirenix/
 Sirenix.meta
 CDN/
