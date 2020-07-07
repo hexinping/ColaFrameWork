@@ -571,7 +571,7 @@ public static class CommonHelper
     }
 
     /// <summary>
-    /// App的包内版本号
+    /// App基准版本号（表示当前或者历史安装的apk的version）
     /// </summary>
     public static string PackageVersion
     {
@@ -598,7 +598,7 @@ public static class CommonHelper
     }
 
     /// <summary>
-    /// App的包内版本号
+    /// App基准版本号（表示当前或者历史安装的apk的version）
     /// </summary>
     public static int[] PackageVersionInt
     {
@@ -654,7 +654,7 @@ public static class CommonHelper
     }
 
     /// <summary>
-    /// apk自带的Build版本号
+    /// apk自带的包内Build版本号
     /// </summary>
     public static string APKBuildVersion
     {
