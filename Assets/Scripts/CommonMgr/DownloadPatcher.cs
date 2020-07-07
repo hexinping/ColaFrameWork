@@ -239,7 +239,7 @@ namespace ColaFramework
                         AppConst.CDNUrl = url;
                     }
                 }
-                m_strDownloadUrl = AppConst.CDNUrl;
+                m_strDownloadUrl = string.Format(AppConst.CDNUrl, Utility.GetPlatform(), CommonHelper.PackageVersion);
 
                 Debug.LogFormat("GameNewVersionInfo,version:{0}, ForceVersion:{1}, TipVersion:{2}, CDN_Url:{3}, BakCDN_Url:{4}",
                     m_strNewVersion, minVersion, RecommandVersion, AppConst.CDNUrl, AppConst.BakCDNUrl);
@@ -362,7 +362,7 @@ namespace ColaFramework
                 if (m_strDownloadUrl != AppConst.BakCDNUrl)
                 {
                     Debug.Log("使用备用地址进行热更。");
-                    m_strDownloadUrl = AppConst.BakCDNUrl;
+                    m_strDownloadUrl = string.Format(AppConst.BakCDNUrl, Utility.GetPlatform(), CommonHelper.PackageVersion);
                     DowndLoadMd5File();
                     return;
                 }
@@ -370,7 +370,7 @@ namespace ColaFramework
                 // 还是失败，弹提示，玩家自己控制重试，这个时候会切回使用主下载地址
                 SetConfirmTips("下载更新文件失败，请重试", "重试", () =>
                  {
-                     m_strDownloadUrl = AppConst.CDNUrl;
+                     m_strDownloadUrl = string.Format(AppConst.CDNUrl, Utility.GetPlatform(), CommonHelper.PackageVersion);
                      DowndLoadMd5File();
                  });
             }

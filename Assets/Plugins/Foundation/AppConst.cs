@@ -28,8 +28,8 @@ public class AppConst
     public const string AppName = "ColaFramework";               //应用程序名称
     public const string ExtName = ".cab";                   //AssetBundle的扩展名
     public const string VersionFileName = "versions.txt";                   //版本信息文件的名称
-    public static string CDNUrl = "http://10.5.102.167:6688/ColaFramework/cdn/";      //CDN地址
-    public static string BakCDNUrl = "http://10.5.102.167:6688/ColaFramework/cdn/";      //备用CDN地址
+    public static string CDNUrl = "http://10.5.102.167:6688/ColaFramework/cdn/{0}/{1}";      //CDN地址
+    public static string BakCDNUrl = "http://10.5.102.167:6688/ColaFramework/cdn/{0}/{1}";      //备用CDN地址
     public const string VersionHttpUrl = "http://10.5.102.167:6688/ColaFramework/versioncontrol/{0}/{1}?p={2}&v={3}";  //版本服务器地址
     public const string BakVersionHttpUrl = "http://10.5.102.167:6688/ColaFramework/versioncontrol/{0}/{1}?p={2}&v={3}"; //备用版本服务器地址
     public const string AppDownloadUrl = "http://10.5.102.167:6688/ColaFramework/Applications";  //App的下载地址
