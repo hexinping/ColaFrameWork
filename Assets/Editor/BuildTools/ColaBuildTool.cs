@@ -284,7 +284,7 @@ namespace ColaFramework.ToolKit
                     var CDN_AppVersionPath = string.Format(ColaEditHelper.TempCachePath + "/" + CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
                     FileHelper.CopyFile(cachePath, CDN_AppVersionPath, true);
 
-                    var CDN_ResourcePath = string.Format(CDNResourceUrl)
+                    var CDN_ResourcePath = string.Format(ColaEditHelper.TempCachePath + "/" + CDNResourceUrl, ColaEditHelper.GetPlatformName(), PlayerSettings.bundleVersion);
                     //upload version.txt and assets
                     var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
                     var updateFilePath = reltaRoot + "/updates.txt";
@@ -294,7 +294,7 @@ namespace ColaFramework.ToolKit
                         while (null != content)
                         {
                             var reltaPath = reltaRoot + "/" + content;
-                            var destPath =  + content;
+                            var destPath = CDN_ResourcePath + "/" + content;
                             FileHelper.CopyFile(reltaPath, destPath, true);
                             content = sr.ReadLine();
                         }
@@ -325,18 +325,19 @@ namespace ColaFramework.ToolKit
                     //upload version.txt and assets
                     var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
                     var updateFilePath = reltaRoot + "/updates.txt";
+                    var CDN_ResourcePath = string.Format(CDNResourceUrl, ColaEditHelper.GetPlatformName(), PlayerSettings.bundleVersion);
                     using (var sr = new StreamReader(updateFilePath))
                     {
                         var content = sr.ReadLine();
                         while (null != content)
                         {
                             var reltaPath = reltaRoot + "/" + content;
-                            var destPath = CDNResourceUrl + content;
+                            var destPath = CDN_ResourcePath + "/" + content;
                             FileHelper.CopyFile(reltaPath, destPath, true);
                             content = sr.ReadLine();
                         }
                     }
-                    FileHelper.CopyFile(reltaRoot + "/versions.txt", CDNResourceUrl + "versions.txt", true);
+                    FileHelper.CopyFile(reltaRoot + "/versions.txt", CDN_ResourcePath + "/" + "versions.txt", true);
                 }
 
             }
