@@ -43,7 +43,7 @@ namespace ColaFramework.ToolKit
         private const string AppVersionFileName = "app_version.json";
         private const string Resource_VersionPath = "Assets/Resources/versions.txt";
         private const string CDNVersionControlUrl = "CDN/versioncontrol/{0}/{1}";
-        private const string CDNResourceUrl = "CDN/cdn/";
+        private const string CDNResourceUrl = "CDN/ColaFramework/cdn/{0}/{1}";
 
         private static Dictionary<EnvOption, string> internalEnvMap = new Dictionary<EnvOption, string>();
 
@@ -284,6 +284,7 @@ namespace ColaFramework.ToolKit
                     var CDN_AppVersionPath = string.Format(ColaEditHelper.TempCachePath + "/" + CDNVersionControlUrl, ColaEditHelper.GetPlatformName(), "app_version.json");
                     FileHelper.CopyFile(cachePath, CDN_AppVersionPath, true);
 
+                    var CDN_ResourcePath = string.Format(CDNResourceUrl)
                     //upload version.txt and assets
                     var reltaRoot = ColaEditHelper.CreateAssetBundleDirectory();
                     var updateFilePath = reltaRoot + "/updates.txt";
@@ -293,7 +294,7 @@ namespace ColaFramework.ToolKit
                         while (null != content)
                         {
                             var reltaPath = reltaRoot + "/" + content;
-                            var destPath = ColaEditHelper.TempCachePath + "/" + CDNResourceUrl + content;
+                            var destPath =  + content;
                             FileHelper.CopyFile(reltaPath, destPath, true);
                             content = sr.ReadLine();
                         }
@@ -340,11 +341,6 @@ namespace ColaFramework.ToolKit
 
             }
             Debug.Log("=================UpLoadCDN Time================ : " + (System.DateTime.Now - beginTime).TotalSeconds);
-        }
-
-        public static void UploadCDNTest()
-        {
-            UpLoadCDN(BuildTargetGroup.Android);
         }
 
         /// <summary>
