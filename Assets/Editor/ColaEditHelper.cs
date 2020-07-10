@@ -160,7 +160,7 @@ namespace ColaFramework.ToolKit
         public static string CreateAssetBundleDirectory()
         {
             // Choose the output path according to the build target.
-            var outputPath = Path.Combine(Utility.AssetBundles, GetPlatformName());
+            var outputPath = Path.Combine(Utility.AssetBundles, GetPlatformName(), PlayerSettings.bundleVersion);
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
 
