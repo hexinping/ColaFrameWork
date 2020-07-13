@@ -198,7 +198,7 @@ namespace ColaFramework.ToolKit
         }
 
         /// <summary>
-        /// Build AssetBunle
+        /// Build AssetBundle
         /// </summary>
         /// <param name="buildTargetGroup"></param>
         private static void BuildAssetBundle(BuildTargetGroup buildTargetGroup)

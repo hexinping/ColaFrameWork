@@ -116,7 +116,7 @@ namespace ColaFramework.ToolKit
             {
                 Directory.CreateDirectory(outputPath);
             }
-            var source = Path.Combine(Environment.CurrentDirectory, Utility.AssetBundles, GetPlatformName());
+            var source = Path.Combine(Environment.CurrentDirectory, Utility.AssetBundles, GetPlatformName(),PlayerSettings.bundleVersion);
             if (!Directory.Exists(source))
                 Debug.Log("No assetBundle output folder, try to build the assetBundles first.");
             if (Directory.Exists(outputPath))
