@@ -167,6 +167,11 @@ namespace ColaFramework.ToolKit
             return outputPath;
         }
 
+        public static string GetAssetBundleDirectory()
+        {
+            return Path.Combine(Utility.AssetBundles, GetPlatformName(), PlayerSettings.bundleVersion);
+        }
+
         private static Dictionary<string, string> GetVersions(AssetBundleManifest manifest)
         {
             var items = manifest.GetAllAssetBundles();
