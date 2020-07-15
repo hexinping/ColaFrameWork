@@ -43,6 +43,7 @@ namespace ColaFramework.ToolKit
                 {
                     m_projectRoot = FileHelper.FormatPath(Path.GetDirectoryName(Application.dataPath));
                 }
+
                 return m_projectRoot;
             }
         }
@@ -55,6 +56,7 @@ namespace ColaFramework.ToolKit
                 {
                     m_projectRootWithSplit = ProjectRoot + "/";
                 }
+
                 return m_projectRootWithSplit;
             }
         }
@@ -73,6 +75,7 @@ namespace ColaFramework.ToolKit
                 Debug.LogError("No Directory: " + path);
                 return;
             }
+
             if (!path.StartsWith("file://"))
             {
                 path = "file://" + path;
@@ -94,7 +97,8 @@ namespace ColaFramework.ToolKit
             return asset;
         }
 
-        public static void CreateOrReplacePrefab(GameObject gameobject, string path, ReplacePrefabOptions options = ReplacePrefabOptions.ConnectToPrefab)
+        public static void CreateOrReplacePrefab(GameObject gameobject, string path,
+            ReplacePrefabOptions options = ReplacePrefabOptions.ConnectToPrefab)
         {
             GameObject prefab = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
             if (prefab != null)
@@ -116,7 +120,8 @@ namespace ColaFramework.ToolKit
             {
                 Directory.CreateDirectory(outputPath);
             }
-            var source = Path.Combine(Environment.CurrentDirectory, Utility.AssetBundles, GetPlatformName(),PlayerSettings.bundleVersion);
+
+            var source = ColaEditHelper.GetAssetBundleDirectory();
             if (!Directory.Exists(source))
                 Debug.Log("No assetBundle output folder, try to build the assetBundles first.");
             if (Directory.Exists(outputPath))
@@ -160,7 +165,7 @@ namespace ColaFramework.ToolKit
         public static string CreateAssetBundleDirectory()
         {
             // Choose the output path according to the build target.
-            var outputPath = Path.Combine(Utility.AssetBundles, GetPlatformName(), PlayerSettings.bundleVersion);
+            var outputPath = Utility.AssetBundles + "/" + PlayerSettings.bundleVersion + "/" + GetPlatformName();
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
 
@@ -169,7 +174,7 @@ namespace ColaFramework.ToolKit
 
         public static string GetAssetBundleDirectory()
         {
-            return Path.Combine(Utility.AssetBundles, GetPlatformName(), PlayerSettings.bundleVersion);
+            return Utility.AssetBundles + "/" + PlayerSettings.bundleVersion + "/" + GetPlatformName();
         }
 
         private static Dictionary<string, string> GetVersions(AssetBundleManifest manifest)
@@ -195,6 +200,7 @@ namespace ColaFramework.ToolKit
                 var fileSize = FileHelper.GetFileSizeKB(path + "/" + item.Key);
                 sb.Append(string.Format("{0}:{1}:{2}:{3}\n", item.Key, item.Value, fileSize, fileSize));
             }
+
             FileHelper.WriteString(versionsTxt, sb.ToString());
         }
 
@@ -239,6 +245,7 @@ namespace ColaFramework.ToolKit
                     //Lua AssetBundle不需要生成映射Manifest
                     continue;
                 }
+
                 var paths = AssetDatabase.GetAssetPathsFromAssetBundle(bundles[i]);
                 foreach (var path in paths)
                 {
@@ -272,13 +279,17 @@ namespace ColaFramework.ToolKit
         {
             assetDirName = assetDirName.Replace("\\", "/");
             assetDirName = assetDirName.Replace(Constants.GameAssetBasePath, "");
-            return Path.GetDirectoryName(assetDirName).Replace("\\", "/"); ;
+            return Path.GetDirectoryName(assetDirName).Replace("\\", "/");
+            ;
         }
-
+        
         public static void BuildAssetBundles()
         {
             // Choose the output path according to the build target.
             var outputPath = CreateAssetBundleDirectory();
+
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
 
             const BuildAssetBundleOptions options = BuildAssetBundleOptions.ChunkBasedCompression;
 
@@ -302,6 +313,7 @@ namespace ColaFramework.ToolKit
                     if (hash.Equals(item.Value))
                         isNew = false;
                 }
+
                 if (isNew)
                     updates.Add(item.Key);
             }
@@ -324,25 +336,26 @@ namespace ColaFramework.ToolKit
                 Debug.Log("nothing to update.");
             }
 
-            string[] ignoredFiles = { GetPlatformName(), "versions.txt", "updates.txt", "manifest" };
-
-            var files = Directory.GetFiles(outputPath, "*", SearchOption.AllDirectories);
-
-            var deletes = (from t in files
-                           let file = t.Replace('\\', '/').Replace(outputPath.Replace('\\', '/') + '/', "")
-                           where !file.EndsWith(".manifest", StringComparison.Ordinal) && !Array.Exists(ignoredFiles, s => s.Equals(file))
-                           where !buildVersions.ContainsKey(file)
-                           select t).ToList();
-
-            foreach (var delete in deletes)
-            {
-                if (!File.Exists(delete))
-                    continue;
-                File.Delete(delete);
-                File.Delete(delete + ".manifest");
-            }
-
-            deletes.Clear();
+            // string[] ignoredFiles = {GetPlatformName(), "versions.txt", "updates.txt", "manifest"};
+            //
+            // var files = Directory.GetFiles(outputPath, "*", SearchOption.AllDirectories);
+            //
+            // var deletes = (from t in files
+            //     let file = t.Replace('\\', '/').Replace(outputPath.Replace('\\', '/') + '/', "")
+            //     where !file.EndsWith(".manifest", StringComparison.Ordinal) &&
+            //           !Array.Exists(ignoredFiles, s => s.Equals(file))
+            //     where !buildVersions.ContainsKey(file)
+            //     select t).ToList();
+            //
+            // foreach (var delete in deletes)
+            // {
+            //     if (!File.Exists(delete))
+            //         continue;
+            //     File.Delete(delete);
+            //     File.Delete(delete + ".manifest");
+            // }
+            //
+            // deletes.Clear();
         }
 
         public static AssetsManifest GetManifest()
@@ -378,6 +391,7 @@ namespace ColaFramework.ToolKit
         }
 
         #region 处理Lua代码
+
         public static void BuildLuaBundle(bool isMotherPkg = false, bool isHotUpdateBuild = false)
         {
             var md5Dic = new Dictionary<string, string>();
@@ -399,6 +413,7 @@ namespace ColaFramework.ToolKit
                             {
                                 continue;
                             }
+
                             var lineContent = item.Split('|');
                             if (lineContent.Length == 2)
                             {
@@ -418,12 +433,13 @@ namespace ColaFramework.ToolKit
             {
                 FileHelper.RmDir(LuaConst.luaBaseTempDir);
             }
+
             FileHelper.EnsureParentDirExist(LuaConst.luaBaseTempDir);
             FileHelper.RmDir(LuaConst.luaUpdateTempDir);
             FileHelper.EnsureParentDirExist(LuaConst.luaUpdateTempDir);
             AssetDatabase.Refresh();
 
-            string[] srcDirs = { LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter };
+            string[] srcDirs = {LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter};
             int diffCnt = 0;
 
             for (int i = 0; i < srcDirs.Length; i++)
@@ -438,6 +454,7 @@ namespace ColaFramework.ToolKit
                     {
                         --len;
                     }
+
                     for (int j = 0; j < files.Length; j++)
                     {
                         string str = files[j].Remove(0, len);
@@ -460,10 +477,12 @@ namespace ColaFramework.ToolKit
                             {
                                 continue;
                             }
+
                             if (isMotherPkg)
                             {
                                 md5Dic[fileName] = curMd5;
                             }
+
                             if (isHotUpdateBuild)
                             {
                                 diffCnt++;
@@ -479,8 +498,10 @@ namespace ColaFramework.ToolKit
                             {
                                 dirName += "/";
                             }
+
                             dirName = dirName.Replace("/", ".");
                         }
+
                         var dest = basePath + dirName + Path.GetFileName(reltaFileName) + ".bytes";
                         File.Copy(fileName, dest, true);
                     }
@@ -494,9 +515,11 @@ namespace ColaFramework.ToolKit
                 {
                     sb.AppendFormat("{0}|{1}", item.Key, item.Value).AppendLine();
                 }
+
                 FileHelper.EnsureParentDirExist(luaMd5FilePath);
                 FileHelper.WriteString(luaMd5FilePath, sb.ToString());
             }
+
             if (isHotUpdateBuild)
             {
                 Debug.LogFormat("Lua差异化分析完毕！共有{0}个差异化文件！", diffCnt);
@@ -515,14 +538,15 @@ namespace ColaFramework.ToolKit
             FileHelper.RmDir(LuaConst.streamingAssetLua);
             FileHelper.EnsureParentDirExist(LuaConst.streamingAssetLua);
 
-            string[] luaPaths = { LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter };
+            string[] luaPaths = {LuaConst.toluaDirWithSpliter, LuaConst.luaDirWithSpliter};
 
             var paths = new List<string>();
             var files = new List<string>();
 
             for (int i = 0; i < luaPaths.Length; i++)
             {
-                paths.Clear(); files.Clear();
+                paths.Clear();
+                files.Clear();
                 string luaDataPath = luaPaths[i].ToLower();
                 FileHelper.Recursive(luaDataPath, files, paths);
                 foreach (string f in files)
@@ -537,6 +561,7 @@ namespace ColaFramework.ToolKit
                     {
                         File.Delete(newpath);
                     }
+
                     if (AppConst.LuaByteMode)
                     {
                         EncodeLuaFile(f, newpath);
@@ -545,9 +570,12 @@ namespace ColaFramework.ToolKit
                     {
                         File.Copy(f, newpath, true);
                     }
-                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在处理第{0}Lua文件目录 {1}/{2}", i, i, luaPaths.Length), i * 1.0f / luaPaths.Length);
+
+                    EditorUtility.DisplayProgressBar("玩命处理中",
+                        string.Format("正在处理第{0}Lua文件目录 {1}/{2}", i, i, luaPaths.Length), i * 1.0f / luaPaths.Length);
                 }
             }
+
             EditorUtility.ClearProgressBar();
             AssetDatabase.Refresh();
         }
@@ -593,6 +621,7 @@ namespace ColaFramework.ToolKit
         }
 
         #endregion
+
         /// <summary>
         /// 清除所有的AB Name
         /// </summary>
@@ -605,6 +634,7 @@ namespace ColaFramework.ToolKit
                 EditorUtility.DisplayProgressBar("清除AssetBundleName", "正在清除AssetBundleName", i * 1f / length);
                 AssetDatabase.RemoveAssetBundleName(oldAssetBundleNames[i], true);
             }
+
             EditorUtility.ClearProgressBar();
         }
 
@@ -628,14 +658,18 @@ namespace ColaFramework.ToolKit
                 for (int i = 0; i < length; i++)
                 {
                     var fileName = files[i];
-                    if (fileName.EndsWith(".meta", StringComparison.Ordinal) || fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                    if (fileName.EndsWith(".meta", StringComparison.Ordinal) ||
+                        fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
                     {
                         continue;
                     }
-                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
+
+                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length),
+                        i * 1.0f / length);
                     var assetPath = files[i].Replace(ProjectRootWithSplit, "");
                     SetAssetBundleNameAndVariant(assetPath, bundleName, null);
                 }
+
                 EditorUtility.ClearProgressBar();
             }
         }
@@ -651,21 +685,26 @@ namespace ColaFramework.ToolKit
                 Debug.LogError("MarkAssetsWithDir Error! Path: " + path + "is not exist!");
                 return;
             }
+
             var files = FileHelper.GetAllChildFiles(path);
             var length = files.Length;
             for (var i = 0; i < files.Length; i++)
             {
                 var fileName = files[i];
-                if (fileName.EndsWith(".meta", StringComparison.Ordinal) || fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                if (fileName.EndsWith(".meta", StringComparison.Ordinal) ||
+                    fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
                 {
                     continue;
                 }
-                EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
-                var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(fileName).Replace("\\", "/")) + "_g" + AppConst.ExtName;
+
+                EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length),
+                    i * 1.0f / length);
+                var assetBundleName = TrimedAssetBundleName(Path.GetDirectoryName(fileName).Replace("\\", "/")) + "_g" +
+                                      AppConst.ExtName;
                 var assetPath = fileName.Replace(ProjectRootWithSplit, "");
                 SetAssetBundleNameAndVariant(assetPath, assetBundleName.ToLower(), null);
-
             }
+
             EditorUtility.ClearProgressBar();
         }
 
@@ -677,10 +716,12 @@ namespace ColaFramework.ToolKit
         {
             if (File.Exists(path))
             {
-                if (path.EndsWith(".meta", StringComparison.Ordinal) || path.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                if (path.EndsWith(".meta", StringComparison.Ordinal) ||
+                    path.EndsWith(".cs", System.StringComparison.CurrentCulture))
                 {
                     return;
                 }
+
                 var dir = Path.GetDirectoryName(path);
                 var name = Path.GetFileNameWithoutExtension(path);
                 if (dir == null)
@@ -698,11 +739,14 @@ namespace ColaFramework.ToolKit
                 for (var i = 0; i < files.Length; i++)
                 {
                     var fileName = files[i];
-                    if (fileName.EndsWith(".meta", StringComparison.Ordinal) || fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
+                    if (fileName.EndsWith(".meta", StringComparison.Ordinal) ||
+                        fileName.EndsWith(".cs", System.StringComparison.CurrentCulture))
                     {
                         continue;
                     }
-                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length), i * 1.0f / length);
+
+                    EditorUtility.DisplayProgressBar("玩命处理中", string.Format("正在标记第{0}个文件... {1}/{2}", i, i, length),
+                        i * 1.0f / length);
 
                     var dir = Path.GetDirectoryName(path);
                     var name = Path.GetFileNameWithoutExtension(path);
@@ -721,8 +765,10 @@ namespace ColaFramework.ToolKit
                 Debug.LogError("MarkAssetsWithFile Error! Path: " + path + "is not exist!");
                 return;
             }
+
             EditorUtility.ClearProgressBar();
         }
+
         #endregion
     }
 }

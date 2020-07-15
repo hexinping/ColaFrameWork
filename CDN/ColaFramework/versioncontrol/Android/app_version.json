@@ -1,0 +1,16 @@
+
+{
+    "name" : "AppVersion",
+    "hideFlags" : 0,
+    "MainVersion" : 0,
+    "StoreVersion" : 1,
+    "HotUpdateVersion" : 0,
+    "BuildVersion"     : 0,
+    "Version"          : "0.1.0.0",
+    "MinVersion"       : "0.0.0.0",
+    "RecommandVersion" : "0.0.0.0",
+    "UpdateContent"    : "\u66F4\u65B0\u516C\u544A",
+    "Data"             : {
+        "url" : "http://10.5.102.167:6688/ColaFramework/cdn/{0}/{1}"
+    }
+}
