@@ -377,7 +377,7 @@ namespace ColaFramework.ToolKit
                 var cachePath = ColaEditHelper.TempCachePath + "/" + AppVersionFileName;
                 FileHelper.DeleteFile(cachePath);
                 FileHelper.WriteString(cachePath, jsonStr);
-                if (!isHotUpdateBuild)
+                if (isMotherPkg)
                 {
                     FileHelper.CopyFile(cachePath, Resource_AppVersionPath, true);
 
