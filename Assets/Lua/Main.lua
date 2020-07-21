@@ -11,7 +11,6 @@ end
 local function initialize()
     LuaLogHelper.initialize()
     ConfigMgr.Instance()
-    EventMgr.Instance()
     UIManager.Instance()
     NetManager.Initialize()
 
@@ -26,7 +25,7 @@ local function gloablDefine()
     -- 必须首先注册全局Class,顺序敏感
     _G.Class = require("Core.middleclass")
     define("LuaLogHelper", require("Utilitys.LuaLogHelper"))
-    define("EventMgr", require("Mgrs.EventMgr"))
+    _G.EventMgr = require("Mgrs.EventMgr")
     require("Game.Main.Modules")
     require("Game.Main.GUICollections")
     -- 模块初始化
@@ -62,7 +61,7 @@ function Main()
 
     UIManager.Instance():Open(ECEnumType.UIEnum.Loading)
     CommonUtil.GetSceneMgr():LoadSceneAdditiveAsync("xinshoucun", function(sceneName)
-        EventMgr.Instance():DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
+        EventMgr.DispatchEvent(Modules.moduleId.Common, Modules.notifyId.Common.CREATE_PANEL, ECEnumType.UIEnum.Login)
         UIManager.Instance():Close(ECEnumType.UIEnum.Loading)
     end)
 end
