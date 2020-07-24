@@ -51,9 +51,9 @@ end
 ------------------- UI事件回调 --------------------------
 function UIWorldDialog:onClick(name)
     if name == "showLogBtn" then
-        UIManager.Instance():Open(ECEnumType.UIEnum.DebugPanel)
+        UIManager.Open(ECEnumType.UIEnum.DebugPanel)
     elseif name == "UIModelBtn" then
-        UIManager.Instance():Open(ECEnumType.UIEnum.UIModel)
+        UIManager.Open(ECEnumType.UIEnum.UIModel)
     end
 end
 
