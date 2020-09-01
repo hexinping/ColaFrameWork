@@ -1,4 +1,4 @@
-﻿---
+---
 ---                 ColaFramework
 --- Copyright © 2018-2049 ColaFramework 马三小伙儿
 ---              Login_Controller Controller业务逻辑
@@ -11,6 +11,7 @@ local private = {}
 
 --- Controller模块的初始化，可以在这里做初始化和添加监听等操作
 function public.OnInit()
+    print("------>Login Controller Oninit")
     NetManager.Register(Protocol.C2S_Login, private.OnLoginServer)
 end
 
