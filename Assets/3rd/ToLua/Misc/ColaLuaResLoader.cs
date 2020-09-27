@@ -19,7 +19,11 @@ public class ColaLuaResLoader : LuaFileUtils
     public ColaLuaResLoader()
     {
         instance = this;
+#if UNITY_EDITOR
+        beZip = AppConst.LuaBundleModeEditMode;
+#else
         beZip = AppConst.LuaBundleMode;
+#endif
     }
 
     public override byte[] ReadFile(string fileName)

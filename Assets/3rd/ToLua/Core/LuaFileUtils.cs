@@ -59,7 +59,11 @@ namespace LuaInterface
         public LuaFileUtils()
         {
             instance = this;
+#if UNITY_EDITOR
+            beZip = AppConst.LuaBundleModeEditMode;
+#else
             beZip = AppConst.LuaBundleMode;
+#endif
         }
 
         public virtual void Dispose()

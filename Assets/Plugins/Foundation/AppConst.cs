@@ -16,6 +16,9 @@ public class AppConst
 
     public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
     public static bool LuaBundleMode = true;                    //Lua代码AssetBundle模式
+#if UNITY_EDITOR
+    public static bool LuaBundleModeEditMode = false;            //Lua代码AssetBundle模式(仅用于Editor下模式测试)
+#endif
     public static bool CheckUpdate = true;                      //是否需要检测热更新
 
     public const string LuaBaseBundle = "lua/lua_base" + ExtName;         //包内的lua AssetBundle

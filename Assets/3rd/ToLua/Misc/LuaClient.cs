@@ -85,7 +85,13 @@ public class LuaClient : MonoBehaviour
         luaState.AddSearchPath(LuaConst.toluaDir);
         luaState.AddSearchPath(LuaConst.luaDir);
 #endif
-        if (!AppConst.LuaBundleMode)
+        bool luaBundleMode = false;
+#if UNITY_EDITOR
+        luaBundleMode = AppConst.LuaBundleModeEditMode;
+#else
+        luaBundleMode = AppConst.LuaBundleMode;
+#endif
+        if (!luaBundleMode)
         {
             luaState.AddSearchPath(LuaConst.luaResDir);
             luaState.AddSearchPath(LuaConst.streamingAssetLua);
@@ -94,9 +100,15 @@ public class LuaClient : MonoBehaviour
 
     protected virtual void InitLuaBundle()
     {
-        if (AppConst.LuaBundleMode)
+        bool luaBundleMode = false;
+#if UNITY_EDITOR
+        luaBundleMode = AppConst.LuaBundleModeEditMode;
+#else
+        luaBundleMode = AppConst.LuaBundleMode;
+#endif
+        if (luaBundleMode)
         {
-            foreach(var bundleName in AppConst.LuaBundles)
+            foreach (var bundleName in AppConst.LuaBundles)
             {
                 luaLoader.AddBundle(bundleName);
             }

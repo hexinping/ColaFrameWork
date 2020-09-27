@@ -43,8 +43,8 @@ namespace ColaFramework.ToolKit
             var setting = GetSetting();
             AppConst.SimulateMode = setting.SimulateMode;
             AppConst.GameFrameRate = setting.GameFrameRate;
-            AppConst.LuaBundleMode = setting.LuaBundleMode;
             AppConst.CheckUpdate = setting.CheckUpdate;
+            AppConst.LuaBundleModeEditMode = setting.LuaBundleMode;
 
             AssetsMenuItem.OnInitialize();
         }

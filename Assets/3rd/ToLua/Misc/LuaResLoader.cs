@@ -36,7 +36,11 @@ public class LuaResLoader : LuaFileUtils
     public LuaResLoader()
     {
         instance = this;
+#if UNITY_EDITOR
+        beZip = AppConst.LuaBundleModeEditMode;
+#else
         beZip = AppConst.LuaBundleMode;
+#endif
     }
 
     /// <summary>
