@@ -12,6 +12,8 @@ using Plugins.XAsset.Editor;
 
 namespace ColaFramework.ToolKit
 {
+    [InfoBox("仅用于Editor编辑器模式下的临时性修改", InfoMessageType.Info)]
+
     public class AppSetting : SerializedScriptableObject
     {
         [LabelText("是否开启模拟模式")]
