@@ -60,7 +60,9 @@ namespace ColaFramework
             get { return gameObject.activeSelf; }
             set { gameObject.SetActive(value); }
         }
-
+        
+        public bool IsValid { get; set; }
+        
         /// <summary>
         /// 构造函数私有化，外部只能使用工厂方法接口创建
         /// </summary>
@@ -131,6 +133,7 @@ namespace ColaFramework
             GameObject Entity = CommonUtil.AssetTrackMgr.GetGameObject(path, null);
             return new SceneCharacter(path, Entity, animCtrlEnum, isMainPlayer);
         }
+        
 
         void ISceneCharacter.SetPosition2D(float x, float z)
         {

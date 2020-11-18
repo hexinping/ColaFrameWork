@@ -761,5 +761,10 @@ public static class CommonHelper
 
         return -1;
     }
+
+    public static bool isNotNull(this ISceneCharacter character)
+    {
+        return null != character && character.IsValid;
+    }
 }
 

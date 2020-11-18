@@ -44,6 +44,8 @@ namespace ColaFramework
         /// 可见性
         /// </summary>
         bool Visible { get; set; }
+        
+        bool IsValid { get; set; }
 
         /// <summary>
         /// 设置角色的位置信息
