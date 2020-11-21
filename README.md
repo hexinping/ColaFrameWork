@@ -66,6 +66,8 @@ Module的基类为ModuleBase，游戏内所有的系统的业务逻辑层均继�
 AssetBundle的加载与管理是基于[xasset](https://github.com/xasset/xasset)  
 在上层是AssetTrackMgr和ContainerPool，内存池和资源跟踪层，它一套弱引用+引用计数原理的资源管理层  
 Lua层和C#业务逻辑层统一都通过AssetTrackMgr这个内存池和资源跟踪层去获取和归还对象  
+具体的API接口设计如下：  
+![](./Doc/image/资源池API.png)  
 
 #### 资源引用查找与依赖关系分析插件  
 简介  
