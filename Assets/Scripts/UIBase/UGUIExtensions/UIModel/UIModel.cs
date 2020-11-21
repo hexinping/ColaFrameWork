@@ -18,16 +18,30 @@ namespace UnityEngine.UI.Extensions
     /// 不同于UGUIModel组件，该组件使用RenderTexture原理实现
     /// </summary>
     [RequireComponent(typeof(RawImage)), DisallowMultipleComponent]
-    public class UIModel : IControl, IDragHandler
+    public class UIModel : MonoBehaviour, IControl, IDragHandler
     {
-        [LabelText("是否支持拖拽旋转")]
-        public bool isRotate;
+        [LabelText("是否支持拖拽旋转")] public bool isRotate;
 
-        [LabelText("自动旋转速度")]
-        public int autoRotateSpeed = 0;
-        
+        [LabelText("旋转速度")] public float rotateSpeed = 2f;
+
+        [LabelText("自动旋转速度")] public int autoRotateSpeed = 0;
+
+        [SerializeField] private List<ModelData> _modelDatas = new List<ModelData>();
+
+        private RectTransform _rectTransform;
+        private RenderTexture _renderTexture;
+        private RawImage _rawImage;
+        private Camera _modelCamera;
+        private int _modelIndex = 1;
+        private static List<UIModel> _modelList = new List<UIModel>();
+
         void Awake()
         {
+            _rectTransform = transform as RectTransform;
+            if (null == _rawImage)
+            {
+                _rawImage = this.GetComponent<RawImage>();
+            }
         }
 
         // Use this for initialization
@@ -42,6 +56,10 @@ namespace UnityEngine.UI.Extensions
 
         public void OnDrag(PointerEventData eventData)
         {
+            if (isRotate && this._modelDatas.Count > 0)
+            {
+                _modelDatas[0].Character.transform.Rotate(0f, -(eventData.delta.x * rotateSpeed), 0f);
+            }
         }
     }
 
