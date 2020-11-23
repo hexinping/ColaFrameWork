@@ -14,6 +14,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 #if NETFX_CORE
 using Windows.Storage.Streams;
@@ -1618,11 +1619,11 @@ namespace RenderHeads.Media.AVProVideo
 #if UNITY_EDITOR
 		static MediaPlayer()
 		{
-			UnityEditor.EditorApplication.playmodeStateChanged -= OnUnityPlayModeChanged;
-			UnityEditor.EditorApplication.playmodeStateChanged += OnUnityPlayModeChanged;
+			UnityEditor.EditorApplication.playModeStateChanged -= OnUnityPlayModeChanged;
+			UnityEditor.EditorApplication.playModeStateChanged += OnUnityPlayModeChanged;
 		}
 
-		private static void OnUnityPlayModeChanged()
+		private static void OnUnityPlayModeChanged(PlayModeStateChange playModeStateChange)
 		{
 			if (UnityEditor.EditorApplication.isPlaying)
 			{
