@@ -3,6 +3,7 @@
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,6 +54,7 @@ namespace ColaFramework
         /// <summary>
         /// UI管理器
         /// </summary>
+        [Obsolete]
         private UIMgr uiMgr;
 
         private InputMgr inputMgr;
@@ -165,6 +167,7 @@ namespace ColaFramework
         /// 获取UI管理器
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         public UIMgr GetUIMgr()
         {
             if (null != uiMgr)

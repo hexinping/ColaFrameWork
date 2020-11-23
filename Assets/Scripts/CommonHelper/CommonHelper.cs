@@ -218,6 +218,7 @@ public static class CommonHelper
     /// 获取UI管理器
     /// </summary>
     /// <returns></returns>
+    [Obsolete]
     public static UIMgr GetUIMgr()
     {
         return GameManager.Instance.GetUIMgr();

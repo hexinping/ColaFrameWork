@@ -29,6 +29,7 @@ namespace ColaFramework
     /// <summary>
     /// UI管理器接口
     /// </summary>
+    [Obsolete]
     public interface IViewManager
     {
         /// <summary>
@@ -143,6 +144,7 @@ namespace ColaFramework
         /// 将Panel置于其当前层最上方
         /// </summary>
         /// <param name="ui"></param>
+        [Obsolete]
         void MovePanelToTop(UIBase ui);
 
         /// <summary>
@@ -155,12 +157,14 @@ namespace ColaFramework
         /// </summary>
         /// <param name="ui"></param>
         /// <param name="uiLevel"></param>
+        [Obsolete]
         void AddPanel(UIBase ui);
 
         /// <summary>
         /// 移除指定Panel
         /// </summary>
         /// <param name="ui"></param>
+        [Obsolete]
         void RemovePanel(UIBase ui);
     }
 

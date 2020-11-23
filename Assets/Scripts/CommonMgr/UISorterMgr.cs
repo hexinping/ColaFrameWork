@@ -3,6 +3,7 @@
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
@@ -14,6 +15,7 @@ namespace ColaFramework
     /// <summary>
     /// 参与排序的元素
     /// </summary>
+    [Obsolete]
     public class UISorter
     {
         public UIBase ui;
@@ -31,6 +33,7 @@ namespace ColaFramework
     /// <summary>
     /// UI排序管理器
     /// </summary>
+    [Obsolete]
     public class UISorterMgr : ISorter
     {
         private int minSortIndex = 0;
