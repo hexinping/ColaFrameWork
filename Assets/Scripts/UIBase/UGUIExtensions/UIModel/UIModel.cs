@@ -3,6 +3,7 @@
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
 
+using System;
 using ColaFramework;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,17 +45,12 @@ namespace UnityEngine.UI.Extensions
             }
         }
 
-        // Use this for initialization
-        void Start()
-        {
-        }
-
-        // Update is called once per frame
-        void Update()
+        private void LateUpdate()
         {
             if (0 != autoRotateSpeed)
             {
                 var y = autoRotateSpeed * Time.unscaledDeltaTime;
+                RotateYAxis(y);
             }
         }
 
@@ -66,9 +62,28 @@ namespace UnityEngine.UI.Extensions
             }
         }
 
+        public void SetVisible(bool isVisible)
+        {
+            
+        }
+
+        private void OnDestroy()
+        {
+            Release();
+        }
+
+        public void Release()
+        {
+            
+        }
+
         private void RotateYAxis(float y)
         {
-            // var character = 
+            var curCharacter = GetCharacter(_modelIndex);
+            if (curCharacter.isNotNull())
+            {
+                curCharacter.transform.Rotate(0, y, 0);
+            }
         }
 
         #region Camera Control && model Control
