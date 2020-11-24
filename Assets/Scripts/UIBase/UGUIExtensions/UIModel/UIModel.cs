@@ -52,6 +52,10 @@ namespace UnityEngine.UI.Extensions
         // Update is called once per frame
         void Update()
         {
+            if (0 != autoRotateSpeed)
+            {
+                var y = autoRotateSpeed * Time.unscaledDeltaTime;
+            }
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -61,6 +65,77 @@ namespace UnityEngine.UI.Extensions
                 _modelDatas[0].Character.transform.Rotate(0f, -(eventData.delta.x * rotateSpeed), 0f);
             }
         }
+
+        private void RotateYAxis(float y)
+        {
+            // var character = 
+        }
+
+        #region Camera Control && model Control
+
+        private void PrepareModelCamera()
+        {
+        }
+
+        private void AdjustModel(int index, ISceneCharacter character)
+        {
+        }
+
+        #endregion
+
+        #region Character API
+
+        public ISceneCharacter GetCharacter()
+        {
+            return GetCharacter(0);
+        }
+
+        public ISceneCharacter GetCharacter(int index)
+        {
+            if (index >= 0 && index < _modelDatas.Count)
+            {
+                return _modelDatas[index].Character;
+            }
+
+            return null;
+        }
+
+        public void SetCharacter(ISceneCharacter character)
+        {
+            SetCharacter(0, character);
+        }
+
+        public void SetCharacter(int index, ISceneCharacter character)
+        {
+            SetCharacter(index, character, AnimCurveNames.Idle, null);
+        }
+
+        public void SetCharacter(int index, ISceneCharacter character, string curAnimName, string nextAnimName)
+        {
+            if (index >= 0 && index < _modelDatas.Count)
+            {
+                var modelData = _modelDatas[index];
+                modelData.Character = null;
+                if (null != character)
+                {
+                    PrepareModelCamera();
+                    modelData.Character = character;
+                    character.transform.SetParent(_modelCamera.transform, false);
+                    AdjustModel(index, character);
+                    if (!string.IsNullOrEmpty(nextAnimName))
+                    {
+                        character.PlayAnimation(curAnimName,
+                            (value) => { character.PlayAnimation(nextAnimName, null); });
+                    }
+                    else
+                    {
+                        character.PlayAnimation(curAnimName);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 
     /// <summary>
