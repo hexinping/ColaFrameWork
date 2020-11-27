@@ -65,6 +65,7 @@ namespace UnityEngine.UI.Extensions
         public void SetVisible(bool isVisible)
         {
             
+            
         }
 
         private void OnDestroy()

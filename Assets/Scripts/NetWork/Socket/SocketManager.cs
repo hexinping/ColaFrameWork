@@ -174,8 +174,9 @@ namespace ColaFramework.NetWork
                     _onConnect_Outtime();
                 }
             }
-            catch (System.Exception _e)
+            catch (System.Exception e)
             {
+                Debug.LogError(e.ToString());
                 OnErrorCode?.Invoke((int)NetErrorEnum.BeginConnectError);
                 _onConnect_Fail();
             }

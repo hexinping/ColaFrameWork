@@ -54,7 +54,6 @@ public class UILogin : UIBase
         AutoInject.Inject(Panel, this);
         var text = this.okBtn.name;
         GameObject okBtn = Panel.FindChildByPath("bottom/okBtn");
-        Image titleImage = Panel.GetComponentByPath<Image>("logo");
         CommonHelper.AddBtnMsg(okBtn, (obj) =>
         {
         });
