@@ -4,6 +4,9 @@
 
 ### 框架简介  
 ColaFramework 一款简洁的MVC架构的Unity客户端框架。支持Lua开发和资源热更新，自带版本管理和简易服务器。适合新手入门学习或用于中小团队开发。    
+### 关于精简版  
+ColaFramework内置了较多的插件，本意是借助插件提高开发速度，如果感觉插件过多造成了干扰，只想使用ColaFramework的最核心功能的话，可以使用[tiny精简版](https://github.com/XINCGer/ColaFrameWork/tree/tiny)。  
+精简版仅保留了DoTween和ToLua#这两个最基本的插件/库，当然精简版中仍然是需要Odin的。  
 ### 开发计划  
 马三把近一个月内要开发的任务都放在本项目的敏捷开发面板中了。可以直接按照下面的方式查看看板中的开发计划与进度。
 ![](./Doc/image/codePlan.png)  
