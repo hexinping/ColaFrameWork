@@ -1,6 +1,6 @@
 ![](./Doc/image/Logo.png)  
 
-### ColaFrameWork Unity客户端框架  
+### ColaFrameWork Unity客户端框架(tiny精简版)  
 
 ### 框架简介  
 ColaFramework 一款简洁的MVC架构的Unity客户端框架。支持Lua开发和资源热更新，自带版本管理和简易服务器。适合新手入门学习或用于中小团队开发。    
