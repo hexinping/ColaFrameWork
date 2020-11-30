@@ -56,7 +56,7 @@ namespace ColaFramework
         /// </summary>
         private static Camera effectCamera;
 
-        private static Lutify lutify;
+        // private static Lutify lutify;
 
         /// <summary>
         /// 主相机绑定的相机控制脚本
@@ -161,9 +161,9 @@ namespace ColaFramework
                 mainCameraObj.transform.SetParent(mainCameraRootObj.transform, false);
 
                 //添加ImageEffect特效插件Lutify
-                lutify = mainCameraObj.AddComponent<Lutify>();
-                lutify.LookupTexture = CommonUtil.AssetTrackMgr.GetAsset<Texture2D>(Constants.LutifyTexturePath + "Standard/Cine Pack 1/Deep Dream.png");
-                lutify.enabled = true;
+                // lutify = mainCameraObj.AddComponent<Lutify>();
+                // lutify.LookupTexture = CommonUtil.AssetTrackMgr.GetAsset<Texture2D>(Constants.LutifyTexturePath + "Standard/Cine Pack 1/Deep Dream.png");
+                // lutify.enabled = true;
 
                 mainCamCtrl = mainCameraObj.AddSingleComponent<MainCameraCtrl>();
             }
