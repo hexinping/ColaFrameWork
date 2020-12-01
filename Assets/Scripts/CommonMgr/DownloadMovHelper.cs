@@ -141,6 +141,7 @@ public class DownloadMovHelper
             }
             catch (Exception e)
             {
+                Debug.LogError(e.ToString());
                 if (null != onFailed)
                 {
                     onFailed();
@@ -198,6 +199,7 @@ public class DownloadMovHelper
                 }
                 catch (Exception e)
                 {
+                    Debug.LogError(e.ToString());
                     if (null != _onFailed)
                     {
                         _onFailed(DownLoadMovError.SaveError);
@@ -272,6 +274,7 @@ public class DownloadMovHelper
                 }
                 catch (Exception e)
                 {
+                    Debug.LogError(e.ToString());
                     if (null != _onFailed)
                     {
                         _onFailed(DownLoadMovError.SaveError);

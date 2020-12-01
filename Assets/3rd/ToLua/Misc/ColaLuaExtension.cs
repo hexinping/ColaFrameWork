@@ -19,7 +19,7 @@ public static class ColaLuaExtension
     public static readonly int PrintTableDepth = 5;
     private static readonly string indentStr = "  ";
     private static readonly char shortIndentChar = ' ';
-    private static LuaState LuaVM;
+    // private static LuaState LuaVM;
 
     /// <summary>
     /// 外部调用，统一注册
@@ -27,7 +27,7 @@ public static class ColaLuaExtension
     /// <param name="L"></param>
     public static void Register(LuaState L)
     {
-        LuaVM = L;
+        // LuaVM = L;
         //内部手动管理LuaState上面的堆栈，并实现功能函数与注册
         L.BeginModule(null);
         L.RegFunction("LogFunction", LogFunction);

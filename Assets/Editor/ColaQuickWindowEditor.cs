@@ -12,7 +12,6 @@ using System.Text;
 using ColaFramework.Foundation;
 using System.Text.RegularExpressions;
 using LitJson;
-using System.IO;
 
 namespace ColaFramework.ToolKit
 {

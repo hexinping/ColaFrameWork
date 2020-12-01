@@ -198,8 +198,9 @@ namespace ColaFramework.NetWork
                 ColaLoom.QueueOnMainThread(StartPingServer);
                 OnConnected?.Invoke();
             }
-            catch (Exception _e)
+            catch (Exception e)
             {
+                Debug.LogError(e.ToString());
                 OnErrorCode?.Invoke((int)NetErrorEnum.ConnnectedError);
                 _close();
             }
@@ -285,6 +286,7 @@ namespace ColaFramework.NetWork
                 }
                 catch (System.Exception e)
                 {
+                    Debug.LogError(e.ToString());
                     OnErrorCode?.Invoke((int)NetErrorEnum.ReceiveError);
                     clientSocket.Disconnect(true);
                     clientSocket.Shutdown(SocketShutdown.Both);
