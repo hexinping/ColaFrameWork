@@ -16,6 +16,7 @@ public class ColaFramework_ISceneCharacterWrap
 		L.RegVar("Rotation", get_Rotation, set_Rotation);
 		L.RegVar("Direction", get_Direction, set_Direction);
 		L.RegVar("Visible", get_Visible, set_Visible);
+		L.RegVar("IsValid", get_IsValid, set_IsValid);
 		L.EndClass();
 	}
 
@@ -186,6 +187,25 @@ public class ColaFramework_ISceneCharacterWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_IsValid(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ColaFramework.ISceneCharacter obj = (ColaFramework.ISceneCharacter)o;
+			bool ret = obj.IsValid;
+			LuaDLL.lua_pushboolean(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index IsValid on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_gameObject(IntPtr L)
 	{
 		object o = null;
@@ -296,6 +316,25 @@ public class ColaFramework_ISceneCharacterWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index Visible on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_IsValid(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ColaFramework.ISceneCharacter obj = (ColaFramework.ISceneCharacter)o;
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			obj.IsValid = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index IsValid on a nil value");
 		}
 	}
 }
