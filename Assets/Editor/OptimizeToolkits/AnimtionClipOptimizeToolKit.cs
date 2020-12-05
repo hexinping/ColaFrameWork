@@ -3,10 +3,12 @@
 // Copyright © 2018-2049 ColaFramework 马三小伙儿
 //----------------------------------------------
 
+using System;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 /// <summary>
 /// 动画优化，存储占用/内存占用/加载时间
@@ -20,22 +22,34 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
 {
     private bool m_excludeScale;
 
+    private static AnimtionClipOptimizeToolKit _window;
+
     [MenuItem("Tools/Optimise/ClipOpt")]
     [MenuItem("Assets/Optimise/ClipOpt")]
     protected static void Open()
     {
-        GetWindow<AnimtionClipOptimizeToolKit>();
+         _window = GetWindow<AnimtionClipOptimizeToolKit>();
+         _window.Init();
+         _window.Show();
     }
 
     private Vector2 m_scoll;
     private bool m_ing;
     private int m_index;
 
-    private string animPath;
+    private string animclipPath;
     private AnimationClip animClip;
     private static MethodInfo getAnimationClipStats;
     private static FieldInfo sizeInfo;
 
+    private void Init()
+    {
+        Assembly asm = Assembly.GetAssembly (typeof(Editor));
+        getAnimationClipStats = typeof(AnimationUtility).GetMethod ("GetAnimationClipStats", BindingFlags.Static | BindingFlags.NonPublic);
+        Type aniclipstats = asm.GetType ("UnityEditor.AnimationClipStats");
+        sizeInfo = aniclipstats.GetField ("size", BindingFlags.Public | BindingFlags.Instance);
+    }
+    
     public void OnGUI()
     {
         var selects = Selection.objects;
@@ -139,8 +153,20 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
 
     private long GetFileSize()
     {
-        var fileInfo = new FileInfo();
+        var fileInfo = new FileInfo(animclipPath);
+        return fileInfo.Length;
     }
 
+    private long GetMemorySize()
+    {
+        return Profiler.GetRuntimeMemorySizeLong(animClip);
+    }
+
+    
+    private int GetInspectorSize ()
+    {
+        var stats = getAnimationClipStats.Invoke (null, new object[]{animClip});
+        return (int)sizeInfo.GetValue (stats);
+    }
     #endregion
 }
