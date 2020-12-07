@@ -24,13 +24,13 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
 
     private static AnimtionClipOptimizeToolKit _window;
 
-    [MenuItem("Tools/Optimise/ClipOpt")]
-    [MenuItem("Assets/Optimise/ClipOpt")]
+    [MenuItem("ColaFramework/Optimise/AnimtionClipOptimize")]
+    [MenuItem("Assets/Optimise/AnimtionClipOptimize")]
     protected static void Open()
     {
-         _window = GetWindow<AnimtionClipOptimizeToolKit>();
-         _window.Init();
-         _window.Show();
+        _window = GetWindow<AnimtionClipOptimizeToolKit>();
+        _window.Init();
+        _window.Show();
     }
 
     private Vector2 m_scoll;
@@ -44,12 +44,13 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
 
     private void Init()
     {
-        Assembly asm = Assembly.GetAssembly (typeof(Editor));
-        getAnimationClipStats = typeof(AnimationUtility).GetMethod ("GetAnimationClipStats", BindingFlags.Static | BindingFlags.NonPublic);
-        Type aniclipstats = asm.GetType ("UnityEditor.AnimationClipStats");
-        sizeInfo = aniclipstats.GetField ("size", BindingFlags.Public | BindingFlags.Instance);
+        Assembly asm = Assembly.GetAssembly(typeof(Editor));
+        getAnimationClipStats =
+            typeof(AnimationUtility).GetMethod("GetAnimationClipStats", BindingFlags.Static | BindingFlags.NonPublic);
+        Type aniclipstats = asm.GetType("UnityEditor.AnimationClipStats");
+        sizeInfo = aniclipstats.GetField("size", BindingFlags.Public | BindingFlags.Instance);
     }
-    
+
     public void OnGUI()
     {
         var selects = Selection.objects;
@@ -95,7 +96,9 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
             var clip = obj as AnimationClip;
             if (clip == null)
                 return;
+            Log("优化前---->");
             FixFloatAtClip(clip, m_excludeScale);
+            Log("优化后---->");
         }
     }
 
@@ -147,8 +150,10 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
 
     #region LogInfo
 
-    private void Log()
+    private void Log(string title)
     {
+        Debug.LogFormat("{0} FileSize:{1},MemorySize:{2},InspectorSize:{3}", title, GetFileSize(), GetMemorySize(),
+            GetInspectorSize());
     }
 
     private long GetFileSize()
@@ -162,11 +167,12 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
         return Profiler.GetRuntimeMemorySizeLong(animClip);
     }
 
-    
-    private int GetInspectorSize ()
+
+    private int GetInspectorSize()
     {
-        var stats = getAnimationClipStats.Invoke (null, new object[]{animClip});
-        return (int)sizeInfo.GetValue (stats);
+        var stats = getAnimationClipStats.Invoke(null, new object[] {animClip});
+        return (int) sizeInfo.GetValue(stats);
     }
+
     #endregion
 }
