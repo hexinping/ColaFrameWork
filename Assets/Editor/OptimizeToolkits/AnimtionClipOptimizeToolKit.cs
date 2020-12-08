@@ -6,6 +6,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -18,8 +20,10 @@ using UnityEngine.Profiling;
 /// 通过菜单ColaFramework/OptimiseToolKits/优化动画打开窗口，
 /// 在Assets目录下选择要优化的动画，点击Optimize按钮，等待一段时间即可
 /// </summary>
-public class AnimtionClipOptimizeToolKit : EditorWindow
+public class AnimtionClipOptimizeToolKit : OdinEditorWindow
 {
+    [ShowInInspector]
+    [InfoBox("剔除Scale曲线")]
     private bool m_excludeScale;
 
     private static AnimtionClipOptimizeToolKit _window;
@@ -28,7 +32,7 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
     [MenuItem("Assets/Optimise/AnimtionClipOptimize")]
     protected static void Open()
     {
-        _window = GetWindow<AnimtionClipOptimizeToolKit>();
+        _window = GetWindow<AnimtionClipOptimizeToolKit>("动画优化压缩工具");
         _window.Init();
         _window.Show();
     }
@@ -96,6 +100,8 @@ public class AnimtionClipOptimizeToolKit : EditorWindow
             var clip = obj as AnimationClip;
             if (clip == null)
                 return;
+            animClip = clip;
+            animclipPath = AssetDatabase.GetAssetPath(clip);
             Log("优化前---->");
             FixFloatAtClip(clip, m_excludeScale);
             Log("优化后---->");
