@@ -55,7 +55,7 @@ public class AnimtionClipOptimizeToolKit : OdinEditorWindow
         sizeInfo = aniclipstats.GetField("size", BindingFlags.Public | BindingFlags.Instance);
     }
 
-    public void OnGUI()
+    protected override void OnGUI()
     {
         var selects = Selection.objects;
 
