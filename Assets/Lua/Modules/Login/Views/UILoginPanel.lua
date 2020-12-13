@@ -45,16 +45,6 @@ function UILoginPanel:OnShow(isShow)
     CommonUtil.PlayMultipleSound("Audio/2d/chat_01.mp3")
     CommonUtil.PlayBackgroundMusic("Audio/2d/MainTheme.mp3")
 
-
-    local cjson = require "cjson"
-
-    CommonUtil.DownLoadServerList(function (ErrorCode,msg)
-        print(ErrorCode,msg)
-        --解析json字符串
-        local data = cjson.decode(msg)
-        print(data)
-    end)
-
 end
 
 function UILoginPanel:onClick(name)
