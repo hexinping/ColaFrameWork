@@ -7,10 +7,12 @@ using System;
 using ColaFramework;
 using System.Collections;
 using System.Collections.Generic;
+using BestHTTP.Forms;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
+using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.UI.Extensions
 {
@@ -64,7 +66,37 @@ namespace UnityEngine.UI.Extensions
 
         public void SetVisible(bool isVisible)
         {
-            
+            if (!_modelCamera)
+            {
+                gameObject.SetActive(isVisible);
+                return;
+            }
+
+            if (isVisible != _modelCamera.gameObject.activeSelf || isVisible != gameObject.activeSelf)
+            {
+                //创建Texture和Model，激活相机
+                if (isVisible)
+                {
+                    gameObject.SetActive(true);
+                    _modelCamera.gameObject.SetActive(true);
+                    InitTargetTexture();
+                    _rawImage.texture = _renderTexture;
+                }
+                //销毁Texture和模型，关闭相机
+                else
+                {
+                    SetCharacter((null));
+                    var tempRenderTexture = _renderTexture;
+                    _rawImage.texture = null;
+                    _renderTexture = null;
+                    _modelCamera.targetTexture = null;
+                    RenderTexture.ReleaseTemporary(tempRenderTexture);
+                    
+                    _modelCamera.gameObject.SetActive(false);
+                    gameObject.SetActive(false);
+                }
+
+            }
             
         }
 
@@ -78,6 +110,11 @@ namespace UnityEngine.UI.Extensions
             
         }
 
+        private void InitTargetTexture()
+        {
+                
+        }
+        
         private void RotateYAxis(float y)
         {
             var curCharacter = GetCharacter(_modelIndex);
