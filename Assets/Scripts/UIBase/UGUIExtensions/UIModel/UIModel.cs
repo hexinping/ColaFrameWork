@@ -38,6 +38,8 @@ namespace UnityEngine.UI.Extensions
         private int _modelIndex = 1;
         private static List<UIModel> _modelList = new List<UIModel>();
 
+        private const float rate = 1.5f;
+
         void Awake()
         {
             _rectTransform = transform as RectTransform;
@@ -112,7 +114,12 @@ namespace UnityEngine.UI.Extensions
 
         private void InitTargetTexture()
         {
-                
+            var rect = _rectTransform.rect;
+            var width = (int)(rect.width * rate);
+            var height = (int)(rect.height * rate);
+            _renderTexture = RenderTexture.GetTemporary(width, height, 16, RenderTextureFormat.ARGB32);
+            _renderTexture.antiAliasing = 1;
+            _modelCamera.targetTexture = _renderTexture;
         }
         
         private void RotateYAxis(float y)
