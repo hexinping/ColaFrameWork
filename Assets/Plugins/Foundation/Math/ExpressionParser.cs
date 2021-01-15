@@ -304,6 +304,8 @@ namespace ColaFramework.Foundation.Math
             m_Funcs.Add("sqrt", (p) => System.Math.Sqrt(p.FirstOrDefault()));
             m_Funcs.Add("abs", (p) => System.Math.Abs(p.FirstOrDefault()));
             m_Funcs.Add("ln", (p) => System.Math.Log(p.FirstOrDefault()));
+            m_Funcs.Add("lg", (p) => System.Math.Log10(p.FirstOrDefault()));
+            m_Funcs.Add("log",(p)=>System.Math.Log(p.FirstOrDefault(),p.ElementAtOrDefault(1)));
             m_Funcs.Add("floor", (p) => System.Math.Floor(p.FirstOrDefault()));
             m_Funcs.Add("ceiling", (p) => System.Math.Ceiling(p.FirstOrDefault()));
             m_Funcs.Add("round", (p) => System.Math.Round(p.FirstOrDefault()));
