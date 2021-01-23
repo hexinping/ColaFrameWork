@@ -112,7 +112,28 @@ namespace UnityEngine.UI.Extensions
 
         public void Release()
         {
-            
+            foreach (var item in _modelDatas)
+            {
+                if (null != item.Character)
+                {
+                    item.Character.Release();
+                }
+
+                item.Character = null;
+            }
+
+            if (_modelDatas.Count > _modelIndex)
+            {
+                if (this == _modelList[_modelIndex])
+                {
+                    var modelCamera = _modelList[_modelIndex]._modelCamera;
+                    if (null != modelCamera)
+                    {
+                        modelCamera.targetTexture = null;
+                        CommonUtil.ReleaseGameObject(modelCamera.name,modelCamera.gameObject);
+                    }
+                }
+            }
         }
 
         private void InitTargetTexture()
