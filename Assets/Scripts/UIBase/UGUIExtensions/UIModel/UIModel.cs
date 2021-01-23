@@ -86,13 +86,17 @@ namespace UnityEngine.UI.Extensions
                 //销毁Texture和模型，关闭相机
                 else
                 {
+                    //删除Model
                     SetCharacter((null));
+                    
+                    //释放RenderTexture
                     var tempRenderTexture = _renderTexture;
                     _rawImage.texture = null;
                     _renderTexture = null;
                     _modelCamera.targetTexture = null;
                     RenderTexture.ReleaseTemporary(tempRenderTexture);
                     
+                    //隐藏相机和组件
                     _modelCamera.gameObject.SetActive(false);
                     gameObject.SetActive(false);
                 }
