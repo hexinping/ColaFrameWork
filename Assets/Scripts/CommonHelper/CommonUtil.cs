@@ -23,7 +23,7 @@ public static class CommonUtil
     /// </summary>
     private static Vector3 vec3Tmp = Vector3.zero;
     private static Vector2 vec2Tmp = Vector2.zero;
-
+    private static List<Transform> _transformList = new List<Transform>();
     private const float downloadTimeout = 3;
 
     [LuaInterface.NoToLua]
@@ -857,6 +857,18 @@ public static class CommonUtil
     {
         string strURL = string.Format(AppConst.ServerListUrl, Utility.GetPlatform(), "serverlist.json", Utility.GetPlatform(), CommonHelper.PackageVersion);
         DownloadText(strURL, onComplete);
+    }
+
+    public static void SetLayersInChildren(this GameObject gameObject, int layer)
+    {
+        gameObject.layer = layer;
+        _transformList.Clear();
+        gameObject.GetComponentsInChildren<Transform>(true, _transformList);
+        foreach (var item in _transformList)
+        {
+            item.gameObject.layer = layer;
+        }
+        _transformList.Clear();
     }
 }
 
