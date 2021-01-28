@@ -86,19 +86,21 @@ namespace UnityEngine.UI.Extensions
                 //销毁Texture和模型，关闭相机
                 else
                 {
+                    //删除Model
                     SetCharacter((null));
+
+                    //释放RenderTexture
                     var tempRenderTexture = _renderTexture;
                     _rawImage.texture = null;
                     _renderTexture = null;
                     _modelCamera.targetTexture = null;
                     RenderTexture.ReleaseTemporary(tempRenderTexture);
-                    
+
+                    //隐藏相机和组件
                     _modelCamera.gameObject.SetActive(false);
                     gameObject.SetActive(false);
                 }
-
             }
-            
         }
 
         private void OnDestroy()
@@ -108,19 +110,56 @@ namespace UnityEngine.UI.Extensions
 
         public void Release()
         {
-            
+            foreach (var item in _modelDatas)
+            {
+                if (null != item.Character)
+                {
+                    item.Character.Release();
+                }
+
+                item.Character = null;
+            }
+
+            if (_modelDatas.Count > _modelIndex)
+            {
+                if (this == _modelList[_modelIndex])
+                {
+                    var modelCamera = _modelList[_modelIndex]._modelCamera;
+                    if (null != modelCamera)
+                    {
+                        modelCamera.targetTexture = null;
+                        CommonUtil.ReleaseGameObject(modelCamera.name, modelCamera.gameObject);
+                        modelCamera = _modelList[_modelIndex]._modelCamera = null;
+                        _modelList.RemoveAt(_modelIndex);
+
+                        //ReSort
+                        for (int i = 0; i < _modelList.Count; i++)
+                        {
+                            var uiModel = _modelList[i];
+                            uiModel._modelIndex = i;
+                            uiModel._modelCamera.transform.position = new Vector3(0f, -1000f - (i + 1) * 10f);
+                        }
+                    }
+                }
+            }
+
+            if (null != _renderTexture)
+            {
+                RenderTexture.ReleaseTemporary(_renderTexture);
+                _renderTexture = null;
+            }
         }
 
         private void InitTargetTexture()
         {
             var rect = _rectTransform.rect;
-            var width = (int)(rect.width * rate);
-            var height = (int)(rect.height * rate);
+            var width = (int) (rect.width * rate);
+            var height = (int) (rect.height * rate);
             _renderTexture = RenderTexture.GetTemporary(width, height, 16, RenderTextureFormat.ARGB32);
             _renderTexture.antiAliasing = 1;
             _modelCamera.targetTexture = _renderTexture;
         }
-        
+
         private void RotateYAxis(float y)
         {
             var curCharacter = GetCharacter(_modelIndex);
