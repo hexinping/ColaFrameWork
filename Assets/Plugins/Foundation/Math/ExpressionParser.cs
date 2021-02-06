@@ -24,7 +24,7 @@ using System.Linq;
 using System.Collections.Generic;
  
  
-namespace ColaFramework.Foundation.Math
+namespace ColaFramework.Foundation.MathToolKit
 {
     public interface IValue
     {
