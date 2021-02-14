@@ -16,6 +16,11 @@ namespace ColaFramework
     public interface ISceneCharacter : IAnimBehavior
     {
         /// <summary>
+        /// 唯一标识
+        /// </summary>
+        long? guid { get; set; }
+        
+        /// <summary>
         /// 角色实际的承载的GameObject
         /// </summary>
         GameObject gameObject { get; set; }

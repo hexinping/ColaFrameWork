@@ -27,6 +27,7 @@ namespace ColaFramework
 
         private bool isMainPlayer = false;
 
+        long? ISceneCharacter.guid { get; set; }
         public GameObject gameObject { get; set; }
 
         public Transform transform { get; set; }
