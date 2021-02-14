@@ -19,7 +19,7 @@ namespace UnityEngine.UI.Extensions
     /// 不同于UGUIModel组件，该组件使用RenderTexture原理实现
     /// </summary>
     [RequireComponent(typeof(RawImage)), DisallowMultipleComponent]
-    public class UIModel : MonoBehaviour, IControl, IDragHandler
+    public class UIModel : SerializedMonoBehaviour, IControl, IDragHandler
     {
         [LabelText("是否支持拖拽旋转")] public bool isRotate;
 
@@ -27,7 +27,8 @@ namespace UnityEngine.UI.Extensions
 
         [LabelText("自动旋转速度")] public int autoRotateSpeed = 0;
 
-        [SerializeField] private List<ModelData> _modelDatas = new List<ModelData>();
+        [ShowInInspector]
+        private List<ModelData> _modelDatas = new List<ModelData>();
 
         private RectTransform _rectTransform;
         private RenderTexture _renderTexture;
