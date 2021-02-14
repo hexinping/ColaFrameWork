@@ -27,8 +27,7 @@ namespace UnityEngine.UI.Extensions
 
         [LabelText("自动旋转速度")] public int autoRotateSpeed = 0;
 
-        [ShowInInspector]
-        private List<ModelData> _modelDatas = new List<ModelData>();
+        [ShowInInspector] private List<ModelData> _modelDatas = new List<ModelData>();
 
         private RectTransform _rectTransform;
         private RenderTexture _renderTexture;
@@ -234,6 +233,42 @@ namespace UnityEngine.UI.Extensions
         }
 
         #endregion
+
+#if UNITY_EDITOR
+        [Button("Preview",ButtonSizes.Large)]
+        private void PreviewInEditor()
+        {
+            if (_modelDatas.Count > 0)
+            {
+                var index = 0;
+                if (!string.IsNullOrEmpty(_modelDatas[index].name))
+                {
+                    LoadModel(_modelDatas[index].name, null);
+                }
+            }
+        }
+#endif
+
+        public void LoadModel(string name, string preAnimName)
+        {
+            var index = 0;
+            if (index < _modelDatas.Count)
+            {
+                PrepareModelCamera();
+                var model = _modelDatas[index];
+                model.name = name;
+                //TODO:待完善
+                ISceneCharacter character = null;
+                if (string.IsNullOrEmpty(preAnimName))
+                {
+                    SetCharacter(index, character);
+                }
+                else
+                {
+                    SetCharacter(index, character, preAnimName, AnimCurveNames.Idle);
+                }
+            }
+        }
     }
 
     /// <summary>
