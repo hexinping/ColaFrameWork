@@ -68,6 +68,11 @@ namespace ColaFramework
         public static readonly string UIExportCSScriptPath = "Assets/Scripts/_UIViews/";
         public static readonly string UIExportLuaViewPath = "Assets/Lua/UIBindViews/";
         public static readonly string UIExportLuaAtlasCfgPath = "Assets/Lua/Common/";
+
+        public class Layers
+        {
+            public static readonly int UIModel = LayerMask.NameToLayer("UI_Model");
+        }
     }
 
     public class ABFileInfo
