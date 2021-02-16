@@ -36,7 +36,9 @@ namespace UnityEngine.UI.Extensions
         private int _modelIndex = 1;
         private static List<UIModel> _modelList = new List<UIModel>();
 
-        private const float rate = 1.5f;
+        private const float RATE = 1.5f;
+        private const float OFFSET_SCALER = 10f;
+        private const string MODEL_CAMERA_PATH = "Arts/UI/Prefabs/UGUIRoot.prefab";
 
         void Awake()
         {
@@ -136,7 +138,7 @@ namespace UnityEngine.UI.Extensions
                         {
                             var uiModel = _modelList[i];
                             uiModel._modelIndex = i;
-                            uiModel._modelCamera.transform.position = new Vector3(0f, -1000f - (i + 1) * 10f);
+                            uiModel._modelCamera.transform.position = new Vector3(0f, -1000f - (i + 1) * OFFSET_SCALER);
                         }
                     }
                 }
@@ -152,8 +154,8 @@ namespace UnityEngine.UI.Extensions
         private void InitTargetTexture()
         {
             var rect = _rectTransform.rect;
-            var width = (int) (rect.width * rate);
-            var height = (int) (rect.height * rate);
+            var width = (int) (rect.width * RATE);
+            var height = (int) (rect.height * RATE);
             _renderTexture = RenderTexture.GetTemporary(width, height, 16, RenderTextureFormat.ARGB32);
             _renderTexture.antiAliasing = 1;
             _modelCamera.targetTexture = _renderTexture;
@@ -172,6 +174,21 @@ namespace UnityEngine.UI.Extensions
 
         private void PrepareModelCamera()
         {
+            if (null == _modelCamera)
+            {
+                _modelIndex = _modelList.Count;
+                _modelList.Add(this);
+
+                //给一个偏移量，使其远离场景中的物件，避免遮挡
+                var offset = new Vector3(0f, -1000f - (_modelIndex + 1) * OFFSET_SCALER, 0f);
+                var modelCameraGo = CommonUtil.GetGameObject(MODEL_CAMERA_PATH, null);
+                modelCameraGo.transform.localPosition = offset;
+                GameObject.DontDestroyOnLoad(modelCameraGo);
+                _modelCamera = modelCameraGo.GetComponent<Camera>();
+                InitTargetTexture();
+                _rawImage.texture = _renderTexture;
+                _rawImage.color = Color.white;
+            }
         }
 
         private void AdjustModel(int index, ISceneCharacter character)
@@ -235,7 +252,7 @@ namespace UnityEngine.UI.Extensions
         #endregion
 
 #if UNITY_EDITOR
-        [Button("Preview",ButtonSizes.Large)]
+        [Button("Preview", ButtonSizes.Large)]
         private void PreviewInEditor()
         {
             if (_modelDatas.Count > 0)
