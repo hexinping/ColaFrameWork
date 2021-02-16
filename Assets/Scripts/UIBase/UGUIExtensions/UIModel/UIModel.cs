@@ -193,6 +193,26 @@ namespace UnityEngine.UI.Extensions
 
         private void AdjustModel(int index, ISceneCharacter character)
         {
+            Vector3 offset;
+            Vector3 rotation;
+            float scale;
+            CharacterFactory.GetUIAvatarPreviewSetting(0, out rotation, out offset, out scale);
+            SetModelRotation(index, rotation);
+            SetModelOffset(index, offset);
+            SetModelScale(index, scale);
+            character.gameObject.SetLayersInChildren(Constants.Layers.UIModel);
+        }
+
+        public void SetModelRotation(int index, Vector3 rotation)
+        {
+        }
+
+        public void SetModelOffset(int index, Vector3 offset)
+        {
+        }
+
+        public void SetModelScale(int index, float scale)
+        {
         }
 
         #endregion
