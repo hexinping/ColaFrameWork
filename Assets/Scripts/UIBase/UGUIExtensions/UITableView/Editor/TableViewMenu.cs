@@ -5,6 +5,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using ColaFramework;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -190,7 +191,7 @@ namespace UnityEditor.UI
         {
             // Root for the UI
             var root = new GameObject("Canvas");
-            root.layer = LayerMask.NameToLayer("UI");
+            root.layer = Constants.Layers.UI;
             Canvas canvas = root.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             root.AddComponent<CanvasScaler>();

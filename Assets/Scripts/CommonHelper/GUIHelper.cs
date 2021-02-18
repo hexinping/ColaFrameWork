@@ -75,7 +75,7 @@ namespace ColaFramework
             if (null == uiRootObj)
             {
                 //创建画布根节点，相机节点，3D物体根节点
-                int uiLayer = LayerMask.NameToLayer("UI");
+                int uiLayer = Constants.Layers.UI;
                 GameObject rootObj = new GameObject("UGUIRoot");
                 GameObject.DontDestroyOnLoad(rootObj);
                 rootObj.layer = uiLayer;

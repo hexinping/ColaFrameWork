@@ -72,6 +72,7 @@ namespace ColaFramework
         public class Layers
         {
             public static readonly int UIModel = LayerMask.NameToLayer("UI_Model");
+            public static readonly int UI=LayerMask.NameToLayer("UI");
         }
     }
 

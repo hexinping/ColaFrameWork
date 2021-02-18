@@ -203,7 +203,7 @@ namespace UnityEngine.UI.Extensions
         {
             foreach (var trans in modelTrans.GetComponentsInChildren<Transform>())
             {
-                trans.gameObject.layer = LayerMask.NameToLayer(UIModelLayerTag);
+                trans.gameObject.layer = Constants.Layers.UIModel;
             }
         }
 

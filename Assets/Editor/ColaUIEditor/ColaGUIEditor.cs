@@ -56,7 +56,7 @@ namespace ColaFramework.ToolKit
             //创建新的UI Prefab
             GameObject view = new GameObject("NewUIView", typeof(RectTransform));
             view.tag = Constants.UIViewTag;
-            view.layer = LayerMask.NameToLayer("UI");
+            view.layer = Constants.Layers.UI;
             string uniqueName = GameObjectUtility.GetUniqueNameForSibling(uguiRoot.transform, view.name);
             view.name = uniqueName;
             Undo.RegisterCreatedObjectUndo(view, "Create" + view.name);

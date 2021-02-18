@@ -85,7 +85,7 @@ namespace ColaFramework
 
             HUDTopBoardRoot = new GameObject("HUDTopBoardRoot");
             HUDTopBoardRoot.transform.SetParent(GUIHelper.GetUIRootObj().transform, false);
-            HUDTopBoardRoot.layer = LayerMask.NameToLayer("UI");
+            HUDTopBoardRoot.layer = Constants.Layers.UI;
             var canvas = HUDTopBoardRoot.AddComponent<Canvas>();
             canvas.overrideSorting = true;
             canvas.sortingOrder = GUIHelper.GetUIRoot().sortingOrder - 2;
@@ -419,7 +419,7 @@ namespace ColaFramework
                 rectTransform.transform.SetParent(HUDTopBoardRoot.transform, false);
                 rectTransform.anchoredPosition = Vector2.one;
                 HUDTopGroup.transform.localScale = Vector3.one;
-                HUDTopGroup.layer = LayerMask.NameToLayer("UI");
+                HUDTopGroup.layer = Constants.Layers.UI;
                 rectTransform.SetAsFirstSibling();
             }
 
@@ -443,7 +443,7 @@ namespace ColaFramework
                 rectTransform.SetParent(HUDTopBoardRoot.transform, false);
                 rectTransform.anchoredPosition = Vector2.zero;
                 hostHUDTopRoot.transform.localScale = Vector3.zero;
-                hostHUDTopRoot.layer = LayerMask.NameToLayer("UI");
+                hostHUDTopRoot.layer = Constants.Layers.UI;
             }
             return hostHUDTopRoot;
         }
