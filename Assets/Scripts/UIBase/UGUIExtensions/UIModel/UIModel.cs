@@ -205,6 +205,11 @@ namespace UnityEngine.UI.Extensions
 
         public void SetModelRotation(int index, Vector3 rotation)
         {
+            var character = GetCharacter(index);
+            if (character.isNotNull())
+            {
+                character.transform.localEulerAngles = rotation;
+            }
         }
 
         public void SetModelOffset(int index, Vector3 offset)
@@ -213,6 +218,11 @@ namespace UnityEngine.UI.Extensions
 
         public void SetModelScale(int index, float scale)
         {
+            var character = GetCharacter(index);
+            if (character.isNotNull())
+            {
+                character.transform.localScale = Vector3.one * scale;
+            }
         }
 
         #endregion
