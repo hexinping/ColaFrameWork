@@ -214,6 +214,19 @@ namespace UnityEngine.UI.Extensions
 
         public void SetModelOffset(int index, Vector3 offset)
         {
+            if (index < _modelList.Count)
+            {
+                var character = GetCharacter(index);
+                if (character.isNotNull())
+                {
+                    var position3D = _modelDatas[index].transform.anchoredPosition3D;
+                    var rectSize = _rectTransform.rect.size;
+                    character.transform.localPosition = new Vector3(
+                        offset.x + position3D.x / (rectSize.x / 2f) * (rectSize.x / rectSize.y),
+                        offset.y + position3D.y / (rectSize.y / 2f),
+                        offset.z + position3D.z + 10);
+                }
+            }
         }
 
         public void SetModelScale(int index, float scale)
