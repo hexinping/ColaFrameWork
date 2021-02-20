@@ -6,6 +6,7 @@
 
 local UIBase = require("Core.ui.UIBase")
 local UILoginPanel = Class("UILoginPanel", UIBase)
+local i18n = require("3rd.i18n.init")
 
 local _instance = nil
 
@@ -19,6 +20,8 @@ end
 function UILoginPanel:InitParam()
     self.uiDepthLayer = ECEnumType.UIDepth.NORMAL
     self:ShowUIMask(false)
+    i18n.setLocale("en")
+    print(i18n.translate("welcome"))
 end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
