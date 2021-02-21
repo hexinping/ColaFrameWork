@@ -20,8 +20,7 @@ end
 function UILoginPanel:InitParam()
     self.uiDepthLayer = ECEnumType.UIDepth.NORMAL
     self:ShowUIMask(false)
-    i18n.setLocale("en")
-    print(i18n.translate("welcome"))
+    print(i18n.translate("hello"))
 end
 
 -- override UI面板创建结束后调用，可以在这里获取gameObject和component等操作
