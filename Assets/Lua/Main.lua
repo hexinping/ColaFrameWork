@@ -28,6 +28,7 @@ local function gloablDefine()
     _G.EventMgr = require("Mgrs.EventMgr")
     require("Game.Main.Modules")
     require("Game.Main.GUICollections")
+    require("Game.Main.I18NCollections")
     -- 模块初始化
     Modules.Initialize()
     _G.UIManager = require("Mgrs.UIManager")
