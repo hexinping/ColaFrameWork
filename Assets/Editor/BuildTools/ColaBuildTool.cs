@@ -40,6 +40,15 @@ namespace ColaFramework.ToolKit
         DistributionSign,
     }
 
+    public enum BuildOption
+    {
+        BuildPkg,
+        BuildBundle,
+        ReBuildPkg,
+        ReBuildBundle,
+        BuildAll
+    }
+
     /// <summary>
     /// ColaFramework框架的打包脚本
     /// </summary>
