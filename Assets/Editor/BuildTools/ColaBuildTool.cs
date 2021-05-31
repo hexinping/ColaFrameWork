@@ -216,11 +216,11 @@ namespace ColaFramework.ToolKit
             }
 
             PlayerSettings.productName = GetEnvironmentVariable(EnvOption.APP_NAME);
-            var CS_DefineSymbol = GetEnvironmentVariable(EnvOption.CS_DEF_SYMBOL);
-            if (!string.IsNullOrEmpty(CS_DefineSymbol))
+            var csDefineSymbol = GetEnvironmentVariable(EnvOption.CS_DEF_SYMBOL);
+            if (!string.IsNullOrEmpty(csDefineSymbol))
             {
                 var oldSymbol = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
-                oldSymbol = oldSymbol + ";" + oldSymbol;
+                oldSymbol = oldSymbol + ";" + csDefineSymbol;
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, oldSymbol);
                 AssetDatabase.SaveAssets();
             }
