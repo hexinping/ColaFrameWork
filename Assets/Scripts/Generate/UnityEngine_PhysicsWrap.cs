@@ -10,12 +10,14 @@ public class UnityEngine_PhysicsWrap
 		L.RegFunction("IgnoreCollision", IgnoreCollision);
 		L.RegFunction("IgnoreLayerCollision", IgnoreLayerCollision);
 		L.RegFunction("GetIgnoreLayerCollision", GetIgnoreLayerCollision);
+		L.RegFunction("GetIgnoreCollision", GetIgnoreCollision);
 		L.RegFunction("Raycast", Raycast);
 		L.RegFunction("Linecast", Linecast);
 		L.RegFunction("CapsuleCast", CapsuleCast);
 		L.RegFunction("SphereCast", SphereCast);
 		L.RegFunction("BoxCast", BoxCast);
 		L.RegFunction("RaycastAll", RaycastAll);
+		L.RegFunction("RaycastNonAlloc", RaycastNonAlloc);
 		L.RegFunction("CapsuleCastAll", CapsuleCastAll);
 		L.RegFunction("SphereCastAll", SphereCastAll);
 		L.RegFunction("OverlapCapsule", OverlapCapsule);
@@ -24,7 +26,6 @@ public class UnityEngine_PhysicsWrap
 		L.RegFunction("SyncTransforms", SyncTransforms);
 		L.RegFunction("ComputePenetration", ComputePenetration);
 		L.RegFunction("ClosestPoint", ClosestPoint);
-		L.RegFunction("RaycastNonAlloc", RaycastNonAlloc);
 		L.RegFunction("OverlapSphereNonAlloc", OverlapSphereNonAlloc);
 		L.RegFunction("CheckSphere", CheckSphere);
 		L.RegFunction("CapsuleCastNonAlloc", CapsuleCastNonAlloc);
@@ -37,6 +38,7 @@ public class UnityEngine_PhysicsWrap
 		L.RegFunction("BoxCastAll", BoxCastAll);
 		L.RegFunction("OverlapCapsuleNonAlloc", OverlapCapsuleNonAlloc);
 		L.RegFunction("RebuildBroadphaseRegions", RebuildBroadphaseRegions);
+		L.RegFunction("BakeMesh", BakeMesh);
 		L.RegConstant("IgnoreRaycastLayer", 4);
 		L.RegConstant("DefaultRaycastLayers", -5);
 		L.RegConstant("AllLayers", -1);
@@ -48,11 +50,15 @@ public class UnityEngine_PhysicsWrap
 		L.RegVar("bounceThreshold", get_bounceThreshold, set_bounceThreshold);
 		L.RegVar("defaultSolverIterations", get_defaultSolverIterations, set_defaultSolverIterations);
 		L.RegVar("defaultSolverVelocityIterations", get_defaultSolverVelocityIterations, set_defaultSolverVelocityIterations);
+		L.RegVar("defaultMaxAngularSpeed", get_defaultMaxAngularSpeed, set_defaultMaxAngularSpeed);
+		L.RegVar("defaultPhysicsScene", get_defaultPhysicsScene, null);
 		L.RegVar("autoSimulation", get_autoSimulation, set_autoSimulation);
 		L.RegVar("autoSyncTransforms", get_autoSyncTransforms, set_autoSyncTransforms);
+		L.RegVar("reuseCollisionCallbacks", get_reuseCollisionCallbacks, set_reuseCollisionCallbacks);
 		L.RegVar("interCollisionDistance", get_interCollisionDistance, set_interCollisionDistance);
 		L.RegVar("interCollisionStiffness", get_interCollisionStiffness, set_interCollisionStiffness);
 		L.RegVar("interCollisionSettingsToggle", get_interCollisionSettingsToggle, set_interCollisionSettingsToggle);
+		L.RegVar("clothGravity", get_clothGravity, set_clothGravity);
 		L.EndStaticLibs();
 	}
 
@@ -131,6 +137,24 @@ public class UnityEngine_PhysicsWrap
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
 			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
 			bool o = UnityEngine.Physics.GetIgnoreLayerCollision(arg0, arg1);
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int GetIgnoreCollision(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.Collider arg0 = (UnityEngine.Collider)ToLua.CheckObject<UnityEngine.Collider>(L, 1);
+			UnityEngine.Collider arg1 = (UnityEngine.Collider)ToLua.CheckObject<UnityEngine.Collider>(L, 2);
+			bool o = UnityEngine.Physics.GetIgnoreCollision(arg0, arg1);
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
@@ -895,6 +919,104 @@ public class UnityEngine_PhysicsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int RaycastNonAlloc(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+
+			if (count == 2)
+			{
+				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
+				UnityEngine.RaycastHit[] arg1 = ToLua.CheckStructArray<UnityEngine.RaycastHit>(L, 2);
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<UnityEngine.Ray, UnityEngine.RaycastHit[], float>(L, 1))
+			{
+				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
+				UnityEngine.RaycastHit[] arg1 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 2);
+				float arg2 = (float)LuaDLL.lua_tonumber(L, 3);
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else if (count == 3 && TypeChecker.CheckTypes<UnityEngine.Vector3, UnityEngine.Vector3, UnityEngine.RaycastHit[]>(L, 1))
+			{
+				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
+				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
+				UnityEngine.RaycastHit[] arg2 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 3);
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes<UnityEngine.Ray, UnityEngine.RaycastHit[], float, int>(L, 1))
+			{
+				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
+				UnityEngine.RaycastHit[] arg1 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 2);
+				float arg2 = (float)LuaDLL.lua_tonumber(L, 3);
+				int arg3 = (int)LuaDLL.lua_tonumber(L, 4);
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else if (count == 4 && TypeChecker.CheckTypes<UnityEngine.Vector3, UnityEngine.Vector3, UnityEngine.RaycastHit[], float>(L, 1))
+			{
+				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
+				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
+				UnityEngine.RaycastHit[] arg2 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 3);
+				float arg3 = (float)LuaDLL.lua_tonumber(L, 4);
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else if (count == 5 && TypeChecker.CheckTypes<UnityEngine.Ray, UnityEngine.RaycastHit[], float, int, UnityEngine.QueryTriggerInteraction>(L, 1))
+			{
+				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
+				UnityEngine.RaycastHit[] arg1 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 2);
+				float arg2 = (float)LuaDLL.lua_tonumber(L, 3);
+				int arg3 = (int)LuaDLL.lua_tonumber(L, 4);
+				UnityEngine.QueryTriggerInteraction arg4 = (UnityEngine.QueryTriggerInteraction)ToLua.ToObject(L, 5);
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3, arg4);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else if (count == 5 && TypeChecker.CheckTypes<UnityEngine.Vector3, UnityEngine.Vector3, UnityEngine.RaycastHit[], float, int>(L, 1))
+			{
+				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
+				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
+				UnityEngine.RaycastHit[] arg2 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 3);
+				float arg3 = (float)LuaDLL.lua_tonumber(L, 4);
+				int arg4 = (int)LuaDLL.lua_tonumber(L, 5);
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3, arg4);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else if (count == 6)
+			{
+				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
+				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
+				UnityEngine.RaycastHit[] arg2 = ToLua.CheckStructArray<UnityEngine.RaycastHit>(L, 3);
+				float arg3 = (float)LuaDLL.luaL_checknumber(L, 4);
+				int arg4 = (int)LuaDLL.luaL_checknumber(L, 5);
+				UnityEngine.QueryTriggerInteraction arg5 = (UnityEngine.QueryTriggerInteraction)ToLua.CheckObject(L, 6, typeof(UnityEngine.QueryTriggerInteraction));
+				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3, arg4, arg5);
+				LuaDLL.lua_pushinteger(L, o);
+				return 1;
+			}
+			else
+			{
+				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Physics.RaycastNonAlloc");
+			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int CapsuleCastAll(IntPtr L)
 	{
 		try
@@ -1227,104 +1349,6 @@ public class UnityEngine_PhysicsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int RaycastNonAlloc(IntPtr L)
-	{
-		try
-		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2)
-			{
-				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
-				UnityEngine.RaycastHit[] arg1 = ToLua.CheckStructArray<UnityEngine.RaycastHit>(L, 2);
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else if (count == 3 && TypeChecker.CheckTypes<UnityEngine.Ray, UnityEngine.RaycastHit[], float>(L, 1))
-			{
-				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
-				UnityEngine.RaycastHit[] arg1 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 2);
-				float arg2 = (float)LuaDLL.lua_tonumber(L, 3);
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else if (count == 3 && TypeChecker.CheckTypes<UnityEngine.Vector3, UnityEngine.Vector3, UnityEngine.RaycastHit[]>(L, 1))
-			{
-				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
-				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.RaycastHit[] arg2 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 3);
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else if (count == 4 && TypeChecker.CheckTypes<UnityEngine.Ray, UnityEngine.RaycastHit[], float, int>(L, 1))
-			{
-				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
-				UnityEngine.RaycastHit[] arg1 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 2);
-				float arg2 = (float)LuaDLL.lua_tonumber(L, 3);
-				int arg3 = (int)LuaDLL.lua_tonumber(L, 4);
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else if (count == 4 && TypeChecker.CheckTypes<UnityEngine.Vector3, UnityEngine.Vector3, UnityEngine.RaycastHit[], float>(L, 1))
-			{
-				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
-				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.RaycastHit[] arg2 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 3);
-				float arg3 = (float)LuaDLL.lua_tonumber(L, 4);
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else if (count == 5 && TypeChecker.CheckTypes<UnityEngine.Ray, UnityEngine.RaycastHit[], float, int, UnityEngine.QueryTriggerInteraction>(L, 1))
-			{
-				UnityEngine.Ray arg0 = ToLua.ToRay(L, 1);
-				UnityEngine.RaycastHit[] arg1 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 2);
-				float arg2 = (float)LuaDLL.lua_tonumber(L, 3);
-				int arg3 = (int)LuaDLL.lua_tonumber(L, 4);
-				UnityEngine.QueryTriggerInteraction arg4 = (UnityEngine.QueryTriggerInteraction)ToLua.ToObject(L, 5);
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3, arg4);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else if (count == 5 && TypeChecker.CheckTypes<UnityEngine.Vector3, UnityEngine.Vector3, UnityEngine.RaycastHit[], float, int>(L, 1))
-			{
-				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
-				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.RaycastHit[] arg2 = ToLua.ToStructArray<UnityEngine.RaycastHit>(L, 3);
-				float arg3 = (float)LuaDLL.lua_tonumber(L, 4);
-				int arg4 = (int)LuaDLL.lua_tonumber(L, 5);
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3, arg4);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else if (count == 6)
-			{
-				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
-				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.RaycastHit[] arg2 = ToLua.CheckStructArray<UnityEngine.RaycastHit>(L, 3);
-				float arg3 = (float)LuaDLL.luaL_checknumber(L, 4);
-				int arg4 = (int)LuaDLL.luaL_checknumber(L, 5);
-				UnityEngine.QueryTriggerInteraction arg5 = (UnityEngine.QueryTriggerInteraction)ToLua.CheckObject(L, 6, typeof(UnityEngine.QueryTriggerInteraction));
-				int o = UnityEngine.Physics.RaycastNonAlloc(arg0, arg1, arg2, arg3, arg4, arg5);
-				LuaDLL.lua_pushinteger(L, o);
-				return 1;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UnityEngine.Physics.RaycastNonAlloc");
-			}
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int OverlapSphereNonAlloc(IntPtr L)
 	{
 		try
@@ -1335,7 +1359,7 @@ public class UnityEngine_PhysicsWrap
 			{
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-				UnityEngine.Collider[] arg2 = null;
+				UnityEngine.Collider[] arg2 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 3);
 				int o = UnityEngine.Physics.OverlapSphereNonAlloc(arg0, arg1, arg2);
 				LuaDLL.lua_pushinteger(L, o);
 				return 1;
@@ -1344,7 +1368,7 @@ public class UnityEngine_PhysicsWrap
 			{
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-				UnityEngine.Collider[] arg2 = null;
+				UnityEngine.Collider[] arg2 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 3);
 				int arg3 = (int)LuaDLL.luaL_checknumber(L, 4);
 				int o = UnityEngine.Physics.OverlapSphereNonAlloc(arg0, arg1, arg2, arg3);
 				LuaDLL.lua_pushinteger(L, o);
@@ -1354,7 +1378,7 @@ public class UnityEngine_PhysicsWrap
 			{
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				float arg1 = (float)LuaDLL.luaL_checknumber(L, 2);
-				UnityEngine.Collider[] arg2 = null;
+				UnityEngine.Collider[] arg2 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 3);
 				int arg3 = (int)LuaDLL.luaL_checknumber(L, 4);
 				UnityEngine.QueryTriggerInteraction arg4 = (UnityEngine.QueryTriggerInteraction)ToLua.CheckObject(L, 5, typeof(UnityEngine.QueryTriggerInteraction));
 				int o = UnityEngine.Physics.OverlapSphereNonAlloc(arg0, arg1, arg2, arg3, arg4);
@@ -1762,7 +1786,7 @@ public class UnityEngine_PhysicsWrap
 			{
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.Collider[] arg2 = null;
+				UnityEngine.Collider[] arg2 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 3);
 				int o = UnityEngine.Physics.OverlapBoxNonAlloc(arg0, arg1, arg2);
 				LuaDLL.lua_pushinteger(L, o);
 				return 1;
@@ -1771,7 +1795,7 @@ public class UnityEngine_PhysicsWrap
 			{
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.Collider[] arg2 = null;
+				UnityEngine.Collider[] arg2 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 3);
 				UnityEngine.Quaternion arg3 = ToLua.ToQuaternion(L, 4);
 				int o = UnityEngine.Physics.OverlapBoxNonAlloc(arg0, arg1, arg2, arg3);
 				LuaDLL.lua_pushinteger(L, o);
@@ -1781,7 +1805,7 @@ public class UnityEngine_PhysicsWrap
 			{
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.Collider[] arg2 = null;
+				UnityEngine.Collider[] arg2 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 3);
 				UnityEngine.Quaternion arg3 = ToLua.ToQuaternion(L, 4);
 				int arg4 = (int)LuaDLL.luaL_checknumber(L, 5);
 				int o = UnityEngine.Physics.OverlapBoxNonAlloc(arg0, arg1, arg2, arg3, arg4);
@@ -1792,7 +1816,7 @@ public class UnityEngine_PhysicsWrap
 			{
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
-				UnityEngine.Collider[] arg2 = null;
+				UnityEngine.Collider[] arg2 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 3);
 				UnityEngine.Quaternion arg3 = ToLua.ToQuaternion(L, 4);
 				int arg4 = (int)LuaDLL.luaL_checknumber(L, 5);
 				UnityEngine.QueryTriggerInteraction arg5 = (UnityEngine.QueryTriggerInteraction)ToLua.CheckObject(L, 6, typeof(UnityEngine.QueryTriggerInteraction));
@@ -1974,7 +1998,7 @@ public class UnityEngine_PhysicsWrap
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-				UnityEngine.Collider[] arg3 = null;
+				UnityEngine.Collider[] arg3 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 4);
 				int o = UnityEngine.Physics.OverlapCapsuleNonAlloc(arg0, arg1, arg2, arg3);
 				LuaDLL.lua_pushinteger(L, o);
 				return 1;
@@ -1984,7 +2008,7 @@ public class UnityEngine_PhysicsWrap
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-				UnityEngine.Collider[] arg3 = null;
+				UnityEngine.Collider[] arg3 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 4);
 				int arg4 = (int)LuaDLL.luaL_checknumber(L, 5);
 				int o = UnityEngine.Physics.OverlapCapsuleNonAlloc(arg0, arg1, arg2, arg3, arg4);
 				LuaDLL.lua_pushinteger(L, o);
@@ -1995,7 +2019,7 @@ public class UnityEngine_PhysicsWrap
 				UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 1);
 				UnityEngine.Vector3 arg1 = ToLua.ToVector3(L, 2);
 				float arg2 = (float)LuaDLL.luaL_checknumber(L, 3);
-				UnityEngine.Collider[] arg3 = null;
+				UnityEngine.Collider[] arg3 = ToLua.CheckObjectArray<UnityEngine.Collider>(L, 4);
 				int arg4 = (int)LuaDLL.luaL_checknumber(L, 5);
 				UnityEngine.QueryTriggerInteraction arg5 = (UnityEngine.QueryTriggerInteraction)ToLua.CheckObject(L, 6, typeof(UnityEngine.QueryTriggerInteraction));
 				int o = UnityEngine.Physics.OverlapCapsuleNonAlloc(arg0, arg1, arg2, arg3, arg4, arg5);
@@ -2022,6 +2046,23 @@ public class UnityEngine_PhysicsWrap
 			UnityEngine.Bounds arg0 = ToLua.ToBounds(L, 1);
 			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
 			UnityEngine.Physics.RebuildBroadphaseRegions(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int BakeMesh(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			int arg0 = (int)LuaDLL.luaL_checknumber(L, 1);
+			bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
+			UnityEngine.Physics.BakeMesh(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)
@@ -2143,6 +2184,34 @@ public class UnityEngine_PhysicsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_defaultMaxAngularSpeed(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushnumber(L, UnityEngine.Physics.defaultMaxAngularSpeed);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_defaultPhysicsScene(IntPtr L)
+	{
+		try
+		{
+			ToLua.PushValue(L, UnityEngine.Physics.defaultPhysicsScene);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_autoSimulation(IntPtr L)
 	{
 		try
@@ -2162,6 +2231,20 @@ public class UnityEngine_PhysicsWrap
 		try
 		{
 			LuaDLL.lua_pushboolean(L, UnityEngine.Physics.autoSyncTransforms);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_reuseCollisionCallbacks(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, UnityEngine.Physics.reuseCollisionCallbacks);
 			return 1;
 		}
 		catch (Exception e)
@@ -2204,6 +2287,20 @@ public class UnityEngine_PhysicsWrap
 		try
 		{
 			LuaDLL.lua_pushboolean(L, UnityEngine.Physics.interCollisionSettingsToggle);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_clothGravity(IntPtr L)
+	{
+		try
+		{
+			ToLua.Push(L, UnityEngine.Physics.clothGravity);
 			return 1;
 		}
 		catch (Exception e)
@@ -2333,6 +2430,21 @@ public class UnityEngine_PhysicsWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_defaultMaxAngularSpeed(IntPtr L)
+	{
+		try
+		{
+			float arg0 = (float)LuaDLL.luaL_checknumber(L, 2);
+			UnityEngine.Physics.defaultMaxAngularSpeed = arg0;
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_autoSimulation(IntPtr L)
 	{
 		try
@@ -2354,6 +2466,21 @@ public class UnityEngine_PhysicsWrap
 		{
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 			UnityEngine.Physics.autoSyncTransforms = arg0;
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_reuseCollisionCallbacks(IntPtr L)
+	{
+		try
+		{
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			UnityEngine.Physics.reuseCollisionCallbacks = arg0;
 			return 0;
 		}
 		catch (Exception e)
@@ -2399,6 +2526,21 @@ public class UnityEngine_PhysicsWrap
 		{
 			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
 			UnityEngine.Physics.interCollisionSettingsToggle = arg0;
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_clothGravity(IntPtr L)
+	{
+		try
+		{
+			UnityEngine.Vector3 arg0 = ToLua.ToVector3(L, 2);
+			UnityEngine.Physics.clothGravity = arg0;
 			return 0;
 		}
 		catch (Exception e)

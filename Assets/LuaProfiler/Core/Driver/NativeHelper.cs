@@ -38,7 +38,7 @@ namespace MikuLuaProfiler
     using System;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
-    using UnityEngine;
+    
 
 #if UNITY_5_5_OR_NEWER
     using UnityEngine.Profiling;

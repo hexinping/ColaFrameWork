@@ -78,6 +78,7 @@ public class CommonUtilWrap
 		L.RegFunction("HandleMainCameraEvent", HandleMainCameraEvent);
 		L.RegFunction("DownloadText", DownloadText);
 		L.RegFunction("DownLoadServerList", DownLoadServerList);
+		L.RegFunction("SetLayersInChildren", SetLayersInChildren);
 		L.RegVar("NetAvailable", get_NetAvailable, null);
 		L.RegVar("IsWifi", get_IsWifi, null);
 		L.EndStaticLibs();
@@ -1471,6 +1472,23 @@ public class CommonUtilWrap
 			ToLua.CheckArgsCount(L, 1);
 			System.Action<int,string> arg0 = (System.Action<int,string>)ToLua.CheckDelegate<System.Action<int,string>>(L, 1);
 			CommonUtil.DownLoadServerList(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int SetLayersInChildren(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 1, typeof(UnityEngine.GameObject));
+			int arg1 = (int)LuaDLL.luaL_checknumber(L, 2);
+			CommonUtil.SetLayersInChildren(arg0, arg1);
 			return 0;
 		}
 		catch (Exception e)

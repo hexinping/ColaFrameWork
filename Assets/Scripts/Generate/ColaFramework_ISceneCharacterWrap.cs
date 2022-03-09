@@ -10,6 +10,7 @@ public class ColaFramework_ISceneCharacterWrap
 		L.RegFunction("SetPosition2D", SetPosition2D);
 		L.RegFunction("SetRotation2D", SetRotation2D);
 		L.RegFunction("Release", Release);
+		L.RegVar("guid", get_guid, set_guid);
 		L.RegVar("gameObject", get_gameObject, set_gameObject);
 		L.RegVar("transform", get_transform, set_transform);
 		L.RegVar("Position", get_Position, set_Position);
@@ -69,6 +70,25 @@ public class ColaFramework_ISceneCharacterWrap
 		catch (Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_guid(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ColaFramework.ISceneCharacter obj = (ColaFramework.ISceneCharacter)o;
+			System.Nullable<long> ret = obj.guid;
+			ToLua.PusNullable(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index guid on a nil value");
 		}
 	}
 
@@ -202,6 +222,25 @@ public class ColaFramework_ISceneCharacterWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index IsValid on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_guid(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			ColaFramework.ISceneCharacter obj = (ColaFramework.ISceneCharacter)o;
+			System.Nullable<long> arg0 = ToLua.CheckNullable<long>(L, 2);
+			obj.guid = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index guid on a nil value");
 		}
 	}
 
