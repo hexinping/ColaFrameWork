@@ -90,6 +90,7 @@ namespace ColaFramework.NetWork
                     }
                     if (handledCnt >= perHandleCnt)
                     {
+                        //分帧处理，一帧最多3个
                         break;
                     }
                 }
