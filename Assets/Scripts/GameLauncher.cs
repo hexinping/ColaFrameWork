@@ -41,6 +41,8 @@ public class GameLauncher : MonoBehaviour
         instance = this;
         gameManager = GameManager.Instance;
         DOTween.Init();
+        //一种省电设置，允许屏幕在最后一次活动用户交互后变暗一段时间
+        //这里设置用不变暗
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 #if UNITY_STANDALONE_WIN
             Screen.SetResolution(1280, 720, false);
@@ -76,7 +78,8 @@ public class GameLauncher : MonoBehaviour
         GameObject logHelperObj = new GameObject("LogHelperObj");
         logHelper = logHelperObj.AddComponent<LogHelper>();
         GameObject.DontDestroyOnLoad(logHelperObj);
-
+        
+        //Unity的日志接收事件
         Application.logMessageReceived += logHelper.LogCallback;
 #endif
         //初始化多线程工具
@@ -86,7 +89,10 @@ public class GameLauncher : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //任务管理器
         TaskManager.Instance.Init(this);
+        
+        //下载器
         DownloadPatcher.Instance.StartUpdate(OnDownloadPathDone);
     }
 

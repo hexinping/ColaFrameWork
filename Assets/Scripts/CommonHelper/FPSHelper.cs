@@ -49,7 +49,9 @@ namespace ColaFramework
         void Start()
         {
             //Application.targetFrameRate=60;
-
+            //realtimesincestartup表示的是从程序开始以来的真实时间
+            //在游戏中，时间的流逝速度是可以调整的，比如我可以使用timeScale暂定游戏，或者2倍速进行游戏。
+            //因此如果想要真实的时间，就会出现问题。而采用realtimesincestartup就可以解决这个问题，因为它完全不依赖游戏的时间速度，它表示的是一个真实的时间流速
             lastInterval = Time.realtimeSinceStartup;
 
             frames = 0;
@@ -100,7 +102,7 @@ namespace ColaFramework
         void Update()
         {
             ++frames;
-
+            //计算0.5s内跑的帧总数,然后除以时间
             if (Time.realtimeSinceStartup > lastInterval + updateInterval)
             {
                 fps = frames / (Time.realtimeSinceStartup - lastInterval);

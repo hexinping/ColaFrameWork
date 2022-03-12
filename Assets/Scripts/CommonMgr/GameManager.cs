@@ -18,7 +18,7 @@ namespace ColaFramework
     public class GameManager
     {
 
-        private static GameManager instance;
+        private static GameManager instance;    
         private bool init = false;
 
         /// <summary>

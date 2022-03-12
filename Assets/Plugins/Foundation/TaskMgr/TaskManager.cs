@@ -121,9 +121,10 @@ namespace ColaFramework.Foundation
                     yield return null;
                 else
                 {
+                    ////每一帧都调用MoveNext 返回true的话 就会调用Current方法 返回里面的值
                     if (e != null && e.MoveNext())
                     {
-                        yield return e.Current;
+                        yield return e.Current; 
                     }
                     else
                     {

@@ -21,9 +21,9 @@ namespace ColaFramework
         /// </summary>
         private float _duration;
         private Action _onComplete;
-        private Action<float> _onPerFrame;
-        private Action<float> _onPerSecond;
-        private Action<float> _onCountDown;
+        private Action<float> _onPerFrame; //每帧调用
+        private Action<float> _onPerSecond; //每秒调用
+        private Action<float> _onCountDown; //倒计时调用
 
         /// <summary>
         /// Whether the timer will run again after completion.
@@ -66,7 +66,7 @@ namespace ColaFramework
         }
 
         private float _startTime = 0f;
-        private float _elapsedTimeTemp = 0f;
+        private float _elapsedTimeTemp = 0f; //运行时间
         private float _elapsedSecond = 0f;
 
         /// <summary>
@@ -102,6 +102,7 @@ namespace ColaFramework
         /// <returns></returns>
         public static long RunPerFrame(Action<float> onPerFrame)
         {
+            //每一帧都调用，不停止
             return Register(-1, null, onPerFrame);
         }
 
@@ -273,6 +274,7 @@ namespace ColaFramework
 
             if (_duration >= 0 && worldTime >= fireTime)
             {
+                //调用结束函数
                 if (_onComplete != null) _onComplete();
 
                 if (_isLoop)
@@ -285,19 +287,20 @@ namespace ColaFramework
                     return;
                 }
             }
-
+            //每帧调用函数
             if (_onPerFrame != null) _onPerFrame(deltaTime);
 
-            _elapsedTimeTemp += deltaTime;
+            _elapsedTimeTemp += deltaTime; //累计已经运行的时间
             if (_elapsedTimeTemp >= 1f)
             {
                 _elapsedTimeTemp -= 1;
-                _elapsedSecond++;
+                _elapsedSecond++; //累计运行秒数
+                //每秒调用函数
                 if (_onPerSecond != null) _onPerSecond(_elapsedSecond);
 
                 if (_duration >= 0)
                 {
-                    var countDown = _duration - _elapsedSecond;
+                    var countDown = _duration - _elapsedSecond; //剩余秒数
                     if (_onCountDown != null) _onCountDown(countDown >= 1f ? countDown : 0f);
                 }
             }
