@@ -33,6 +33,7 @@ public static class CommonUtil
     {
         if (null == AssetTrackMgr)
         {
+            //资源追踪器
             AssetTrackMgr = new AssetTrackMgr();
         }
     }
@@ -619,16 +620,19 @@ public static class CommonUtil
     }
 
     #region 资源管理相关接口
+    //根据资源路径 返回一个实例化好的gameobject
     public static GameObject InstantiatePrefab(string path, Transform parent)
     {
         return AssetTrackMgr.GetGameObject(path, parent);
     }
-
+    
+    //设置资源池的容量
     public static void SetCapcitySize(string group, int capcity)
     {
         AssetTrackMgr.SetCapcitySize(group, capcity);
     }
-
+    
+    //设置资源池内object的销毁时间
     public static void SetDisposeInterval(string group, int disposeTimeInterval)
     {
         AssetTrackMgr.SetDisposeInterval(group, disposeTimeInterval);
@@ -639,21 +643,25 @@ public static class CommonUtil
         return AssetTrackMgr.GetGameObject(path, parent);
     }
 
+    //释放之前加载过的gameobject，放回对象池
     public static void ReleaseGameObject(string path, GameObject gameObject)
     {
         AssetTrackMgr.ReleaseGameObject(path, gameObject);
     }
 
+    //释放之前加载过的gameobject，不放回对象池，直接destory掉，用于被污染的GameObject
     public static void DiscardGameObject(string path, GameObject gameObject)
     {
         AssetTrackMgr.DiscardGameObject(path, gameObject);
     }
-
+    
+    //通过路径获取资源
     public static UnityEngine.Object GetAsset(string path, Type type)
     {
         return AssetTrackMgr.GetAsset(path, type);
     }
-
+    
+    //根据路径释放资源，使其回池
     public static void ReleaseAsset(string path, UnityEngine.Object obj)
     {
         AssetTrackMgr.ReleaseAsset(path, obj);

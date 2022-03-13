@@ -11,7 +11,10 @@ namespace ColaFramework.Foundation
 {
     public class ContainerPool
     {
+        //AssetContainer 使用弱引用判断是否对象还存在
         private ObjectPool<AssetContainer> assetContainerPool = new ObjectPool<AssetContainer>(CreateAssetContainer, null, AssetContainer.Dispose);
+        
+        //GameObjectContainer 使用引用计数判断是否对象还存在
         private ObjectPool<GameObjectContainer> gameobjectContainerPool = new ObjectPool<GameObjectContainer>(CreateGameObjectContainer, null, GameObjectContainer.Dispose);
 
         #region get && release
@@ -55,7 +58,7 @@ namespace ColaFramework.Foundation
     public class AssetContainer
     {
         private Object hardRef;
-        private System.WeakReference weakRef;
+        private System.WeakReference weakRef; //弱引用
         private float disposeTimeTicker;
 
         public int DisposeTime { get; set; }
@@ -76,12 +79,14 @@ namespace ColaFramework.Foundation
                 }
                 else
                 {
+                    //强引用的销毁时间到了，把asset对象赋予到弱引用上？？？ 这是为什么？
                     if (null == weakRef)
                     {
                         weakRef = new System.WeakReference(hardRef);
                     }
                     else
                     {
+                        //被弱引用包一层
                         weakRef.Target = hardRef;
                     }
                     hardRef = null;
@@ -90,6 +95,7 @@ namespace ColaFramework.Foundation
             }
             else
             {
+                //使用弱引用判断asset是否存活
                 return null != weakRef && null != weakRef.Target;
             }
         }
@@ -99,10 +105,12 @@ namespace ColaFramework.Foundation
             Object obj = null;
             if (null != hardRef)
             {
+                //强引用存在直接返回强引用
                 obj = hardRef;
             }
             else
             {
+                //强引用被销毁了，创建了弱引用，返回弱引用对应的target，并且强引用重新赋值
                 if (null != weakRef)
                 {
                     hardRef = weakRef.Target as Object;
@@ -122,7 +130,7 @@ namespace ColaFramework.Foundation
         {
             if (null == hardRef)
             {
-                hardRef = target;
+                hardRef = target; //强引用
             }
             else
             {
@@ -160,8 +168,9 @@ namespace ColaFramework.Foundation
         private string path;
         private float disposeTimeTicker;
         private float sleepTimerTicker;
-        private int refCount;
-
+        private int refCount; //container的引用计数
+        
+        //container中存储多个GameObject
         private LinkedList<GameObject> objectList = new LinkedList<GameObject>();
 
         public int DisposeTime { get; set; }
@@ -171,9 +180,9 @@ namespace ColaFramework.Foundation
         {
             container.assetTrackMgr = assetTrackMgr;
             container.path = path;
-            container.prefab = prefab;
-            container.DisposeTime = disposeTime;
-            container.Capcaity = capcity;
+            container.prefab = prefab; //实例化GameObject需要的prefab资源
+            container.DisposeTime = disposeTime; //销毁时间
+            container.Capcaity = capcity; //每个container存储GameObject最大数量
             return container;
         }
 
@@ -181,17 +190,21 @@ namespace ColaFramework.Foundation
         {
             if (sleepTimerTicker > 0)
             {
+                //sleepTimerTicker>0就一定存活？？？
                 sleepTimerTicker -= dt;
                 return true;
             }
             if (objectList.Count > 0)
             {
+                //如果list里有对象，只要return回对象池的时候list才会有对象
                 if (disposeTimeTicker > 0)
                 {
+                    //销毁时间未到
                     disposeTimeTicker -= dt;
                 }
                 else
                 {
+                    //销毁时间到了
                     var gameobject = objectList.Last.Value;
                     objectList.RemoveLast();
                     Discard(gameobject);
@@ -200,6 +213,7 @@ namespace ColaFramework.Foundation
             }
             else if (refCount > 0)
             {
+                //引用计数>0
                 return true;
             }
             else
@@ -248,7 +262,7 @@ namespace ColaFramework.Foundation
                 gameObject.transform.localPosition = prefab.transform.localPosition;
                 gameObject.transform.localRotation = prefab.transform.localRotation;
                 gameObject.transform.localScale = prefab.transform.localScale;
-                refCount++;
+                refCount++;  //为什么这里引用计数+1？
                 return gameObject;
             }
         }
@@ -268,6 +282,7 @@ namespace ColaFramework.Foundation
             }
             else
             {
+                //超过容量上限的直接销毁
                 Discard(gameObject);
             }
         }

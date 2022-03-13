@@ -38,7 +38,7 @@ namespace ColaFramework.Foundation
     {
         #region CONST
         public const int DISPOSE_TIME_VALUE = 15;
-        public const int DISPOSE_CHECK_INTERVAL = 5;
+        public const int DISPOSE_CHECK_INTERVAL = 5;  //单位秒 ，container里对象等待销毁的时间
         public const int CAPCITY_SIZE = 15;
 
         private const int ILLEGAL_VALUE = -1;
@@ -47,10 +47,14 @@ namespace ColaFramework.Foundation
         #region Params
         public Transform rootTF { get; private set; }
         public InstantiateAction instantiateAction { get; private set; }
-
+        
+        //容器对象池
         private ContainerPool containerPool;
-
+        
+        //Asset的容器类，弱引用+引用计数
         private Dictionary<string, AssetContainer> assetContainerMap = new Dictionary<string, AssetContainer>();
+        
+        //GameObject容器类，弱引用+引用计数
         private Dictionary<string, GameObjectContainer> gameObjectContainerMap = new Dictionary<string, GameObjectContainer>();
 
         private Dictionary<string, int> capcityValueMap = new Dictionary<string, int>();
@@ -67,6 +71,8 @@ namespace ColaFramework.Foundation
             instantiateAction = null == action ? GameObject.Instantiate : action;
             containerPool = new ContainerPool();
             GameObject.DontDestroyOnLoad(rootTF.gameObject);
+            
+            //check类，update里做检查
             rootTF.gameObject.AddSingleComponent<ContainerMapChecker>().assetTrackMgr = this;
         }
 
@@ -111,6 +117,8 @@ namespace ColaFramework.Foundation
             if (null == obj)
             {
                 obj = AssetLoader.Load(path, type);
+                
+                //给AssetContainer 标记真正的asset对象
                 container.MarkObject(obj);
             }
             return obj;
@@ -132,9 +140,11 @@ namespace ColaFramework.Foundation
             }
             else
             {
+                //根据路径加载一个prefab资源
                 var prefab = AssetLoader.Load<GameObject>(path);
                 if (null != prefab)
                 {
+                    //从对象池里拿出一个container，然后通过container拿一个gameObject
                     container = containerPool.GetGameObjectContainer(this, path, prefab, CalcDisposeTime(path), CalcCapcitySize(path));
                     gameObjectContainerMap.Add(path, container);
                     gameObject = container.GetObject(parent);
@@ -339,7 +349,7 @@ namespace ColaFramework.Foundation
             // Use this for initialization
             void Start()
             {
-                lastCheckTime = Time.realtimeSinceStartup;
+                lastCheckTime = Time.realtimeSinceStartup; //不受timescale影响
             }
 
             private void CheckAssetContainerMap(float dt)
@@ -384,6 +394,7 @@ namespace ColaFramework.Foundation
                     {
                         var container = gameObjectContainerMap[k];
                         gameObjectContainerMap.Remove(k);
+                        
                         containerPool.ReleaseGameObjectContainer(container);
                     }
                     removeKeyList.Clear();

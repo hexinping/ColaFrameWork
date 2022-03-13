@@ -22,7 +22,10 @@ namespace ColaFramework.Foundation
     {
         private const int CHECK_INTERVAL = 10;
         private static float time = 0f;
+        
+        //存储弱引用
         private static Dictionary<string, WeakReference> AssetReferences = new Dictionary<string, WeakReference>(32);
+        //已经加载过的Assets
         private static Dictionary<string, Asset> LoadedAssets = new Dictionary<string, Asset>(32);
         private static List<string> UnUsedAssets = new List<string>(16);
 
@@ -79,12 +82,12 @@ namespace ColaFramework.Foundation
             var assetProxy = Assets.Load(path, type);
             var asset = assetProxy.asset;
             assetProxy.ClearAsset();
-            wkRef = new WeakReference(asset);
+            wkRef = new WeakReference(asset); //创建一个弱引用
             Asset assetRef = null;
             if (LoadedAssets.TryGetValue(path, out assetRef))
             {
                 LoadedAssets[path] = assetProxy;
-                Assets.Unload(assetRef);
+                Assets.Unload(assetRef); //??
             }
             else
             {
