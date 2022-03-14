@@ -67,12 +67,13 @@ namespace ColaFramework.Foundation
                 _current = g.AddComponent<ColaLoom>();
             }
         }
-
+        
+        //让主线程执行一个方法，方法有可能下一帧执行
         public static void QueueOnMainThread(Action action)
         {
             QueueOnMainThread(action, 0f);
         }
-
+        //让主线程执行一个方法，方法延迟执行
         public static void QueueOnMainThread(Action action, float time)
         {
             if (time != 0)
@@ -90,7 +91,8 @@ namespace ColaFramework.Foundation
                 }
             }
         }
-
+        
+        //异步执行一个方法
         public static Thread RunAsync(Action a)
         {
             Initialize();
@@ -98,7 +100,12 @@ namespace ColaFramework.Foundation
             {
                 Thread.Sleep(1);
             }
+            
+            //https://www.cnblogs.com/yaosj/p/11143607.html
+            //C#原子操作(Interlocked.Decrement和Interlocked.Increment)
+            //以原子操作的形式递增指定变量的值并存储结果 相当于 lock（obj）{i++；}
             Interlocked.Increment(ref numThreads);
+            //把一个方法RunAction放进线程池执行，参数a是RunAction方法的参数
             ThreadPool.QueueUserWorkItem(RunAction, a);
             return null;
         }

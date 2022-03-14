@@ -38,10 +38,10 @@ namespace ColaFramework.NetWork
     [System.Serializable]
     public struct sSocketData
     {
-        public byte[] data;
-        public int protocal;
-        public int buffLength;
-        public int dataLength;
+        public byte[] data; //数据(N byte)
+        public int protocal; //协议号
+        public int buffLength; //数据包总长度：数据总长度(4byte) + 协议类型(4byte) + 数据(N byte)
+        public int dataLength; //数据(N byte)长度
     }
 
     /// <summary>
@@ -101,16 +101,20 @@ namespace ColaFramework.NetWork
         /// </summary>
         public void UpdateDataLength()
         {
+            //接收超过8个字节
             if (dataLength == 0 && curBuffPosition >= Constants.HEAD_LEN)
             {
+                //获取数据总长度
                 byte[] tmpDataLen = new byte[Constants.HEAD_DATA_LEN];
                 Array.Copy(buff, 0, tmpDataLen, 0, Constants.HEAD_DATA_LEN);
-                buffLength = BitConverter.ToInt32(tmpDataLen, 0);
-
+                buffLength = BitConverter.ToInt32(tmpDataLen, 0); //把字节数组转成int型
+                
+                //获取协议号
                 byte[] tmpProtocalType = new byte[Constants.HEAD_TYPE_LEN];
                 Array.Copy(buff, Constants.HEAD_DATA_LEN, tmpProtocalType, 0, Constants.HEAD_TYPE_LEN);
                 protocal = BitConverter.ToUInt16(tmpProtocalType, 0);
-
+                
+                //数据(N byte) 长度
                 dataLength = buffLength - Constants.HEAD_LEN;
             }
         }
@@ -128,20 +132,24 @@ namespace ColaFramework.NetWork
             {
                 UpdateDataLength();
             }
-
+            //curBuffPosition 会随着每次接收数据长度更新位置
+            //curBuffPosition >= buffLength 意味着至少接收完一条完整数据包
             if (buffLength > 0 && curBuffPosition >= buffLength)
             {
-                tmpSocketData.buffLength = buffLength;
-                tmpSocketData.dataLength = dataLength;
+                tmpSocketData.buffLength = buffLength; //数据包总长度：数据总长度(4byte) + 协议类型(4byte) + 数据(N byte)
+                tmpSocketData.dataLength = dataLength; //数据(N byte)长度
                 tmpSocketData.protocal = protocal;
                 tmpSocketData.data = new byte[dataLength];
+                //把数据字节拷贝到tmpSocketData.data
                 Array.Copy(buff, Constants.HEAD_LEN, tmpSocketData.data, 0, dataLength);
-                curBuffPosition -= buffLength;
+                curBuffPosition -= buffLength; //移动游标
+                
+                //重新构建一个字节数组
                 byte[] tmpBuff = new byte[curBuffPosition < minBuffLen ? minBuffLen : curBuffPosition];
                 Array.Copy(buff, buffLength, tmpBuff, 0, curBuffPosition);
                 buff = tmpBuff;
 
-
+                //重置下状态
                 buffLength = 0;
                 dataLength = 0;
                 protocal = 0;

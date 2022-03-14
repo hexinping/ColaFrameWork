@@ -36,17 +36,17 @@ namespace ColaFramework.NetWork
         private string currIP;
         private int currPort;
         private int timeOutMilliSec = 10;
-        private float pingloopSec = 5.0f;
+        private float pingloopSec = 5.0f; //每5秒ping一次
         private long pingTimerId = -1;
         private byte[] pingBytes = System.Text.Encoding.UTF8.GetBytes(AppConst.AppName);
 
         private bool isConnected = false;
 
         private Socket clientSocket = null;
-        private Thread receiveThread = null;
+        private Thread receiveThread = null; //网络消息接收线程
 
         /// <summary>
-        /// 网络数据缓存器
+        /// 网络数据缓存器, 内部也就是一个字节数组
         /// </summary>
         private DataBuffer databuffer = new DataBuffer();
 
@@ -61,12 +61,12 @@ namespace ColaFramework.NetWork
         private sSocketData socketData = new sSocketData();
 
         #region 对外回调
-        public Action OnTimeOut;
-        public Action OnFailed;
-        public Action OnConnected;
-        public Action OnReConnected;
-        public Action OnClose;
-        public Action<int> OnErrorCode;
+        public Action OnTimeOut; //连接服务器超时回调
+        public Action OnFailed;  //连接服务器失败回调
+        public Action OnConnected;//socket连接成功回调
+        public Action OnReConnected; //重连回调
+        public Action OnClose; //关闭socket回调
+        public Action<int> OnErrorCode; //出错回调
         #endregion
 
         private SocketManager()
@@ -79,7 +79,7 @@ namespace ColaFramework.NetWork
         /// 向服务器发送消息
         /// </summary>
         /// <param name="protocol"></param>
-        /// <param name="byteMsg"></param>
+        /// <param name="byteMsg">已经序列化过的字节数组</param>
         [LuaInterface.LuaByteBuffer]
         public void SendMsg(int protocol, byte[] byteMsg)
         {
@@ -97,6 +97,7 @@ namespace ColaFramework.NetWork
             {
                 this.currIP = currIP;
                 this.currPort = currPort;
+                //使用多线程
                 ColaLoom.RunAsync(_onConnet);
             }
         }
@@ -131,19 +132,21 @@ namespace ColaFramework.NetWork
 
             if (receiveThread != null)
             {
+                //停止接收线程，
                 receiveThread.Abort();
                 receiveThread = null;
             }
 
             if (clientSocket != null && clientSocket.Connected)
             {
+                //socket close
                 clientSocket.Close();
                 clientSocket = null;
             }
         }
 
         /// <summary>
-        /// 重连机制
+        /// 重连机制，直接把socket关了
         /// </summary>
         private void _ReConnect()
         {
@@ -186,15 +189,15 @@ namespace ColaFramework.NetWork
         {
             try
             {
-                Socket client = (Socket)iar.AsyncState;
-                client.EndConnect(iar);
+                Socket client = (Socket)iar.AsyncState; //客户端socket实例
+                client.EndConnect(iar); //结束连接
 
-                receiveThread = new Thread(new ThreadStart(_onReceiveSocket));
-                receiveThread.IsBackground = true;
+                receiveThread = new Thread(new ThreadStart(_onReceiveSocket)); //接收消息线程
+                receiveThread.IsBackground = true; //后台线程
                 receiveThread.Start();
                 isConnected = true;
                 Debug.Log("连接成功");
-
+                //开启ping操作
                 ColaLoom.QueueOnMainThread(StartPingServer);
                 OnConnected?.Invoke();
             }
@@ -233,7 +236,7 @@ namespace ColaFramework.NetWork
             try
             {
                 Socket client = (Socket)asyncSend.AsyncState;
-                client.EndSend(asyncSend);
+                client.EndSend(asyncSend); //结束本次发送
             }
             catch (Exception e)
             {
@@ -260,7 +263,8 @@ namespace ColaFramework.NetWork
                     int receiveLength = clientSocket.Receive(tmpReceiveBuff);
                     if (receiveLength > 0)
                     {
-                        databuffer.AddBuffer(tmpReceiveBuff, receiveLength);//将收到的数据添加到缓存器中
+                        //receiveLength 接收数据长度（字节数总数）
+                        databuffer.AddBuffer(tmpReceiveBuff, receiveLength);//将收到的数据添加到缓存器中，仅仅更新了游标位置
                         while (databuffer.GetData(out socketData))//取出一条完整数据
                         {
                             //只有消息协议才进入队列
@@ -273,6 +277,7 @@ namespace ColaFramework.NetWork
                                 //锁死消息中心消息队列，并添加数据
                                 lock (NetMessageCenter.Instance.NetMessageQueue)
                                 {
+                                    //GameManage的update方法会遍历队列处理
                                     NetMessageCenter.Instance.NetMessageQueue.Enqueue(netMsgData);
                                 }
                             }
@@ -305,11 +310,12 @@ namespace ColaFramework.NetWork
         /// <returns></returns>
         private sSocketData BytesToSocketData(int protocol, byte[] data)
         {
+            //自定义数据包结构，//消息：数据总长度(4byte) + 协议类型(4byte) + 数据(N byte)
             sSocketData tmpSocketData = new sSocketData();
             tmpSocketData.buffLength = Constants.HEAD_LEN + data.Length;
-            tmpSocketData.protocal = protocol;
-            tmpSocketData.dataLength = data.Length;
-            tmpSocketData.data = data;
+            tmpSocketData.protocal = protocol; //协议id
+            tmpSocketData.dataLength = data.Length; //发送数据长度
+            tmpSocketData.data = data; //发送数据
             return tmpSocketData;
         }
 
@@ -320,9 +326,10 @@ namespace ColaFramework.NetWork
         /// <returns></returns>
         private byte[] SocketDataToBytes(sSocketData tmpSocketData)
         {
-            byte[] tmpBuff = new byte[tmpSocketData.buffLength];
-            byte[] tmpBuffLength = BitConverter.GetBytes(tmpSocketData.buffLength);
-            byte[] tmpDataLenght = BitConverter.GetBytes(tmpSocketData.protocal);
+            //把所有的数据都拷贝到一个字符数组里，这里其实可以用对象池优化下
+            byte[] tmpBuff = new byte[tmpSocketData.buffLength]; //数据总长度（数据长度+协议id+字节数据）
+            byte[] tmpBuffLength = BitConverter.GetBytes(tmpSocketData.buffLength); //把整形转成bytes
+            byte[] tmpDataLenght = BitConverter.GetBytes(tmpSocketData.protocal); //把整形转成bytes
 
             Array.Copy(tmpBuffLength, 0, tmpBuff, 0, Constants.HEAD_DATA_LEN);//缓存总长度
             Array.Copy(tmpDataLenght, 0, tmpBuff, Constants.HEAD_DATA_LEN, Constants.HEAD_TYPE_LEN);//协议类型
@@ -356,6 +363,7 @@ namespace ColaFramework.NetWork
             }
 
             byte[] msgdata = DataToBytes(protocol, data);
+            //异步发送消息，发送成功的回调_onSendMsg
             clientSocket.BeginSend(msgdata, 0, msgdata.Length, SocketFlags.None, new AsyncCallback(_onSendMsg), clientSocket);
         }
 
